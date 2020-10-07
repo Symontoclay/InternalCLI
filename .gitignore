@@ -5,3 +5,5 @@
 /.vs
 /Updater/bin
 /Updater/obj
+/CommonUtils/bin
+/CommonUtils/obj
