@@ -1,5 +1,7 @@
-﻿using NLog;
+﻿using CommonUtils;
+using NLog;
 using System;
+using System.IO;
 
 namespace Updater
 {
@@ -10,6 +12,8 @@ namespace Updater
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            EVPath.RegVar("APPDIR", Directory.GetCurrentDirectory());
 
             var handler = new Handler();
             handler.Run();

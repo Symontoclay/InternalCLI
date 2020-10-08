@@ -85,6 +85,41 @@ namespace Updater
             return needUpdate;
         }
 
+        public static bool SetCopyright(string projectFileName, string copyright)
+        {
+            var project = LoadProject(projectFileName);
+
+            var targetPropertyGroup = GetMainPropertyGroup(project);
+
+            var needUpdate = false;
+
+            var copyrightSection = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name == "Copyright");
+
+            if (copyrightSection == null)
+            {
+                copyrightSection = new XElement("Copyright", copyright);
+                targetPropertyGroup.Add(copyrightSection);
+
+                needUpdate = true;
+            }
+            else
+            {
+                if (copyrightSection.Value != copyright)
+                {
+                    copyrightSection.Value = copyright;
+
+                    needUpdate = true;
+                }
+            }
+
+            if (needUpdate)
+            {
+                SaveProject(project, projectFileName);
+            }
+
+            return needUpdate;
+        }
+
         private static XElement LoadProject(string projectFileName)
         {
             using (var fs = File.OpenRead(projectFileName))
@@ -98,7 +133,7 @@ namespace Updater
             project.Save(projectFileName);
             var txt = File.ReadAllText(projectFileName);
 
-            txt = txt.Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", string.Empty);
+            txt = txt.Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", string.Empty).TrimStart();
 
             File.WriteAllText(projectFileName, txt);
         }
