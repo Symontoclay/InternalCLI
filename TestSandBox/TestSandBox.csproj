@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CommonUtils\CommonUtils.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
