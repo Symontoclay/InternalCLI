@@ -26,6 +26,7 @@ namespace TestSandBox
 
             var handler = new ReadXMLDocHandler();
             handler.Run();
+            //handler.ParseGenericType();
 
             _logger.Info("End");
         }

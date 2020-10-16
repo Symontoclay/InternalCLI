@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using XMLDocReader;
 
 namespace TestSandBox.XMLDoc
 {
@@ -24,174 +25,182 @@ namespace TestSandBox.XMLDoc
             using var fs = File.OpenRead(targetXMLDocFaleName);
             var doc = XElement.Load(fs);
 
-            var membersXElem = doc.Elements("members");
+            var membersXElem = doc.Element("members");
 
             foreach (var childElem in membersXElem.Elements())
             {
-                //_logger.Info($"childElem.Name = {childElem.Name}");
+                _logger.Info($"childElem = {childElem}");
+
+                var memberCard = new XMLMemberCard();
+
                 var initialName = childElem.Attribute("name").Value;
-                //_logger.Info($"initialName = {initialName}");
 
-                var type = initialName[0];
+                memberCard.Name = MemberNameParser.Parse(initialName);
 
-                _logger.Info($"type = {type}");
+                var inheritedDocNode = childElem.Element("inheritdoc");
 
-                var initialNameWithoutType = initialName.Substring(2);
-
-                _logger.Info($"initialNameWithoutType = {initialNameWithoutType}");
-
-                var lastDotPos = LastDotPos(initialNameWithoutType);
-
-                _logger.Info($"lastDotPos = {lastDotPos}");
-
-                var path = initialNameWithoutType.Substring(0, lastDotPos).Trim();
-
-                _logger.Info($"path = {path}");
-
-                var rawName = initialNameWithoutType.Substring(lastDotPos + 1).Trim();
-
-                _logger.Info($"rawName = {rawName}");
-
-                if(rawName.Contains("#"))
+                if(inheritedDocNode != null)
                 {
-                    var lastSharpPos = LastSharpPos(rawName);
+                    memberCard.IsInheritdoc = true;
 
-                    _logger.Info($"lastSharpPos = {lastSharpPos}");
+                    var crefAttr = inheritedDocNode.Attribute("cref");
 
-                    var rawImplInterfaceName = rawName.Substring(0, lastSharpPos);
+                    if(crefAttr != null)
+                    {
+                        memberCard.InheritdocCref = crefAttr.Value.Trim();
+                    }                    
 
-                    _logger.Info($"rawImplInterfaceName = {rawImplInterfaceName}");
+                    _logger.Info($"memberCard = {memberCard}");
 
-                    var implInterfaceName = rawImplInterfaceName.Replace("#", ".").Trim();
-
-                    _logger.Info($"implInterfaceName = {implInterfaceName}");
-
-                    rawName = rawName.Substring(lastSharpPos + 1).Trim();
-
-                    _logger.Info($"rawName (2) = {rawName}");
+                    continue;
                 }
 
-                if(rawName.Contains("("))
+                var includeNode = childElem.Element("include");
+
+                if(includeNode != null)
                 {
-                    var openRoundBracketPos = rawName.IndexOf("(");
+                    memberCard.IsInclude = true;
 
-                    _logger.Info($"openRoundBracketPos = {openRoundBracketPos}");
+                    memberCard.IncludeFile = includeNode.Attribute("file").Value.Trim();
 
-                    var strWithParameters = rawName.Substring(openRoundBracketPos + 1, rawName.Length - openRoundBracketPos - 2);
+                    memberCard.IncludePath = includeNode.Attribute("path").Value.Trim();
 
-                    _logger.Info($"strWithParameters = {strWithParameters}");
+                    _logger.Info($"memberCard = {memberCard}");
 
-                    rawName = rawName.Substring(0, openRoundBracketPos);
-
-                    _logger.Info($"rawName (3) = {rawName}");
-
-                    var parametersList = GetParametersList(strWithParameters);
-
-                    _logger.Info($"parametersList = {JsonConvert.SerializeObject(parametersList, Formatting.Indented)}");
+                    continue;
                 }
 
-                if(rawName.Contains("{"))
+                var summaryNode = childElem.Element("summary");
+
+                if(summaryNode != null)
                 {
-                    throw new NotImplementedException();
+                    memberCard.Summary = summaryNode.Value.Trim();
+
+                    summaryNode.Remove();
                 }
 
-                if (rawName.Contains("["))
+                var remarksNode = childElem.Element("remarks");
+
+                if(remarksNode != null)
                 {
-                    throw new NotImplementedException();
+                    memberCard.Remarks = remarksNode.Value.Trim();
+
+                    remarksNode.Remove();
                 }
+
+                var typeParamsList = childElem.Elements("typeparam").ToList();
+
+                foreach(var typeParamNode in typeParamsList)
+                {
+                    var typeParamItem = new XMLParamCard();
+
+                    typeParamItem.Name = typeParamNode.Attribute("name").Value.Trim();
+                    typeParamItem.Value = typeParamNode.Value.Trim();
+
+                    memberCard.TypeParamsList.Add(typeParamItem);
+
+                    typeParamNode.Remove();
+                }
+
+                var paramsList = childElem.Elements("param").ToList();
+
+                foreach(var paramNode in paramsList)
+                {
+                    var paramItem = new XMLParamCard();
+
+                    paramItem.Name = paramNode.Attribute("name").Value.Trim();
+                    paramItem.Value = paramNode.Value.Trim();
+
+                    memberCard.ParamsList.Add(paramItem);
+
+                    paramNode.Remove();
+                }
+
+                var returnsNode = childElem.Element("returns");
+
+                if(returnsNode != null)
+                {
+                    memberCard.Returns = returnsNode.Value.Trim();
+
+                    returnsNode.Remove();
+                }
+
+                var valueNode = childElem.Element("value");
+
+                if(valueNode != null)
+                {
+                    memberCard.Value = valueNode.Value.Trim();
+
+                    valueNode.Remove();
+                }
+
+                var examplesList = childElem.Elements("example").ToList();
+
+                foreach(var exampleNode in examplesList)
+                {
+                    memberCard.ExamplesList.Add(exampleNode.Value.Trim());
+
+                    exampleNode.Remove();
+                }
+
+                var exceptionsList = childElem.Elements("exception").ToList();
+
+                foreach(var exceptionNode in exceptionsList)
+                {
+                    var exceptionItem = new XMLExceptionCard();
+                    exceptionItem.Cref = exceptionNode.Attribute("cref").Value.Trim();
+                    exceptionItem.Value = exceptionNode.Value.Trim();
+
+                    memberCard.ExceptionsList.Add(exceptionItem);
+
+                    exceptionNode.Remove();
+                }
+
+                var seeAlsoList = childElem.Elements("seealso").ToList();
+
+                foreach (var seeAlsoNode in seeAlsoList)
+                {
+                    memberCard.SeeAlsoList.Add(seeAlsoNode.Attribute("cref").Value.Trim());
+
+                    seeAlsoNode.Remove();
+                }
+
+                _logger.Info($"childElem (2) = {childElem}");
+
+                _logger.Info($"memberCard = {memberCard}");
             }
 
             _logger.Info("End");
         }
 
-        private List<string> GetParametersList(string inputStr)
+        //private string GetSee()
+        //{
+
+        //}
+
+        public void ParseGenericType()
         {
-            _logger.Info($"inputStr = {inputStr}");
+            _logger.Info("Begin");
 
-            var commaPos = inputStr.IndexOf(",");
+            var fullTypeName = "System.Collections.Generic.IList{SymOntoClay.UnityAsset.Core.DeviceOfBiped}";
 
-            _logger.Info($"commaPos = {commaPos}");
-
-            if(commaPos == -1)
-            {
-                return new List<string>() { inputStr.Trim() };
-            }
-
-            var figureBracketPos = inputStr.IndexOf("{");
+            var figureBracketPos = fullTypeName.IndexOf("{");
 
             _logger.Info($"figureBracketPos = {figureBracketPos}");
 
-            if(figureBracketPos == -1)
-            {
-                return inputStr.Split(",").Select(p => p.Trim()).ToList();
-            }
+            var name = fullTypeName.Substring(0, figureBracketPos);
 
-            var result = new List<string>();
+            _logger.Info($"name = {name}");
 
-            do
-            {
-                throw new NotImplementedException();
-            } while (true);
+            var strWithParameters = fullTypeName.Substring(figureBracketPos + 1, fullTypeName.Length - figureBracketPos - 2);
 
-            throw new NotImplementedException();
-        }
+            _logger.Info($"strWithParameters = {strWithParameters}");
 
-        private int LastDotPos(string name)
-        {
-            var openRoundBracketPos = name.IndexOf("(");
+            var parametersList = MemberNameParser.GetParametersList(strWithParameters);
 
-            var newDotPos = -1;
-            var dotPos = -1;
+            _logger.Info($"parametersList = {JsonConvert.SerializeObject(parametersList, Formatting.Indented)}");
 
-            while((newDotPos = name.IndexOf(".", newDotPos + 1)) != -1)
-            {
-                if(openRoundBracketPos == -1)
-                {
-                    dotPos = newDotPos;
-                }
-                else
-                {
-                    if(newDotPos < openRoundBracketPos)
-                    {
-                        dotPos = newDotPos;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-
-            return dotPos;    
-        }
-
-        private int LastSharpPos(string name)
-        {
-            var openRoundBracketPos = name.IndexOf("(");
-
-            var newSharpPos = -1;
-            var sharpPos = -1;
-
-            while ((newSharpPos = name.IndexOf("#", newSharpPos + 1)) != -1)
-            {
-                if (openRoundBracketPos == -1)
-                {
-                    sharpPos = newSharpPos;
-                }
-                else
-                {
-                    if (newSharpPos < openRoundBracketPos)
-                    {
-                        sharpPos = newSharpPos;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-
-            return sharpPos;
+            _logger.Info("End");
         }
     }
 }

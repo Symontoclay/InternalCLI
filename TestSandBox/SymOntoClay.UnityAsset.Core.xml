@@ -9,9 +9,30 @@
             Gets or sets unique Id.
             It allows us to identify each item of the game.
             </summary>
+			<remarks>
+            This class can add, subtract, multiply and divide.
+            </remarks>
+			<value>Gets the value of PI.</value>
+			<example>
+            <code>
+            int c = Math.Add(4, 5);
+            if (c > 10)
+            {
+            Console.WriteLine(c);
+            }
+            </code>
+            </example>
+            <exception cref="System.OverflowException">
+			    Thrown when one parameter is max and the other is greater than 0.
+			</exception>
+			See <see cref="!:Math.Add(double, double)"/> to add doubles.
+			<seealso cref="Math.Subtract(int, int)"/>
+			<seealso cref="Math.Multiply(int, int)"/>
+			<seealso cref="Math.Divide(int, int)"/>
+			<typeparam name="T">A type that inherits from the IComparable interface.</typeparam>
         </member>
         <member name="M:SymOntoClay.UnityAsset.Core.BaseGameComponentSettings.ToString">
-            <inheritdoc/>
+            <include file='docs.xml' path='docs/members[@name="math"]/Math/*'/>
         </member>
         <member name="M:SymOntoClay.UnityAsset.Core.BaseGameComponentSettings.ToString(System.UInt32)">
             <inheritdoc/>
