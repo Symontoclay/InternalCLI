@@ -8,24 +8,25 @@ namespace XMLDocReader
     public class ClassCard: ParentElementCard, ITypeCard
     {
         /// <inheritdoc/>
+        public KindOfType KindOfType { get; set; } = KindOfType.Unknown;
+        public Type Type { get; set; }
+        public bool IsPublic { get; set; }
+
+        public List<PropertyCard> PropertiesList { get; set; } = new List<PropertyCard>();
+
+        /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
+            sb.AppendLine($"{spaces}{nameof(KindOfType)} = {KindOfType}");
+            sb.AppendLine($"{spaces}{nameof(Type)} = {Type.FullName}");
+            sb.AppendLine($"{spaces}{nameof(IsPublic)} = {IsPublic}");
+
+            sb.PrintObjListProp(n, nameof(PropertiesList), PropertiesList);
+
             sb.Append(base.PropertiesToString(n));
-
-            return sb.ToString();
-        }
-
-        /// <inheritdoc/>
-        protected override string PropertiesToBriefString(uint n)
-        {
-            var spaces = DisplayHelper.Spaces(n);
-            var sb = new StringBuilder();
-
-            sb.Append(base.PropertiesToBriefString(n));
-
             return sb.ToString();
         }
 
@@ -35,8 +36,11 @@ namespace XMLDocReader
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.Append(base.PropertiesToShortString(n));
+            sb.AppendLine($"{spaces}{nameof(KindOfType)} = {KindOfType}");
+            sb.AppendLine($"{spaces}{nameof(Type)} = {Type.FullName}");
+            sb.AppendLine($"{spaces}{nameof(IsPublic)} = {IsPublic}");
 
+            sb.Append(base.PropertiesToShortString(n));
             return sb.ToString();
         }
     }

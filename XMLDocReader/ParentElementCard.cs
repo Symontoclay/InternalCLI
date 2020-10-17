@@ -19,17 +19,6 @@ namespace XMLDocReader
         }
 
         /// <inheritdoc/>
-        protected override string PropertiesToBriefString(uint n)
-        {
-            var spaces = DisplayHelper.Spaces(n);
-            var sb = new StringBuilder();
-
-            sb.Append(base.PropertiesToBriefString(n));
-
-            return sb.ToString();
-        }
-
-        /// <inheritdoc/>
         protected override string PropertiesToShortString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
@@ -50,18 +39,6 @@ namespace XMLDocReader
             var sb = new StringBuilder();
 
             sb.Append(base.PropertiesToString(n));
-
-            return sb.ToString();
-        }
-
-        /// <inheritdoc/>
-        protected override string PropertiesToBriefString(uint n)
-        {
-            var spaces = DisplayHelper.Spaces(n);
-            var sb = new StringBuilder();
-
-            sb.Append(base.PropertiesToBriefString(n));
-
             return sb.ToString();
         }
 
@@ -72,7 +49,6 @@ namespace XMLDocReader
             var sb = new StringBuilder();
 
             sb.Append(base.PropertiesToShortString(n));
-
             return sb.ToString();
         } 
 */

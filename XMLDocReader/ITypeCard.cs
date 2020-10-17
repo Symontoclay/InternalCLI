@@ -7,5 +7,7 @@ namespace XMLDocReader
     public interface ITypeCard
     {
         KindOfType KindOfType { get; }
+        Type Type { get; }
+        bool IsPublic { get; }
     }
 }

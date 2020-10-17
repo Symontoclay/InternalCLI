@@ -5,12 +5,10 @@ using System.Text;
 
 namespace XMLDocReader
 {
-    public class EnumCard: ParentElementCard, ITypeCard
+    public class MemberCard : NamedElementCard
     {
-        /// <inheritdoc/>
-        public KindOfType KindOfType => KindOfType.Enum;
-        public Type Type { get; set; }
-        public bool IsPublic { get; set; }
+        public ClassCard Parent { get; set; }
+        public KindOfMemberAccess KindOfMemberAccess { get; set; } = KindOfMemberAccess.Unknown;
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
@@ -18,9 +16,8 @@ namespace XMLDocReader
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(KindOfType)} = {KindOfType}");
-            sb.AppendLine($"{spaces}{nameof(Type)} = {Type.FullName}");
-            sb.AppendLine($"{spaces}{nameof(IsPublic)} = {IsPublic}");
+            sb.PrintObjProp(n, nameof(Parent), Parent);
+            sb.AppendLine($"{spaces}{nameof(KindOfMemberAccess)} = {KindOfMemberAccess}");
 
             sb.Append(base.PropertiesToString(n));
             return sb.ToString();
@@ -31,10 +28,6 @@ namespace XMLDocReader
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
-
-            sb.AppendLine($"{spaces}{nameof(KindOfType)} = {KindOfType}");
-            sb.AppendLine($"{spaces}{nameof(Type)} = {Type.FullName}");
-            sb.AppendLine($"{spaces}{nameof(IsPublic)} = {IsPublic}");
 
             sb.Append(base.PropertiesToShortString(n));
             return sb.ToString();

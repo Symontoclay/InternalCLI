@@ -13,6 +13,13 @@ namespace TestSandBox.XMLDoc
 {
     public delegate void OnD();
 
+    public class Tyu
+    {
+        public string Id { get; set; }
+        protected int Re { get; set; }
+        private int D { get; set; }
+    }
+
     public class ReadXMLDocHandler
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -31,15 +38,29 @@ namespace TestSandBox.XMLDoc
 
             _logger.Info($"targetXMLDocFileName = {targetXMLDocFileName}");
 
-            var tmpType = typeof(OnD);
+            var tmpType = typeof(Tyu);
 
-            _logger.Info($"type.IsClass = {tmpType.IsClass}");
-            _logger.Info($"type.IsInterface = {tmpType.IsInterface}");
-            _logger.Info($"type.IsEnum = {tmpType.IsEnum}");
+            foreach (var prop in tmpType.GetProperties())
+            {
+                _logger.Info($"prop = {prop}");
+                //_logger.Info($" = {}");
+                //_logger.Info($" = {}");
+                //_logger.Info($" = {}");
+                //_logger.Info($" = {}");
+                //_logger.Info($" = {}");
+            }
 
-            _logger.Info($"typeof(Delegate).IsAssignableFrom(tmpType) = {typeof(Delegate).IsAssignableFrom(tmpType)}");
-            
-            _logger.Info($"GetType().FullName = {GetType().FullName}");
+            var idProp = tmpType.GetProperty("Id");
+
+            _logger.Info($"idProp = {idProp}");
+
+            var reProp = tmpType.GetProperty("Re", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+            _logger.Info($"reProp = {reProp}");
+
+            var dProp = tmpType.GetProperty("D", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+            _logger.Info($"dProp = {dProp}");
 
             var typesDict = new Dictionary<string, Type>();
 
@@ -101,6 +122,8 @@ namespace TestSandBox.XMLDoc
 
             _logger.Info($"cardsOfMembersDict.Count = {cardsOfMembersDict.Count}");
 
+            var classesOrInterfacesList = new List<ClassCard>();
+
             foreach(var typeCard in cardsOfTypesList)
             {
                 _logger.Info($"typeCard = {typeCard}");
@@ -111,22 +134,37 @@ namespace TestSandBox.XMLDoc
 
                 var type = typesDict[fullName];
 
-                _logger.Info($"type.IsClass = {type.IsClass}");
-                _logger.Info($"type.IsInterface = {type.IsInterface}");
-                _logger.Info($"type.IsEnum = {type.IsEnum}");
+                //_logger.Info($"type.IsPublic = {type.IsPublic}");
+                //_logger.Info($"type.IsNotPublic = {type.IsNotPublic}");
+
+                var kindOfType = GetKindOfType(type);
+
+                _logger.Info($"kindOfType = {kindOfType}");
+
+                //continue;
+
+                List<XMLMemberCard> membersList = null;
+
+                if (cardsOfMembersDict.ContainsKey(fullName))
+                {
+                    membersList = cardsOfMembersDict[fullName];
+                }
+                else
+                {
+                    membersList = new List<XMLMemberCard>();
+                }
+
+                switch(kindOfType)
+                {
+                    case KindOfType.Class:
+                        classesOrInterfacesList.Add(ProcessClassOrInterface(typeCard, type, membersList, kindOfType));
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(kindOfType), kindOfType, null);
+                }
+
                 //_logger.Info($" = {}");
-
-                //if(cardsOfMembersDict.ContainsKey(fullName))
-                //{
-                //    var membersList = cardsOfMembersDict[fullName];
-
-                //    _logger.Info($"membersList.Count = {membersList.Count}");
-
-                //    foreach(var memberCard in membersList)
-                //    {
-                //        _logger.Info($"memberCard = {memberCard}");
-                //    }
-                //}
             }
 
             foreach(var memberCard in cardsOfMembersList)
@@ -135,6 +173,116 @@ namespace TestSandBox.XMLDoc
             }
 
             _logger.Info("End");
+        }
+
+        private ClassCard ProcessClassOrInterface(XMLMemberCard typeCard, Type type, List<XMLMemberCard> membersList, KindOfType kindOfType)
+        {
+            var result = new ClassCard();
+            result.KindOfType = kindOfType;           
+            result.XMLMemberCard = typeCard;
+            result.Type = type;
+            result.IsPublic = type.IsPublic;
+
+            FillUpNamedElementCard(typeCard, result);
+
+            _logger.Info($"membersList.Count = {membersList.Count}");
+
+            foreach(var memberCard in membersList)
+            {
+                _logger.Info($"memberCard = {memberCard}");
+
+                switch(memberCard.Name.Kind)
+                {
+                    case KindOfMember.Property:
+                        {
+                            var property = ProcessProperty(memberCard, type);
+                            property.Parent = result;
+                            result.PropertiesList.Add(property);
+                        }
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(memberCard.Name.Kind), memberCard.Name.Kind, null);
+                }
+            }
+
+            _logger.Info($"result = {result}");
+
+            throw new NotImplementedException();
+
+            return result;
+        }
+
+        private PropertyCard ProcessProperty(XMLMemberCard memberCard, Type parentType)
+        {
+            var result = new PropertyCard();
+
+            FillUpNamedElementCard(memberCard, result);
+
+            var property = parentType.GetProperty(memberCard.Name.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+
+            if (property == null)
+            {
+                property = parentType.GetProperty(memberCard.Name.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+                if (property == null)
+                {
+                    throw new NotImplementedException();
+                }
+
+                result.KindOfMemberAccess = KindOfMemberAccess.Protected;
+            }
+            else
+            {
+                result.KindOfMemberAccess = KindOfMemberAccess.Public;
+            }            
+
+            result.PropertyInfo = property;
+
+            _logger.Info($"result = {result}");
+
+            throw new NotImplementedException();
+
+            return result;
+        }
+
+        private void FillUpNamedElementCard(XMLMemberCard source, NamedElementCard dest)
+        {
+            dest.Name = source.Name;
+            dest.Summary = source.Summary;
+            dest.Remarks = source.Remarks;
+            dest.ExamplesList = source.ExamplesList;
+        }
+
+        //private KindOfMemberAccess GetKindOfMemberAccess()
+        //{
+
+        //}
+
+        private Type _delegateType = typeof(Delegate);
+
+        private KindOfType GetKindOfType(Type type)
+        {
+            if(type.IsClass)
+            {
+                if(_delegateType.IsAssignableFrom(type))
+                {
+                    return KindOfType.Delegate;
+                }
+                return KindOfType.Class;
+            }
+
+            if(type.IsInterface)
+            {
+                return KindOfType.Interface;
+            }
+
+            if(type.IsEnum)
+            {
+                return KindOfType.Enum;
+            }
+
+            throw new NotImplementedException();
         }
 
         public void ParseGenericType()

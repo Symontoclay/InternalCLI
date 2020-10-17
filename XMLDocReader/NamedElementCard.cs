@@ -7,6 +7,12 @@ namespace XMLDocReader
 {
     public class NamedElementCard : IObjectToString, IObjectToShortString, IObjectToBriefString
     {
+        public MemberName Name { get; set; }
+        public string Summary { get; set; }
+        public string Remarks { get; set; }
+        public List<string> ExamplesList { get; set; } = new List<string>();
+        public XMLMemberCard XMLMemberCard { get; set; }
+
         /// <inheritdoc/>
         public override string ToString()
         {
@@ -30,6 +36,13 @@ namespace XMLDocReader
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
+
+            sb.PrintObjProp(n, nameof(Name), Name);
+            sb.PrintObjProp(n, nameof(XMLMemberCard), XMLMemberCard);
+            sb.AppendLine($"{spaces}{nameof(Summary)} = {Summary}");
+            sb.AppendLine($"{spaces}{nameof(Remarks)} = {Remarks}");
+            sb.PrintPODList(n, nameof(ExamplesList), ExamplesList);
+
             return sb.ToString();
         }
 
@@ -56,6 +69,13 @@ namespace XMLDocReader
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
+
+            sb.PrintObjProp(n, nameof(Name), Name);
+            sb.PrintObjProp(n, nameof(XMLMemberCard), XMLMemberCard);
+            sb.AppendLine($"{spaces}{nameof(Summary)} = {Summary}");
+            sb.AppendLine($"{spaces}{nameof(Remarks)} = {Remarks}");
+            sb.PrintPODList(n, nameof(ExamplesList), ExamplesList);
+
             return sb.ToString();
         }
 
@@ -82,6 +102,9 @@ namespace XMLDocReader
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
+
+            sb.PrintObjProp(n, nameof(Name), Name);
+
             return sb.ToString();
         }
     }
