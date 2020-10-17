@@ -112,6 +112,8 @@ namespace XMLDocReader
 
             memberName.Name = rawName;
 
+            memberName.FullName = $"{memberName.Path}.{memberName.Name}";
+
             return memberName;
         }
 

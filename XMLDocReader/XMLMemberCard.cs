@@ -19,9 +19,9 @@ namespace XMLDocReader
         public List<XMLParamCard> ParamsList { get; set; } = new List<XMLParamCard>();
         public string Returns { get; set; }
         public string Value { get; set; }
-        public List<string> ExamplesList { get; set; } = new List<string>();
-        
+        public List<string> ExamplesList { get; set; } = new List<string>();  
         public List<XMLExceptionCard> ExceptionsList { get; set; } = new List<XMLExceptionCard>();
+        public bool IsProcessed { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -55,6 +55,7 @@ namespace XMLDocReader
             sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
             sb.PrintPODList(n, nameof(ExamplesList), ExamplesList);
             sb.PrintObjListProp(n, nameof(ExceptionsList), ExceptionsList);
+            sb.AppendLine($"{spaces}{nameof(IsProcessed)} = {IsProcessed}");
 
             //sb.AppendLine($"{spaces}{nameof()} = {}");
 
