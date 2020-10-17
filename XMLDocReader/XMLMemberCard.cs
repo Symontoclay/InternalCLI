@@ -22,8 +22,6 @@ namespace XMLDocReader
         public List<string> ExamplesList { get; set; } = new List<string>();
         
         public List<XMLExceptionCard> ExceptionsList { get; set; } = new List<XMLExceptionCard>();
-        public string See { get; set; }
-        public List<string> SeeAlsoList { get; set; } = new List<string>();
 
         /// <inheritdoc/>
         public override string ToString()
@@ -57,8 +55,6 @@ namespace XMLDocReader
             sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
             sb.PrintPODList(n, nameof(ExamplesList), ExamplesList);
             sb.PrintObjListProp(n, nameof(ExceptionsList), ExceptionsList);
-            sb.AppendLine($"{spaces}{nameof(See)} = {See}");
-            sb.PrintPODList(n, nameof(SeeAlsoList), SeeAlsoList);
 
             //sb.AppendLine($"{spaces}{nameof()} = {}");
 
