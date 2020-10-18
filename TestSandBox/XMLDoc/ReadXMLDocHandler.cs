@@ -223,6 +223,8 @@ namespace TestSandBox.XMLDoc
 
             result.FieldInfo = parentType.GetField(memberCard.Name.Name);
 
+            result.KindOfMemberAccess = GetKindOfMemberAccess(result.FieldInfo);
+
             _logger.Info($"result = {result}");
 
             return result;
@@ -295,7 +297,8 @@ namespace TestSandBox.XMLDoc
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(memberCard.Name.Kind), memberCard.Name.Kind, null);
+                    result.MethodInfo = GetMethodInfo(methodsList, memberCard);
+                    break;
             }
 
             result.KindOfMemberAccess = GetKindOfMemberAccess(result.MethodInfo);
@@ -320,6 +323,58 @@ namespace TestSandBox.XMLDoc
             _logger.Info($"result = {result}");
 
             return result;
+        }
+
+        private MethodInfo GetMethodInfo(List<MethodInfo> methodsList, XMLMemberCard memberCard)
+        {
+            _logger.Info($"methodsList.Count = {methodsList.Count}");
+
+            var xmlParamsList = memberCard.ParamsList;
+
+            var xmlParamsCount = xmlParamsList.Count;
+
+            foreach (var method in methodsList)
+            {
+                var paramsList = method.GetParameters();
+
+                _logger.Info($"paramsList.Length = {paramsList.Length}");
+
+                if(paramsList.Length != xmlParamsCount)
+                {
+                    continue;
+                }
+
+                var xmlParamEnumerator = xmlParamsList.GetEnumerator();
+
+                var isFit = true;
+
+                foreach (var param in paramsList)
+                {
+                    _logger.Info($"param.Name = {param.Name}");
+                    _logger.Info($"param.ParameterType = {param.ParameterType}");
+
+                    xmlParamEnumerator.MoveNext();
+
+                    var currentXMLParam = xmlParamEnumerator.Current;
+
+                    _logger.Info($"currentXMLParam = {currentXMLParam}");
+
+                    if(param.Name != currentXMLParam.Name)
+                    {
+                        isFit = false;
+                        break;
+                    }
+                }
+
+                _logger.Info($"isFit = {isFit}");
+
+                if(isFit)
+                {
+                    return method;
+                }
+            }            
+
+            throw new NotImplementedException();
         }
 
         private KindOfMemberAccess GetKindOfMemberAccess(FieldInfo fieldInfo)

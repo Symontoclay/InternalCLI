@@ -10,6 +10,7 @@ namespace XMLDocReader
     {
         public MethodInfo MethodInfo { get; set; }
         public string Returns { get; set; }
+        public List<MethodParamCard> ParamsList { get; set; } = new List<MethodParamCard>();
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
@@ -19,6 +20,9 @@ namespace XMLDocReader
 
             sb.PrintExisting(n, nameof(MethodInfo), MethodInfo);
             sb.AppendLine($"{spaces}{nameof(Returns)} = {Returns}");
+
+            //sb.PrintObjListProp(n, nameof(TypeParamsList), TypeParamsList);
+            sb.PrintObjListProp(n, nameof(ParamsList), ParamsList);
 
             sb.Append(base.PropertiesToString(n));
             return sb.ToString();
@@ -32,6 +36,9 @@ namespace XMLDocReader
 
             sb.PrintExisting(n, nameof(MethodInfo), MethodInfo);
             sb.AppendLine($"{spaces}{nameof(Returns)} = {Returns}");
+
+            //sb.PrintShortObjListProp(n, nameof(TypeParamsList), TypeParamsList);
+            sb.PrintShortObjListProp(n, nameof(ParamsList), ParamsList);
 
             sb.Append(base.PropertiesToShortString(n));
             return sb.ToString();
