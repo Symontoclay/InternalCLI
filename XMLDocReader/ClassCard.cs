@@ -13,6 +13,7 @@ namespace XMLDocReader
         public bool IsPublic { get; set; }
 
         public List<PropertyCard> PropertiesList { get; set; } = new List<PropertyCard>();
+        public List<MethodCard> MethodsList { get; set; } = new List<MethodCard>();
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
@@ -25,6 +26,7 @@ namespace XMLDocReader
             sb.AppendLine($"{spaces}{nameof(IsPublic)} = {IsPublic}");
 
             sb.PrintObjListProp(n, nameof(PropertiesList), PropertiesList);
+            sb.PrintObjListProp(n, nameof(MethodsList), MethodsList);
 
             sb.Append(base.PropertiesToString(n));
             return sb.ToString();

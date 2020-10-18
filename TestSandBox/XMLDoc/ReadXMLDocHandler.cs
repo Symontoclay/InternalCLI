@@ -123,8 +123,9 @@ namespace TestSandBox.XMLDoc
             _logger.Info($"cardsOfMembersDict.Count = {cardsOfMembersDict.Count}");
 
             var classesOrInterfacesList = new List<ClassCard>();
+            var enumsList = new List<EnumCard>();
 
-            foreach(var typeCard in cardsOfTypesList)
+            foreach (var typeCard in cardsOfTypesList)
             {
                 _logger.Info($"typeCard = {typeCard}");
 
@@ -157,7 +158,12 @@ namespace TestSandBox.XMLDoc
                 switch(kindOfType)
                 {
                     case KindOfType.Class:
+                    case KindOfType.Interface:
                         classesOrInterfacesList.Add(ProcessClassOrInterface(typeCard, type, membersList, kindOfType));
+                        break;
+
+                    case KindOfType.Enum:
+                        enumsList.Add(ProcessEnum(typeCard, type, membersList));
                         break;
 
                     default:
@@ -167,19 +173,65 @@ namespace TestSandBox.XMLDoc
                 //_logger.Info($" = {}");
             }
 
-            foreach(var memberCard in cardsOfMembersList)
-            {
-                _logger.Info($"memberCard = {memberCard}");
-            }
+            //foreach(var memberCard in cardsOfMembersList)
+            //{
+            //    _logger.Info($"memberCard = {memberCard}");
+            //}
 
             _logger.Info("End");
+        }
+
+        private EnumCard ProcessEnum(XMLMemberCard typeCard, Type type, List<XMLMemberCard> membersList)
+        {
+            var result = new EnumCard();
+            result.Type = type;
+            result.IsPublic = type.IsPublic;
+
+            FillUpNamedElementCard(typeCard, result);
+
+            _logger.Info($"membersList.Count = {membersList.Count}");
+
+            foreach (var memberCard in membersList)
+            {
+                _logger.Info($"memberCard = {memberCard}");
+
+                switch (memberCard.Name.Kind)
+                {
+                    case KindOfMember.Field:
+                        {
+                            var field = ProcessField(memberCard, type);
+                            field.Parent = result;
+                            result.FieldsList.Add(field);
+                        }
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(memberCard.Name.Kind), memberCard.Name.Kind, null);
+                }
+            }
+
+            _logger.Info($"result = {result}");
+
+            return result;
+        }
+
+        private EnumFieldCard ProcessField(XMLMemberCard memberCard, Type parentType)
+        {
+            var result = new EnumFieldCard();
+
+            FillUpNamedElementCard(memberCard, result);
+
+            result.FieldInfo = parentType.GetField(memberCard.Name.Name);
+
+            _logger.Info($"result = {result}");
+
+            return result;
         }
 
         private ClassCard ProcessClassOrInterface(XMLMemberCard typeCard, Type type, List<XMLMemberCard> membersList, KindOfType kindOfType)
         {
             var result = new ClassCard();
-            result.KindOfType = kindOfType;           
-            result.XMLMemberCard = typeCard;
+            result.KindOfType = kindOfType;
             result.Type = type;
             result.IsPublic = type.IsPublic;
 
@@ -201,6 +253,14 @@ namespace TestSandBox.XMLDoc
                         }
                         break;
 
+                    case KindOfMember.Method:
+                        {
+                            var method = ProcessMethod(memberCard, type);
+                            method.Parent = result;
+                            result.MethodsList.Add(method);
+                        }
+                        break;
+
                     default:
                         throw new ArgumentOutOfRangeException(nameof(memberCard.Name.Kind), memberCard.Name.Kind, null);
                 }
@@ -208,9 +268,94 @@ namespace TestSandBox.XMLDoc
 
             _logger.Info($"result = {result}");
 
-            throw new NotImplementedException();
+            return result;
+        }
+
+        private MethodCard ProcessMethod(XMLMemberCard memberCard, Type parentType)
+        {
+            var result = new MethodCard();
+
+            FillUpNamedElementCard(memberCard, result);
+
+            var name = memberCard.Name.Name;
+
+            var methodsList = parentType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static).Where(p => p.Name == name).ToList();
+
+            var methodsCount = methodsList.Count;
+
+            _logger.Info($"methodsCount = {methodsCount}");
+
+            switch(methodsCount)
+            {
+                case 0:
+                    throw new NotImplementedException();
+
+                case 1:
+                    result.MethodInfo = methodsList.Single();
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(memberCard.Name.Kind), memberCard.Name.Kind, null);
+            }
+
+            result.KindOfMemberAccess = GetKindOfMemberAccess(result.MethodInfo);
+
+            result.Returns = memberCard.Returns;
+
+            if(memberCard.ParamsList.Any())
+            {
+                throw new NotImplementedException();
+            }
+
+            if(memberCard.TypeParamsList.Any())
+            {
+                throw new NotImplementedException();
+            }
+
+            if(memberCard.ExceptionsList.Any())
+            {
+                throw new NotImplementedException();
+            }
+
+            _logger.Info($"result = {result}");
 
             return result;
+        }
+
+        private KindOfMemberAccess GetKindOfMemberAccess(FieldInfo fieldInfo)
+        {
+            _logger.Info($"fieldInfo.IsPublic = {fieldInfo.IsPublic}");
+            _logger.Info($"fieldInfo.IsPublic = {fieldInfo.IsFamily}");
+
+            if (fieldInfo.IsPublic)
+            {
+                return KindOfMemberAccess.Public;
+            }
+
+            if (fieldInfo.IsFamily)
+            {
+                return KindOfMemberAccess.Protected;
+            }
+
+            return KindOfMemberAccess.Private;
+        }
+
+        private KindOfMemberAccess GetKindOfMemberAccess(MethodInfo methodInfo)
+        {
+            _logger.Info($"methodInfo.IsPublic = {methodInfo.IsPublic}");
+            _logger.Info($"methodInfo.IsPublic = {methodInfo.IsFamily}");
+
+            if(methodInfo.IsPublic)
+            {
+                return KindOfMemberAccess.Public;
+            }
+
+            if(methodInfo.IsFamily)
+            {
+                return KindOfMemberAccess.Protected;
+            }
+
+            return KindOfMemberAccess.Private;
         }
 
         private PropertyCard ProcessProperty(XMLMemberCard memberCard, Type parentType)
@@ -239,9 +384,9 @@ namespace TestSandBox.XMLDoc
 
             result.PropertyInfo = property;
 
-            _logger.Info($"result = {result}");
+            result.Value = memberCard.Value;
 
-            throw new NotImplementedException();
+            _logger.Info($"result = {result}");
 
             return result;
         }
@@ -252,12 +397,8 @@ namespace TestSandBox.XMLDoc
             dest.Summary = source.Summary;
             dest.Remarks = source.Remarks;
             dest.ExamplesList = source.ExamplesList;
+            dest.XMLMemberCard = source;
         }
-
-        //private KindOfMemberAccess GetKindOfMemberAccess()
-        //{
-
-        //}
 
         private Type _delegateType = typeof(Delegate);
 

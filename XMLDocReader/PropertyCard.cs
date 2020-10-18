@@ -9,6 +9,7 @@ namespace XMLDocReader
     public class PropertyCard: MemberCard
     {
         public PropertyInfo PropertyInfo { get; set; }
+        public string Value { get; set; }
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
@@ -17,6 +18,7 @@ namespace XMLDocReader
             var sb = new StringBuilder();
 
             sb.PrintExisting(n, nameof(PropertyInfo), PropertyInfo);
+            sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
 
             sb.Append(base.PropertiesToString(n));
             return sb.ToString();
@@ -27,6 +29,9 @@ namespace XMLDocReader
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
+
+            sb.PrintExisting(n, nameof(PropertyInfo), PropertyInfo);
+            sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
 
             sb.Append(base.PropertiesToShortString(n));
             return sb.ToString();
