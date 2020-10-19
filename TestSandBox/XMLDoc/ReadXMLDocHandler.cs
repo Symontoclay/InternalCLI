@@ -250,6 +250,11 @@ namespace TestSandBox.XMLDoc
 
             var name = memberCard.Name.Name;
 
+            if(!string.IsNullOrWhiteSpace(memberCard.Name.ImplInterfaceName))
+            {
+                name = $"{memberCard.Name.ImplInterfaceName}.{name}";
+            }
+
             _logger.Info($"name = {name}");
 
             var methodsList = parentType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static).Where(p => p.Name == name).ToList();
@@ -261,15 +266,6 @@ namespace TestSandBox.XMLDoc
             switch(methodsCount)
             {
                 case 0:
-                    {
-                        methodsList = parentType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static).ToList();
-
-                        foreach(var tmpMethod in methodsList)
-                        {
-                            _logger.Info($"tmpMethod.Name = {tmpMethod.Name}");
-                        }
-                    }
-
                     throw new NotImplementedException();
 
                 case 1:
