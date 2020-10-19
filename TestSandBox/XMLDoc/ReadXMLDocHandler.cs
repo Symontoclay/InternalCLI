@@ -11,15 +11,6 @@ using XMLDocReader;
 
 namespace TestSandBox.XMLDoc
 {
-    public delegate void OnD();
-
-    public class Tyu
-    {
-        public string Id { get; set; }
-        protected int Re { get; set; }
-        private int D { get; set; }
-    }
-
     public class ReadXMLDocHandler
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -38,31 +29,9 @@ namespace TestSandBox.XMLDoc
 
             _logger.Info($"targetXMLDocFileName = {targetXMLDocFileName}");
 
-            var tmpType = typeof(Tyu);
-
-            foreach (var prop in tmpType.GetProperties())
-            {
-                _logger.Info($"prop = {prop}");
-                //_logger.Info($" = {}");
-                //_logger.Info($" = {}");
-                //_logger.Info($" = {}");
-                //_logger.Info($" = {}");
-                //_logger.Info($" = {}");
-            }
-
-            var idProp = tmpType.GetProperty("Id");
-
-            _logger.Info($"idProp = {idProp}");
-
-            var reProp = tmpType.GetProperty("Re", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-
-            _logger.Info($"reProp = {reProp}");
-
-            var dProp = tmpType.GetProperty("D", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-
-            _logger.Info($"dProp = {dProp}");
-
             var typesDict = new Dictionary<string, Type>();
+
+            _logger.Info($"typesDict.GetType().FullName = {typesDict.GetType().FullName}");
 
             var coreHelperAssemblyFileName = Path.Combine(Directory.GetCurrentDirectory(), "SymOntoClayCoreHelper.dll");
 
@@ -281,6 +250,8 @@ namespace TestSandBox.XMLDoc
 
             var name = memberCard.Name.Name;
 
+            _logger.Info($"name = {name}");
+
             var methodsList = parentType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static).Where(p => p.Name == name).ToList();
 
             var methodsCount = methodsList.Count;
@@ -290,6 +261,15 @@ namespace TestSandBox.XMLDoc
             switch(methodsCount)
             {
                 case 0:
+                    {
+                        methodsList = parentType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static).ToList();
+
+                        foreach(var tmpMethod in methodsList)
+                        {
+                            _logger.Info($"tmpMethod.Name = {tmpMethod.Name}");
+                        }
+                    }
+
                     throw new NotImplementedException();
 
                 case 1:
@@ -297,7 +277,14 @@ namespace TestSandBox.XMLDoc
                     break;
 
                 default:
-                    result.MethodInfo = GetMethodInfo(methodsList, memberCard);
+                    if(memberCard.IsInclude || memberCard.IsInheritdoc)
+                    {
+                        result.MethodInfo = GetMethodInfoByTypeNames(methodsList, memberCard);
+                    }
+                    else
+                    {
+                        result.MethodInfo = GetMethodInfo(methodsList, memberCard);
+                    }                    
                     break;
             }
 
@@ -307,7 +294,27 @@ namespace TestSandBox.XMLDoc
 
             if(memberCard.ParamsList.Any())
             {
-                throw new NotImplementedException();
+                var methodReflectionParamsList = result.MethodInfo.GetParameters();
+
+                var i = 0;
+
+                foreach (var methodParamCard in memberCard.ParamsList)
+                {
+                    var parameter = new MethodParamCard();
+                    parameter.Name = methodParamCard.Name;
+                    parameter.ParameterInfo = methodReflectionParamsList[i];
+                    parameter.Summary = methodParamCard.Value;
+                    parameter.XMLParamCard = methodParamCard;
+
+                    _logger.Info($"parameter.ParameterInfo.Name = {parameter.ParameterInfo.Name}");
+                    _logger.Info($"parameter = {parameter}");
+
+                    result.ParamsList.Add(parameter);
+
+                    i++;
+                }
+
+                _logger.Info($"result = {result}");
             }
 
             if(memberCard.TypeParamsList.Any())
@@ -325,6 +332,62 @@ namespace TestSandBox.XMLDoc
             return result;
         }
 
+        private MethodInfo GetMethodInfoByTypeNames(List<MethodInfo> methodsList, XMLMemberCard memberCard)
+        {
+            _logger.Info($"methodsList.Count = {methodsList.Count}");
+
+            var xmlParamsList = memberCard.Name.ParametersList;
+
+            var xmlParamsCount = xmlParamsList.Count;
+
+            _logger.Info($"xmlParamsCount = {xmlParamsCount}");
+
+            foreach (var method in methodsList)
+            {
+                var paramsList = method.GetParameters();
+
+                _logger.Info($"paramsList.Length = {paramsList.Length}");
+
+                if (paramsList.Length != xmlParamsCount)
+                {
+                    continue;
+                }
+
+                var xmlParamEnumerator = xmlParamsList.GetEnumerator();
+
+                var isFit = true;
+
+                foreach (var param in paramsList)
+                {
+                    _logger.Info($"param.Name = {param.Name}");
+                    _logger.Info($"param.ParameterType.Name = '{param.ParameterType.Name}'");
+                    _logger.Info($"param.ParameterType.FullName = '{param.ParameterType.FullName}'");
+                    _logger.Info($"SimplifyFullNameOfType(param.ParameterType.FullName) = '{NamesHelper.SimplifyFullNameOfType(param.ParameterType.FullName)}'");
+
+                    xmlParamEnumerator.MoveNext();
+
+                    var currentXMLParam = xmlParamEnumerator.Current;
+
+                    _logger.Info($"currentXMLParam = '{currentXMLParam}'");
+
+                    if(NamesHelper.SimplifyFullNameOfType(param.ParameterType.FullName) != currentXMLParam)
+                    {
+                        isFit = false;
+                        break;
+                    }
+                }
+
+                _logger.Info($"isFit = {isFit}");
+
+                if (isFit)
+                {
+                    return method;
+                }
+            }
+
+            throw new NotImplementedException();
+        }
+
         private MethodInfo GetMethodInfo(List<MethodInfo> methodsList, XMLMemberCard memberCard)
         {
             _logger.Info($"methodsList.Count = {methodsList.Count}");
@@ -332,6 +395,8 @@ namespace TestSandBox.XMLDoc
             var xmlParamsList = memberCard.ParamsList;
 
             var xmlParamsCount = xmlParamsList.Count;
+
+            _logger.Info($"xmlParamsCount = {xmlParamsCount}");
 
             foreach (var method in methodsList)
             {

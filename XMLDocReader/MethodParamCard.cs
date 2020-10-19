@@ -11,7 +11,7 @@ namespace XMLDocReader
         public string Name { get; set; }
         public ParameterInfo ParameterInfo { get; set; }
         public string Summary { get; set; }
-        public XMLMemberCard XMLMemberCard { get; set; }
+        public XMLParamCard XMLParamCard { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -34,7 +34,7 @@ namespace XMLDocReader
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.PrintExisting(n, nameof(ParameterInfo), ParameterInfo);
             sb.AppendLine($"{spaces}{nameof(Summary)} = {Summary}");
-            sb.PrintObjProp(n, nameof(XMLMemberCard), XMLMemberCard);
+            sb.PrintObjProp(n, nameof(XMLParamCard), XMLParamCard);
 
             return sb.ToString();
         }
@@ -60,7 +60,7 @@ namespace XMLDocReader
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.PrintExisting(n, nameof(ParameterInfo), ParameterInfo);
             sb.AppendLine($"{spaces}{nameof(Summary)} = {Summary}");
-            sb.PrintObjProp(n, nameof(XMLMemberCard), XMLMemberCard);
+            sb.PrintObjProp(n, nameof(XMLParamCard), XMLParamCard);
 
             return sb.ToString();
         }
@@ -86,7 +86,7 @@ namespace XMLDocReader
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.PrintExisting(n, nameof(ParameterInfo), ParameterInfo);
             sb.AppendLine($"{spaces}{nameof(Summary)} = {Summary}");
-            sb.PrintObjProp(n, nameof(XMLMemberCard), XMLMemberCard);
+            sb.PrintObjProp(n, nameof(XMLParamCard), XMLParamCard);
 
             return sb.ToString();
         }

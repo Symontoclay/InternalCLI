@@ -1,9 +1,11 @@
 ﻿using CommonUtils;
 using NLog;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 using TestSandBox.XMLDoc;
+using XMLDocReader;
 
 namespace TestSandBox
 {
@@ -17,7 +19,31 @@ namespace TestSandBox
 
             EVPath.RegVar("APPDIR", Directory.GetCurrentDirectory());
 
+            //TstSimplifyFullNameOfType();
             TstReadXMLDoc();
+        }
+
+        private static void TstSimplifyFullNameOfType()
+        {
+            _logger.Info("Begin");
+
+            var stringType = typeof(string);
+
+            _logger.Info($"stringType.FullName = '{stringType.FullName}'");
+
+            var name = NamesHelper.SimplifyFullNameOfType(stringType.FullName);
+
+            _logger.Info($"name (1) = '{name}'");
+
+            var typesDict = new Dictionary<string, List<Type[]>>();
+
+            _logger.Info($"typesDict.GetType().FullName = '{typesDict.GetType().FullName}'");
+
+            name = NamesHelper.SimplifyFullNameOfType(typesDict.GetType().FullName);
+
+            _logger.Info($"name (2) = {name}");
+
+            _logger.Info("End");
         }
 
         private static void TstReadXMLDoc()
