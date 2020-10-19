@@ -142,10 +142,16 @@ namespace TestSandBox.XMLDoc
                 //_logger.Info($" = {}");
             }
 
-            //foreach(var memberCard in cardsOfMembersList)
-            //{
-            //    _logger.Info($"memberCard = {memberCard}");
-            //}
+            var notProcessedCardsOfMembersList = cardsOfMembersList.Where(p => !p.IsProcessed).ToList();
+
+            _logger.Info($"notProcessedCardsOfMembersList.Count = {notProcessedCardsOfMembersList.Count}");
+
+            throw new NotImplementedException();
+
+            foreach (var memberCard in notProcessedCardsOfMembersList)
+            {
+                _logger.Info($"memberCard = {memberCard}");
+            }
 
             _logger.Info("End");
         }
@@ -514,6 +520,7 @@ namespace TestSandBox.XMLDoc
             dest.Remarks = source.Remarks;
             dest.ExamplesList = source.ExamplesList;
             dest.XMLMemberCard = source;
+            source.IsProcessed = true;
         }
 
         private Type _delegateType = typeof(Delegate);
