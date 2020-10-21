@@ -1,6 +1,7 @@
 ﻿using CommonUtils.DebugHelpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace XMLDocReader
@@ -13,6 +14,42 @@ namespace XMLDocReader
         public bool IsPublic { get; set; }
 
         public List<EnumFieldCard> FieldsList { get; set; } = new List<EnumFieldCard>();
+
+        public bool HasIsInheritdoc
+        {
+            get
+            {
+                if (XMLMemberCard != null && XMLMemberCard.IsInheritdoc)
+                {
+                    return true;
+                }
+
+                if (FieldsList != null && FieldsList.Any(p => p.XMLMemberCard != null && p.XMLMemberCard.IsInheritdoc))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        public bool HasIsInclude
+        {
+            get
+            {
+                if (XMLMemberCard != null && XMLMemberCard.IsInclude)
+                {
+                    return true;
+                }
+
+                if (FieldsList != null && FieldsList.Any(p => p.XMLMemberCard != null && p.XMLMemberCard.IsInclude))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)

@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -119,11 +120,7 @@ namespace XMLDocReader
 
         public static List<string> GetParametersList(string inputStr)
         {
-            //_logger.Info($"inputStr = {inputStr}");
-
             var commaPos = inputStr.IndexOf(",");
-
-            //_logger.Info($"commaPos = {commaPos}");
 
             if (commaPos == -1)
             {
@@ -132,8 +129,6 @@ namespace XMLDocReader
 
             var figureBracketPos = inputStr.IndexOf("{");
 
-            //_logger.Info($"figureBracketPos = {figureBracketPos}");
-
             if (figureBracketPos == -1)
             {
                 return inputStr.Split(",").Select(p => p.Trim()).ToList();
@@ -141,37 +136,43 @@ namespace XMLDocReader
 
             var result = new List<string>();
 
-            do
+            var count = 0;
+            var sb = new StringBuilder();
+
+            foreach(var ch in inputStr)
             {
-                if (commaPos == -1)
+                if(ch == '{')
                 {
-                    result.Add(inputStr.Trim());
-                    break;
+                    count++;
                 }
                 else
                 {
-                    if (commaPos < figureBracketPos)
+                    if(ch == '}')
                     {
-                        result.Add(inputStr.Substring(0, commaPos).Trim());
-
-                        inputStr = inputStr.Substring(commaPos + 1);
-                    }
-                    else
-                    {
-                        throw new NotImplementedException();
+                        count--;
                     }
                 }
 
-                //_logger.Info($"inputStr (2) = {inputStr}");
+                if(count == 0)
+                {
+                    if(ch == ',')
+                    {
+                        result.Add(sb.ToString().Trim());
 
-                commaPos = inputStr.IndexOf(",");
+                        sb = new StringBuilder();
+                    }
+                    else
+                    {
+                        sb.Append(ch);
+                    }                    
+                }
+                else
+                {
+                    sb.Append(ch);
+                }
+            }
 
-                //_logger.Info($"commaPos (2) = {commaPos}");
-
-                figureBracketPos = inputStr.IndexOf("{");
-
-                //_logger.Info($"figureBracketPos (2) = {figureBracketPos}");
-            } while (true);
+            result.Add(sb.ToString().Trim());
 
             return result;
         }

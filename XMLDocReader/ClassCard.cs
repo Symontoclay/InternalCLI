@@ -1,6 +1,7 @@
 ﻿using CommonUtils.DebugHelpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace XMLDocReader
@@ -14,6 +15,52 @@ namespace XMLDocReader
 
         public List<PropertyCard> PropertiesList { get; set; } = new List<PropertyCard>();
         public List<MethodCard> MethodsList { get; set; } = new List<MethodCard>();
+
+        public bool HasIsInheritdoc
+        {
+            get
+            {
+                if(XMLMemberCard != null && XMLMemberCard.IsInheritdoc)
+                {
+                    return true;
+                }
+
+                if(PropertiesList != null && PropertiesList.Any(p => p.XMLMemberCard != null && p.XMLMemberCard.IsInheritdoc))
+                {
+                    return true;
+                }
+
+                if(MethodsList != null && MethodsList.Any(p => p.XMLMemberCard != null && p.XMLMemberCard.IsInheritdoc))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        public bool HasIsInclude
+        {
+            get
+            {
+                if (XMLMemberCard != null && XMLMemberCard.IsInclude)
+                {
+                    return true;
+                }
+
+                if (PropertiesList != null && PropertiesList.Any(p => p.XMLMemberCard != null && p.XMLMemberCard.IsInclude))
+                {
+                    return true;
+                }
+
+                if (MethodsList != null && MethodsList.Any(p => p.XMLMemberCard != null && p.XMLMemberCard.IsInclude))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)

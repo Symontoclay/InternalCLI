@@ -28,7 +28,8 @@ namespace XMLDocReader
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-
+            sb.AppendLine($"{spaces}{nameof(XMLDocFileName)} = {XMLDocFileName}");
+            sb.AppendLine($"{spaces}{nameof(AssemblyFileName)} = {AssemblyFileName}");
 
             return sb.ToString();
         }

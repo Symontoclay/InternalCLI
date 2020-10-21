@@ -10,12 +10,23 @@ namespace XMLDocReader
 {
     public static class PackageCardReader
     {
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        public static List<PackageCard> Read(List<PackageCardReaderSettings> settingsList)
+        {
+            var packageCardsList = new List<PackageCard>();
+
+            foreach (var settings in settingsList)
+            {
+                var packageCard = Read(settings);
+                packageCardsList.Add(packageCard);
+            }
+
+            return packageCardsList;
+        }
 
         public static PackageCard Read(PackageCardReaderSettings settings)
         {
-            _logger.Info($"settings = {settings}");
-
             var packageCard = new PackageCard();
 
             var targetAssembly = Assembly.LoadFrom(settings.AssemblyFileName);
@@ -29,8 +40,6 @@ namespace XMLDocReader
             }
 
             var memberCardsList = XMLMemberCardsReader.Read(settings.XMLDocFileName);
-
-            _logger.Info($"memberCardsList.Count = {memberCardsList.Count}");
 
             var cardsOfTypesList = new List<XMLMemberCard>();
             var cardsOfMembersList = new List<XMLMemberCard>();
@@ -47,12 +56,7 @@ namespace XMLDocReader
                 }
             }
 
-            _logger.Info($"cardsOfTypesList.Count = {cardsOfTypesList.Count}");
-            _logger.Info($"cardsOfMembersList.Count = {cardsOfMembersList.Count}");
-
             var cardsOfMembersDict = cardsOfMembersList.GroupBy(p => p.Name.Path).ToDictionary(p => p.Key, p => p.ToList());
-
-            _logger.Info($"cardsOfMembersDict.Count = {cardsOfMembersDict.Count}");
 
             var classesList = new List<ClassCard>();
             var interfacesList = new List<ClassCard>();
@@ -60,8 +64,6 @@ namespace XMLDocReader
 
             foreach (var typeCard in cardsOfTypesList)
             {
-                _logger.Info($"typeCard = {typeCard}");
-
                 typeCard.IsProcessed = true;
 
                 var fullName = typeCard.Name.FullName;
@@ -69,8 +71,6 @@ namespace XMLDocReader
                 var type = typesDict[fullName];
 
                 var kindOfType = GetKindOfType(type);
-
-                _logger.Info($"kindOfType = {kindOfType}");
 
                 List<XMLMemberCard> membersList = null;
 
@@ -102,13 +102,7 @@ namespace XMLDocReader
                 }
             }
 
-            _logger.Info($"classesList.Count = {classesList.Count}");
-            _logger.Info($"interfacesList.Count = {interfacesList.Count}");
-            _logger.Info($"enumsList.Count = {enumsList.Count}");
-
             var fullNamesList = classesList.Select(p => p.Name.Path).Concat(interfacesList.Select(p => p.Name.Path)).Concat(enumsList.Select(p => p.Name.Path)).Distinct().ToList();
-
-            _logger.Info($"fullNamesList = {JsonConvert.SerializeObject(fullNamesList, Formatting.Indented)}");
 
             var classesDict = classesList.ToDictionary(p => p.Name.FullName, p => p);
             var interfacesDict = interfacesList.ToDictionary(p => p.Name.FullName, p => p);
@@ -118,19 +112,13 @@ namespace XMLDocReader
 
             FillUpNamespacesList(1, packageCard, namespacesList, namespacesDict, classesDict, interfacesDict, fullNamesList);
 
-            _logger.Info($"namespacesList.Count = {namespacesList.Count}");
-
             packageCard.NamespacesList = namespacesList;
 
             foreach (var classCard in classesList)
             {
-                _logger.Info($"classCard = {classCard}");
-
                 classCard.Package = packageCard;
 
                 var path = classCard.Name.Path;
-
-                _logger.Info($"path = '{path}'");
 
                 if (namespacesDict.ContainsKey(path))
                 {
@@ -162,13 +150,9 @@ namespace XMLDocReader
 
             foreach (var interfaceCard in interfacesList)
             {
-                _logger.Info($"interfaceCard = {interfaceCard}");
-
                 interfaceCard.Package = packageCard;
 
                 var path = interfaceCard.Name.Path;
-
-                _logger.Info($"path = '{path}'");
 
                 if (namespacesDict.ContainsKey(path))
                 {
@@ -200,13 +184,9 @@ namespace XMLDocReader
 
             foreach (var enumCard in enumsList)
             {
-                _logger.Info($"interfaceCard = {enumCard}");
-
                 enumCard.Package = packageCard;
 
                 var path = enumCard.Name.Path;
-
-                _logger.Info($"path = '{path}'");
 
                 if (namespacesDict.ContainsKey(path))
                 {
@@ -236,11 +216,7 @@ namespace XMLDocReader
 
             packageCard.EnumsList = enumsList;
 
-            var notProcessedCardsOfMembersList = cardsOfMembersList.Where(p => !p.IsProcessed).ToList();
-
-            _logger.Info($"notProcessedCardsOfMembersList.Count = {notProcessedCardsOfMembersList.Count}");
-
-            packageCard.XMLCardsWithoutTypeList = notProcessedCardsOfMembersList;
+            packageCard.XMLCardsWithoutTypeList = cardsOfMembersList.Where(p => !p.IsProcessed).ToList();
 
             return packageCard;
         }
@@ -377,12 +353,8 @@ namespace XMLDocReader
 
             FillUpNamedElementCard(typeCard, result);
 
-            _logger.Info($"membersList.Count = {membersList.Count}");
-
             foreach (var memberCard in membersList)
             {
-                _logger.Info($"memberCard = {memberCard}");
-
                 switch (memberCard.Name.Kind)
                 {
                     case KindOfMember.Field:
@@ -398,8 +370,6 @@ namespace XMLDocReader
                 }
             }
 
-            _logger.Info($"result = {result}");
-
             return result;
         }
 
@@ -410,10 +380,7 @@ namespace XMLDocReader
             FillUpNamedElementCard(memberCard, result);
 
             result.FieldInfo = parentType.GetField(memberCard.Name.Name);
-
             result.KindOfMemberAccess = GetKindOfMemberAccess(result.FieldInfo);
-
-            _logger.Info($"result = {result}");
 
             return result;
         }
@@ -427,12 +394,8 @@ namespace XMLDocReader
 
             FillUpNamedElementCard(typeCard, result);
 
-            _logger.Info($"membersList.Count = {membersList.Count}");
-
             foreach (var memberCard in membersList)
             {
-                _logger.Info($"memberCard = {memberCard}");
-
                 switch (memberCard.Name.Kind)
                 {
                     case KindOfMember.Property:
@@ -456,8 +419,6 @@ namespace XMLDocReader
                 }
             }
 
-            _logger.Info($"result = {result}");
-
             return result;
         }
 
@@ -474,13 +435,9 @@ namespace XMLDocReader
                 name = $"{memberCard.Name.ImplInterfaceName}.{name}";
             }
 
-            _logger.Info($"name = {name}");
-
             var methodsList = parentType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static).Where(p => p.Name == name).ToList();
 
             var methodsCount = methodsList.Count;
-
-            _logger.Info($"methodsCount = {methodsCount}");
 
             switch (methodsCount)
             {
@@ -521,15 +478,10 @@ namespace XMLDocReader
                     parameter.Summary = methodParamCard.Value;
                     parameter.XMLParamCard = methodParamCard;
 
-                    _logger.Info($"parameter.ParameterInfo.Name = {parameter.ParameterInfo.Name}");
-                    _logger.Info($"parameter = {parameter}");
-
                     result.ParamsList.Add(parameter);
 
                     i++;
                 }
-
-                _logger.Info($"result = {result}");
             }
 
             if (memberCard.TypeParamsList.Any())
@@ -542,26 +494,18 @@ namespace XMLDocReader
                 throw new NotImplementedException();
             }
 
-            _logger.Info($"result = {result}");
-
             return result;
         }
 
         private static MethodInfo GetMethodInfoByTypeNames(List<MethodInfo> methodsList, XMLMemberCard memberCard)
         {
-            _logger.Info($"methodsList.Count = {methodsList.Count}");
-
             var xmlParamsList = memberCard.Name.ParametersList;
 
             var xmlParamsCount = xmlParamsList.Count;
 
-            _logger.Info($"xmlParamsCount = {xmlParamsCount}");
-
             foreach (var method in methodsList)
             {
                 var paramsList = method.GetParameters();
-
-                _logger.Info($"paramsList.Length = {paramsList.Length}");
 
                 if (paramsList.Length != xmlParamsCount)
                 {
@@ -574,16 +518,9 @@ namespace XMLDocReader
 
                 foreach (var param in paramsList)
                 {
-                    _logger.Info($"param.Name = {param.Name}");
-                    _logger.Info($"param.ParameterType.Name = '{param.ParameterType.Name}'");
-                    _logger.Info($"param.ParameterType.FullName = '{param.ParameterType.FullName}'");
-                    _logger.Info($"SimplifyFullNameOfType(param.ParameterType.FullName) = '{NamesHelper.SimplifyFullNameOfType(param.ParameterType.FullName)}'");
-
                     xmlParamEnumerator.MoveNext();
 
                     var currentXMLParam = xmlParamEnumerator.Current;
-
-                    _logger.Info($"currentXMLParam = '{currentXMLParam}'");
 
                     if (NamesHelper.SimplifyFullNameOfType(param.ParameterType.FullName) != currentXMLParam)
                     {
@@ -591,8 +528,6 @@ namespace XMLDocReader
                         break;
                     }
                 }
-
-                _logger.Info($"isFit = {isFit}");
 
                 if (isFit)
                 {
@@ -605,19 +540,13 @@ namespace XMLDocReader
 
         private static MethodInfo GetMethodInfo(List<MethodInfo> methodsList, XMLMemberCard memberCard)
         {
-            _logger.Info($"methodsList.Count = {methodsList.Count}");
-
             var xmlParamsList = memberCard.ParamsList;
 
             var xmlParamsCount = xmlParamsList.Count;
 
-            _logger.Info($"xmlParamsCount = {xmlParamsCount}");
-
             foreach (var method in methodsList)
             {
                 var paramsList = method.GetParameters();
-
-                _logger.Info($"paramsList.Length = {paramsList.Length}");
 
                 if (paramsList.Length != xmlParamsCount)
                 {
@@ -630,14 +559,9 @@ namespace XMLDocReader
 
                 foreach (var param in paramsList)
                 {
-                    _logger.Info($"param.Name = {param.Name}");
-                    _logger.Info($"param.ParameterType = {param.ParameterType}");
-
                     xmlParamEnumerator.MoveNext();
 
                     var currentXMLParam = xmlParamEnumerator.Current;
-
-                    _logger.Info($"currentXMLParam = {currentXMLParam}");
 
                     if (param.Name != currentXMLParam.Name)
                     {
@@ -645,8 +569,6 @@ namespace XMLDocReader
                         break;
                     }
                 }
-
-                _logger.Info($"isFit = {isFit}");
 
                 if (isFit)
                 {
@@ -712,10 +634,7 @@ namespace XMLDocReader
             }
 
             result.PropertyInfo = property;
-
             result.Value = memberCard.Value;
-
-            _logger.Info($"result = {result}");
 
             return result;
         }
