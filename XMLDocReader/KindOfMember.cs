@@ -11,6 +11,7 @@ namespace XMLDocReader
         Property,
         Field,
         Method,
-        Event
+        Event,
+        Namespace
     }
 }
