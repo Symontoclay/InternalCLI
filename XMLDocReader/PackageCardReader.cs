@@ -19,17 +19,12 @@ namespace XMLDocReader
             var packageCard = new PackageCard();
 
             var targetAssembly = Assembly.LoadFrom(settings.AssemblyFileName);
-
-            //_logger.Info($"AppDomain.CurrentDomain.GetAssemblies() = {JsonConvert.SerializeObject(AppDomain.CurrentDomain.GetAssemblies().Select(p => p.GetName().Name), Formatting.Indented)}");
-
             packageCard.AssemblyName = targetAssembly.GetName();
 
             var typesDict = new Dictionary<string, Type>();
 
             foreach (var type in targetAssembly.GetTypes())
             {
-                //_logger.Info($"type.FullName = {type.FullName}");
-
                 typesDict[type.FullName] = type;
             }
 
@@ -73,14 +68,9 @@ namespace XMLDocReader
 
                 var type = typesDict[fullName];
 
-                //_logger.Info($"type.IsPublic = {type.IsPublic}");
-                //_logger.Info($"type.IsNotPublic = {type.IsNotPublic}");
-
                 var kindOfType = GetKindOfType(type);
 
                 _logger.Info($"kindOfType = {kindOfType}");
-
-                //continue;
 
                 List<XMLMemberCard> membersList = null;
 
@@ -110,8 +100,6 @@ namespace XMLDocReader
                     default:
                         throw new ArgumentOutOfRangeException(nameof(kindOfType), kindOfType, null);
                 }
-
-                //_logger.Info($" = {}");
             }
 
             _logger.Info($"classesList.Count = {classesList.Count}");
@@ -259,8 +247,6 @@ namespace XMLDocReader
 
         private static void FillUpNamespacesList(int n, PackageCard packageCard, List<NamespaceCard> namespacesList, Dictionary<string, NamespaceCard> namespacesDict, Dictionary<string, ClassCard> classesDict, Dictionary<string, ClassCard> interfacesDict, List<string> fullNamesList)
         {
-            //_logger.Info($"n = {n}");
-
             foreach (var fullName in fullNamesList)
             {
                 if (classesDict.ContainsKey(fullName))
@@ -279,17 +265,12 @@ namespace XMLDocReader
 
         private static void FillUpNamespace(int n, PackageCard packageCard, NamespaceCard parentNamespaceCard, List<NamespaceCard> namespacesList, Dictionary<string, NamespaceCard> namespacesDict, string fullName)
         {
-            //_logger.Info($"n = {n}");
-            //_logger.Info($"fullName = '{fullName}'");
-
             string targetFullName;
             string targetName;
             string path;
             var needNextProcess = false;
 
             var dotPos = GetDotPos(fullName, n);
-
-            //_logger.Info($"dotPos = {dotPos}");
 
             if (dotPos == -1)
             {
@@ -303,23 +284,14 @@ namespace XMLDocReader
                 else
                 {
                     dotPos = GetDotPos(targetFullName, n - 1);
-
-                    //_logger.Info($"dotPos (2) = {dotPos}");
-
                     path = targetFullName.Substring(0, dotPos);
 
-                    //_logger.Info($"path = '{path}'");
-
                     targetName = targetFullName.Substring(dotPos + 1);
-
-                    //_logger.Info($"targetName = '{targetName}'");
                 }
             }
             else
             {
                 targetFullName = fullName.Substring(0, dotPos);
-
-                //_logger.Info($"targetFullName = '{targetFullName}'");
 
                 if (targetFullName.IndexOf(".") == -1)
                 {
@@ -329,16 +301,8 @@ namespace XMLDocReader
                 else
                 {
                     dotPos = GetDotPos(targetFullName, n - 1);
-
-                    //_logger.Info($"dotPos (2) = {dotPos}");
-
                     path = targetFullName.Substring(0, dotPos);
-
-                    //_logger.Info($"path = '{path}'");
-
                     targetName = targetFullName.Substring(dotPos + 1);
-
-                    //_logger.Info($"targetName = '{targetName}'");
                 }
 
                 if (fullName != targetFullName)
@@ -346,10 +310,6 @@ namespace XMLDocReader
                     needNextProcess = true;
                 }
             }
-
-            //_logger.Info($"targetFullName = '{targetFullName}'");
-            //_logger.Info($"targetName = '{targetName}'");
-            //_logger.Info($"path = '{path}'");
 
             NamespaceCard namespaceCard;
 
@@ -366,8 +326,6 @@ namespace XMLDocReader
                 namespaceName.Name = targetName;
                 namespaceName.Path = path;
 
-                //_logger.Info($"namespaceName = {namespaceName}");
-
                 namespaceCard = new NamespaceCard();
                 namespaceCard.Package = packageCard;
                 namespaceCard.Name = namespaceName;
@@ -378,18 +336,9 @@ namespace XMLDocReader
                     parentNamespaceCard.NamespacesList.Add(namespaceCard);
                 }
 
-                //_logger.Info($"namespaceCard = {namespaceCard}");
-
                 namespacesDict[targetFullName] = namespaceCard;
                 namespacesList.Add(namespaceCard);
             }
-
-            //_logger.Info($"needNextProcess = {needNextProcess}");
-
-            //if(targetFullName == "SymOntoClay.UnityAsset.Core.InternalImplementations.Player")
-            //{
-            //    throw new NotImplementedException();
-            //}
 
             if (needNextProcess)
             {
@@ -399,23 +348,15 @@ namespace XMLDocReader
 
         private static int GetDotPos(string inputStr, int n)
         {
-            //_logger.Info($"inputStr = '{inputStr}'");
-            //_logger.Info($"n = {n}");
-
             var count = 0;
             var i = 0;
 
             foreach (var ch in inputStr)
             {
-                //_logger.Info($"ch = '{ch}'");
-
                 if (ch == '.')
                 {
                     count++;
                 }
-
-                //_logger.Info($"count = {count}");
-                //_logger.Info($"i = {i}");
 
                 if (count == n)
                 {
@@ -718,9 +659,6 @@ namespace XMLDocReader
 
         private static KindOfMemberAccess GetKindOfMemberAccess(FieldInfo fieldInfo)
         {
-            _logger.Info($"fieldInfo.IsPublic = {fieldInfo.IsPublic}");
-            _logger.Info($"fieldInfo.IsPublic = {fieldInfo.IsFamily}");
-
             if (fieldInfo.IsPublic)
             {
                 return KindOfMemberAccess.Public;
@@ -736,9 +674,6 @@ namespace XMLDocReader
 
         private static KindOfMemberAccess GetKindOfMemberAccess(MethodInfo methodInfo)
         {
-            _logger.Info($"methodInfo.IsPublic = {methodInfo.IsPublic}");
-            _logger.Info($"methodInfo.IsPublic = {methodInfo.IsFamily}");
-
             if (methodInfo.IsPublic)
             {
                 return KindOfMemberAccess.Public;

@@ -35,6 +35,8 @@ namespace TestSandBox.XMLDoc
 
             _logger.Info($"packageCard = {packageCard}");
 
+            //_logger.Info($" = {}");
+
             _logger.Info("End");
         }
 
