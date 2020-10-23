@@ -63,29 +63,18 @@ namespace TestSandBox.XMLDoc
 
             _logger.Info($"xmlMemberCardsFullNamesDict.Count = {xmlMemberCardsFullNamesDict.Count}");
 
+            var xmlMemberCardsInitialNamesDict = xmlMemberCardsList.ToDictionary(p => p.Name.InitialName, p => p);
+
+            _logger.Info($"xmlMemberCardsInitialNamesDict.Count = {xmlMemberCardsInitialNamesDict.Count}");
+
+            foreach (var interfaceCard in interfacesList.Where(p => p.HasIsInheritdoc))
+            {
+                ResolveInheritdocInClassCard(interfaceCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict);
+            }
+
             foreach (var classCard in classesList.Where(p => p.HasIsInheritdoc))
             {
-                _logger.Info($"classCard = {classCard}");
-
-                var xmlMemberCard = classCard.XMLMemberCard;
-
-                if(xmlMemberCard != null && xmlMemberCard.IsInheritdoc)
-                {
-                    if(string.IsNullOrWhiteSpace(xmlMemberCard.InheritdocCref))
-                    {
-                        var targetXMLMemberCard = ResolveInheritdoc(xmlMemberCard, classCard.Type, xmlMemberCardsFullNamesDict);
-
-                        _logger.Info($"targetXMLMemberCard = {targetXMLMemberCard}");
-
-
-
-                        throw new NotImplementedException();
-                    }
-                    else
-                    {
-                        throw new NotImplementedException();
-                    }
-                }
+                ResolveInheritdocInClassCard(classCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict);
             }
 
             _logger.Info($"classesList.Count(p => p.HasIsInclude) = {classesList.Count(p => p.HasIsInclude)}");
@@ -97,80 +86,266 @@ namespace TestSandBox.XMLDoc
             _logger.Info("End");
         }
 
-        private XMLMemberCard ResolveInheritdoc(XMLMemberCard source, Type type, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict)
+        private void ResolveInheritdocInClassCard(ClassCard classCard, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict)
         {
-            var typesList = new List<Type>();
+            _logger.Info($"classCard = {classCard}");
 
-            var curentBaseType = type.BaseType;
+            var xmlMemberCard = classCard.XMLMemberCard;
 
-            if(!IsSystemOrThirdPartyType(curentBaseType.FullName))
+            if(xmlMemberCard.IsInheritdocOrIncludeResolved)
+            {
+                return;
+            }
+
+            if (xmlMemberCard.IsInheritdoc && !xmlMemberCard.IsInheritdocOrIncludeResolved)
+            {
+                XMLMemberCard targetXMLMemberCard;
+
+                if (string.IsNullOrWhiteSpace(xmlMemberCard.InheritdocCref))
+                {
+                    targetXMLMemberCard = ResolveInheritdoc(classCard.Type, xmlMemberCardsFullNamesDict);
+                }
+                else
+                {
+                    targetXMLMemberCard = ResolveInheritdoc(xmlMemberCard.InheritdocCref, xmlMemberCardsInitialNamesDict);
+
+                    _logger.Info($"targetXMLMemberCard = {targetXMLMemberCard}");
+                }
+
+                _logger.Info($"targetXMLMemberCard = {targetXMLMemberCard}");
+
+                if (targetXMLMemberCard != null)
+                {
+                    AssingResolvingInheritdoc(classCard, targetXMLMemberCard);
+
+                    _logger.Info($"classCard (after) = {classCard}");
+                }
+            }
+
+            var propertiesList = classCard.PropertiesList.Where(p => p.XMLMemberCard.IsInheritdoc).ToList();
+
+            _logger.Info($"propertiesList.Count = {propertiesList.Count}");
+
+            if (propertiesList.Any())
+            {
+                foreach (var propertyCard in propertiesList)
+                {
+                    ResolveInheritdocInPropertyCard(classCard, propertyCard, xmlMemberCardsInitialNamesDict);
+                }
+            }
+        }
+
+        private void ResolveInheritdocInPropertyCard(ClassCard classCard, PropertyCard propertyCard, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict)
+        {
+            _logger.Info($"propertyCard = {propertyCard}");
+
+            var xmlMemberCard = propertyCard.XMLMemberCard;
+
+            if (xmlMemberCard.IsInheritdocOrIncludeResolved)
+            {
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(xmlMemberCard.Name.ImplInterfaceName))
+            {
+                ResolveInheritdocInPropertyCardBySearching(classCard, propertyCard);
+                return;
+            }
+
+            ResolveInheritdocInPropertyCardByImplInterface(propertyCard, xmlMemberCardsInitialNamesDict);
+        }
+
+        private void ResolveInheritdocInPropertyCardByImplInterface(PropertyCard propertyCard, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict)
+        {
+            var implInterfaceName = propertyCard.Name.ImplInterfaceName;
+
+            var targetXMLMemberCard = GetXMLMemberCardByImplInterfaceName(implInterfaceName, xmlMemberCardsInitialNamesDict);
+
+            if(targetXMLMemberCard != null)
+            {
+                AssingPropertyCardResolvingInheritdoc(propertyCard, targetXMLMemberCard);
+            }
+        }
+
+        private XMLMemberCard GetXMLMemberCardByImplInterfaceName(string implInterfaceName, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict)
+        {
+            if (xmlMemberCardsInitialNamesDict.ContainsKey(implInterfaceName))
+            {
+                var targetXmlMemberCard = xmlMemberCardsInitialNamesDict[implInterfaceName];
+
+                if (targetXmlMemberCard.IsInheritdoc || targetXmlMemberCard.IsInclude)
+                {
+                    return null;
+                }
+
+                return targetXmlMemberCard;
+            }
+
+            return null;
+        }
+
+        private void ResolveInheritdocInPropertyCardBySearching(ClassCard classCard, PropertyCard propertyCard)
+        {
+            var baseTypesList = GetBaseTypesAndInterfacesList(classCard.Type, true);
+
+            _logger.Info($"baseTypesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(baseTypesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
+
+            if(!baseTypesList.Any())
+            {
+                return;
+            }
+
+            var name = propertyCard.Name.Name;
+
+            _logger.Info($"name = '{name}'");
+
+            var propertiesList = new List<PropertyInfo>();
+
+            //foreach()
+            //{
+
+            //}
+
+            throw new NotImplementedException();
+        }
+
+        private void AssingPropertyCardResolvingInheritdoc(PropertyCard dest, XMLMemberCard source)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AssingResolvingInheritdoc(NamedElementCard dest, XMLMemberCard  source)
+        {
+            dest.Summary = source.Summary;
+            dest.Remarks = source.Remarks;
+            dest.ExamplesList = source.ExamplesList.ToList();
+
+            dest.XMLMemberCard.IsInheritdocOrIncludeResolved = true;
+        }
+
+        private XMLMemberCard ResolveInheritdoc(string cRef, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict)
+        {
+            _logger.Info($"cRef = '{cRef}'");
+
+            if(xmlMemberCardsInitialNamesDict.ContainsKey(cRef))
+            {
+                var targetXmlMemberCard = xmlMemberCardsInitialNamesDict[cRef];
+
+                if (targetXmlMemberCard.IsInheritdoc || targetXmlMemberCard.IsInclude)
+                {
+                    return null;
+                }
+
+                return targetXmlMemberCard;
+            }
+
+            return null;
+        }
+
+        private XMLMemberCard ResolveInheritdoc(Type type, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict)
+        {
+            var interfacesList = type.GetInterfaces().Where(p => !IsSystemOrThirdPartyType(p.FullName)).ToList();
+
+            _logger.Info($"interfacesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(interfacesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
+
+            _logger.Info($"type.BaseType?.FullName = {type.BaseType?.FullName}");
+
+            if(type.BaseType == null || IsSystemOrThirdPartyType(type.BaseType.FullName))
+            {
+                if(!interfacesList.Any())
+                {
+                    return null;
+                }
+                else
+                {
+                    return ResolveInheritdocByInterfaces(type, interfacesList, xmlMemberCardsFullNamesDict);
+                }                
+            }
+            else
             {
                 throw new NotImplementedException();
             }
 
-            var targetNamesList = new List<string>();
+            //var possibleXMLMemberCardList = new List<XMLMemberCard>();
 
-            while (curentBaseType != null)
+            //foreach(var targetName in targetNamesList)
+            //{
+            //    _logger.Info($"targetName = '{targetName}'");
+
+            //    if(xmlMemberCardsFullNamesDict.ContainsKey(targetName))
+            //    {
+            //        var possibleXMLMemberCard = xmlMemberCardsFullNamesDict[targetName];
+
+            //        if(possibleXMLMemberCard.IsInheritdoc || possibleXMLMemberCard.IsInclude)
+            //        {
+            //            continue;
+            //        }
+
+            //        possibleXMLMemberCardList.Add(possibleXMLMemberCard);
+            //    }
+            //}
+
+            //_logger.Info($"possibleXMLMemberCardList.Count = {possibleXMLMemberCardList.Count}");
+
+            //foreach(var possibleXMLMemberCard in possibleXMLMemberCardList)
+            //{
+            //    _logger.Info($"possibleXMLMemberCard = {possibleXMLMemberCard}");
+            //}
+
+            //if(possibleXMLMemberCardList.Count == 0)
+            //{
+            //    return null;
+            //}
+
+            //if(possibleXMLMemberCardList.Count == 1)
+            //{
+            //    return possibleXMLMemberCardList.Single();
+            //}
+        }
+
+        private XMLMemberCard ResolveInheritdocByInterfaces(Type type, List<Type> interfacesList, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict)
+        {
+            if(interfacesList.Count == 1)
             {
-                typesList.Add(curentBaseType);
-
-                curentBaseType = curentBaseType.BaseType;
+                return ResolveInheritdocBySingleInterface(interfacesList, xmlMemberCardsFullNamesDict);
             }
 
-            _logger.Info($"typesList.Select(p => p.FullName) (1) = {JsonConvert.SerializeObject(typesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
+            var directlyImplementedInterfacesList = GetDirectlyImplementedInterfacesList(interfacesList, true);
 
-            targetNamesList.AddRange(typesList.Select(p => p.FullName).Where(p => !IsSystemOrThirdPartyType(p)));
+            _logger.Info($"directlyImplementedInterfacesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(directlyImplementedInterfacesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
 
-            var interfacesList = type.GetInterfaces();
-
-            _logger.Info($"interfacesList.Select(p => p.FullName) (1) = {JsonConvert.SerializeObject(interfacesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
-
-            targetNamesList.AddRange(interfacesList.Select(p => p.FullName).Where(p => !IsSystemOrThirdPartyType(p)));
-
-            _logger.Info($"targetNamesList = {JsonConvert.SerializeObject(targetNamesList, Formatting.Indented)}");
-
-            if(!targetNamesList.Any())
+            if(directlyImplementedInterfacesList.Count == 1)
             {
-                return null;
+                return ResolveInheritdocBySingleInterface(directlyImplementedInterfacesList, xmlMemberCardsFullNamesDict);
             }
 
-            var possibleXMLMemberCardList = new List<XMLMemberCard>();
+            throw new Exception($"Ambiguous resolving inheritdoc of `{type.FullName}`. There are many summares for this type of: {JsonConvert.SerializeObject(interfacesList.Select(p => p.FullName), Formatting.Indented)}. Use `cref` for describing target inheritdoc or describe summary.");
+        }
 
-            foreach(var targetName in targetNamesList)
+        private XMLMemberCard ResolveInheritdocBySingleInterface(List<Type> interfacesList, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict)
+        {
+            var targetInterface = interfacesList.Single();
+
+            var targetInterfaceFullName = targetInterface.FullName;
+
+            if (targetInterfaceFullName.Contains("["))
             {
-                _logger.Info($"targetName = '{targetName}'");
+                throw new NotImplementedException();
+            }
 
-                if(xmlMemberCardsFullNamesDict.ContainsKey(targetName))
+            if (xmlMemberCardsFullNamesDict.ContainsKey(targetInterfaceFullName))
+            {
+                var targetXmlMemberCard = xmlMemberCardsFullNamesDict[targetInterfaceFullName];
+
+                if (targetXmlMemberCard.IsInheritdoc || targetXmlMemberCard.IsInclude)
                 {
-                    var possibleXMLMemberCard = xmlMemberCardsFullNamesDict[targetName];
-
-                    if(possibleXMLMemberCard.IsInheritdoc || possibleXMLMemberCard.IsInclude)
-                    {
-                        continue;
-                    }
-
-                    possibleXMLMemberCardList.Add(possibleXMLMemberCard);
+                    return null;
                 }
+
+                return targetXmlMemberCard;
             }
 
-            _logger.Info($"possibleXMLMemberCardList.Count = {possibleXMLMemberCardList.Count}");
-
-            foreach(var possibleXMLMemberCard in possibleXMLMemberCardList)
-            {
-                _logger.Info($"possibleXMLMemberCard = {possibleXMLMemberCard}");
-            }
-
-            if(possibleXMLMemberCardList.Count == 0)
-            {
-                return null;
-            }
-
-            if(possibleXMLMemberCardList.Count == 1)
-            {
-                return possibleXMLMemberCardList.Single();
-            }
-
-            throw new Exception($"Ambiguous resolving inheritdoc of `{type.FullName}`. There are many summares for this type of: {JsonConvert.SerializeObject(possibleXMLMemberCardList.Select(p => p.Name.FullName), Formatting.Indented)}. Use `cref` for describing target inheritdoc or describe summary.");
+            return null;
         }
 
         private bool IsSystemOrThirdPartyType(string fullName)
@@ -181,6 +356,75 @@ namespace TestSandBox.XMLDoc
             }
 
             return false;
+        }
+
+        private List<Type> GetBaseTypesList(Type type, bool onlyNoSystemOrThirdPartyType)
+        {
+            var curentBaseType = type.BaseType;
+
+            var typesList = new List<Type>();
+
+            while (curentBaseType != null)
+            {
+                if(onlyNoSystemOrThirdPartyType && IsSystemOrThirdPartyType(curentBaseType.FullName))
+                {
+                    return typesList;
+                }
+
+                typesList.Add(curentBaseType);
+
+                curentBaseType = curentBaseType.BaseType;
+            }
+
+            return typesList;
+        }
+
+        private List<Type> GetBaseTypesAndInterfacesList(Type type, bool onlyNoSystemOrThirdPartyType)
+        {
+            var typesList = GetBaseTypesList(type, onlyNoSystemOrThirdPartyType);
+
+            var interfacesList = type.GetInterfaces().Distinct().ToList();
+
+            if(onlyNoSystemOrThirdPartyType)
+            {
+                interfacesList = interfacesList.Where(p => !IsSystemOrThirdPartyType(p.FullName)).ToList();
+            }
+
+            typesList.AddRange(interfacesList);
+
+            return typesList;
+        }
+
+        public List<Type> GetDirectlyImplementedInterfacesList(List<Type> interfacesList, bool onlyNoSystemOrThirdPartyType)
+        {
+            var childInterfacesList = new List<Type>();
+
+            foreach (var tmpInterface in interfacesList)
+            {
+                _logger.Info($"tmpInterface.FullName = {tmpInterface.FullName}");
+
+                if(onlyNoSystemOrThirdPartyType)
+                {
+                    childInterfacesList.AddRange(tmpInterface.GetInterfaces().Where(p => !IsSystemOrThirdPartyType(p.FullName)));
+                }
+                else
+                {
+                    childInterfacesList.AddRange(tmpInterface.GetInterfaces());
+                }                
+            }
+
+            _logger.Info($"childInterfacesList.Count = {childInterfacesList.Count}");
+
+            _logger.Info($"childInterfacesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(childInterfacesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
+
+            var result = interfacesList.Except(childInterfacesList).ToList();
+
+            if(onlyNoSystemOrThirdPartyType)
+            {
+                result = result.Where(p => !IsSystemOrThirdPartyType(p.FullName)).ToList();
+            }
+
+            return result;
         }
 
         public void ParseGenericType()

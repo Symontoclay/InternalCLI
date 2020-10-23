@@ -64,7 +64,7 @@ namespace XMLDocReader
 
             foreach (var typeCard in cardsOfTypesList)
             {
-                typeCard.IsProcessed = true;
+                typeCard.IsBuiltTypeOrMemberCard = true;
 
                 var fullName = typeCard.Name.FullName;
 
@@ -216,7 +216,7 @@ namespace XMLDocReader
 
             packageCard.EnumsList = enumsList;
 
-            packageCard.XMLCardsWithoutTypeList = cardsOfMembersList.Where(p => !p.IsProcessed).ToList();
+            packageCard.XMLCardsWithoutTypeList = cardsOfMembersList.Where(p => !p.IsBuiltTypeOrMemberCard).ToList();
 
             return packageCard;
         }
@@ -646,7 +646,7 @@ namespace XMLDocReader
             dest.Remarks = source.Remarks;
             dest.ExamplesList = source.ExamplesList;
             dest.XMLMemberCard = source;
-            source.IsProcessed = true;
+            source.IsBuiltTypeOrMemberCard = true;
         }
 
         private static Type _delegateType = typeof(Delegate);
