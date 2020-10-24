@@ -67,14 +67,19 @@ namespace TestSandBox.XMLDoc
 
             _logger.Info($"xmlMemberCardsInitialNamesDict.Count = {xmlMemberCardsInitialNamesDict.Count}");
 
+            var classesAndInterfacesList = classesList.Concat(interfacesList).ToList();
+
+            var classCardsFullNamesDict = classesAndInterfacesList.ToDictionary(p => p.Name.FullName, p => p);
+            var classCardsInitialNamesDict = classesAndInterfacesList.ToDictionary(p => p.Name.InitialName, p => p);
+
             foreach (var interfaceCard in interfacesList.Where(p => p.HasIsInheritdoc))
             {
-                ResolveInheritdocInClassCard(interfaceCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict);
+                ResolveInheritdocInClassCard(interfaceCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict, classCardsFullNamesDict, classCardsInitialNamesDict);
             }
 
             foreach (var classCard in classesList.Where(p => p.HasIsInheritdoc))
             {
-                ResolveInheritdocInClassCard(classCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict);
+                ResolveInheritdocInClassCard(classCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict, classCardsFullNamesDict, classCardsInitialNamesDict);
             }
 
             _logger.Info($"classesList.Count(p => p.HasIsInclude) = {classesList.Count(p => p.HasIsInclude)}");
@@ -86,7 +91,7 @@ namespace TestSandBox.XMLDoc
             _logger.Info("End");
         }
 
-        private void ResolveInheritdocInClassCard(ClassCard classCard, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict)
+        private void ResolveInheritdocInClassCard(ClassCard classCard, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict)
         {
             _logger.Info($"classCard = {classCard}");
 
@@ -130,12 +135,165 @@ namespace TestSandBox.XMLDoc
             {
                 foreach (var propertyCard in propertiesList)
                 {
-                    ResolveInheritdocInPropertyCard(classCard, propertyCard, xmlMemberCardsInitialNamesDict);
+                    ResolveInheritdocInPropertyCard(classCard, propertyCard, classCardsFullNamesDict, classCardsInitialNamesDict);
                 }
+            }
+
+            var methodsList = classCard.MethodsList.Where(p => p.XMLMemberCard.IsInheritdoc).ToList();
+
+            _logger.Info($"methodsList.Count = {methodsList.Count}");
+
+            if(methodsList.Any())
+            {
+                foreach (var methodCard in methodsList)
+                {
+                    ResolveInheritdocInMethodCard(classCard, methodCard, classCardsFullNamesDict, classCardsInitialNamesDict);
+                }
+
+                throw new NotImplementedException();
             }
         }
 
-        private void ResolveInheritdocInPropertyCard(ClassCard classCard, PropertyCard propertyCard, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict)
+        private void ResolveInheritdocInMethodCard(ClassCard classCard, MethodCard methodCard, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict)
+        {
+            _logger.Info($"methodCard = {methodCard}");
+
+            var xmlMemberCard = methodCard.XMLMemberCard;
+
+            if (xmlMemberCard.IsInheritdocOrIncludeResolved)
+            {
+                return;
+            }
+
+            List<ClassCard> targetClassCardsList;
+
+            if (string.IsNullOrWhiteSpace(xmlMemberCard.Name.ImplInterfaceName))
+            {
+                targetClassCardsList = GetClassCardsForResolvingInheritdocInMethodCardBySearching(classCard, methodCard, classCardsFullNamesDict);
+            }
+            else
+            {
+                targetClassCardsList = GetClassCardsForResolvingInheritdocInMethodCardByImplInterface(methodCard, classCardsInitialNamesDict);
+            }
+
+            _logger.Info($"targetClassCardsList.Count = {targetClassCardsList.Count}");
+
+            if (targetClassCardsList.Count == 0)
+            {
+                return;
+            }
+
+            if (targetClassCardsList.Count > 1)
+            {
+                throw new Exception($"Ambiguous resolving inheritdoc of property {xmlMemberCard.Name.Name} of `{classCard.Type.FullName}`. There are many summares for this property of: {JsonConvert.SerializeObject(targetClassCardsList.Select(p => p.Type.FullName), Formatting.Indented)}. Use `cref` for describing target inheritdoc or describe summary.");
+            }
+
+            var targetClassCard = targetClassCardsList.Single();
+
+            _logger.Info($"targetClassCard = {targetClassCard}");
+
+            throw new NotImplementedException();
+        }
+
+        private List<ClassCard> GetClassCardsForResolvingInheritdocInMethodCardByImplInterface(MethodCard methodCard, Dictionary<string, ClassCard> classCardsInitialNamesDict)
+        {
+            var implInterfaceName = methodCard.Name.ImplInterfaceName;
+
+            if (classCardsInitialNamesDict.ContainsKey(implInterfaceName))
+            {
+                return new List<ClassCard>() { classCardsInitialNamesDict[implInterfaceName] };
+            }
+
+            return null;
+        }
+
+        private List<ClassCard> GetClassCardsForResolvingInheritdocInMethodCardBySearching(ClassCard classCard, MethodCard methodCard, Dictionary<string, ClassCard> classCardsFullNamesDict)
+        {
+            var baseTypesList = GetBaseTypesAndInterfacesList(classCard.Type, true);
+
+            _logger.Info($"baseTypesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(baseTypesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
+
+            if (!baseTypesList.Any())
+            {
+                return new List<ClassCard>();
+            }
+
+            var name = methodCard.Name.Name;
+
+            _logger.Info($"name = '{name}'");
+
+            var result = new List<ClassCard>();
+
+            foreach (var baseType in baseTypesList)
+            {
+                _logger.Info($"baseType.FullName = {baseType.FullName}");
+
+                var methodsList = baseType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static).Where(p => p.Name == name).ToList();
+
+                _logger.Info($"methodsList.Count = {methodsList.Count}");
+
+                foreach(var methodInfo in methodsList)
+                {
+                    if(IsFit(methodCard, methodInfo))
+                    {
+                        var normalizedFullName = NamesHelper.SimplifyFullNameOfType(baseType.FullName);
+
+                        _logger.Info($"normalizedFullName = {normalizedFullName}");
+
+                        if(classCardsFullNamesDict.ContainsKey(normalizedFullName))
+                        {
+                            var targetClassCard = classCardsFullNamesDict[normalizedFullName];
+
+                            _logger.Info($"targetClassCard = {targetClassCard}");
+
+                            result.Add(targetClassCard);
+                            break;
+                        }
+
+                        throw new Exception($"Documentation of `{baseType.FullName}` must be written!");
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private bool IsFit(MethodCard methodCard, MethodInfo methodInfo)
+        {
+            var methodInfoParametersList = methodInfo.GetParameters();
+
+            if (methodCard.ParamsList.Count != methodInfoParametersList.Count())
+            {
+                return false;
+            }
+
+            if(methodCard.ParamsList.Count == 0)
+            {
+                return true;
+            }
+
+            var methodCardParamsListEnumerator = methodCard.ParamsList.GetEnumerator();
+
+            var isFit = true;
+
+            foreach (var param in methodInfoParametersList)
+            {
+                methodCardParamsListEnumerator.MoveNext();
+
+                var currentMethodCardParam = methodCardParamsListEnumerator.Current;
+
+                _logger.Info($"param.Name = {param.Name}");
+                _logger.Info($"currentMethodCardParam.Name = {currentMethodCardParam.Name}");
+
+                throw new NotImplementedException();
+            }
+
+            _logger.Info($"isFit = {isFit}");
+
+            throw new NotImplementedException();
+        }
+
+        private void ResolveInheritdocInPropertyCard(ClassCard classCard, PropertyCard propertyCard, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict)
         {
             _logger.Info($"propertyCard = {propertyCard}");
 
@@ -146,45 +304,81 @@ namespace TestSandBox.XMLDoc
                 return;
             }
 
+            List<ClassCard> targetClassCardsList;
+
             if (string.IsNullOrWhiteSpace(xmlMemberCard.Name.ImplInterfaceName))
             {
-                ResolveInheritdocInPropertyCardBySearching(classCard, propertyCard);
+                targetClassCardsList = GetClassCardsForResolvingInheritdocInPropertyCardBySearching(classCard, propertyCard, classCardsFullNamesDict);
+            }
+            else
+            {
+                targetClassCardsList = GetClassCardsForResolvingInheritdocInPropertyCardByImplInterface(propertyCard, classCardsInitialNamesDict);
+            }
+
+            _logger.Info($"targetClassCardsList.Count = {targetClassCardsList.Count}");
+
+            if(targetClassCardsList.Count == 0)
+            {
                 return;
             }
 
-            ResolveInheritdocInPropertyCardByImplInterface(propertyCard, xmlMemberCardsInitialNamesDict);
-        }
+            if(targetClassCardsList.Count > 1)
+            {
+                throw new Exception($"Ambiguous resolving inheritdoc of property {xmlMemberCard.Name.Name} of `{classCard.Type.FullName}`. There are many summares for this property of: {JsonConvert.SerializeObject(targetClassCardsList.Select(p => p.Type.FullName), Formatting.Indented)}. Use `cref` for describing target inheritdoc or describe summary.");
+            }
 
-        private void ResolveInheritdocInPropertyCardByImplInterface(PropertyCard propertyCard, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict)
-        {
-            var implInterfaceName = propertyCard.Name.ImplInterfaceName;
+            var targetClassCard = targetClassCardsList.Single();
 
-            var targetXMLMemberCard = GetXMLMemberCardByImplInterfaceName(implInterfaceName, xmlMemberCardsInitialNamesDict);
+            _logger.Info($"targetClassCard = {targetClassCard}");
+
+            var targetXMLMemberCard = GetXMLMemberCardOfProperty(propertyCard, targetClassCard);
+
+            _logger.Info($"targetXMLMemberCard = {targetXMLMemberCard}");
 
             if(targetXMLMemberCard != null)
             {
                 AssingPropertyCardResolvingInheritdoc(propertyCard, targetXMLMemberCard);
+
+                _logger.Info($"propertyCard (after) = {propertyCard}");
             }
         }
 
-        private XMLMemberCard GetXMLMemberCardByImplInterfaceName(string implInterfaceName, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict)
+        private XMLMemberCard GetXMLMemberCardOfProperty(PropertyCard propertyCard, ClassCard targetClassCard)
         {
-            if (xmlMemberCardsInitialNamesDict.ContainsKey(implInterfaceName))
+            var name = propertyCard.Name.Name;
+
+            _logger.Info($"name = '{name}'");
+
+            var targetPropertiesCardsList = targetClassCard.PropertiesList.Where(p => p.Name.Name == name).ToList();
+
+            _logger.Info($"targetPropertiesCardsList.Count = {targetPropertiesCardsList.Count}");
+
+            if(targetPropertiesCardsList.Count == 0)
             {
-                var targetXmlMemberCard = xmlMemberCardsInitialNamesDict[implInterfaceName];
+                return null;
+            }
 
-                if (targetXmlMemberCard.IsInheritdoc || targetXmlMemberCard.IsInclude)
-                {
-                    return null;
-                }
+            if (targetPropertiesCardsList.Count == 1)
+            {
+                return targetPropertiesCardsList.Single().XMLMemberCard;
+            }
 
-                return targetXmlMemberCard;
+            throw new Exception($"Ambiguous resolving inheritdoc of property {propertyCard.XMLMemberCard.Name.Name} of `{propertyCard.Parent.Type.FullName}`. There are many summares for this property of: {targetClassCard.Type.FullName}. Use `cref` for describing target inheritdoc or describe summary.");
+        }
+
+        private List<ClassCard> GetClassCardsForResolvingInheritdocInPropertyCardByImplInterface(PropertyCard propertyCard, Dictionary<string, ClassCard> classCardsInitialNamesDict)
+        {
+            var implInterfaceName = propertyCard.Name.ImplInterfaceName;
+
+            if (classCardsInitialNamesDict.ContainsKey(implInterfaceName))
+            {
+                return new List<ClassCard>() { classCardsInitialNamesDict[implInterfaceName] };               
             }
 
             return null;
         }
 
-        private void ResolveInheritdocInPropertyCardBySearching(ClassCard classCard, PropertyCard propertyCard)
+        private List<ClassCard> GetClassCardsForResolvingInheritdocInPropertyCardBySearching(ClassCard classCard, PropertyCard propertyCard, Dictionary<string, ClassCard> classCardsFullNamesDict)
         {
             var baseTypesList = GetBaseTypesAndInterfacesList(classCard.Type, true);
 
@@ -192,26 +386,51 @@ namespace TestSandBox.XMLDoc
 
             if(!baseTypesList.Any())
             {
-                return;
+                return new List<ClassCard>();
             }
 
             var name = propertyCard.Name.Name;
 
             _logger.Info($"name = '{name}'");
 
-            var propertiesList = new List<PropertyInfo>();
+            var result = new List<ClassCard>();
 
-            //foreach()
-            //{
+            foreach (var baseType in baseTypesList)
+            {
+                _logger.Info($"baseType.FullName = {baseType.FullName}");
 
-            //}
+                var property = baseType.GetProperty(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-            throw new NotImplementedException();
+                if(property == null)
+                {
+                    continue;
+                }
+
+                _logger.Info($"property = {property}");
+
+                if(baseType.FullName.Contains("[["))
+                {
+                    throw new NotImplementedException();
+                }
+
+                if(classCardsFullNamesDict.ContainsKey(baseType.FullName))
+                {
+                    var targetCard = classCardsFullNamesDict[baseType.FullName];
+
+                    _logger.Info($"targetCard = {targetCard}");
+
+                    result.Add(targetCard);
+                }
+            }
+
+            return result;
         }
 
         private void AssingPropertyCardResolvingInheritdoc(PropertyCard dest, XMLMemberCard source)
         {
-            throw new NotImplementedException();
+            dest.Value = source.Value;
+
+            AssingResolvingInheritdoc(dest, source);
         }
 
         private void AssingResolvingInheritdoc(NamedElementCard dest, XMLMemberCard  source)
@@ -328,7 +547,7 @@ namespace TestSandBox.XMLDoc
 
             var targetInterfaceFullName = targetInterface.FullName;
 
-            if (targetInterfaceFullName.Contains("["))
+            if (targetInterfaceFullName.Contains("[["))
             {
                 throw new NotImplementedException();
             }
