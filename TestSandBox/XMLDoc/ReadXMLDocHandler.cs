@@ -204,14 +204,19 @@ namespace TestSandBox.XMLDoc
 
             _logger.Info($"targetClassCard = {targetClassCard}");
 
-            var targetXMLMemberCard = GetXMLMemberCardOfMethod(methodCard, targetClassCard, ignoreErrors);
+            var targetMethodCard = GetTargetMethodCardCardOfMethod(methodCard, targetClassCard, ignoreErrors);
 
-            _logger.Info($"targetXMLMemberCard = {targetXMLMemberCard}");
+            _logger.Info($"targetMethodCard = {targetMethodCard}");
 
-            throw new NotImplementedException();
+            if(targetMethodCard != null)
+            {
+                AssingMethodCardResolvingInheritdoc(methodCard, targetMethodCard);
+
+                _logger.Info($"methodCard (after) = {methodCard}");
+            }            
         }
 
-        private XMLMemberCard GetXMLMemberCardOfMethod(MethodCard methodCard, ClassCard targetClassCard, bool ignoreErrors)
+        private MethodCard GetTargetMethodCardCardOfMethod(MethodCard methodCard, ClassCard targetClassCard, bool ignoreErrors)
         {
             var name = methodCard.Name.Name;
 
@@ -232,11 +237,21 @@ namespace TestSandBox.XMLDoc
             {
                 if(IsFit(methodCard, targetMethodCard))
                 {
-                    methodCardsList.Add(methodCard);
+                    methodCardsList.Add(targetMethodCard);
                 }
             }
 
             _logger.Info($"methodCardsList.Count = {methodCardsList.Count}");
+
+            if(!methodCardsList.Any())
+            {
+                return null;
+            }
+
+            if(methodCardsList.Count == 1)
+            {
+                return methodCardsList.Single();
+            }
 
             throw new NotImplementedException();
         }
@@ -260,6 +275,24 @@ namespace TestSandBox.XMLDoc
 
             _logger.Info($"methodCard.ParamsList.Count = {methodCard.ParamsList.Count}");
 
+            var isFit = true;
+
+            var methodCardParamsListEnumerator = methodCard.ParamsList.GetEnumerator();
+
+            foreach (var targetParam in targetMethodCard.ParamsList)
+            {
+                methodCardParamsListEnumerator.MoveNext();
+
+                var currentMmethodCardParam = methodCardParamsListEnumerator.Current;
+
+                _logger.Info($"targetParam.Name = {targetParam.Name}");
+                _logger.Info($"currentMmethodCardParam.Name = {currentMmethodCardParam.Name}");
+
+                throw new NotImplementedException();
+            }
+
+            _logger.Info($"isFit = {isFit}");
+
             throw new NotImplementedException();
         }
 
@@ -272,7 +305,7 @@ namespace TestSandBox.XMLDoc
                 return new List<ClassCard>() { classCardsInitialNamesDict[implInterfaceName] };
             }
 
-            return null;
+            return new List<ClassCard>();
         }
 
         private List<ClassCard> GetClassCardsForResolvingInheritdocInMethodCardBySearching(ClassCard classCard, MethodCard methodCard, Dictionary<string, ClassCard> classCardsFullNamesDict, bool ignoreErrors)
@@ -521,6 +554,14 @@ namespace TestSandBox.XMLDoc
             }
 
             return result;
+        }
+
+        private void AssingMethodCardResolvingInheritdoc(MethodCard dest, MethodCard source)
+        {
+            dest.Returns = source.Returns;
+            dest.ParamsList = source.ParamsList.ToList();
+
+            AssingResolvingInheritdoc(dest, source.XMLMemberCard);
         }
 
         private void AssingPropertyCardResolvingInheritdoc(PropertyCard dest, XMLMemberCard source)
