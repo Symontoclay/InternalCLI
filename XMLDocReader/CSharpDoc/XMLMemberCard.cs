@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace XMLDocReader
+namespace XMLDocReader.CSharpDoc
 {
     public class XMLMemberCard : IObjectToString
     {

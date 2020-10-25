@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-namespace XMLDocReader
+namespace XMLDocReader.CSharpDoc
 {
     public static class XMLMemberCardsReader
     {

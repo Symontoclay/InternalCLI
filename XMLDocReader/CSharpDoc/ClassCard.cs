@@ -4,27 +4,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace XMLDocReader
+namespace XMLDocReader.CSharpDoc
 {
-    public class EnumCard: ParentElementCard, ITypeCard
+    public class ClassCard: ParentElementCard, ITypeCard
     {
         /// <inheritdoc/>
-        public KindOfType KindOfType => KindOfType.Enum;
+        public KindOfType KindOfType { get; set; } = KindOfType.Unknown;
         public Type Type { get; set; }
         public bool IsPublic { get; set; }
 
-        public List<EnumFieldCard> FieldsList { get; set; } = new List<EnumFieldCard>();
+        public List<PropertyCard> PropertiesList { get; set; } = new List<PropertyCard>();
+        public List<MethodCard> MethodsList { get; set; } = new List<MethodCard>();
 
         public bool HasIsInheritdoc
         {
             get
             {
-                if (XMLMemberCard != null && XMLMemberCard.IsInheritdoc)
+                if(XMLMemberCard != null && XMLMemberCard.IsInheritdoc)
                 {
                     return true;
                 }
 
-                if (FieldsList != null && FieldsList.Any(p => p.XMLMemberCard != null && p.XMLMemberCard.IsInheritdoc))
+                if(PropertiesList != null && PropertiesList.Any(p => p.XMLMemberCard != null && p.XMLMemberCard.IsInheritdoc))
+                {
+                    return true;
+                }
+
+                if(MethodsList != null && MethodsList.Any(p => p.XMLMemberCard != null && p.XMLMemberCard.IsInheritdoc))
                 {
                     return true;
                 }
@@ -42,7 +48,12 @@ namespace XMLDocReader
                     return true;
                 }
 
-                if (FieldsList != null && FieldsList.Any(p => p.XMLMemberCard != null && p.XMLMemberCard.IsInclude))
+                if (PropertiesList != null && PropertiesList.Any(p => p.XMLMemberCard != null && p.XMLMemberCard.IsInclude))
+                {
+                    return true;
+                }
+
+                if (MethodsList != null && MethodsList.Any(p => p.XMLMemberCard != null && p.XMLMemberCard.IsInclude))
                 {
                     return true;
                 }
@@ -58,9 +69,11 @@ namespace XMLDocReader
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(KindOfType)} = {KindOfType}");
-            sb.AppendLine($"{spaces}{nameof(Type)} = {Type?.FullName}");
+            sb.AppendLine($"{spaces}{nameof(Type)} = {Type.FullName}");
             sb.AppendLine($"{spaces}{nameof(IsPublic)} = {IsPublic}");
-            sb.PrintObjListProp(n, nameof(FieldsList), FieldsList);
+
+            sb.PrintObjListProp(n, nameof(PropertiesList), PropertiesList);
+            sb.PrintObjListProp(n, nameof(MethodsList), MethodsList);
 
             sb.Append(base.PropertiesToString(n));
             return sb.ToString();
@@ -73,7 +86,7 @@ namespace XMLDocReader
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(KindOfType)} = {KindOfType}");
-            sb.AppendLine($"{spaces}{nameof(Type)} = {Type?.FullName}");
+            sb.AppendLine($"{spaces}{nameof(Type)} = {Type.FullName}");
             sb.AppendLine($"{spaces}{nameof(IsPublic)} = {IsPublic}");
 
             sb.Append(base.PropertiesToShortString(n));

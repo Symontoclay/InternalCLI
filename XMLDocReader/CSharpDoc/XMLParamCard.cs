@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace XMLDocReader
+namespace XMLDocReader.CSharpDoc
 {
-    public class XMLExceptionCard : IObjectToString
+    public class XMLParamCard : IObjectToString
     {
-        public string Cref { get; set; }
+        public string Name { get; set; }
         public string Value { get; set; }
 
         /// <inheritdoc/>
@@ -28,7 +28,7 @@ namespace XMLDocReader
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(Cref)} = {Cref}");
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
 
             return sb.ToString();

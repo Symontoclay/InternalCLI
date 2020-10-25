@@ -6,6 +6,7 @@ using System.IO;
 using System.Xml.Linq;
 using TestSandBox.XMLDoc;
 using XMLDocReader;
+using XMLDocReader.CSharpDoc;
 
 namespace TestSandBox
 {

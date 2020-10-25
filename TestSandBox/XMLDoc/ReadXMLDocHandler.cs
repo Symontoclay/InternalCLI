@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 using XMLDocReader;
+using XMLDocReader.CSharpDoc;
 
 namespace TestSandBox.XMLDoc
 {
@@ -35,6 +36,8 @@ namespace TestSandBox.XMLDoc
             var ignoreErrors = true;
 
             var packageCardsList = PackageCardReader.Read(settingsList);
+
+            PackageCardResolver.Resolve(packageCardsList, ignoreErrors);
 
             _logger.Info($"packageCardsList.Count = {packageCardsList.Count}");
 

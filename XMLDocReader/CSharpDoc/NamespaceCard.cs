@@ -3,21 +3,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace XMLDocReader
+namespace XMLDocReader.CSharpDoc
 {
-    public class MemberCard : NamedElementCard
+    public class NamespaceCard: ParentElementCard
     {
-        public ClassCard Parent { get; set; }
-        public KindOfMemberAccess KindOfMemberAccess { get; set; } = KindOfMemberAccess.Unknown;
+        public List<NamespaceCard> NamespacesList { get; set; } = new List<NamespaceCard>();
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
-
-            sb.PrintBriefObjProp(n, nameof(Parent), Parent);
-            sb.AppendLine($"{spaces}{nameof(KindOfMemberAccess)} = {KindOfMemberAccess}");
+         
+            sb.PrintObjListProp(n, nameof(NamespacesList), NamespacesList);
 
             sb.Append(base.PropertiesToString(n));
             return sb.ToString();
@@ -28,8 +26,8 @@ namespace XMLDocReader
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
-
-            sb.AppendLine($"{spaces}{nameof(KindOfMemberAccess)} = {KindOfMemberAccess}");
+            
+            sb.PrintShortObjListProp(n, nameof(NamespacesList), NamespacesList);
 
             sb.Append(base.PropertiesToShortString(n));
             return sb.ToString();

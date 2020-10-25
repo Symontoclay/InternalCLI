@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace XMLDocReader
+namespace XMLDocReader.CSharpDoc
 {
-    public class PackageCardReaderSettings : IObjectToString
+    public class XMLExceptionCard : IObjectToString
     {
-        public string XMLDocFileName { get; set; }
-        public string AssemblyFileName { get; set; }
+        public string Cref { get; set; }
+        public string Value { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -28,8 +28,8 @@ namespace XMLDocReader
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(XMLDocFileName)} = {XMLDocFileName}");
-            sb.AppendLine($"{spaces}{nameof(AssemblyFileName)} = {AssemblyFileName}");
+            sb.AppendLine($"{spaces}{nameof(Cref)} = {Cref}");
+            sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
 
             return sb.ToString();
         }

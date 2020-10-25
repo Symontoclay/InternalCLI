@@ -1,17 +1,17 @@
 ﻿using CommonUtils.DebugHelpers;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
-namespace XMLDocReader
+namespace XMLDocReader.CSharpDoc
 {
-    public class NamedElementCard : IObjectToString, IObjectToShortString, IObjectToBriefString
+    public class MethodParamCard: IObjectToString, IObjectToShortString, IObjectToBriefString
     {
-        public MemberName Name { get; set; }
+        public string Name { get; set; }
+        public ParameterInfo ParameterInfo { get; set; }
         public string Summary { get; set; }
-        public string Remarks { get; set; }
-        public List<string> ExamplesList { get; set; } = new List<string>();
-        public XMLMemberCard XMLMemberCard { get; set; }
+        public XMLParamCard XMLParamCard { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -28,20 +28,13 @@ namespace XMLDocReader
         /// <inheritdoc/>
         string IObjectToString.PropertiesToString(uint n)
         {
-            return PropertiesToString(n);
-        }
-
-        /// <inheritdoc/>
-        protected virtual string PropertiesToString(uint n)
-        {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.PrintObjProp(n, nameof(Name), Name);
-            sb.PrintObjProp(n, nameof(XMLMemberCard), XMLMemberCard);
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.PrintExisting(n, nameof(ParameterInfo), ParameterInfo);
             sb.AppendLine($"{spaces}{nameof(Summary)} = {Summary}");
-            sb.AppendLine($"{spaces}{nameof(Remarks)} = {Remarks}");
-            sb.PrintPODList(n, nameof(ExamplesList), ExamplesList);
+            sb.PrintObjProp(n, nameof(XMLParamCard), XMLParamCard);
 
             return sb.ToString();
         }
@@ -61,20 +54,13 @@ namespace XMLDocReader
         /// <inheritdoc/>
         string IObjectToShortString.PropertiesToShortString(uint n)
         {
-            return PropertiesToShortString(n);
-        }
-
-        /// <inheritdoc/>
-        protected virtual string PropertiesToShortString(uint n)
-        {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.PrintObjProp(n, nameof(Name), Name);
-            sb.PrintObjProp(n, nameof(XMLMemberCard), XMLMemberCard);
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.PrintExisting(n, nameof(ParameterInfo), ParameterInfo);
             sb.AppendLine($"{spaces}{nameof(Summary)} = {Summary}");
-            sb.AppendLine($"{spaces}{nameof(Remarks)} = {Remarks}");
-            sb.PrintPODList(n, nameof(ExamplesList), ExamplesList);
+            sb.PrintObjProp(n, nameof(XMLParamCard), XMLParamCard);
 
             return sb.ToString();
         }
@@ -94,16 +80,13 @@ namespace XMLDocReader
         /// <inheritdoc/>
         string IObjectToBriefString.PropertiesToBriefString(uint n)
         {
-            return PropertiesToBriefString(n);
-        }
-
-        /// <inheritdoc/>
-        protected virtual string PropertiesToBriefString(uint n)
-        {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.PrintObjProp(n, nameof(Name), Name);
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.PrintExisting(n, nameof(ParameterInfo), ParameterInfo);
+            sb.AppendLine($"{spaces}{nameof(Summary)} = {Summary}");
+            sb.PrintObjProp(n, nameof(XMLParamCard), XMLParamCard);
 
             return sb.ToString();
         }
