@@ -14,9 +14,9 @@ namespace XMLDocReader.CSharpDoc
 
         public static void Resolve(List<PackageCard> packageCardsList, bool ignoreErrors)
         {
-            _logger.Info($"ignoreErrors = {ignoreErrors}");
+            //_logger.Info($"ignoreErrors = {ignoreErrors}");
 
-            _logger.Info($"packageCardsList.Count = {packageCardsList.Count}");
+            //_logger.Info($"packageCardsList.Count = {packageCardsList.Count}");
 
             var classesList = new List<ClassCard>();
             var interfacesList = new List<ClassCard>();
@@ -29,25 +29,25 @@ namespace XMLDocReader.CSharpDoc
                 enumsList.AddRange(packageCard.EnumsList);
             }
 
-            _logger.Info($"classesList.Count = {classesList.Count}");
-            _logger.Info($"interfacesList.Count = {interfacesList.Count}");
-            _logger.Info($"enumsList.Count = {enumsList.Count}");
+            //_logger.Info($"classesList.Count = {classesList.Count}");
+            //_logger.Info($"interfacesList.Count = {interfacesList.Count}");
+            //_logger.Info($"enumsList.Count = {enumsList.Count}");
 
-            _logger.Info($"classesList.Count(p => p.HasIsInheritdoc) = {classesList.Count(p => p.HasIsInheritdoc)}");
-            _logger.Info($"interfacesList.Count(p => p.HasIsInheritdoc) = {interfacesList.Count(p => p.HasIsInheritdoc)}");
-            _logger.Info($"enumsList.Count(p => p.HasIsInheritdoc) = {enumsList.Count(p => p.HasIsInheritdoc)}");
+            //_logger.Info($"classesList.Count(p => p.HasIsInheritdoc) = {classesList.Count(p => p.HasIsInheritdoc)}");
+            //_logger.Info($"interfacesList.Count(p => p.HasIsInheritdoc) = {interfacesList.Count(p => p.HasIsInheritdoc)}");
+            //_logger.Info($"enumsList.Count(p => p.HasIsInheritdoc) = {enumsList.Count(p => p.HasIsInheritdoc)}");
 
             var xmlMemberCardsList = classesList.Select(p => p.XMLMemberCard).Concat(interfacesList.Select(p => p.XMLMemberCard));
 
-            _logger.Info($"xmlMemberCardsList.Count() = {xmlMemberCardsList.Count()}");
+            //_logger.Info($"xmlMemberCardsList.Count() = {xmlMemberCardsList.Count()}");
 
             var xmlMemberCardsFullNamesDict = xmlMemberCardsList.ToDictionary(p => p.Name.FullName, p => p);
 
-            _logger.Info($"xmlMemberCardsFullNamesDict.Count = {xmlMemberCardsFullNamesDict.Count}");
+            //_logger.Info($"xmlMemberCardsFullNamesDict.Count = {xmlMemberCardsFullNamesDict.Count}");
 
             var xmlMemberCardsInitialNamesDict = xmlMemberCardsList.ToDictionary(p => p.Name.InitialName, p => p);
 
-            _logger.Info($"xmlMemberCardsInitialNamesDict.Count = {xmlMemberCardsInitialNamesDict.Count}");
+            //_logger.Info($"xmlMemberCardsInitialNamesDict.Count = {xmlMemberCardsInitialNamesDict.Count}");
 
             var classesAndInterfacesList = classesList.Concat(interfacesList).ToList();
 
@@ -58,9 +58,9 @@ namespace XMLDocReader.CSharpDoc
             var interfacessWithIncludeList = interfacesList.Where(p => p.HasIsInclude).ToList();
             var enumsWithIncludeList = enumsList.Where(p => p.HasIsInclude).ToList();
 
-            _logger.Info($"classesWithIncludeList.Count = {classesWithIncludeList.Count}");
-            _logger.Info($"interfacessWithIncludeList.Count = {interfacessWithIncludeList.Count}");
-            _logger.Info($"enumsWithIncludeList.Count = {enumsWithIncludeList.Count}");
+            //_logger.Info($"classesWithIncludeList.Count = {classesWithIncludeList.Count}");
+            //_logger.Info($"interfacessWithIncludeList.Count = {interfacessWithIncludeList.Count}");
+            //_logger.Info($"enumsWithIncludeList.Count = {enumsWithIncludeList.Count}");
 
             if (classesWithIncludeList.Any())
             {
@@ -87,12 +87,12 @@ namespace XMLDocReader.CSharpDoc
                 ResolveInheritdocInClassCard(classCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict, classCardsFullNamesDict, classCardsInitialNamesDict, ignoreErrors);
             }
 
-            _logger.Info("End");
+            //_logger.Info("End");
         }
 
         private static void ResolveInheritdocInClassCard(ClassCard classCard, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
         {
-            _logger.Info($"classCard = {classCard}");
+            //_logger.Info($"classCard = {classCard}");
 
             var xmlMemberCard = classCard.XMLMemberCard;
 
@@ -113,22 +113,22 @@ namespace XMLDocReader.CSharpDoc
                 {
                     targetXMLMemberCard = ResolveInheritdoc(xmlMemberCard.InheritdocCref, xmlMemberCardsInitialNamesDict);
 
-                    _logger.Info($"targetXMLMemberCard = {targetXMLMemberCard}");
+                    //_logger.Info($"targetXMLMemberCard = {targetXMLMemberCard}");
                 }
 
-                _logger.Info($"targetXMLMemberCard = {targetXMLMemberCard}");
+                //_logger.Info($"targetXMLMemberCard = {targetXMLMemberCard}");
 
                 if (targetXMLMemberCard != null)
                 {
                     AssingResolvingInheritdoc(classCard, targetXMLMemberCard);
 
-                    _logger.Info($"classCard (after) = {classCard}");
+                    //_logger.Info($"classCard (after) = {classCard}");
                 }
             }
 
             var propertiesList = classCard.PropertiesList.Where(p => p.XMLMemberCard.IsInheritdoc).ToList();
 
-            _logger.Info($"propertiesList.Count = {propertiesList.Count}");
+            //_logger.Info($"propertiesList.Count = {propertiesList.Count}");
 
             if (propertiesList.Any())
             {
@@ -140,7 +140,7 @@ namespace XMLDocReader.CSharpDoc
 
             var methodsList = classCard.MethodsList.Where(p => p.XMLMemberCard.IsInheritdoc).ToList();
 
-            _logger.Info($"methodsList.Count = {methodsList.Count}");
+            //_logger.Info($"methodsList.Count = {methodsList.Count}");
 
             if (methodsList.Any())
             {
@@ -150,12 +150,12 @@ namespace XMLDocReader.CSharpDoc
                 }
             }
 
-            _logger.Info($"classCard (after) = {classCard}");
+            //_logger.Info($"classCard (after) = {classCard}");
         }
 
         private static void ResolveInheritdocInMethodCard(ClassCard classCard, MethodCard methodCard, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
         {
-            _logger.Info($"methodCard = {methodCard}");
+            //_logger.Info($"methodCard = {methodCard}");
 
             var xmlMemberCard = methodCard.XMLMemberCard;
 
@@ -175,7 +175,7 @@ namespace XMLDocReader.CSharpDoc
                 targetClassCardsList = GetClassCardsForResolvingInheritdocInMethodCardByImplInterface(methodCard, classCardsInitialNamesDict);
             }
 
-            _logger.Info($"targetClassCardsList.Count = {targetClassCardsList.Count}");
+            //_logger.Info($"targetClassCardsList.Count = {targetClassCardsList.Count}");
 
             if (targetClassCardsList.Count == 0)
             {
@@ -199,17 +199,17 @@ namespace XMLDocReader.CSharpDoc
 
             var targetClassCard = targetClassCardsList.Single();
 
-            _logger.Info($"targetClassCard = {targetClassCard}");
+            //_logger.Info($"targetClassCard = {targetClassCard}");
 
             var targetMethodCard = GetTargetMethodCardCardOfMethod(methodCard, targetClassCard, ignoreErrors);
 
-            _logger.Info($"targetMethodCard = {targetMethodCard}");
+            //_logger.Info($"targetMethodCard = {targetMethodCard}");
 
             if (targetMethodCard != null)
             {
                 AssingMethodCardResolvingInheritdoc(methodCard, targetMethodCard);
 
-                _logger.Info($"methodCard (after) = {methodCard}");
+                //_logger.Info($"methodCard (after) = {methodCard}");
             }
         }
 
@@ -217,11 +217,11 @@ namespace XMLDocReader.CSharpDoc
         {
             var name = methodCard.Name.Name;
 
-            _logger.Info($"name = '{name}'");
+            //_logger.Info($"name = '{name}'");
 
             var targetMethodCardsList = targetClassCard.MethodsList.Where(p => p.Name.Name == name).ToList();
 
-            _logger.Info($"targetMethodCardsList.Count = {targetMethodCardsList.Count}");
+            //_logger.Info($"targetMethodCardsList.Count = {targetMethodCardsList.Count}");
 
             if (!targetMethodCardsList.Any())
             {
@@ -238,7 +238,7 @@ namespace XMLDocReader.CSharpDoc
                 }
             }
 
-            _logger.Info($"methodCardsList.Count = {methodCardsList.Count}");
+            //_logger.Info($"methodCardsList.Count = {methodCardsList.Count}");
 
             if (!methodCardsList.Any())
             {
@@ -309,7 +309,7 @@ namespace XMLDocReader.CSharpDoc
         {
             var baseTypesList = TypesHelper.GetBaseTypesAndInterfacesList(classCard.Type, true);
 
-            _logger.Info($"baseTypesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(baseTypesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
+            //_logger.Info($"baseTypesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(baseTypesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
 
             if (!baseTypesList.Any())
             {
@@ -318,17 +318,17 @@ namespace XMLDocReader.CSharpDoc
 
             var name = methodCard.Name.Name;
 
-            _logger.Info($"name = '{name}'");
+            //_logger.Info($"name = '{name}'");
 
             var result = new List<ClassCard>();
 
             foreach (var baseType in baseTypesList)
             {
-                _logger.Info($"baseType.FullName = {baseType.FullName}");
+                //_logger.Info($"baseType.FullName = {baseType.FullName}");
 
                 var methodsList = baseType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static).Where(p => p.Name == name).ToList();
 
-                _logger.Info($"methodsList.Count = {methodsList.Count}");
+                //_logger.Info($"methodsList.Count = {methodsList.Count}");
 
                 foreach (var methodInfo in methodsList)
                 {
@@ -336,13 +336,13 @@ namespace XMLDocReader.CSharpDoc
                     {
                         var normalizedFullName = NamesHelper.SimplifyFullNameOfType(baseType.FullName);
 
-                        _logger.Info($"normalizedFullName = {normalizedFullName}");
+                        //_logger.Info($"normalizedFullName = {normalizedFullName}");
 
                         if (classCardsFullNamesDict.ContainsKey(normalizedFullName))
                         {
                             var targetClassCard = classCardsFullNamesDict[normalizedFullName];
 
-                            _logger.Info($"targetClassCard = {targetClassCard}");
+                            //_logger.Info($"targetClassCard = {targetClassCard}");
 
                             result.Add(targetClassCard);
                             break;
@@ -402,7 +402,7 @@ namespace XMLDocReader.CSharpDoc
 
         private static void ResolveInheritdocInPropertyCard(ClassCard classCard, PropertyCard propertyCard, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
         {
-            _logger.Info($"propertyCard = {propertyCard}");
+            //_logger.Info($"propertyCard = {propertyCard}");
 
             var xmlMemberCard = propertyCard.XMLMemberCard;
 
@@ -422,7 +422,7 @@ namespace XMLDocReader.CSharpDoc
                 targetClassCardsList = GetClassCardsForResolvingInheritdocInPropertyCardByImplInterface(propertyCard, classCardsInitialNamesDict);
             }
 
-            _logger.Info($"targetClassCardsList.Count = {targetClassCardsList.Count}");
+            //_logger.Info($"targetClassCardsList.Count = {targetClassCardsList.Count}");
 
             if (targetClassCardsList.Count == 0)
             {
@@ -446,17 +446,17 @@ namespace XMLDocReader.CSharpDoc
 
             var targetClassCard = targetClassCardsList.Single();
 
-            _logger.Info($"targetClassCard = {targetClassCard}");
+            //_logger.Info($"targetClassCard = {targetClassCard}");
 
             var targetXMLMemberCard = GetXMLMemberCardOfProperty(propertyCard, targetClassCard, ignoreErrors);
 
-            _logger.Info($"targetXMLMemberCard = {targetXMLMemberCard}");
+            //_logger.Info($"targetXMLMemberCard = {targetXMLMemberCard}");
 
             if (targetXMLMemberCard != null)
             {
                 AssingPropertyCardResolvingInheritdoc(propertyCard, targetXMLMemberCard);
 
-                _logger.Info($"propertyCard (after) = {propertyCard}");
+                //_logger.Info($"propertyCard (after) = {propertyCard}");
             }
         }
 
@@ -464,11 +464,11 @@ namespace XMLDocReader.CSharpDoc
         {
             var name = propertyCard.Name.Name;
 
-            _logger.Info($"name = '{name}'");
+            //_logger.Info($"name = '{name}'");
 
             var targetPropertiesCardsList = targetClassCard.PropertiesList.Where(p => p.Name.Name == name).ToList();
 
-            _logger.Info($"targetPropertiesCardsList.Count = {targetPropertiesCardsList.Count}");
+            //_logger.Info($"targetPropertiesCardsList.Count = {targetPropertiesCardsList.Count}");
 
             if (targetPropertiesCardsList.Count == 0)
             {
@@ -509,7 +509,7 @@ namespace XMLDocReader.CSharpDoc
         {
             var baseTypesList = TypesHelper.GetBaseTypesAndInterfacesList(classCard.Type, true);
 
-            _logger.Info($"baseTypesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(baseTypesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
+            //_logger.Info($"baseTypesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(baseTypesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
 
             if (!baseTypesList.Any())
             {
@@ -518,13 +518,13 @@ namespace XMLDocReader.CSharpDoc
 
             var name = propertyCard.Name.Name;
 
-            _logger.Info($"name = '{name}'");
+            //_logger.Info($"name = '{name}'");
 
             var result = new List<ClassCard>();
 
             foreach (var baseType in baseTypesList)
             {
-                _logger.Info($"baseType.FullName = {baseType.FullName}");
+                //_logger.Info($"baseType.FullName = {baseType.FullName}");
 
                 var property = baseType.GetProperty(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
@@ -533,7 +533,7 @@ namespace XMLDocReader.CSharpDoc
                     continue;
                 }
 
-                _logger.Info($"property = {property}");
+                //_logger.Info($"property = {property}");
 
                 if (baseType.FullName.Contains("[["))
                 {
@@ -544,7 +544,7 @@ namespace XMLDocReader.CSharpDoc
                 {
                     var targetCard = classCardsFullNamesDict[baseType.FullName];
 
-                    _logger.Info($"targetCard = {targetCard}");
+                    //_logger.Info($"targetCard = {targetCard}");
 
                     result.Add(targetCard);
                 }
@@ -579,7 +579,7 @@ namespace XMLDocReader.CSharpDoc
 
         private static XMLMemberCard ResolveInheritdoc(string cRef, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict)
         {
-            _logger.Info($"cRef = '{cRef}'");
+            //_logger.Info($"cRef = '{cRef}'");
 
             if (xmlMemberCardsInitialNamesDict.ContainsKey(cRef))
             {
@@ -600,9 +600,9 @@ namespace XMLDocReader.CSharpDoc
         {
             var interfacesList = type.GetInterfaces().Where(p => !TypesHelper.IsSystemOrThirdPartyType(p.FullName)).ToList();
 
-            _logger.Info($"interfacesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(interfacesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
+            //_logger.Info($"interfacesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(interfacesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
 
-            _logger.Info($"type.BaseType?.FullName = {type.BaseType?.FullName}");
+            //_logger.Info($"type.BaseType?.FullName = {type.BaseType?.FullName}");
 
             if (type.BaseType == null || TypesHelper.IsSystemOrThirdPartyType(type.BaseType.FullName))
             {
@@ -630,7 +630,7 @@ namespace XMLDocReader.CSharpDoc
 
             var directlyImplementedInterfacesList = TypesHelper.GetDirectlyImplementedInterfacesList(interfacesList, true);
 
-            _logger.Info($"directlyImplementedInterfacesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(directlyImplementedInterfacesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
+            //_logger.Info($"directlyImplementedInterfacesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(directlyImplementedInterfacesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
 
             if (directlyImplementedInterfacesList.Count == 1)
             {
