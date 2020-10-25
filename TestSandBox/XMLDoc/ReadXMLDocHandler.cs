@@ -57,7 +57,7 @@ namespace TestSandBox.XMLDoc
             _logger.Info($"interfacesList.Count(p => p.HasIsInheritdoc) = {interfacesList.Count(p => p.HasIsInheritdoc)}");
             _logger.Info($"enumsList.Count(p => p.HasIsInheritdoc) = {enumsList.Count(p => p.HasIsInheritdoc)}");
 
-            var xmlMemberCardsList = classesList.Select(p => p.XMLMemberCard).Concat(interfacesList.Select(p => p.XMLMemberCard)).Concat(enumsList.Select(p => p.XMLMemberCard));
+            var xmlMemberCardsList = classesList.Select(p => p.XMLMemberCard).Concat(interfacesList.Select(p => p.XMLMemberCard));
 
             _logger.Info($"xmlMemberCardsList.Count() = {xmlMemberCardsList.Count()}");
 
@@ -74,6 +74,29 @@ namespace TestSandBox.XMLDoc
             var classCardsFullNamesDict = classesAndInterfacesList.ToDictionary(p => p.Name.FullName, p => p);
             var classCardsInitialNamesDict = classesAndInterfacesList.ToDictionary(p => p.Name.InitialName, p => p);
 
+            var classesWithIncludeList = classesList.Where(p => p.HasIsInclude).ToList();
+            var interfacessWithIncludeList = interfacesList.Where(p => p.HasIsInclude).ToList();
+            var enumsWithIncludeList = enumsList.Where(p => p.HasIsInclude).ToList();
+
+            _logger.Info($"classesWithIncludeList.Count = {classesWithIncludeList.Count}");
+            _logger.Info($"interfacessWithIncludeList.Count = {interfacessWithIncludeList.Count}");
+            _logger.Info($"enumsWithIncludeList.Count = {enumsWithIncludeList.Count}");
+
+            if (classesWithIncludeList.Any())
+            {
+                throw new NotImplementedException();
+            }
+
+            if (interfacessWithIncludeList.Any())
+            {
+                throw new NotImplementedException();
+            }
+
+            if (enumsWithIncludeList.Any())
+            {
+                throw new NotImplementedException();
+            }
+
             foreach (var interfaceCard in interfacesList.Where(p => p.HasIsInheritdoc))
             {
                 ResolveInheritdocInClassCard(interfaceCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict, classCardsFullNamesDict, classCardsInitialNamesDict, ignoreErrors);
@@ -83,10 +106,6 @@ namespace TestSandBox.XMLDoc
             {
                 ResolveInheritdocInClassCard(classCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict, classCardsFullNamesDict, classCardsInitialNamesDict, ignoreErrors);
             }
-
-            _logger.Info($"classesList.Count(p => p.HasIsInclude) = {classesList.Count(p => p.HasIsInclude)}");
-            _logger.Info($"interfacesList.Count(p => p.HasIsInclude) = {interfacesList.Count(p => p.HasIsInclude)}");
-            _logger.Info($"enumsList.Count(p => p.HasIsInclude) = {enumsList.Count(p => p.HasIsInclude)}");
 
             //_logger.Info($" = {}");
 
@@ -588,7 +607,7 @@ namespace TestSandBox.XMLDoc
             {
                 var targetXmlMemberCard = xmlMemberCardsInitialNamesDict[cRef];
 
-                if (targetXmlMemberCard.IsInheritdoc || targetXmlMemberCard.IsInclude)
+                if ((targetXmlMemberCard.IsInheritdoc || targetXmlMemberCard.IsInclude) && !targetXmlMemberCard.IsInheritdocOrIncludeResolved)
                 {
                     return null;
                 }
@@ -622,42 +641,6 @@ namespace TestSandBox.XMLDoc
             {
                 throw new NotImplementedException();
             }
-
-            //var possibleXMLMemberCardList = new List<XMLMemberCard>();
-
-            //foreach(var targetName in targetNamesList)
-            //{
-            //    _logger.Info($"targetName = '{targetName}'");
-
-            //    if(xmlMemberCardsFullNamesDict.ContainsKey(targetName))
-            //    {
-            //        var possibleXMLMemberCard = xmlMemberCardsFullNamesDict[targetName];
-
-            //        if(possibleXMLMemberCard.IsInheritdoc || possibleXMLMemberCard.IsInclude)
-            //        {
-            //            continue;
-            //        }
-
-            //        possibleXMLMemberCardList.Add(possibleXMLMemberCard);
-            //    }
-            //}
-
-            //_logger.Info($"possibleXMLMemberCardList.Count = {possibleXMLMemberCardList.Count}");
-
-            //foreach(var possibleXMLMemberCard in possibleXMLMemberCardList)
-            //{
-            //    _logger.Info($"possibleXMLMemberCard = {possibleXMLMemberCard}");
-            //}
-
-            //if(possibleXMLMemberCardList.Count == 0)
-            //{
-            //    return null;
-            //}
-
-            //if(possibleXMLMemberCardList.Count == 1)
-            //{
-            //    return possibleXMLMemberCardList.Single();
-            //}
         }
 
         private XMLMemberCard ResolveInheritdocByInterfaces(ClassCard classCard, Type type, List<Type> interfacesList, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict, bool ignoreErrors)
@@ -704,7 +687,7 @@ namespace TestSandBox.XMLDoc
             {
                 var targetXmlMemberCard = xmlMemberCardsFullNamesDict[targetInterfaceFullName];
 
-                if (targetXmlMemberCard.IsInheritdoc || targetXmlMemberCard.IsInclude)
+                if ((targetXmlMemberCard.IsInheritdoc || targetXmlMemberCard.IsInclude) && !targetXmlMemberCard.IsInheritdocOrIncludeResolved)
                 {
                     return null;
                 }
