@@ -307,7 +307,7 @@ namespace XMLDocReader.CSharpDoc
 
         private static List<ClassCard> GetClassCardsForResolvingInheritdocInMethodCardBySearching(ClassCard classCard, MethodCard methodCard, Dictionary<string, ClassCard> classCardsFullNamesDict, bool ignoreErrors)
         {
-            var baseTypesList = GetBaseTypesAndInterfacesList(classCard.Type, true);
+            var baseTypesList = TypesHelper.GetBaseTypesAndInterfacesList(classCard.Type, true);
 
             _logger.Info($"baseTypesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(baseTypesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
 
@@ -507,7 +507,7 @@ namespace XMLDocReader.CSharpDoc
 
         private static List<ClassCard> GetClassCardsForResolvingInheritdocInPropertyCardBySearching(ClassCard classCard, PropertyCard propertyCard, Dictionary<string, ClassCard> classCardsFullNamesDict)
         {
-            var baseTypesList = GetBaseTypesAndInterfacesList(classCard.Type, true);
+            var baseTypesList = TypesHelper.GetBaseTypesAndInterfacesList(classCard.Type, true);
 
             _logger.Info($"baseTypesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(baseTypesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
 
@@ -598,13 +598,13 @@ namespace XMLDocReader.CSharpDoc
 
         private static XMLMemberCard ResolveInheritdoc(ClassCard classCard, Type type, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict, bool ignoreErrors)
         {
-            var interfacesList = type.GetInterfaces().Where(p => !IsSystemOrThirdPartyType(p.FullName)).ToList();
+            var interfacesList = type.GetInterfaces().Where(p => !TypesHelper.IsSystemOrThirdPartyType(p.FullName)).ToList();
 
             _logger.Info($"interfacesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(interfacesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
 
             _logger.Info($"type.BaseType?.FullName = {type.BaseType?.FullName}");
 
-            if (type.BaseType == null || IsSystemOrThirdPartyType(type.BaseType.FullName))
+            if (type.BaseType == null || TypesHelper.IsSystemOrThirdPartyType(type.BaseType.FullName))
             {
                 if (!interfacesList.Any())
                 {
@@ -628,7 +628,7 @@ namespace XMLDocReader.CSharpDoc
                 return ResolveInheritdocBySingleInterface(interfacesList, xmlMemberCardsFullNamesDict);
             }
 
-            var directlyImplementedInterfacesList = GetDirectlyImplementedInterfacesList(interfacesList, true);
+            var directlyImplementedInterfacesList = TypesHelper.GetDirectlyImplementedInterfacesList(interfacesList, true);
 
             _logger.Info($"directlyImplementedInterfacesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(directlyImplementedInterfacesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
 
@@ -674,85 +674,6 @@ namespace XMLDocReader.CSharpDoc
             }
 
             return null;
-        }
-
-        private static bool IsSystemOrThirdPartyType(string fullName)
-        {
-            if (fullName.StartsWith("System."))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private static List<Type> GetBaseTypesList(Type type, bool onlyNoSystemOrThirdPartyType)
-        {
-            var curentBaseType = type.BaseType;
-
-            var typesList = new List<Type>();
-
-            while (curentBaseType != null)
-            {
-                if (onlyNoSystemOrThirdPartyType && IsSystemOrThirdPartyType(curentBaseType.FullName))
-                {
-                    return typesList;
-                }
-
-                typesList.Add(curentBaseType);
-
-                curentBaseType = curentBaseType.BaseType;
-            }
-
-            return typesList;
-        }
-
-        private static List<Type> GetBaseTypesAndInterfacesList(Type type, bool onlyNoSystemOrThirdPartyType)
-        {
-            var typesList = GetBaseTypesList(type, onlyNoSystemOrThirdPartyType);
-
-            var interfacesList = type.GetInterfaces().Distinct().ToList();
-
-            if (onlyNoSystemOrThirdPartyType)
-            {
-                interfacesList = interfacesList.Where(p => !IsSystemOrThirdPartyType(p.FullName)).ToList();
-            }
-
-            typesList.AddRange(interfacesList);
-
-            return typesList;
-        }
-
-        public static List<Type> GetDirectlyImplementedInterfacesList(List<Type> interfacesList, bool onlyNoSystemOrThirdPartyType)
-        {
-            var childInterfacesList = new List<Type>();
-
-            foreach (var tmpInterface in interfacesList)
-            {
-                _logger.Info($"tmpInterface.FullName = {tmpInterface.FullName}");
-
-                if (onlyNoSystemOrThirdPartyType)
-                {
-                    childInterfacesList.AddRange(tmpInterface.GetInterfaces().Where(p => !IsSystemOrThirdPartyType(p.FullName)));
-                }
-                else
-                {
-                    childInterfacesList.AddRange(tmpInterface.GetInterfaces());
-                }
-            }
-
-            _logger.Info($"childInterfacesList.Count = {childInterfacesList.Count}");
-
-            _logger.Info($"childInterfacesList.Select(p => p.FullName) = {JsonConvert.SerializeObject(childInterfacesList.Select(p => p.FullName).ToList(), Formatting.Indented)}");
-
-            var result = interfacesList.Except(childInterfacesList).ToList();
-
-            if (onlyNoSystemOrThirdPartyType)
-            {
-                result = result.Where(p => !IsSystemOrThirdPartyType(p.FullName)).ToList();
-            }
-
-            return result;
         }
     }
 }
