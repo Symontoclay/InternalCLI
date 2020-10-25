@@ -21,6 +21,7 @@ namespace XMLDocReader
         public string Value { get; set; }
         public List<string> ExamplesList { get; set; } = new List<string>();  
         public List<XMLExceptionCard> ExceptionsList { get; set; } = new List<XMLExceptionCard>();
+        public List<string> ErrorsList { get; set; } = new List<string>();
         public bool IsBuiltTypeOrMemberCard { get; set; }
         public bool IsInheritdocOrIncludeResolved { get; set; }
 
@@ -56,6 +57,7 @@ namespace XMLDocReader
             sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
             sb.PrintPODList(n, nameof(ExamplesList), ExamplesList);
             sb.PrintObjListProp(n, nameof(ExceptionsList), ExceptionsList);
+            sb.PrintPODList(n, nameof(ErrorsList), ErrorsList);
             sb.AppendLine($"{spaces}{nameof(IsBuiltTypeOrMemberCard)} = {IsBuiltTypeOrMemberCard}");
             sb.AppendLine($"{spaces}{nameof(IsInheritdocOrIncludeResolved)} = {IsInheritdocOrIncludeResolved}");
 

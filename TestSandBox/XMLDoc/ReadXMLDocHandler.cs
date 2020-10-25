@@ -32,6 +32,8 @@ namespace TestSandBox.XMLDoc
 
             //_logger.Info($"settingsList = {JsonConvert.SerializeObject(settingsList, Formatting.Indented)}");
 
+            var ignoreErrors = true;
+
             var packageCardsList = PackageCardReader.Read(settingsList);
 
             _logger.Info($"packageCardsList.Count = {packageCardsList.Count}");
@@ -74,12 +76,12 @@ namespace TestSandBox.XMLDoc
 
             foreach (var interfaceCard in interfacesList.Where(p => p.HasIsInheritdoc))
             {
-                ResolveInheritdocInClassCard(interfaceCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict, classCardsFullNamesDict, classCardsInitialNamesDict);
+                ResolveInheritdocInClassCard(interfaceCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict, classCardsFullNamesDict, classCardsInitialNamesDict, ignoreErrors);
             }
 
             foreach (var classCard in classesList.Where(p => p.HasIsInheritdoc))
             {
-                ResolveInheritdocInClassCard(classCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict, classCardsFullNamesDict, classCardsInitialNamesDict);
+                ResolveInheritdocInClassCard(classCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict, classCardsFullNamesDict, classCardsInitialNamesDict, ignoreErrors);
             }
 
             _logger.Info($"classesList.Count(p => p.HasIsInclude) = {classesList.Count(p => p.HasIsInclude)}");
@@ -91,7 +93,7 @@ namespace TestSandBox.XMLDoc
             _logger.Info("End");
         }
 
-        private void ResolveInheritdocInClassCard(ClassCard classCard, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict)
+        private void ResolveInheritdocInClassCard(ClassCard classCard, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
         {
             _logger.Info($"classCard = {classCard}");
 
@@ -108,7 +110,7 @@ namespace TestSandBox.XMLDoc
 
                 if (string.IsNullOrWhiteSpace(xmlMemberCard.InheritdocCref))
                 {
-                    targetXMLMemberCard = ResolveInheritdoc(classCard.Type, xmlMemberCardsFullNamesDict);
+                    targetXMLMemberCard = ResolveInheritdoc(classCard, classCard.Type, xmlMemberCardsFullNamesDict, ignoreErrors);
                 }
                 else
                 {
@@ -135,7 +137,7 @@ namespace TestSandBox.XMLDoc
             {
                 foreach (var propertyCard in propertiesList)
                 {
-                    ResolveInheritdocInPropertyCard(classCard, propertyCard, classCardsFullNamesDict, classCardsInitialNamesDict);
+                    ResolveInheritdocInPropertyCard(classCard, propertyCard, classCardsFullNamesDict, classCardsInitialNamesDict, ignoreErrors);
                 }
             }
 
@@ -147,14 +149,14 @@ namespace TestSandBox.XMLDoc
             {
                 foreach (var methodCard in methodsList)
                 {
-                    ResolveInheritdocInMethodCard(classCard, methodCard, classCardsFullNamesDict, classCardsInitialNamesDict);
+                    ResolveInheritdocInMethodCard(classCard, methodCard, classCardsFullNamesDict, classCardsInitialNamesDict, ignoreErrors);
                 }
-
-                throw new NotImplementedException();
             }
+
+            _logger.Info($"classCard (after) = {classCard}");
         }
 
-        private void ResolveInheritdocInMethodCard(ClassCard classCard, MethodCard methodCard, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict)
+        private void ResolveInheritdocInMethodCard(ClassCard classCard, MethodCard methodCard, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
         {
             _logger.Info($"methodCard = {methodCard}");
 
@@ -169,7 +171,7 @@ namespace TestSandBox.XMLDoc
 
             if (string.IsNullOrWhiteSpace(xmlMemberCard.Name.ImplInterfaceName))
             {
-                targetClassCardsList = GetClassCardsForResolvingInheritdocInMethodCardBySearching(classCard, methodCard, classCardsFullNamesDict);
+                targetClassCardsList = GetClassCardsForResolvingInheritdocInMethodCardBySearching(classCard, methodCard, classCardsFullNamesDict, ignoreErrors);
             }
             else
             {
@@ -185,12 +187,78 @@ namespace TestSandBox.XMLDoc
 
             if (targetClassCardsList.Count > 1)
             {
-                throw new Exception($"Ambiguous resolving inheritdoc of property {xmlMemberCard.Name.Name} of `{classCard.Type.FullName}`. There are many summares for this property of: {JsonConvert.SerializeObject(targetClassCardsList.Select(p => p.Type.FullName), Formatting.Indented)}. Use `cref` for describing target inheritdoc or describe summary.");
+                var errorStr = $"Ambiguous resolving inheritdoc of property {xmlMemberCard.Name.Name} of `{classCard.Type.FullName}`. There are many summares for this property of: {JsonConvert.SerializeObject(targetClassCardsList.Select(p => p.Type.FullName), Formatting.Indented)}. Use `cref` for describing target inheritdoc or describe summary.";
+
+                if(ignoreErrors)
+                {
+                    methodCard.XMLMemberCard.ErrorsList.Add(errorStr);
+                    return;
+                }
+                else
+                {
+                    throw new Exception(errorStr);
+                }                
             }
 
             var targetClassCard = targetClassCardsList.Single();
 
             _logger.Info($"targetClassCard = {targetClassCard}");
+
+            var targetXMLMemberCard = GetXMLMemberCardOfMethod(methodCard, targetClassCard, ignoreErrors);
+
+            _logger.Info($"targetXMLMemberCard = {targetXMLMemberCard}");
+
+            throw new NotImplementedException();
+        }
+
+        private XMLMemberCard GetXMLMemberCardOfMethod(MethodCard methodCard, ClassCard targetClassCard, bool ignoreErrors)
+        {
+            var name = methodCard.Name.Name;
+
+            _logger.Info($"name = '{name}'");
+
+            var targetMethodCardsList = targetClassCard.MethodsList.Where(p => p.Name.Name == name).ToList();
+
+            _logger.Info($"targetMethodCardsList.Count = {targetMethodCardsList.Count}");
+
+            if(!targetMethodCardsList.Any())
+            {
+                return null;
+            }
+
+            var methodCardsList = new List<MethodCard>();
+
+            foreach(var targetMethodCard in targetMethodCardsList)
+            {
+                if(IsFit(methodCard, targetMethodCard))
+                {
+                    methodCardsList.Add(methodCard);
+                }
+            }
+
+            _logger.Info($"methodCardsList.Count = {methodCardsList.Count}");
+
+            throw new NotImplementedException();
+        }
+
+        public bool IsFit(MethodCard methodCard, MethodCard targetMethodCard)
+        {
+            if(methodCard.Name.Name != targetMethodCard.Name.Name)
+            {
+                return false;
+            }
+
+            if(methodCard.ParamsList.Count != targetMethodCard.ParamsList.Count)
+            {
+                return false;
+            }
+
+            if(methodCard.ParamsList.Count == 0)
+            {
+                return true;
+            }
+
+            _logger.Info($"methodCard.ParamsList.Count = {methodCard.ParamsList.Count}");
 
             throw new NotImplementedException();
         }
@@ -207,7 +275,7 @@ namespace TestSandBox.XMLDoc
             return null;
         }
 
-        private List<ClassCard> GetClassCardsForResolvingInheritdocInMethodCardBySearching(ClassCard classCard, MethodCard methodCard, Dictionary<string, ClassCard> classCardsFullNamesDict)
+        private List<ClassCard> GetClassCardsForResolvingInheritdocInMethodCardBySearching(ClassCard classCard, MethodCard methodCard, Dictionary<string, ClassCard> classCardsFullNamesDict, bool ignoreErrors)
         {
             var baseTypesList = GetBaseTypesAndInterfacesList(classCard.Type, true);
 
@@ -250,7 +318,16 @@ namespace TestSandBox.XMLDoc
                             break;
                         }
 
-                        throw new Exception($"Documentation of `{baseType.FullName}` must be written!");
+                        var errorStr = $"Documentation of `{baseType.FullName}` must be written!";
+
+                        if (ignoreErrors)
+                        {
+                            methodCard.XMLMemberCard.ErrorsList.Add(errorStr);
+                        }
+                        else
+                        {
+                            throw new Exception(errorStr);
+                        }                        
                     }
                 }
             }
@@ -293,7 +370,7 @@ namespace TestSandBox.XMLDoc
             throw new NotImplementedException();
         }
 
-        private void ResolveInheritdocInPropertyCard(ClassCard classCard, PropertyCard propertyCard, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict)
+        private void ResolveInheritdocInPropertyCard(ClassCard classCard, PropertyCard propertyCard, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
         {
             _logger.Info($"propertyCard = {propertyCard}");
 
@@ -324,14 +401,24 @@ namespace TestSandBox.XMLDoc
 
             if(targetClassCardsList.Count > 1)
             {
-                throw new Exception($"Ambiguous resolving inheritdoc of property {xmlMemberCard.Name.Name} of `{classCard.Type.FullName}`. There are many summares for this property of: {JsonConvert.SerializeObject(targetClassCardsList.Select(p => p.Type.FullName), Formatting.Indented)}. Use `cref` for describing target inheritdoc or describe summary.");
+                var errorStr = $"Ambiguous resolving inheritdoc of property {xmlMemberCard.Name.Name} of `{classCard.Type.FullName}`. There are many summares for this property of: {JsonConvert.SerializeObject(targetClassCardsList.Select(p => p.Type.FullName), Formatting.Indented)}. Use `cref` for describing target inheritdoc or describe summary.";
+
+                if(ignoreErrors)
+                {
+                    propertyCard.XMLMemberCard.ErrorsList.Add(errorStr);
+                    return;
+                }
+                else
+                {
+                    throw new Exception(errorStr);
+                }                
             }
 
             var targetClassCard = targetClassCardsList.Single();
 
             _logger.Info($"targetClassCard = {targetClassCard}");
 
-            var targetXMLMemberCard = GetXMLMemberCardOfProperty(propertyCard, targetClassCard);
+            var targetXMLMemberCard = GetXMLMemberCardOfProperty(propertyCard, targetClassCard, ignoreErrors);
 
             _logger.Info($"targetXMLMemberCard = {targetXMLMemberCard}");
 
@@ -343,7 +430,7 @@ namespace TestSandBox.XMLDoc
             }
         }
 
-        private XMLMemberCard GetXMLMemberCardOfProperty(PropertyCard propertyCard, ClassCard targetClassCard)
+        private XMLMemberCard GetXMLMemberCardOfProperty(PropertyCard propertyCard, ClassCard targetClassCard, bool ignoreErrors)
         {
             var name = propertyCard.Name.Name;
 
@@ -363,7 +450,17 @@ namespace TestSandBox.XMLDoc
                 return targetPropertiesCardsList.Single().XMLMemberCard;
             }
 
-            throw new Exception($"Ambiguous resolving inheritdoc of property {propertyCard.XMLMemberCard.Name.Name} of `{propertyCard.Parent.Type.FullName}`. There are many summares for this property of: {targetClassCard.Type.FullName}. Use `cref` for describing target inheritdoc or describe summary.");
+            var errorStr = $"Ambiguous resolving inheritdoc of property {propertyCard.XMLMemberCard.Name.Name} of `{propertyCard.Parent.Type.FullName}`. There are many summares for this property of: {targetClassCard.Type.FullName}. Use `cref` for describing target inheritdoc or describe summary.";
+
+            if(ignoreErrors)
+            {
+                propertyCard.XMLMemberCard.ErrorsList.Add(errorStr);
+                return null;
+            }
+            else
+            {
+                throw new Exception(errorStr);
+            }            
         }
 
         private List<ClassCard> GetClassCardsForResolvingInheritdocInPropertyCardByImplInterface(PropertyCard propertyCard, Dictionary<string, ClassCard> classCardsInitialNamesDict)
@@ -461,7 +558,7 @@ namespace TestSandBox.XMLDoc
             return null;
         }
 
-        private XMLMemberCard ResolveInheritdoc(Type type, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict)
+        private XMLMemberCard ResolveInheritdoc(ClassCard classCard, Type type, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict, bool ignoreErrors)
         {
             var interfacesList = type.GetInterfaces().Where(p => !IsSystemOrThirdPartyType(p.FullName)).ToList();
 
@@ -477,7 +574,7 @@ namespace TestSandBox.XMLDoc
                 }
                 else
                 {
-                    return ResolveInheritdocByInterfaces(type, interfacesList, xmlMemberCardsFullNamesDict);
+                    return ResolveInheritdocByInterfaces(classCard, type, interfacesList, xmlMemberCardsFullNamesDict, ignoreErrors);
                 }                
             }
             else
@@ -522,7 +619,7 @@ namespace TestSandBox.XMLDoc
             //}
         }
 
-        private XMLMemberCard ResolveInheritdocByInterfaces(Type type, List<Type> interfacesList, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict)
+        private XMLMemberCard ResolveInheritdocByInterfaces(ClassCard classCard, Type type, List<Type> interfacesList, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict, bool ignoreErrors)
         {
             if(interfacesList.Count == 1)
             {
@@ -538,7 +635,17 @@ namespace TestSandBox.XMLDoc
                 return ResolveInheritdocBySingleInterface(directlyImplementedInterfacesList, xmlMemberCardsFullNamesDict);
             }
 
-            throw new Exception($"Ambiguous resolving inheritdoc of `{type.FullName}`. There are many summares for this type of: {JsonConvert.SerializeObject(interfacesList.Select(p => p.FullName), Formatting.Indented)}. Use `cref` for describing target inheritdoc or describe summary.");
+            var errorStr = $"Ambiguous resolving inheritdoc of `{type.FullName}`. There are many summares for this type of: {JsonConvert.SerializeObject(interfacesList.Select(p => p.FullName), Formatting.Indented)}. Use `cref` for describing target inheritdoc or describe summary.";
+
+            if(ignoreErrors)
+            {
+                classCard.XMLMemberCard.ErrorsList.Add(errorStr);
+                return null;
+            }
+            else
+            {
+                throw new Exception(errorStr);
+            }            
         }
 
         private XMLMemberCard ResolveInheritdocBySingleInterface(List<Type> interfacesList, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict)
