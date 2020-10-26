@@ -9,6 +9,7 @@ namespace XMLDocReader.CSharpDoc
     public class PropertyCard: MemberCard
     {
         public PropertyInfo PropertyInfo { get; set; }
+        public NamedElementCard PropertyTypeCard { get; set; }
         public string Value { get; set; }
 
         /// <inheritdoc/>
@@ -18,6 +19,7 @@ namespace XMLDocReader.CSharpDoc
             var sb = new StringBuilder();
 
             sb.PrintExisting(n, nameof(PropertyInfo), PropertyInfo);
+            sb.PrintBriefObjProp(n, nameof(PropertyTypeCard), PropertyTypeCard);
             sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
 
             sb.Append(base.PropertiesToString(n));
