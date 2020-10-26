@@ -20,6 +20,10 @@ namespace TestSandBox.XMLDoc
         {
             _logger.Info("Begin");
 
+            var targetRootTypeName = "T:SymOntoClay.UnityAsset.Core.WorldFactory";
+
+            _logger.Info($"targetRootTypeName = {targetRootTypeName}");
+
             var fileNamesList = new List<string>() 
             {
                 Path.Combine(Directory.GetCurrentDirectory(), "SymOntoClayCoreHelper.xml"),
@@ -39,9 +43,33 @@ namespace TestSandBox.XMLDoc
 
             PackageCardResolver.Resolve(packageCardsList, ignoreErrors);
 
+            var classesList = new List<ClassCard>();
+            var interfacesList = new List<ClassCard>();
+            var enumsList = new List<EnumCard>();
+
+            foreach (var packageCard in packageCardsList)
+            {
+                classesList.AddRange(packageCard.ClassesList);
+                interfacesList.AddRange(packageCard.InterfacesList);
+                enumsList.AddRange(packageCard.EnumsList);
+            }
+
+            _logger.Info($"classesList.Count = {classesList.Count}");
+            _logger.Info($"interfacesList.Count = {interfacesList.Count}");
+            _logger.Info($"enumsList.Count = {enumsList.Count}");
+
+            RepackTypeCard(targetRootTypeName);
+
             //_logger.Info($" = {}");
 
             _logger.Info("End");
+        }
+
+        private void RepackTypeCard(string initialTypeName)
+        {
+            _logger.Info($"initialTypeName = '{initialTypeName}'");
+
+            throw new NotImplementedException();
         }
 
         public void ParseGenericType()

@@ -41,8 +41,8 @@ namespace XMLDocReader.CSharpDoc
 
             //_logger.Info($"xmlMemberCardsList.Count() = {xmlMemberCardsList.Count()}");
 
-            var xmlMemberCardsFullNamesDict = xmlMemberCardsList.ToDictionary(p => p.Name.FullName, p => p);
-
+            //var xmlMemberCardsFullNamesDict = xmlMemberCardsList.ToDictionary(p => p.Name.FullName, p => p);
+       
             //_logger.Info($"xmlMemberCardsFullNamesDict.Count = {xmlMemberCardsFullNamesDict.Count}");
 
             var xmlMemberCardsInitialNamesDict = xmlMemberCardsList.ToDictionary(p => p.Name.InitialName, p => p);
@@ -51,8 +51,11 @@ namespace XMLDocReader.CSharpDoc
 
             var classesAndInterfacesList = classesList.Concat(interfacesList).ToList();
 
-            var classCardsFullNamesDict = classesAndInterfacesList.ToDictionary(p => p.Name.FullName, p => p);
+            var xmlMemberCardsTypesDict = classesAndInterfacesList.ToDictionary(p => p.Type, p => p.XMLMemberCard);
+
+            //var classCardsFullNamesDict = classesAndInterfacesList.ToDictionary(p => p.Name.FullName, p => p);
             var classCardsInitialNamesDict = classesAndInterfacesList.ToDictionary(p => p.Name.InitialName, p => p);
+            var classCardsTypesDict = classesAndInterfacesList.ToDictionary(p => p.Type, p => p);
 
             var classesWithIncludeList = classesList.Where(p => p.HasIsInclude).ToList();
             var interfacessWithIncludeList = interfacesList.Where(p => p.HasIsInclude).ToList();
@@ -79,18 +82,20 @@ namespace XMLDocReader.CSharpDoc
 
             foreach (var interfaceCard in interfacesList.Where(p => p.HasIsInheritdoc))
             {
-                ResolveInheritdocInClassCard(interfaceCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict, classCardsFullNamesDict, classCardsInitialNamesDict, ignoreErrors);
+                ResolveInheritdocInClassCard(interfaceCard, xmlMemberCardsTypesDict, xmlMemberCardsInitialNamesDict, classCardsTypesDict, classCardsInitialNamesDict, ignoreErrors);
             }
 
             foreach (var classCard in classesList.Where(p => p.HasIsInheritdoc))
             {
-                ResolveInheritdocInClassCard(classCard, xmlMemberCardsFullNamesDict, xmlMemberCardsInitialNamesDict, classCardsFullNamesDict, classCardsInitialNamesDict, ignoreErrors);
+                ResolveInheritdocInClassCard(classCard, xmlMemberCardsTypesDict, xmlMemberCardsInitialNamesDict, classCardsTypesDict, classCardsInitialNamesDict, ignoreErrors);
             }
+
+            //_logger.Info($" = {}");
 
             //_logger.Info("End");
         }
 
-        private static void ResolveInheritdocInClassCard(ClassCard classCard, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
+        private static void ResolveInheritdocInClassCard(ClassCard classCard, Dictionary<Type, XMLMemberCard> xmlMemberCardsTypesDict, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict, Dictionary<Type, ClassCard> classCardsTypesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
         {
             //_logger.Info($"classCard = {classCard}");
 
@@ -101,13 +106,15 @@ namespace XMLDocReader.CSharpDoc
                 return;
             }
 
+            ResolveInheritdocInParentClasses(classCard, xmlMemberCardsTypesDict, xmlMemberCardsInitialNamesDict, classCardsTypesDict, classCardsInitialNamesDict, ignoreErrors);
+
             if (xmlMemberCard.IsInheritdoc && !xmlMemberCard.IsInheritdocOrIncludeResolved)
             {
                 XMLMemberCard targetXMLMemberCard;
 
                 if (string.IsNullOrWhiteSpace(xmlMemberCard.InheritdocCref))
                 {
-                    targetXMLMemberCard = ResolveInheritdoc(classCard, classCard.Type, xmlMemberCardsFullNamesDict, ignoreErrors);
+                    targetXMLMemberCard = ResolveInheritdoc(classCard, classCard.Type, xmlMemberCardsTypesDict, ignoreErrors);
                 }
                 else
                 {
@@ -134,7 +141,7 @@ namespace XMLDocReader.CSharpDoc
             {
                 foreach (var propertyCard in propertiesList)
                 {
-                    ResolveInheritdocInPropertyCard(classCard, propertyCard, classCardsFullNamesDict, classCardsInitialNamesDict, ignoreErrors);
+                    ResolveInheritdocInPropertyCard(classCard, propertyCard, classCardsTypesDict, classCardsInitialNamesDict, ignoreErrors);
                 }
             }
 
@@ -146,14 +153,35 @@ namespace XMLDocReader.CSharpDoc
             {
                 foreach (var methodCard in methodsList)
                 {
-                    ResolveInheritdocInMethodCard(classCard, methodCard, classCardsFullNamesDict, classCardsInitialNamesDict, ignoreErrors);
+                    ResolveInheritdocInMethodCard(classCard, methodCard, classCardsTypesDict, classCardsInitialNamesDict, ignoreErrors);
                 }
             }
 
             //_logger.Info($"classCard (after) = {classCard}");
         }
 
-        private static void ResolveInheritdocInMethodCard(ClassCard classCard, MethodCard methodCard, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
+        private static void ResolveInheritdocInParentClasses(ClassCard classCard, Dictionary<Type, XMLMemberCard> xmlMemberCardsTypesDict, Dictionary<string, XMLMemberCard> xmlMemberCardsInitialNamesDict, Dictionary<Type, ClassCard> classCardsTypesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
+        {
+            var baseTypesList = TypesHelper.GetBaseTypesAndInterfacesList(classCard.Type, true);
+
+            //_logger.Info($"baseTypesList.Count = {baseTypesList.Count}");
+
+            foreach(var baseType in baseTypesList)
+            {
+                //_logger.Info($"baseType.FullName = {baseType.FullName}");
+
+                if(classCardsTypesDict.ContainsKey(baseType))
+                {
+                    var targetClassCard = classCardsTypesDict[baseType];
+
+                    //_logger.Info($"targetClassCard = {targetClassCard}");
+
+                    ResolveInheritdocInClassCard(targetClassCard, xmlMemberCardsTypesDict, xmlMemberCardsInitialNamesDict, classCardsTypesDict, classCardsInitialNamesDict, ignoreErrors);
+                }
+            }
+        }
+
+        private static void ResolveInheritdocInMethodCard(ClassCard classCard, MethodCard methodCard, Dictionary<Type, ClassCard> classCardsTypesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
         {
             //_logger.Info($"methodCard = {methodCard}");
 
@@ -168,7 +196,7 @@ namespace XMLDocReader.CSharpDoc
 
             if (string.IsNullOrWhiteSpace(xmlMemberCard.Name.ImplInterfaceName))
             {
-                targetClassCardsList = GetClassCardsForResolvingInheritdocInMethodCardBySearching(classCard, methodCard, classCardsFullNamesDict, ignoreErrors);
+                targetClassCardsList = GetClassCardsForResolvingInheritdocInMethodCardBySearching(classCard, methodCard, classCardsTypesDict, ignoreErrors);
             }
             else
             {
@@ -305,7 +333,7 @@ namespace XMLDocReader.CSharpDoc
             return new List<ClassCard>();
         }
 
-        private static List<ClassCard> GetClassCardsForResolvingInheritdocInMethodCardBySearching(ClassCard classCard, MethodCard methodCard, Dictionary<string, ClassCard> classCardsFullNamesDict, bool ignoreErrors)
+        private static List<ClassCard> GetClassCardsForResolvingInheritdocInMethodCardBySearching(ClassCard classCard, MethodCard methodCard, Dictionary<Type, ClassCard> classCardsTypesDict, bool ignoreErrors)
         {
             var baseTypesList = TypesHelper.GetBaseTypesAndInterfacesList(classCard.Type, true);
 
@@ -334,13 +362,9 @@ namespace XMLDocReader.CSharpDoc
                 {
                     if (IsFit(methodCard, methodInfo))
                     {
-                        var normalizedFullName = NamesHelper.SimplifyFullNameOfType(baseType.FullName);
-
-                        //_logger.Info($"normalizedFullName = {normalizedFullName}");
-
-                        if (classCardsFullNamesDict.ContainsKey(normalizedFullName))
+                        if (classCardsTypesDict.ContainsKey(baseType))
                         {
-                            var targetClassCard = classCardsFullNamesDict[normalizedFullName];
+                            var targetClassCard = classCardsTypesDict[baseType];
 
                             //_logger.Info($"targetClassCard = {targetClassCard}");
 
@@ -400,7 +424,7 @@ namespace XMLDocReader.CSharpDoc
             throw new NotImplementedException();
         }
 
-        private static void ResolveInheritdocInPropertyCard(ClassCard classCard, PropertyCard propertyCard, Dictionary<string, ClassCard> classCardsFullNamesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
+        private static void ResolveInheritdocInPropertyCard(ClassCard classCard, PropertyCard propertyCard, Dictionary<Type, ClassCard> classCardsTypesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
         {
             //_logger.Info($"propertyCard = {propertyCard}");
 
@@ -415,7 +439,7 @@ namespace XMLDocReader.CSharpDoc
 
             if (string.IsNullOrWhiteSpace(xmlMemberCard.Name.ImplInterfaceName))
             {
-                targetClassCardsList = GetClassCardsForResolvingInheritdocInPropertyCardBySearching(classCard, propertyCard, classCardsFullNamesDict);
+                targetClassCardsList = GetClassCardsForResolvingInheritdocInPropertyCardBySearching(classCard, propertyCard, classCardsTypesDict);
             }
             else
             {
@@ -505,7 +529,7 @@ namespace XMLDocReader.CSharpDoc
             return null;
         }
 
-        private static List<ClassCard> GetClassCardsForResolvingInheritdocInPropertyCardBySearching(ClassCard classCard, PropertyCard propertyCard, Dictionary<string, ClassCard> classCardsFullNamesDict)
+        private static List<ClassCard> GetClassCardsForResolvingInheritdocInPropertyCardBySearching(ClassCard classCard, PropertyCard propertyCard, Dictionary<Type, ClassCard> classCardsTypesDict)
         {
             var baseTypesList = TypesHelper.GetBaseTypesAndInterfacesList(classCard.Type, true);
 
@@ -535,14 +559,9 @@ namespace XMLDocReader.CSharpDoc
 
                 //_logger.Info($"property = {property}");
 
-                if (baseType.FullName.Contains("[["))
+                if (classCardsTypesDict.ContainsKey(baseType))
                 {
-                    throw new NotImplementedException();
-                }
-
-                if (classCardsFullNamesDict.ContainsKey(baseType.FullName))
-                {
-                    var targetCard = classCardsFullNamesDict[baseType.FullName];
+                    var targetCard = classCardsTypesDict[baseType];
 
                     //_logger.Info($"targetCard = {targetCard}");
 
@@ -596,7 +615,7 @@ namespace XMLDocReader.CSharpDoc
             return null;
         }
 
-        private static XMLMemberCard ResolveInheritdoc(ClassCard classCard, Type type, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict, bool ignoreErrors)
+        private static XMLMemberCard ResolveInheritdoc(ClassCard classCard, Type type, Dictionary<Type, XMLMemberCard> xmlMemberCardsTypesDict, bool ignoreErrors)
         {
             var interfacesList = type.GetInterfaces().Where(p => !TypesHelper.IsSystemOrThirdPartyType(p.FullName)).ToList();
 
@@ -612,7 +631,7 @@ namespace XMLDocReader.CSharpDoc
                 }
                 else
                 {
-                    return ResolveInheritdocByInterfaces(classCard, type, interfacesList, xmlMemberCardsFullNamesDict, ignoreErrors);
+                    return ResolveInheritdocByInterfaces(classCard, type, interfacesList, xmlMemberCardsTypesDict, ignoreErrors);
                 }
             }
             else
@@ -621,11 +640,11 @@ namespace XMLDocReader.CSharpDoc
             }
         }
 
-        private static XMLMemberCard ResolveInheritdocByInterfaces(ClassCard classCard, Type type, List<Type> interfacesList, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict, bool ignoreErrors)
+        private static XMLMemberCard ResolveInheritdocByInterfaces(ClassCard classCard, Type type, List<Type> interfacesList, Dictionary<Type, XMLMemberCard> xmlMemberCardsTypesDict, bool ignoreErrors)
         {
             if (interfacesList.Count == 1)
             {
-                return ResolveInheritdocBySingleInterface(interfacesList, xmlMemberCardsFullNamesDict);
+                return ResolveInheritdocBySingleInterface(interfacesList, xmlMemberCardsTypesDict);
             }
 
             var directlyImplementedInterfacesList = TypesHelper.GetDirectlyImplementedInterfacesList(interfacesList, true);
@@ -634,7 +653,7 @@ namespace XMLDocReader.CSharpDoc
 
             if (directlyImplementedInterfacesList.Count == 1)
             {
-                return ResolveInheritdocBySingleInterface(directlyImplementedInterfacesList, xmlMemberCardsFullNamesDict);
+                return ResolveInheritdocBySingleInterface(directlyImplementedInterfacesList, xmlMemberCardsTypesDict);
             }
 
             var errorStr = $"Ambiguous resolving inheritdoc of `{type.FullName}`. There are many summares for this type of: {JsonConvert.SerializeObject(interfacesList.Select(p => p.FullName), Formatting.Indented)}. Use `cref` for describing target inheritdoc or describe summary.";
@@ -650,20 +669,13 @@ namespace XMLDocReader.CSharpDoc
             }
         }
 
-        private static XMLMemberCard ResolveInheritdocBySingleInterface(List<Type> interfacesList, Dictionary<string, XMLMemberCard> xmlMemberCardsFullNamesDict)
+        private static XMLMemberCard ResolveInheritdocBySingleInterface(List<Type> interfacesList, Dictionary<Type, XMLMemberCard> xmlMemberCardsTypesDict)
         {
             var targetInterface = interfacesList.Single();
 
-            var targetInterfaceFullName = targetInterface.FullName;
-
-            if (targetInterfaceFullName.Contains("[["))
+            if (xmlMemberCardsTypesDict.ContainsKey(targetInterface))
             {
-                throw new NotImplementedException();
-            }
-
-            if (xmlMemberCardsFullNamesDict.ContainsKey(targetInterfaceFullName))
-            {
-                var targetXmlMemberCard = xmlMemberCardsFullNamesDict[targetInterfaceFullName];
+                var targetXmlMemberCard = xmlMemberCardsTypesDict[targetInterface];
 
                 if ((targetXmlMemberCard.IsInheritdoc || targetXmlMemberCard.IsInclude) && !targetXmlMemberCard.IsInheritdocOrIncludeResolved)
                 {
