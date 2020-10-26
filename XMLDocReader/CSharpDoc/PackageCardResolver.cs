@@ -12,7 +12,147 @@ namespace XMLDocReader.CSharpDoc
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public static void Resolve(List<PackageCard> packageCardsList, bool ignoreErrors)
+        public static void FillUpTypeCardsPropetties(List<PackageCard> packageCardsList, bool ignoreErrors)
+        {
+            _logger.Info($"ignoreErrors = {ignoreErrors}");
+
+            _logger.Info($"packageCardsList.Count = {packageCardsList.Count}");
+
+            var classesList = new List<ClassCard>();
+            var interfacesList = new List<ClassCard>();
+
+            var namedElemsList = new List<NamedElementCard>();
+
+            foreach (var packageCard in packageCardsList)
+            {
+                classesList.AddRange(packageCard.ClassesList);
+                namedElemsList.AddRange(packageCard.ClassesList);
+
+                interfacesList.AddRange(packageCard.InterfacesList);
+                namedElemsList.AddRange(packageCard.InterfacesList);
+
+                namedElemsList.AddRange(packageCard.EnumsList);
+            }
+
+            _logger.Info($"classesList.Count = {classesList.Count}");
+            _logger.Info($"interfacesList.Count = {interfacesList.Count}");
+
+            var classesAndInterfacesList = classesList.Concat(interfacesList).ToList();
+
+            var classesCardInitialNamesDict = classesAndInterfacesList.ToDictionary(p => p.Name.InitialName, p => p);
+            var namedElemsCardInitialNamesDict = namedElemsList.ToDictionary(p => p.Name.InitialName, p => p);
+
+            foreach (var classCard in classesAndInterfacesList)
+            {
+                FillUpTypeCard(classCard, classesCardInitialNamesDict, namedElemsCardInitialNamesDict, ignoreErrors);
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private static void FillUpTypeCard(ClassCard classCard, Dictionary<string, ClassCard> classesCardInitialNamesDict, Dictionary<string, NamedElementCard> namedElemsCardInitialNamesDict, bool ignoreErrors)
+        {
+            _logger.Info($"classCard = {classCard}");
+
+            var baseType = classCard.Type.BaseType;
+
+            if(baseType != null && !TypesHelper.IsSystemOrThirdPartyType(baseType.FullName))
+            {
+                _logger.Info($"baseType.FullName = {baseType.FullName}");
+
+                var normalizedFullName = $"T:{NamesHelper.SimplifyFullNameOfType(baseType.FullName)}";
+
+                _logger.Info($"normalizedFullName = {normalizedFullName}");
+
+                if(classesCardInitialNamesDict.ContainsKey(normalizedFullName))
+                {
+                    classCard.BaseType = classesCardInitialNamesDict[normalizedFullName];
+                }
+                else
+                {
+                    var errorStr = $"'{baseType.FullName}' must be documented.";
+
+                    if(ignoreErrors)
+                    {
+                        classCard.ErrorsList.Add(errorStr);
+                    }
+                    else
+                    {
+                        throw new Exception(errorStr);
+                    }                    
+                }
+            }
+
+            var interfacesList = TypesHelper.GetInterfacesList(classCard.Type, true);
+
+            _logger.Info($"interfacesList.Count = {interfacesList.Count}");
+
+            if(interfacesList.Any())
+            {
+                foreach(var interfaceItem in interfacesList)
+                {
+                    _logger.Info($"interfaceItem.FullName = {interfaceItem.FullName}");
+
+                    var normalizedFullName = $"T:{NamesHelper.SimplifyFullNameOfType(interfaceItem.FullName)}";
+
+                    _logger.Info($"normalizedFullName = {normalizedFullName}");
+
+                    if (classesCardInitialNamesDict.ContainsKey(normalizedFullName))
+                    {
+                        classCard.BaseInterfacesList.Add(classesCardInitialNamesDict[normalizedFullName]);
+                    }
+                    else
+                    {
+                        var errorStr = $"'{baseType.FullName}' must be documented.";
+
+                        if (ignoreErrors)
+                        {
+                            classCard.ErrorsList.Add(errorStr);
+                        }
+                        else
+                        {
+                            throw new Exception(errorStr);
+                        }
+                    }
+                }
+
+                //DirectBaseInterfacesList
+                throw new NotImplementedException();
+            }
+
+            _logger.Info($"classCard.PropertiesList.Count = {classCard.PropertiesList.Count}");
+
+            if (classCard.PropertiesList.Any())
+            {
+                throw new NotImplementedException();
+            }
+
+            _logger.Info($"classCard.MethodsList.Count = {classCard.MethodsList.Count}");
+
+            if (classCard.MethodsList.Any())
+            {
+                foreach(var method in classCard.MethodsList)
+                {
+                    _logger.Info($"method = {method}");
+
+                    var returnsType = method.MethodInfo.ReturnType;
+
+                    if(returnsType != null && !TypesHelper.IsSystemOrThirdPartyType(returnsType.FullName))
+                    {
+                        _logger.Info($"returnsType.FullName = {returnsType.FullName}");
+
+                        throw new NotImplementedException();
+                    }                    
+
+                    if(method.ParamsList.Any())
+                    {
+                        throw new NotImplementedException();
+                    }                    
+                }        
+            }
+        }
+
+        public static void ResolveInheritdocAndInclude(List<PackageCard> packageCardsList, bool ignoreErrors)
         {
             //_logger.Info($"ignoreErrors = {ignoreErrors}");
 
@@ -216,7 +356,7 @@ namespace XMLDocReader.CSharpDoc
 
                 if (ignoreErrors)
                 {
-                    methodCard.XMLMemberCard.ErrorsList.Add(errorStr);
+                    methodCard.ErrorsList.Add(errorStr);
                     return;
                 }
                 else
@@ -376,7 +516,7 @@ namespace XMLDocReader.CSharpDoc
 
                         if (ignoreErrors)
                         {
-                            methodCard.XMLMemberCard.ErrorsList.Add(errorStr);
+                            methodCard.ErrorsList.Add(errorStr);
                         }
                         else
                         {
@@ -459,7 +599,7 @@ namespace XMLDocReader.CSharpDoc
 
                 if (ignoreErrors)
                 {
-                    propertyCard.XMLMemberCard.ErrorsList.Add(errorStr);
+                    propertyCard.ErrorsList.Add(errorStr);
                     return;
                 }
                 else
@@ -508,7 +648,7 @@ namespace XMLDocReader.CSharpDoc
 
             if (ignoreErrors)
             {
-                propertyCard.XMLMemberCard.ErrorsList.Add(errorStr);
+                propertyCard.ErrorsList.Add(errorStr);
                 return null;
             }
             else
@@ -660,7 +800,7 @@ namespace XMLDocReader.CSharpDoc
 
             if (ignoreErrors)
             {
-                classCard.XMLMemberCard.ErrorsList.Add(errorStr);
+                classCard.ErrorsList.Add(errorStr);
                 return null;
             }
             else

@@ -10,6 +10,7 @@ namespace XMLDocReader.CSharpDoc
     {
         public string Name { get; set; }
         public ParameterInfo ParameterInfo { get; set; }
+        public NamedElementCard ParameterTypeCard { get; set; }
         public string Summary { get; set; }
         public XMLParamCard XMLParamCard { get; set; }
 
@@ -33,6 +34,7 @@ namespace XMLDocReader.CSharpDoc
 
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.PrintExisting(n, nameof(ParameterInfo), ParameterInfo);
+            sb.PrintBriefObjProp(n, nameof(ParameterTypeCard), ParameterTypeCard);
             sb.AppendLine($"{spaces}{nameof(Summary)} = {Summary}");
             sb.PrintObjProp(n, nameof(XMLParamCard), XMLParamCard);
 

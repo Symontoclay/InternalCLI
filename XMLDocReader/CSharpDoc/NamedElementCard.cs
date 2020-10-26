@@ -12,6 +12,7 @@ namespace XMLDocReader.CSharpDoc
         public string Remarks { get; set; }
         public List<string> ExamplesList { get; set; } = new List<string>();
         public XMLMemberCard XMLMemberCard { get; set; }
+        public List<string> ErrorsList { get; set; } = new List<string>();
 
         /// <inheritdoc/>
         public override string ToString()
@@ -42,6 +43,7 @@ namespace XMLDocReader.CSharpDoc
             sb.AppendLine($"{spaces}{nameof(Summary)} = {Summary}");
             sb.AppendLine($"{spaces}{nameof(Remarks)} = {Remarks}");
             sb.PrintPODList(n, nameof(ExamplesList), ExamplesList);
+            sb.PrintPODList(n, nameof(ErrorsList), ErrorsList);
 
             return sb.ToString();
         }

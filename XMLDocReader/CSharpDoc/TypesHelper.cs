@@ -21,7 +21,7 @@ namespace XMLDocReader.CSharpDoc
             return false;
         }
 
-        private static List<Type> GetBaseTypesList(Type type, bool onlyNoSystemOrThirdPartyType)
+        public static List<Type> GetBaseTypesList(Type type, bool onlyNoSystemOrThirdPartyType)
         {
             var curentBaseType = type.BaseType;
 
@@ -42,16 +42,23 @@ namespace XMLDocReader.CSharpDoc
             return typesList;
         }
 
-        public static List<Type> GetBaseTypesAndInterfacesList(Type type, bool onlyNoSystemOrThirdPartyType)
+        public static List<Type> GetInterfacesList(Type type, bool onlyNoSystemOrThirdPartyType)
         {
-            var typesList = GetBaseTypesList(type, onlyNoSystemOrThirdPartyType);
-
             var interfacesList = type.GetInterfaces().Distinct().ToList();
 
             if (onlyNoSystemOrThirdPartyType)
             {
                 interfacesList = interfacesList.Where(p => !IsSystemOrThirdPartyType(p.FullName)).ToList();
             }
+
+            return interfacesList;
+        }
+
+        public static List<Type> GetBaseTypesAndInterfacesList(Type type, bool onlyNoSystemOrThirdPartyType)
+        {
+            var typesList = GetBaseTypesList(type, onlyNoSystemOrThirdPartyType);
+
+            var interfacesList = GetInterfacesList(type, onlyNoSystemOrThirdPartyType);
 
             typesList.AddRange(interfacesList);
 

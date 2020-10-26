@@ -41,7 +41,8 @@ namespace TestSandBox.XMLDoc
 
             var packageCardsList = PackageCardReader.Read(settingsList);
 
-            PackageCardResolver.Resolve(packageCardsList, ignoreErrors);
+            PackageCardResolver.FillUpTypeCardsPropetties(packageCardsList, ignoreErrors);
+            PackageCardResolver.ResolveInheritdocAndInclude(packageCardsList, ignoreErrors);
 
             var classesList = new List<ClassCard>();
             var interfacesList = new List<ClassCard>();
@@ -58,7 +59,7 @@ namespace TestSandBox.XMLDoc
             _logger.Info($"interfacesList.Count = {interfacesList.Count}");
             _logger.Info($"enumsList.Count = {enumsList.Count}");
 
-            RepackTypeCard(targetRootTypeName);
+            //RepackTypeCard(targetRootTypeName);
 
             //_logger.Info($" = {}");
 
