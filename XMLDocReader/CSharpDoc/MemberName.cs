@@ -13,7 +13,8 @@ namespace XMLDocReader.CSharpDoc
         public string FullName { get; set; } = string.Empty;
         public string Path { get; set; } = string.Empty;
         public string ImplInterfaceName { get; set; } = string.Empty;
-        public List<string> ParametersList { get; set; } = new List<string>();
+        public List<string> TypeParametersList { get; set; } = new List<string>();
+        public List<string> ParametersList { get; set; } = new List<string>();        
 
         /// <inheritdoc/>
         public override string ToString()
@@ -39,6 +40,7 @@ namespace XMLDocReader.CSharpDoc
             sb.AppendLine($"{spaces}{nameof(FullName)} = {FullName}");
             sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
             sb.AppendLine($"{spaces}{nameof(ImplInterfaceName)} = {ImplInterfaceName}");
+            sb.PrintPODList(n, nameof(TypeParametersList), TypeParametersList);
             sb.PrintPODList(n, nameof(ParametersList), ParametersList);
 
             return sb.ToString();

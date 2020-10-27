@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CommonUtils.DebugHelpers;
+using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,9 @@ namespace XMLDocReader.CSharpDoc
 
         public static void FillUpTypeCardsPropetties(List<PackageCard> packageCardsList, bool ignoreErrors)
         {
-            _logger.Info($"ignoreErrors = {ignoreErrors}");
+            //_logger.Info($"ignoreErrors = {ignoreErrors}");
 
-            _logger.Info($"packageCardsList.Count = {packageCardsList.Count}");
+            //_logger.Info($"packageCardsList.Count = {packageCardsList.Count}");
 
             var classesList = new List<ClassCard>();
             var interfacesList = new List<ClassCard>();
@@ -34,8 +35,8 @@ namespace XMLDocReader.CSharpDoc
                 namedElemsList.AddRange(packageCard.EnumsList);
             }
 
-            _logger.Info($"classesList.Count = {classesList.Count}");
-            _logger.Info($"interfacesList.Count = {interfacesList.Count}");
+            //_logger.Info($"classesList.Count = {classesList.Count}");
+            //_logger.Info($"interfacesList.Count = {interfacesList.Count}");
 
             var classesAndInterfacesList = classesList.Concat(interfacesList).ToList();
 
@@ -47,22 +48,22 @@ namespace XMLDocReader.CSharpDoc
                 FillUpTypeCard(classCard, classesCardInitialNamesDict, namedElemsCardInitialNamesDict, ignoreErrors);
             }
 
-            throw new NotImplementedException();
+            //_logger.Info("End");
         }
 
         private static void FillUpTypeCard(ClassCard classCard, Dictionary<string, ClassCard> classesCardInitialNamesDict, Dictionary<string, NamedElementCard> namedElemsCardInitialNamesDict, bool ignoreErrors)
         {
-            _logger.Info($"classCard = {classCard}");
+            //_logger.Info($"classCard = {classCard}");
 
             var baseType = classCard.Type.BaseType;
 
             if(baseType != null && !TypesHelper.IsSystemOrThirdPartyType(baseType.FullName))
             {
-                _logger.Info($"baseType.FullName = {baseType.FullName}");
+                //_logger.Info($"baseType.FullName = {baseType.FullName}");
 
                 var normalizedFullName = $"T:{NamesHelper.SimplifyFullNameOfType(baseType.FullName)}";
 
-                _logger.Info($"normalizedFullName = {normalizedFullName}");
+                //_logger.Info($"normalizedFullName = {normalizedFullName}");
 
                 if(classesCardInitialNamesDict.ContainsKey(normalizedFullName))
                 {
@@ -85,17 +86,17 @@ namespace XMLDocReader.CSharpDoc
 
             var interfacesList = TypesHelper.GetInterfacesList(classCard.Type, true);
 
-            _logger.Info($"interfacesList.Count = {interfacesList.Count}");
+            //_logger.Info($"interfacesList.Count = {interfacesList.Count}");
 
             if(interfacesList.Any())
             {
                 foreach(var interfaceItem in interfacesList)
                 {
-                    _logger.Info($"interfaceItem.FullName = {interfaceItem.FullName}");
+                    //_logger.Info($"interfaceItem.FullName = {interfaceItem.FullName}");
 
                     var normalizedFullName = $"T:{NamesHelper.SimplifyFullNameOfType(interfaceItem.FullName)}";
 
-                    _logger.Info($"normalizedFullName = {normalizedFullName}");
+                    //_logger.Info($"normalizedFullName = {normalizedFullName}");
 
                     if (classesCardInitialNamesDict.ContainsKey(normalizedFullName))
                     {
@@ -103,7 +104,7 @@ namespace XMLDocReader.CSharpDoc
                     }
                     else
                     {
-                        var errorStr = $"'{baseType.FullName}' must be documented.";
+                        var errorStr = $"'{interfaceItem.FullName}' must be documented.";
 
                         if (ignoreErrors)
                         {
@@ -116,40 +117,234 @@ namespace XMLDocReader.CSharpDoc
                     }
                 }
 
-                //DirectBaseInterfacesList
-                throw new NotImplementedException();
+                var directInterfacesList = TypesHelper.GetDirectlyImplementedInterfacesList(interfacesList, true);
+
+                //_logger.Info($"directInterfacesList.Count = {directInterfacesList.Count}");
+
+                if(directInterfacesList.Any())
+                {
+                    foreach(var directInterface in directInterfacesList)
+                    {
+                        //_logger.Info($"directInterface.FullName = {directInterface.FullName}");
+
+                        var normalizedFullName = $"T:{NamesHelper.SimplifyFullNameOfType(directInterface.FullName)}";
+
+                        //_logger.Info($"normalizedFullName = {normalizedFullName}");
+
+                        if (classesCardInitialNamesDict.ContainsKey(normalizedFullName))
+                        {
+                            classCard.DirectBaseInterfacesList.Add(classesCardInitialNamesDict[normalizedFullName]);
+                        }
+                        else
+                        {
+                            var errorStr = $"'{directInterface.FullName}' must be documented.";
+
+                            if (ignoreErrors)
+                            {
+                                classCard.ErrorsList.Add(errorStr);
+                            }
+                            else
+                            {
+                                throw new Exception(errorStr);
+                            }
+                        }
+                    }
+                }
             }
 
-            _logger.Info($"classCard.PropertiesList.Count = {classCard.PropertiesList.Count}");
+            //_logger.Info($"classCard.PropertiesList.Count = {classCard.PropertiesList.Count}");
 
             if (classCard.PropertiesList.Any())
             {
-                throw new NotImplementedException();
+                foreach(var property in classCard.PropertiesList)
+                {
+                    //_logger.Info($"property = {property}");
+
+                    var propertyType = property.PropertyInfo.PropertyType;
+
+                    //_logger.Info($"propertyType = {propertyType}");
+
+                    if(propertyType != null)
+                    {
+                        var typesTuple = GetTargetTypesForMember(propertyType, namedElemsCardInitialNamesDict, ignoreErrors);
+
+                        //_logger.Info($"typesTuple.Item1 = {typesTuple.Item1}");
+                        //_logger.Info($"typesTuple.Item2 = {typesTuple.Item2}");
+                        //_logger.Info($"typesTuple.Item3 = {typesTuple.Item3.WriteListToString()}");
+
+                        property.PropertyTypeCard = typesTuple.Item1;
+                        property.PropertyTypeName = typesTuple.Item2;
+                        property.UsedReturnsTypesList = typesTuple.Item3;
+                        property.ErrorsList = typesTuple.Item4;
+
+                        //_logger.Info($"property (after)= {property}");
+                    }
+                }
             }
 
-            _logger.Info($"classCard.MethodsList.Count = {classCard.MethodsList.Count}");
+            //_logger.Info($"classCard.MethodsList.Count = {classCard.MethodsList.Count}");
 
             if (classCard.MethodsList.Any())
             {
                 foreach(var method in classCard.MethodsList)
                 {
-                    _logger.Info($"method = {method}");
+                    //_logger.Info($"method = {method}");
 
                     var returnsType = method.MethodInfo.ReturnType;
 
-                    if(returnsType != null && !TypesHelper.IsSystemOrThirdPartyType(returnsType.FullName))
+                    if(returnsType != null)
                     {
-                        _logger.Info($"returnsType.FullName = {returnsType.FullName}");
+                        //_logger.Info($"returnsType.FullName = {returnsType.FullName}");
 
-                        throw new NotImplementedException();
+                        var typesTuple = GetTargetTypesForMember(returnsType, namedElemsCardInitialNamesDict, ignoreErrors);
+
+                        //_logger.Info($"typesTuple.Item1 = {typesTuple.Item1}");
+                        //_logger.Info($"typesTuple.Item2 = {typesTuple.Item2}");
+                        //_logger.Info($"typesTuple.Item3 = {typesTuple.Item3.WriteListToString()}");
+
+                        method.ReturnsTypeCard = typesTuple.Item1;
+                        method.ReturnsTypeName = typesTuple.Item2;
+                        method.UsedReturnsTypesList = typesTuple.Item3;
+                        method.ErrorsList = typesTuple.Item4;
+
+                        //_logger.Info($"method (after) = {method}");
                     }                    
 
                     if(method.ParamsList.Any())
                     {
-                        throw new NotImplementedException();
+                        foreach(var param in method.ParamsList)
+                        {
+                            //_logger.Info($"param = {param}");
+
+                            var parameterType = param.ParameterInfo.ParameterType;
+
+                            if(parameterType != null)
+                            {
+                                //_logger.Info($"parameterType.FullName = {parameterType.FullName}");
+
+                                var typesTuple = GetTargetTypesForMember(parameterType, namedElemsCardInitialNamesDict, ignoreErrors);
+
+                                //_logger.Info($"typesTuple.Item1 = {typesTuple.Item1}");
+                                //_logger.Info($"typesTuple.Item2 = {typesTuple.Item2}");
+                                //_logger.Info($"typesTuple.Item3 = {typesTuple.Item3.WriteListToString()}");
+
+                                param.ParameterTypeCard = typesTuple.Item1;
+                                param.ParameterTypeName = typesTuple.Item2;
+                                param.UsedReturnsTypesList = typesTuple.Item3;
+                                param.ErrorsList = typesTuple.Item4;
+
+                                //_logger.Info($"param (after) = {param}");
+                            }                            
+                        }
+
+                        //_logger.Info($"method (after) = {method}");
                     }                    
-                }        
+                }
             }
+        }
+
+        private static (NamedElementCard, MemberName, List<NamedElementCard>, List<string>) GetTargetTypesForMember(Type type, Dictionary<string, NamedElementCard> namedElemsCardInitialNamesDict, bool ignoreErrors)
+        {
+            //_logger.Info($"type.FullName = {type.FullName}");
+
+            var normalizedFullName = $"T:{NamesHelper.SimplifyFullNameOfType(type.FullName)}";
+
+            //_logger.Info($"normalizedFullName = {normalizedFullName}");
+
+            var name = MemberNameParser.Parse(normalizedFullName);
+
+            //_logger.Info($"name = {name}");
+
+            if(TypesHelper.IsSystemOrThirdPartyType(type.FullName))
+            {
+                if(name.TypeParametersList.Any())
+                {
+                    var usedReturnsTypesList = new List<NamedElementCard>();
+                    var errorsList = new List<string>();
+                    var processedTypeNames = new List<string>();
+
+                    foreach (var typeParametr in name.TypeParametersList)
+                    {
+                        FillUpUsedReturnsTypesList(typeParametr, usedReturnsTypesList, errorsList, processedTypeNames, namedElemsCardInitialNamesDict, ignoreErrors);
+                    }
+
+                    return (null, name, usedReturnsTypesList, errorsList);
+                }
+                else
+                {
+                    return (null, name, new List<NamedElementCard>(), new List<string>());
+                }                
+            }
+            else
+            {
+                if (namedElemsCardInitialNamesDict.ContainsKey(normalizedFullName))
+                {
+                    var targetCard = namedElemsCardInitialNamesDict[normalizedFullName];
+
+                    return (targetCard, name, new List<NamedElementCard>() { targetCard }, new List<string>());
+                }
+                else
+                {
+                    var errorStr = $"'{type.FullName}' must be documented.";
+
+                    if (ignoreErrors)
+                    {
+                        return (null, name, new List<NamedElementCard>(), new List<string>() { errorStr });
+                    }
+                    else
+                    {
+                        throw new Exception(errorStr);
+                    }
+                }                
+            }
+        }
+
+        private static void FillUpUsedReturnsTypesList(string nameStr, List<NamedElementCard> result, List<string> errorsList, List<string> processedTypeNames, Dictionary<string, NamedElementCard> namedElemsCardInitialNamesDict, bool ignoreErrors)
+        {
+            //_logger.Info($"nameStr = '{nameStr}'");
+
+            if(processedTypeNames.Contains(nameStr))
+            {
+                return;
+            }
+
+            processedTypeNames.Add(nameStr);
+
+            var normalizedFullName = $"T:{NamesHelper.SimplifyFullNameOfType(nameStr)}";
+
+            //_logger.Info($"normalizedFullName = {normalizedFullName}");
+
+            if (TypesHelper.IsSystemOrThirdPartyType(nameStr))
+            {
+                var name = MemberNameParser.Parse(normalizedFullName);
+
+                //_logger.Info($"name = {name}");
+
+                foreach (var typeParametr in name.TypeParametersList)
+                {
+                    FillUpUsedReturnsTypesList(typeParametr, result, errorsList, processedTypeNames, namedElemsCardInitialNamesDict, ignoreErrors);
+                }
+            }
+            else
+            {
+                if (namedElemsCardInitialNamesDict.ContainsKey(normalizedFullName))
+                {
+                    result.Add(namedElemsCardInitialNamesDict[normalizedFullName]);
+                }
+                else
+                {
+                    var errorStr = $"'{nameStr}' must be documented.";
+
+                    if (ignoreErrors)
+                    {
+                        errorsList.Add(errorStr);
+                    }
+                    else
+                    {
+                        throw new Exception(errorStr);
+                    }
+                }
+            }                
         }
 
         public static void ResolveInheritdocAndInclude(List<PackageCard> packageCardsList, bool ignoreErrors)

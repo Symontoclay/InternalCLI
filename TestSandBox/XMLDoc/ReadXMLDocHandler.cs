@@ -59,16 +59,47 @@ namespace TestSandBox.XMLDoc
             _logger.Info($"interfacesList.Count = {interfacesList.Count}");
             _logger.Info($"enumsList.Count = {enumsList.Count}");
 
-            //RepackTypeCard(targetRootTypeName);
+            var classesInitialNamesDict = classesList.ToDictionary(p => p.Name.InitialName, p => p);
+            var interfacesInitialNamesDict = interfacesList.ToDictionary(p => p.Name.InitialName, p => p);
+            var enumsInitialNamesDict = enumsList.ToDictionary(p => p.Name.InitialName, p => p);
+
+            _logger.Info($"classesInitialNamesDict.Count = {classesInitialNamesDict.Count}");
+            _logger.Info($"interfacesInitialNamesDict.Count = {interfacesInitialNamesDict.Count}");
+            _logger.Info($"enumsInitialNamesDict.Count = {enumsInitialNamesDict.Count}");
+
+            RepackTypeCard(targetRootTypeName, classesInitialNamesDict, interfacesInitialNamesDict, enumsInitialNamesDict);
 
             //_logger.Info($" = {}");
 
             _logger.Info("End");
         }
 
-        private void RepackTypeCard(string initialTypeName)
+        private void RepackTypeCard(string initialTypeName, Dictionary<string, ClassCard> classesInitialNamesDict, Dictionary<string, ClassCard> interfacesInitialNamesDict, Dictionary<string, EnumCard> enumsInitialNamesDict)
         {
             _logger.Info($"initialTypeName = '{initialTypeName}'");
+
+            if(classesInitialNamesDict.ContainsKey(initialTypeName))
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                if(interfacesInitialNamesDict.ContainsKey(initialTypeName))
+                {
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    if(enumsInitialNamesDict.ContainsKey(initialTypeName))
+                    {
+                        throw new NotImplementedException();
+                    }
+                    else
+                    {
+                        throw new Exception($"'{initialTypeName}' must be documented.");
+                    }
+                }
+            }
 
             throw new NotImplementedException();
         }

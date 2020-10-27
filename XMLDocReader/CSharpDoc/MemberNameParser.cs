@@ -13,6 +13,8 @@ namespace XMLDocReader.CSharpDoc
 
         public static MemberName Parse(string initialName)
         {
+            //_logger.Info($"initialName = {initialName}");
+
             var memberName = new MemberName();
 
             memberName.InitialName = initialName;
@@ -46,6 +48,17 @@ namespace XMLDocReader.CSharpDoc
             }
 
             var initialNameWithoutType = initialName.Substring(2);
+
+            if (initialNameWithoutType.Contains("{") && memberName.Kind == KindOfMember.Type)
+            {
+                ReadAsGenericMemberName(initialNameWithoutType, memberName);
+                return memberName;
+            }
+
+            if (initialNameWithoutType.Contains("[") && !initialNameWithoutType.Contains("("))
+            {
+                throw new NotImplementedException();
+            }
 
             var lastDotPos = LastDotPos(initialNameWithoutType);
 
@@ -116,6 +129,62 @@ namespace XMLDocReader.CSharpDoc
             memberName.FullName = $"{memberName.Path}.{memberName.Name}";
 
             return memberName;
+        }
+
+        private static void ReadAsGenericMemberName(string initialNameWithoutType, MemberName memberName)
+        {
+            //_logger.Info($"initialNameWithoutType = {initialNameWithoutType}");
+
+            var lastDotPos = LastDotPosWihTypePameters(initialNameWithoutType);
+
+            //_logger.Info($"lastDotPos = {lastDotPos}");
+
+            var path = initialNameWithoutType.Substring(0, lastDotPos).Trim();
+
+            //_logger.Info($"path = {path}");
+
+            memberName.Path = path;
+
+            var rawName = initialNameWithoutType.Substring(lastDotPos + 1).Trim();
+
+            //_logger.Info($"rawName = {rawName}");
+
+            var openFigureBracketPos = rawName.IndexOf("{");
+
+            memberName.Name = rawName.Substring(0, openFigureBracketPos).Trim();
+
+            var strWithParameters = rawName.Substring(openFigureBracketPos + 1, rawName.Length - openFigureBracketPos - 2);
+
+            //_logger.Info($"strWithParameters = {strWithParameters}");
+
+            memberName.TypeParametersList = GetParametersList(strWithParameters);
+
+            //_logger.Info($"memberName (after) = {memberName}");
+        }
+
+        private static int LastDotPosWihTypePameters(string inputStr)
+        {
+            var result = -1;
+            var i = -1;
+
+            foreach (var ch in inputStr)
+            {
+                i++;
+
+                if(ch == '.')
+                {
+                    result = i;
+                }
+                else
+                {
+                    if(ch == '{')
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return result;
         }
 
         public static List<string> GetParametersList(string inputStr)
