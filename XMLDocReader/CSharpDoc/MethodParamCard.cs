@@ -12,7 +12,7 @@ namespace XMLDocReader.CSharpDoc
         public ParameterInfo ParameterInfo { get; set; }
         public NamedElementCard ParameterTypeCard { get; set; }
         public MemberName ParameterTypeName { get; set; }
-        public List<NamedElementCard> UsedReturnsTypesList { get; set; } = new List<NamedElementCard>();
+        public List<NamedElementCard> UsedTypesList { get; set; } = new List<NamedElementCard>();
         public string Summary { get; set; }
         public XMLParamCard XMLParamCard { get; set; }
         public List<string> ErrorsList { get; set; } = new List<string>();
@@ -39,7 +39,7 @@ namespace XMLDocReader.CSharpDoc
             sb.PrintExisting(n, nameof(ParameterInfo), ParameterInfo);
             sb.PrintBriefObjProp(n, nameof(ParameterTypeCard), ParameterTypeCard);
             sb.PrintObjProp(n, nameof(ParameterTypeName), ParameterTypeName);
-            sb.PrintObjListProp(n, nameof(UsedReturnsTypesList), UsedReturnsTypesList);
+            sb.PrintObjListProp(n, nameof(UsedTypesList), UsedTypesList);
             sb.AppendLine($"{spaces}{nameof(Summary)} = {Summary}");
             sb.PrintObjProp(n, nameof(XMLParamCard), XMLParamCard);
             sb.PrintPODList(n, nameof(ErrorsList), ErrorsList);

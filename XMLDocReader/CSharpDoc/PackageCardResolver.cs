@@ -141,7 +141,10 @@ namespace XMLDocReader.CSharpDoc
 
                             if (ignoreErrors)
                             {
-                                classCard.ErrorsList.Add(errorStr);
+                                if(!classCard.ErrorsList.Contains(errorStr))
+                                {
+                                    classCard.ErrorsList.Add(errorStr);
+                                }                                
                             }
                             else
                             {
@@ -174,7 +177,7 @@ namespace XMLDocReader.CSharpDoc
 
                         property.PropertyTypeCard = typesTuple.Item1;
                         property.PropertyTypeName = typesTuple.Item2;
-                        property.UsedReturnsTypesList = typesTuple.Item3;
+                        property.UsedTypesList = typesTuple.Item3;
                         property.ErrorsList = typesTuple.Item4;
 
                         //_logger.Info($"property (after)= {property}");
@@ -204,7 +207,7 @@ namespace XMLDocReader.CSharpDoc
 
                         method.ReturnsTypeCard = typesTuple.Item1;
                         method.ReturnsTypeName = typesTuple.Item2;
-                        method.UsedReturnsTypesList = typesTuple.Item3;
+                        method.UsedTypesList = typesTuple.Item3;
                         method.ErrorsList = typesTuple.Item4;
 
                         //_logger.Info($"method (after) = {method}");
@@ -230,7 +233,7 @@ namespace XMLDocReader.CSharpDoc
 
                                 param.ParameterTypeCard = typesTuple.Item1;
                                 param.ParameterTypeName = typesTuple.Item2;
-                                param.UsedReturnsTypesList = typesTuple.Item3;
+                                param.UsedTypesList = typesTuple.Item3;
                                 param.ErrorsList = typesTuple.Item4;
 
                                 //_logger.Info($"param (after) = {param}");

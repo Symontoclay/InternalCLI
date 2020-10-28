@@ -12,7 +12,7 @@ namespace XMLDocReader.CSharpDoc
         public string Returns { get; set; }
         public NamedElementCard ReturnsTypeCard { get; set; }
         public MemberName ReturnsTypeName { get; set; }
-        public List<NamedElementCard> UsedReturnsTypesList { get; set; } = new List<NamedElementCard>();
+        public List<NamedElementCard> UsedTypesList { get; set; } = new List<NamedElementCard>();
         public List<MethodParamCard> ParamsList { get; set; } = new List<MethodParamCard>();
 
         /// <inheritdoc/>
@@ -25,7 +25,7 @@ namespace XMLDocReader.CSharpDoc
             sb.AppendLine($"{spaces}{nameof(Returns)} = {Returns}");
             sb.PrintBriefObjProp(n, nameof(ReturnsTypeCard), ReturnsTypeCard);
             sb.PrintObjProp(n, nameof(ReturnsTypeName), ReturnsTypeName);
-            sb.PrintObjListProp(n, nameof(UsedReturnsTypesList), UsedReturnsTypesList);
+            sb.PrintObjListProp(n, nameof(UsedTypesList), UsedTypesList);
 
             //sb.PrintObjListProp(n, nameof(TypeParamsList), TypeParamsList);
             sb.PrintObjListProp(n, nameof(ParamsList), ParamsList);

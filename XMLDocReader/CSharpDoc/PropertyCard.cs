@@ -11,7 +11,7 @@ namespace XMLDocReader.CSharpDoc
         public PropertyInfo PropertyInfo { get; set; }
         public NamedElementCard PropertyTypeCard { get; set; }
         public MemberName PropertyTypeName { get; set; }
-        public List<NamedElementCard> UsedReturnsTypesList { get; set; } = new List<NamedElementCard>();
+        public List<NamedElementCard> UsedTypesList { get; set; } = new List<NamedElementCard>();
         public string Value { get; set; }
 
         /// <inheritdoc/>
@@ -23,7 +23,7 @@ namespace XMLDocReader.CSharpDoc
             sb.PrintExisting(n, nameof(PropertyInfo), PropertyInfo);
             sb.PrintBriefObjProp(n, nameof(PropertyTypeCard), PropertyTypeCard);
             sb.PrintObjProp(n, nameof(PropertyTypeName), PropertyTypeName);
-            sb.PrintObjListProp(n, nameof(UsedReturnsTypesList), UsedReturnsTypesList);
+            sb.PrintObjListProp(n, nameof(UsedTypesList), UsedTypesList);
             sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
 
             sb.Append(base.PropertiesToString(n));

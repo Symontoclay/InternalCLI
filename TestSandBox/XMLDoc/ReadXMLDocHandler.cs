@@ -20,7 +20,9 @@ namespace TestSandBox.XMLDoc
         {
             _logger.Info("Begin");
 
-            var targetRootTypeName = "T:SymOntoClay.UnityAsset.Core.WorldFactory";
+            //var targetRootTypeName = "T:SymOntoClay.UnityAsset.Core.WorldFactory";
+            var targetRootTypeName = "SymOntoClay.UnityAsset.Core.IWorld";
+            //var targetRootTypeName = "T:SymOntoClay.UnityAsset.Core.WorldSettings";
 
             _logger.Info($"targetRootTypeName = {targetRootTypeName}");
 
@@ -33,75 +35,59 @@ namespace TestSandBox.XMLDoc
 
             _logger.Info($"fileNamesList = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
 
-            var settingsList = PackageCardReaderSettingsHelper.ConvertXMLFileNamesListToSettingsList(fileNamesList);
-
-            //_logger.Info($"settingsList = {JsonConvert.SerializeObject(settingsList, Formatting.Indented)}");
-
             var ignoreErrors = true;
 
-            var packageCardsList = PackageCardReader.Read(settingsList);
+            var options = new CSharpXMLDocLoaderOptions() 
+            {
+                XmlFileNamesList = fileNamesList,
+                TargetRootTypeNamesList = new List<string>() { targetRootTypeName },
+                PublicMembersOnly = true,
+                IgnoreErrors = ignoreErrors
+            };
 
-            PackageCardResolver.FillUpTypeCardsPropetties(packageCardsList, ignoreErrors);
-            PackageCardResolver.ResolveInheritdocAndInclude(packageCardsList, ignoreErrors);
+            _logger.Info($"options = {options}");
 
-            var classesList = new List<ClassCard>();
-            var interfacesList = new List<ClassCard>();
-            var enumsList = new List<EnumCard>();
+            var packageCardsList = CSharpXMLDocLoader.Load(options);
+
+            var classesCleanedList = new List<ClassCard>();
+            var interfacesCleanedList = new List<ClassCard>();
+            var enumsCleanedList = new List<EnumCard>();
+
+            _logger.Info($"packageCardsList.Count = {packageCardsList.Count}");
 
             foreach (var packageCard in packageCardsList)
             {
-                classesList.AddRange(packageCard.ClassesList);
-                interfacesList.AddRange(packageCard.InterfacesList);
-                enumsList.AddRange(packageCard.EnumsList);
+                _logger.Info($"packageCard.AssemblyName = {packageCard.AssemblyName}");
+
+                classesCleanedList.AddRange(packageCard.ClassesList);
+                interfacesCleanedList.AddRange(packageCard.InterfacesList);
+                enumsCleanedList.AddRange(packageCard.EnumsList);
             }
 
-            _logger.Info($"classesList.Count = {classesList.Count}");
-            _logger.Info($"interfacesList.Count = {interfacesList.Count}");
-            _logger.Info($"enumsList.Count = {enumsList.Count}");
+            _logger.Info($"classesCleanedList.Count = {classesCleanedList.Count}");
 
-            var classesInitialNamesDict = classesList.ToDictionary(p => p.Name.InitialName, p => p);
-            var interfacesInitialNamesDict = interfacesList.ToDictionary(p => p.Name.InitialName, p => p);
-            var enumsInitialNamesDict = enumsList.ToDictionary(p => p.Name.InitialName, p => p);
+            foreach (var classCard in classesCleanedList)
+            {
+                _logger.Info($"classCard.Name.InitialName = {classCard.Name.InitialName}");
+            }
 
-            _logger.Info($"classesInitialNamesDict.Count = {classesInitialNamesDict.Count}");
-            _logger.Info($"interfacesInitialNamesDict.Count = {interfacesInitialNamesDict.Count}");
-            _logger.Info($"enumsInitialNamesDict.Count = {enumsInitialNamesDict.Count}");
+            _logger.Info($"interfacesCleanedList.Count = {interfacesCleanedList.Count}");
 
-            RepackTypeCard(targetRootTypeName, classesInitialNamesDict, interfacesInitialNamesDict, enumsInitialNamesDict);
+            foreach (var interfaceCard in interfacesCleanedList)
+            {
+                _logger.Info($"interfaceCard = {interfaceCard.Name.InitialName}");
+            }
+
+            _logger.Info($"enumsCleanedList.Count = {enumsCleanedList.Count}");
+
+            foreach (var enumCard in enumsCleanedList)
+            {
+                _logger.Info($"enumCard = {enumCard.Name.InitialName}");
+            }
 
             //_logger.Info($" = {}");
 
             _logger.Info("End");
-        }
-
-        private void RepackTypeCard(string initialTypeName, Dictionary<string, ClassCard> classesInitialNamesDict, Dictionary<string, ClassCard> interfacesInitialNamesDict, Dictionary<string, EnumCard> enumsInitialNamesDict)
-        {
-            _logger.Info($"initialTypeName = '{initialTypeName}'");
-
-            if(classesInitialNamesDict.ContainsKey(initialTypeName))
-            {
-                throw new NotImplementedException();
-            }
-            else
-            {
-                if(interfacesInitialNamesDict.ContainsKey(initialTypeName))
-                {
-                    throw new NotImplementedException();
-                }
-                else
-                {
-                    if(enumsInitialNamesDict.ContainsKey(initialTypeName))
-                    {
-                        throw new NotImplementedException();
-                    }
-                    else
-                    {
-                        throw new Exception($"'{initialTypeName}' must be documented.");
-                    }
-                }
-            }
-
-            throw new NotImplementedException();
         }
 
         public void ParseGenericType()
