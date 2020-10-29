@@ -20,8 +20,19 @@ namespace TestSandBox
 
             EVPath.RegVar("APPDIR", Directory.GetCurrentDirectory());
 
+            TstBuild();
             //TstSimplifyFullNameOfType();
-            TstReadXMLDoc();
+            //TstReadXMLDoc();
+        }
+
+        private static void TstBuild()
+        {
+            _logger.Info("Begin");
+
+            var handler = new BuildHandler();
+            handler.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstSimplifyFullNameOfType()
