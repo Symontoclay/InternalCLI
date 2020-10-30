@@ -134,9 +134,15 @@ namespace TestSandBox
 
             //options.TargetsOptions.Add(target);
 
+            //var target = new BuildTargetOptions();
+            //target.TargetDir = targetLibraryFolderDir;
+            //target.Kind = KindOfBuildTarget.LibraryFolder;
+
+            //options.TargetsOptions.Add(target);
+
             var target = new BuildTargetOptions();
-            target.TargetDir = targetLibraryFolderDir;
-            target.Kind = KindOfBuildTarget.LibraryFolder;
+            target.TargetDir = targetLibraryArchDir;
+            target.Kind = KindOfBuildTarget.LibraryArch;
 
             options.TargetsOptions.Add(target);
 

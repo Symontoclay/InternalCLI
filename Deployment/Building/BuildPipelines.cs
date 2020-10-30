@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 
@@ -30,6 +31,9 @@ namespace Deployment.Building
 #if DEBUG
             _logger.Info($"internalBuildSourceProjectOptionsList = {internalBuildSourceProjectOptionsList.WriteListToString()}");
 #endif
+
+            CheckVersions(internalBuildSourceProjectOptionsList);
+
             var internalBuildSourceProjectOptionsDict = internalBuildSourceProjectOptionsList.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.ToList());
 
             foreach(var targetOptions in options.TargetsOptions)
@@ -49,6 +53,10 @@ namespace Deployment.Building
                         ProcessLibraryFolderTarget(targetOptions, kindOfBuild, internalBuildSourceProjectOptionsDict);
                         break;
 
+                    case KindOfBuildTarget.LibraryArch:
+                        ProcessLibraryArchTarget(targetOptions, kindOfBuild, internalBuildSourceProjectOptionsDict);
+                        break;
+
                     default:
                         throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                 }
@@ -60,6 +68,84 @@ namespace Deployment.Building
             //throw new NotImplementedException();
 
             _logger.Info("End");
+        }
+
+        private static void ProcessLibraryArchTarget(BuildTargetOptions targetOptions, KindOfBuild kindOfBuild, Dictionary<KindOfSourceProject, List<InternalBuildSourceProjectOptions>> internalBuildSourceProjectOptionsDict)
+        {
+#if DEBUG
+            _logger.Info($"targetOptions = {targetOptions}");
+            _logger.Info($"kindOfBuild = {kindOfBuild}");
+#endif
+
+            var targetDir = targetOptions.TargetDir;
+
+            if (!Directory.Exists(targetDir))
+            {
+                Directory.CreateDirectory(targetDir);
+            }
+
+            var librariesSourcesList = internalBuildSourceProjectOptionsDict[KindOfSourceProject.Library];
+
+#if DEBUG
+            _logger.Info($"librariesSourcesList = {librariesSourcesList.WriteListToString()}");
+#endif
+
+            var targetVersion = librariesSourcesList.Select(p => GetNugetVersion(p.ProjectFullFileName)).Distinct().Single();
+
+#if DEBUG
+            _logger.Info($"targetVersion = {targetVersion}");
+#endif
+
+            var archFullName = Path.Combine(targetDir, $"SymOntoClay-Libs.{targetVersion}.zip");
+
+#if DEBUG
+            _logger.Info($"archFullName = {archFullName}");
+#endif
+
+            if(File.Exists(archFullName))
+            {
+                File.Delete(archFullName);
+            }
+
+            using var fs = File.Create(archFullName);
+
+            using var archive = new ZipArchive(fs, ZipArchiveMode.Create);
+
+            foreach (var librarySource in librariesSourcesList)
+            {
+#if DEBUG
+                _logger.Info($"librarySource = {librarySource}");
+#endif
+                if (librarySource.IsBuilt)
+                {
+                    CompleteProcessLibraryArchTarget(targetOptions, archive, librarySource);
+                    continue;
+                }
+
+                BuildLibrary(librarySource, kindOfBuild);
+#if DEBUG
+                _logger.Info($"librarySource (after) = {librarySource}");
+#endif
+                CompleteProcessLibraryArchTarget(targetOptions, archive, librarySource);
+            }
+        }
+
+        private static void CompleteProcessLibraryArchTarget(BuildTargetOptions targetOptions, ZipArchive archive, InternalBuildSourceProjectOptions internalBuildSourceProjectOptions)
+        {
+            foreach (var builtFileName in internalBuildSourceProjectOptions.BuiltFileNamesList)
+            {
+#if DEBUG
+                _logger.Info($"builtFileName = {builtFileName}");
+#endif
+
+                var fileInfo = new FileInfo(builtFileName);
+
+#if DEBUG
+                _logger.Info($"fileInfo.Name = {fileInfo.Name}");
+#endif
+
+                archive.CreateEntryFromFile(builtFileName, fileInfo.Name);
+            }
         }
 
         private static void ProcessLibraryFolderTarget(BuildTargetOptions targetOptions, KindOfBuild kindOfBuild, Dictionary<KindOfSourceProject, List<InternalBuildSourceProjectOptions>> internalBuildSourceProjectOptionsDict)
@@ -444,6 +530,27 @@ namespace Deployment.Building
             }
 
             return result;
+        }
+
+        private static void CheckVersions(List<InternalBuildSourceProjectOptions> internalBuildSourceProjectOptionsList)
+        {
+            var versionsList = internalBuildSourceProjectOptionsList.Where(p => p.Kind == KindOfSourceProject.Library || p.Kind == KindOfSourceProject.CLI).Select(p => GetNugetVersion(p.ProjectFullFileName)).Distinct().ToList();
+
+#if DEBUG
+            _logger.Info($"versionsList = {JsonConvert.SerializeObject(versionsList, Formatting.Indented)}");
+#endif
+
+            if (versionsList.Count > 1)
+            {
+                throw new Exception($"Ambiguous resolving target Version of :{JsonConvert.SerializeObject(versionsList, Formatting.Indented)}");
+            }
+
+            var targetVersion = versionsList.Single();
+
+            if(string.IsNullOrWhiteSpace(targetVersion))
+            {
+                throw new Exception("Version can not be null, empty or whitespace!");
+            }
         }
     }
 }
