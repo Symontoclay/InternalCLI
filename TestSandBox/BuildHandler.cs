@@ -140,9 +140,15 @@ namespace TestSandBox
 
             //options.TargetsOptions.Add(target);
 
+            //var target = new BuildTargetOptions();
+            //target.TargetDir = targetLibraryArchDir;
+            //target.Kind = KindOfBuildTarget.LibraryArch;
+
+            //options.TargetsOptions.Add(target);
+
             var target = new BuildTargetOptions();
-            target.TargetDir = targetLibraryArchDir;
-            target.Kind = KindOfBuildTarget.LibraryArch;
+            target.TargetDir = targetUnity3DLibArchDir;
+            target.Kind = KindOfBuildTarget.LibraryFor3DAssetFolder;
 
             options.TargetsOptions.Add(target);
 
