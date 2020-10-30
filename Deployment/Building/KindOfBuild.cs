@@ -4,11 +4,10 @@ using System.Text;
 
 namespace Deployment.Building
 {
-    public enum KindOfSourceProject
+    public enum KindOfBuild
     {
         Unknown,
-        Library,
-        CLI,
-        Unity3DAsset
+        Debug,
+        Release
     }
 }

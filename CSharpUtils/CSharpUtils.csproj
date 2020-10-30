@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommonUtils\CommonUtils.csproj" />
-    <ProjectReference Include="..\CSharpUtils\CSharpUtils.csproj" />
   </ItemGroup>
 
 </Project>

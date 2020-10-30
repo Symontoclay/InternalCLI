@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Deployment.Building
 {
-    public class BuildOptions : IObjectToString
+    public class BuildTargetOptions : IObjectToString
     {
-        public List<BuildSourceSolutionOptions> SolutionsOptions { get; set; } = new List<BuildSourceSolutionOptions>();
-        public List<BuildTargetOptions> TargetsOptions { get; set; } = new List<BuildTargetOptions>();
+        public KindOfBuildTarget Kind { get; set; } = KindOfBuildTarget.Unknown;
+        public string TargetDir { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -28,8 +28,8 @@ namespace Deployment.Building
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.PrintObjListProp(n, nameof(SolutionsOptions), SolutionsOptions);
-            sb.PrintObjListProp(n, nameof(TargetsOptions), TargetsOptions);
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            sb.AppendLine($"{spaces}{nameof(TargetDir)} = {TargetDir}");
 
             return sb.ToString();
         }

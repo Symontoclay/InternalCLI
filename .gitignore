@@ -15,3 +15,5 @@ XMLDocReader/bin
 XMLDocReader/obj
 /Deployment/obj
 Deployment/bin
+/CSharpUtils/bin
+/CSharpUtils/obj
