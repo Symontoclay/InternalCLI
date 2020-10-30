@@ -45,6 +45,10 @@ namespace Deployment.Building
                         ProcessNugetTarget(targetOptions, kindOfBuild, internalBuildSourceProjectOptionsDict);
                         break;
 
+                    case KindOfBuildTarget.LibraryFolder:
+                        ProcessLibraryFolderTarget(targetOptions, kindOfBuild, internalBuildSourceProjectOptionsDict);
+                        break;
+
                     default:
                         throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                 }
@@ -56,6 +60,69 @@ namespace Deployment.Building
             //throw new NotImplementedException();
 
             _logger.Info("End");
+        }
+
+        private static void ProcessLibraryFolderTarget(BuildTargetOptions targetOptions, KindOfBuild kindOfBuild, Dictionary<KindOfSourceProject, List<InternalBuildSourceProjectOptions>> internalBuildSourceProjectOptionsDict)
+        {
+#if DEBUG
+            _logger.Info($"targetOptions = {targetOptions}");
+            _logger.Info($"kindOfBuild = {kindOfBuild}");
+#endif
+
+            var targetDir = targetOptions.TargetDir;
+
+            if (!Directory.Exists(targetDir))
+            {
+                Directory.CreateDirectory(targetDir);
+            }
+
+            var librariesSourcesList = internalBuildSourceProjectOptionsDict[KindOfSourceProject.Library];
+
+#if DEBUG
+            _logger.Info($"librariesSourcesList = {librariesSourcesList.WriteListToString()}");
+#endif
+
+            foreach (var librarySource in librariesSourcesList)
+            {
+#if DEBUG
+                _logger.Info($"librarySource = {librarySource}");
+#endif
+                if (librarySource.IsBuilt)
+                {
+                    CompleteProcessLibraryFolderTarget(targetOptions, librarySource);
+                    continue;
+                }
+
+                BuildLibrary(librarySource, kindOfBuild);
+#if DEBUG
+                _logger.Info($"librarySource (after) = {librarySource}");
+#endif
+                CompleteProcessLibraryFolderTarget(targetOptions, librarySource);
+            }
+        }
+
+        private static void CompleteProcessLibraryFolderTarget(BuildTargetOptions targetOptions, InternalBuildSourceProjectOptions internalBuildSourceProjectOptions)
+        {
+            foreach(var builtFileName in internalBuildSourceProjectOptions.BuiltFileNamesList)
+            {
+#if DEBUG
+                _logger.Info($"builtFileName = {builtFileName}");
+#endif
+
+                var fileInfo = new FileInfo(builtFileName);
+
+#if DEBUG
+                _logger.Info($"fileInfo.Name = {fileInfo.Name}");
+#endif
+
+                var destFullFileName = Path.Combine(targetOptions.TargetDir, fileInfo.Name);
+
+#if DEBUG
+                _logger.Info($"destFullFileName = {destFullFileName}");
+#endif
+
+                File.Copy(builtFileName, destFullFileName, true);
+            }
         }
 
         private static void ProcessNugetTarget(BuildTargetOptions targetOptions, KindOfBuild kindOfBuild, Dictionary<KindOfSourceProject, List<InternalBuildSourceProjectOptions>> internalBuildSourceProjectOptionsDict)
@@ -84,7 +151,7 @@ namespace Deployment.Building
 #endif
                 if (librarySource.IsBuilt)
                 {
-                    CompleteProcessNugetProject(targetOptions, librarySource);
+                    CompleteProcessNugetTarget(targetOptions, librarySource);
                     continue;
                 }
 
@@ -92,11 +159,11 @@ namespace Deployment.Building
 #if DEBUG
                 _logger.Info($"librarySource (after) = {librarySource}");
 #endif
-                CompleteProcessNugetProject(targetOptions, librarySource);
+                CompleteProcessNugetTarget(targetOptions, librarySource);
             }
         }
 
-        private static void CompleteProcessNugetProject(BuildTargetOptions targetOptions, InternalBuildSourceProjectOptions internalBuildSourceProjectOptions)
+        private static void CompleteProcessNugetTarget(BuildTargetOptions targetOptions, InternalBuildSourceProjectOptions internalBuildSourceProjectOptions)
         {
             var fileInfo = new FileInfo(internalBuildSourceProjectOptions.NuGetFullFileName);
 

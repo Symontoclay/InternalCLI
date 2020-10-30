@@ -128,9 +128,15 @@ namespace TestSandBox
             projectOption.ProjectDir = "SymOntoClayCLI";
             projectOption.Kind = KindOfSourceProject.CLI;
 
+            //var target = new BuildTargetOptions();
+            //target.TargetDir = targetNugetDir;
+            //target.Kind = KindOfBuildTarget.NuGet;
+
+            //options.TargetsOptions.Add(target);
+
             var target = new BuildTargetOptions();
-            target.TargetDir = targetNugetDir;
-            target.Kind = KindOfBuildTarget.NuGet;
+            target.TargetDir = targetLibraryFolderDir;
+            target.Kind = KindOfBuildTarget.LibraryFolder;
 
             options.TargetsOptions.Add(target);
 
