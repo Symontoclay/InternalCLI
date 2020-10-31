@@ -65,6 +65,10 @@ namespace Deployment.Building
                         ProcessCLIFolderTarget(targetOptions, kindOfBuild, internalBuildSourceProjectOptionsDict);
                         break;
 
+                    case KindOfBuildTarget.CLIArch:
+                        ProcessCLIArchTarget(targetOptions, kindOfBuild, internalBuildSourceProjectOptionsDict);
+                        break;
+
                     default:
                         throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                 }
@@ -76,6 +80,67 @@ namespace Deployment.Building
             //throw new NotImplementedException();
 
             _logger.Info("End");
+        }
+
+        private static void ProcessCLIArchTarget(BuildTargetOptions targetOptions, KindOfBuild kindOfBuild, Dictionary<KindOfSourceProject, List<InternalBuildSourceProjectOptions>> internalBuildSourceProjectOptionsDict)
+        {
+#if DEBUG
+            _logger.Info($"targetOptions = {targetOptions}");
+            _logger.Info($"kindOfBuild = {kindOfBuild}");
+#endif
+
+            var targetDir = targetOptions.TargetDir;
+
+            if (Directory.Exists(targetDir))
+            {
+                if (!targetOptions.SkipExistingFilesInTargetDir)
+                {
+                    Directory.Delete(targetDir, true);
+                    Directory.CreateDirectory(targetDir);
+                }
+            }
+            else
+            {
+                Directory.CreateDirectory(targetDir);
+            }
+
+            var cliSource = internalBuildSourceProjectOptionsDict[KindOfSourceProject.CLI].Single();
+
+#if DEBUG
+            _logger.Info($"cliSource = {cliSource}");
+#endif
+
+            if (!cliSource.IsBuilt)
+            {
+                BuildCLI(cliSource, kindOfBuild);
+
+#if DEBUG
+                _logger.Info($"cliSource (after) = {cliSource}");
+#endif
+            }
+
+            var targetVersion = GetNugetVersion(cliSource.ProjectFullFileName);
+
+#if DEBUG
+            _logger.Info($"targetVersion = {targetVersion}");
+#endif
+
+            var archFullName = Path.Combine(targetDir, $"SymOntoClay-CLI.{targetVersion}.zip");
+
+#if DEBUG
+            _logger.Info($"archFullName = {archFullName}");
+#endif
+
+            if (File.Exists(archFullName))
+            {
+                File.Delete(archFullName);
+            }
+
+            using var fs = File.Create(archFullName);
+
+            using var archive = new ZipArchive(fs, ZipArchiveMode.Create);
+
+            AddBuiltFilesToArchive(archive, cliSource);
         }
 
         private static void ProcessCLIFolderTarget(BuildTargetOptions targetOptions, KindOfBuild kindOfBuild, Dictionary<KindOfSourceProject, List<InternalBuildSourceProjectOptions>> internalBuildSourceProjectOptionsDict)
@@ -224,7 +289,7 @@ namespace Deployment.Building
 #endif
                 if (librarySource.IsBuilt)
                 {
-                    CompleteProcessLibraryArchTarget(targetOptions, archive, librarySource);
+                    CompleteProcessLibraryArchTarget(archive, librarySource);
                     continue;
                 }
 
@@ -232,11 +297,16 @@ namespace Deployment.Building
 #if DEBUG
                 _logger.Info($"librarySource (after) = {librarySource}");
 #endif
-                CompleteProcessLibraryArchTarget(targetOptions, archive, librarySource);
+                CompleteProcessLibraryArchTarget(archive, librarySource);
             }
         }
 
-        private static void CompleteProcessLibraryArchTarget(BuildTargetOptions targetOptions, ZipArchive archive, InternalBuildSourceProjectOptions internalBuildSourceProjectOptions)
+        private static void CompleteProcessLibraryArchTarget(ZipArchive archive, InternalBuildSourceProjectOptions internalBuildSourceProjectOptions)
+        {
+            AddBuiltFilesToArchive(archive, internalBuildSourceProjectOptions);
+        }
+
+        private static void AddBuiltFilesToArchive(ZipArchive archive, InternalBuildSourceProjectOptions internalBuildSourceProjectOptions)
         {
             foreach (var builtFileName in internalBuildSourceProjectOptions.BuiltFileNamesList)
             {

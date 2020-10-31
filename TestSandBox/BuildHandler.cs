@@ -103,9 +103,15 @@ namespace TestSandBox
 
             //options.TargetsOptions.Add(target);
 
+            //var target = new BuildTargetOptions();
+            //target.TargetDir = targetCLIFolderDir;
+            //target.Kind = KindOfBuildTarget.CLIFolder;
+
+            //options.TargetsOptions.Add(target);
+
             var target = new BuildTargetOptions();
-            target.TargetDir = targetCLIFolderDir;
-            target.Kind = KindOfBuildTarget.CLIFolder;
+            target.TargetDir = targetCLIArchDir;
+            target.Kind = KindOfBuildTarget.CLIArch;
 
             options.TargetsOptions.Add(target);
 
