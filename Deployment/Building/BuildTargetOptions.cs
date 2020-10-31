@@ -9,6 +9,7 @@ namespace Deployment.Building
     {
         public KindOfBuildTarget Kind { get; set; } = KindOfBuildTarget.Unknown;
         public string TargetDir { get; set; }
+        public bool SkipExistingFilesInTargetDir { get; set; } = true;
 
         /// <inheritdoc/>
         public override string ToString()
@@ -30,6 +31,7 @@ namespace Deployment.Building
 
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(TargetDir)} = {TargetDir}");
+            sb.AppendLine($"{spaces}{nameof(SkipExistingFilesInTargetDir)} = {SkipExistingFilesInTargetDir}");
 
             return sb.ToString();
         }

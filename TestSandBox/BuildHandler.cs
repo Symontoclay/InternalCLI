@@ -28,78 +28,29 @@ namespace TestSandBox
 
             _logger.Info($"targetNugetDir = {targetNugetDir}");
 
-            if(Directory.Exists(targetNugetDir))
-            {
-                Directory.Delete(targetNugetDir, true);
-            }
-
-            Directory.CreateDirectory(targetNugetDir);
-
             var targetLibraryArchDir = Path.Combine(Directory.GetCurrentDirectory(), "LibraryArch");
 
             _logger.Info($"targetLibraryArchDir = {targetLibraryArchDir}");
-
-            if (Directory.Exists(targetLibraryArchDir))
-            {
-                Directory.Delete(targetLibraryArchDir, true);
-            }
-
-            Directory.CreateDirectory(targetLibraryArchDir);
 
             var targetLibraryFolderDir = Path.Combine(Directory.GetCurrentDirectory(), "LibraryFolder");
 
             _logger.Info($"targetLibraryFolderDir = {targetLibraryFolderDir}");
 
-            if (Directory.Exists(targetLibraryFolderDir))
-            {
-                Directory.Delete(targetLibraryFolderDir, true);
-            }
-
-            Directory.CreateDirectory(targetLibraryFolderDir);
-
             var targetUnity3DLibArchDir = Path.Combine(Directory.GetCurrentDirectory(), "Unity3DLibArch");
 
             _logger.Info($"targetUnity3DLibArchDir = {targetUnity3DLibArchDir}");
-
-            if (Directory.Exists(targetUnity3DLibArchDir))
-            {
-                Directory.Delete(targetUnity3DLibArchDir, true);
-            }
-
-            Directory.CreateDirectory(targetUnity3DLibArchDir);
 
             var targetUnity3DLibFolderDir = Path.Combine(Directory.GetCurrentDirectory(), "Unity3DLibFolder");
 
             _logger.Info($"targetUnity3DLibFolderDir = {targetUnity3DLibFolderDir}");
 
-            if (Directory.Exists(targetUnity3DLibFolderDir))
-            {
-                Directory.Delete(targetUnity3DLibFolderDir, true);
-            }
-
-            Directory.CreateDirectory(targetUnity3DLibFolderDir);
-
             var targetCLIArchDir = Path.Combine(Directory.GetCurrentDirectory(), "CLIArch");
 
             _logger.Info($"targetCLIArchDir = {targetCLIArchDir}");
 
-            if (Directory.Exists(targetCLIArchDir))
-            {
-                Directory.Delete(targetCLIArchDir, true);
-            }
-
-            Directory.CreateDirectory(targetCLIArchDir);
-
             var targetCLIFolderDir = Path.Combine(Directory.GetCurrentDirectory(), "CLIFolder");
 
             _logger.Info($"targetCLIFolderDir = {targetCLIFolderDir}");
-
-            if (Directory.Exists(targetCLIFolderDir))
-            {
-                Directory.Delete(targetCLIFolderDir, true);
-            }
-
-            Directory.CreateDirectory(targetCLIFolderDir);
 
             var options = new BuildOptions();
 

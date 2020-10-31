@@ -57,6 +57,10 @@ namespace Deployment.Building
                         ProcessLibraryArchTarget(targetOptions, kindOfBuild, internalBuildSourceProjectOptionsDict);
                         break;
 
+                    case KindOfBuildTarget.LibraryFor3DAssetFolder:
+                        ProcessLibraryFor3DAssetFolderTarget(targetOptions, kindOfBuild, internalBuildSourceProjectOptionsDict);
+                        break;
+
                     default:
                         throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                 }
@@ -70,6 +74,37 @@ namespace Deployment.Building
             _logger.Info("End");
         }
 
+        private static void ProcessLibraryFor3DAssetFolderTarget(BuildTargetOptions targetOptions, KindOfBuild kindOfBuild, Dictionary<KindOfSourceProject, List<InternalBuildSourceProjectOptions>> internalBuildSourceProjectOptionsDict)
+        {
+#if DEBUG
+            _logger.Info($"targetOptions = {targetOptions}");
+            _logger.Info($"kindOfBuild = {kindOfBuild}");
+#endif
+
+            var targetDir = targetOptions.TargetDir;
+
+            if (Directory.Exists(targetDir))
+            {
+                if (!targetOptions.SkipExistingFilesInTargetDir)
+                {
+                    Directory.Delete(targetDir, true);
+                    Directory.CreateDirectory(targetDir);
+                }
+            }
+            else
+            {
+                Directory.CreateDirectory(targetDir);
+            }
+
+            var librariesSourcesList = internalBuildSourceProjectOptionsDict[KindOfSourceProject.Library];
+
+#if DEBUG
+            _logger.Info($"librariesSourcesList = {librariesSourcesList.WriteListToString()}");
+#endif
+
+
+        }
+
         private static void ProcessLibraryArchTarget(BuildTargetOptions targetOptions, KindOfBuild kindOfBuild, Dictionary<KindOfSourceProject, List<InternalBuildSourceProjectOptions>> internalBuildSourceProjectOptionsDict)
         {
 #if DEBUG
@@ -79,7 +114,15 @@ namespace Deployment.Building
 
             var targetDir = targetOptions.TargetDir;
 
-            if (!Directory.Exists(targetDir))
+            if (Directory.Exists(targetDir))
+            {
+                if (!targetOptions.SkipExistingFilesInTargetDir)
+                {
+                    Directory.Delete(targetDir, true);
+                    Directory.CreateDirectory(targetDir);
+                }
+            }
+            else
             {
                 Directory.CreateDirectory(targetDir);
             }
@@ -157,7 +200,15 @@ namespace Deployment.Building
 
             var targetDir = targetOptions.TargetDir;
 
-            if (!Directory.Exists(targetDir))
+            if (Directory.Exists(targetDir))
+            {
+                if (!targetOptions.SkipExistingFilesInTargetDir)
+                {
+                    Directory.Delete(targetDir, true);
+                    Directory.CreateDirectory(targetDir);
+                }
+            }
+            else
             {
                 Directory.CreateDirectory(targetDir);
             }
@@ -220,7 +271,15 @@ namespace Deployment.Building
 
             var targetDir = targetOptions.TargetDir;
 
-            if(!Directory.Exists(targetDir))
+            if (Directory.Exists(targetDir))
+            {
+                if(!targetOptions.SkipExistingFilesInTargetDir)
+                {
+                    Directory.Delete(targetDir, true);
+                    Directory.CreateDirectory(targetDir);
+                }
+            }
+            else
             {
                 Directory.CreateDirectory(targetDir);
             }
