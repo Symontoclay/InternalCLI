@@ -61,6 +61,10 @@ namespace Deployment.Building
                         ProcessLibraryFor3DAssetFolderTarget(targetOptions, kindOfBuild, internalBuildSourceProjectOptionsDict);
                         break;
 
+                    case KindOfBuildTarget.CLIFolder:
+                        ProcessCLIFolderTarget(targetOptions, kindOfBuild, internalBuildSourceProjectOptionsDict);
+                        break;
+
                     default:
                         throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                 }
@@ -72,6 +76,65 @@ namespace Deployment.Building
             //throw new NotImplementedException();
 
             _logger.Info("End");
+        }
+
+        private static void ProcessCLIFolderTarget(BuildTargetOptions targetOptions, KindOfBuild kindOfBuild, Dictionary<KindOfSourceProject, List<InternalBuildSourceProjectOptions>> internalBuildSourceProjectOptionsDict)
+        {
+#if DEBUG
+            _logger.Info($"targetOptions = {targetOptions}");
+            _logger.Info($"kindOfBuild = {kindOfBuild}");
+#endif
+
+            var targetDir = targetOptions.TargetDir;
+
+            if (Directory.Exists(targetDir))
+            {
+                if (!targetOptions.SkipExistingFilesInTargetDir)
+                {
+                    Directory.Delete(targetDir, true);
+                    Directory.CreateDirectory(targetDir);
+                }
+            }
+            else
+            {
+                Directory.CreateDirectory(targetDir);
+            }
+
+            var cliSource = internalBuildSourceProjectOptionsDict[KindOfSourceProject.CLI].Single();
+
+#if DEBUG
+            _logger.Info($"cliSource = {cliSource}");
+#endif
+
+            if (!cliSource.IsBuilt)
+            {
+                BuildCLI(cliSource, kindOfBuild);
+
+#if DEBUG
+                _logger.Info($"cliSource (after) = {cliSource}");
+#endif
+            }
+
+            foreach (var builtFileName in cliSource.BuiltFileNamesList)
+            {
+#if DEBUG
+                _logger.Info($"builtFileName = {builtFileName}");
+#endif
+
+                var fileInfo = new FileInfo(builtFileName);
+
+#if DEBUG
+                _logger.Info($"fileInfo.Name = {fileInfo.Name}");
+#endif
+
+                var destFullFileName = Path.Combine(targetOptions.TargetDir, fileInfo.Name);
+
+#if DEBUG
+                _logger.Info($"destFullFileName = {destFullFileName}");
+#endif
+
+                File.Copy(builtFileName, destFullFileName, true);
+            }
         }
 
         private static void ProcessLibraryFor3DAssetFolderTarget(BuildTargetOptions targetOptions, KindOfBuild kindOfBuild, Dictionary<KindOfSourceProject, List<InternalBuildSourceProjectOptions>> internalBuildSourceProjectOptionsDict)
@@ -102,7 +165,7 @@ namespace Deployment.Building
             _logger.Info($"librariesSourcesList = {librariesSourcesList.WriteListToString()}");
 #endif
 
-
+            throw new NotImplementedException();
         }
 
         private static void ProcessLibraryArchTarget(BuildTargetOptions targetOptions, KindOfBuild kindOfBuild, Dictionary<KindOfSourceProject, List<InternalBuildSourceProjectOptions>> internalBuildSourceProjectOptionsDict)
@@ -325,6 +388,60 @@ namespace Deployment.Building
             File.Copy(internalBuildSourceProjectOptions.NuGetFullFileName, destFullFileName, true);
         }
 
+        private static void BuildCLI(InternalBuildSourceProjectOptions internalBuildSourceProjectOptions, KindOfBuild kindOfBuild)
+        {
+#if DEBUG
+            _logger.Info($"internalBuildSourceProjectOptions = {internalBuildSourceProjectOptions}");
+            _logger.Info($"kindOfBuild = {kindOfBuild}");
+#endif
+
+            var kindOfBuildResultDir = Path.Combine(internalBuildSourceProjectOptions.ProjectDir, "bin", GetKindOfBuildDirectoryFragment(kindOfBuild));
+
+            _logger.Info($"kindOfBuildResultDir = {kindOfBuildResultDir}");
+
+            var targetFramework = CSharpProjectHelper.GetTargetFramework(internalBuildSourceProjectOptions.ProjectFullFileName);
+
+#if DEBUG
+            _logger.Info($"targetFramework = {targetFramework}");
+#endif
+
+            var binFilesResultDir = Path.Combine(kindOfBuildResultDir, targetFramework);
+
+#if DEBUG
+            _logger.Info($"binFilesResultDir = {binFilesResultDir}");
+#endif
+            var process = Process.Start("dotnet", $"build {internalBuildSourceProjectOptions.ProjectFullFileName}");
+
+            process.WaitForExit();
+
+            var exitCode = process.ExitCode;
+
+#if DEBUG
+            _logger.Info($"process.ExitCode = {exitCode}");
+#endif
+            if (exitCode != 0)
+            {
+                throw new Exception($"Compilation of {internalBuildSourceProjectOptions.ProjectFullFileName} has been failed.");
+            }
+
+            var builtFileNamesList = Directory.EnumerateFiles(binFilesResultDir).ToList();
+
+#if DEBUG
+            _logger.Info($"builtFileNamesList = {JsonConvert.SerializeObject(builtFileNamesList, Formatting.Indented)}");
+#endif
+
+            foreach (var builtFileName in builtFileNamesList)
+            {
+                if (!File.Exists(builtFileName))
+                {
+                    throw new FileNotFoundException($"File {builtFileName} is not exist!");
+                }
+            }
+
+            internalBuildSourceProjectOptions.BuiltFileNamesList = builtFileNamesList;
+            internalBuildSourceProjectOptions.IsBuilt = true;
+        }
+
         public static void BuildLibrary(InternalBuildSourceProjectOptions internalBuildSourceProjectOptions, KindOfBuild kindOfBuild)
         {
 #if DEBUG
@@ -507,7 +624,7 @@ namespace Deployment.Building
                 sb.Append(ch);
             }
 
-            throw new NotImplementedException();
+            return sb.ToString();
         }
 
         private static string GetKindOfBuildDirectoryFragment(KindOfBuild kindOfBuild)
