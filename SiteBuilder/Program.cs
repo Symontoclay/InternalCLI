@@ -15,7 +15,8 @@ namespace SiteBuilder
 
             EVPath.RegVar("APPDIR", Directory.GetCurrentDirectory());
 
-            _logger.Info("Hello World!");
+            var siteBuilder = new SiteBuilder();
+            siteBuilder.Run();
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
