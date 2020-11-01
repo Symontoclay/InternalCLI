@@ -15,25 +15,31 @@ namespace SiteBuilder
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        public static List<SiteElementInfo> Read(string sourceDir, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList)
+        public static SiteElementInfo Read(string sourceDir, string destDir, string siteName, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList)
         {
 #if DEBUG
             _logger.Info($"sourceDir = {sourceDir}");
 #endif
 
-            ProcessDirectory(sourceDir, forbidenDirectoriesList, forbidenFileNamesList);
+            var result = new SiteElementInfo() { Kind = KindOfSiteElement.Root };
+
+            ProcessDirectory(sourceDir, result, sourceDir, destDir, siteName, forbidenDirectoriesList, forbidenFileNamesList);
 
 #if DEBUG
             //_logger.Info($" = {}");
 #endif
 
-            throw new NotImplementedException();
+            return result;
         }
 
-        private static void ProcessDirectory(string directory, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList)
+        private static void ProcessDirectory(string directory, SiteElementInfo parent, string sourceDir, string destDir, string siteName, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList)
         {
 #if DEBUG
+            _logger.Info($"sourceDir = {sourceDir}");
+            _logger.Info($"destDir = {destDir}");
             _logger.Info($"directory = {directory}");
+            _logger.Info($"siteName = {siteName}");
+            _logger.Info($"parent = {parent?.ToBriefString()}");
 #endif
 
             var fileNamesList = Directory.EnumerateFiles(directory);
@@ -62,7 +68,33 @@ namespace SiteBuilder
                 _logger.Info($"fileNamesList (2) = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
 #endif
 
-                //throw new NotImplementedException();
+                var oldParent = parent;
+                parent = new SiteElementInfo() { Kind = KindOfSiteElement.Page, Parent = oldParent };
+                oldParent.SubItemsList.Add(parent);
+
+                parent.InitialFullFileName = indexSpFileName;
+                parent.THtmlFullFileName = indexTHtmlFileName;
+
+                var relativePath = indexSpFileName.Replace(sourceDir, string.Empty).Replace(".sp", ".html").Trim();
+
+#if DEBUG
+                _logger.Info($"relativePath = {relativePath}");
+#endif
+
+                var targetPath = Path.Combine(destDir, relativePath);
+
+#if DEBUG
+                _logger.Info($"targetPath = {targetPath}");
+#endif
+
+                parent.TargetFullFileName = targetPath;
+
+                parent.Href = $"https://{siteName}/{relativePath}";
+
+#if DEBUG
+                //_logger.Info($"oldParent = {oldParent}");
+                _logger.Info($"parent (after) = {parent}");
+#endif
             }
 
             var spFileNamesList = fileNamesList.Where(p => p.EndsWith(".sp")).ToList();
@@ -96,6 +128,33 @@ namespace SiteBuilder
 
                     exceptFileNamesList.Add(spFileName);
                     exceptFileNamesList.Add(tHtmlFileName);
+
+                    var item = new SiteElementInfo() { Kind = KindOfSiteElement.File };
+                    item.Parent = parent;
+                    parent.SubItemsList.Add(item);
+
+                    item.InitialFullFileName = spFileName;
+                    item.THtmlFullFileName = tHtmlFileName;
+
+                    var relativePath = spFileName.Replace(sourceDir, string.Empty).Replace(".sp", ".html").Trim();
+
+#if DEBUG
+                    _logger.Info($"relativePath = {relativePath}");
+#endif
+
+                    var targetPath = Path.Combine(destDir, relativePath);
+
+#if DEBUG
+                    _logger.Info($"targetPath = {targetPath}");
+#endif
+
+                    item.TargetFullFileName = targetPath;
+
+                    item.Href = $"https://{siteName}/{relativePath}";
+
+#if DEBUG
+                    _logger.Info($"item = {item}");
+#endif
                 }
 
                 fileNamesList = fileNamesList.Except(exceptFileNamesList);
@@ -115,13 +174,39 @@ namespace SiteBuilder
 #if DEBUG
                 _logger.Info($"fileName = {fileName}");
 #endif
+
+                var item = new SiteElementInfo() { Kind = KindOfSiteElement.File };
+                item.Parent = parent;
+                parent.SubItemsList.Add(item);
+
+                item.InitialFullFileName = fileName;
+
+                var relativePath = fileName.Replace(sourceDir, string.Empty).Replace(".sp", ".html").Trim();
+
+#if DEBUG
+                _logger.Info($"relativePath = {relativePath}");
+#endif
+
+                var targetPath = Path.Combine(destDir, relativePath);
+
+#if DEBUG
+                _logger.Info($"targetPath = {targetPath}");
+#endif
+
+                item.TargetFullFileName = targetPath;
+
+                item.Href = $"https://{siteName}/{relativePath}";
+
+#if DEBUG
+                _logger.Info($"item = {item}");
+#endif
             }
 
             var subDirsList = Directory.EnumerateDirectories(directory).Where(p => !forbidenDirectoriesList.Contains(p)).ToList();
 
             foreach(var subDir in subDirsList)
             {
-                ProcessDirectory(subDir, forbidenDirectoriesList, forbidenFileNamesList);
+                ProcessDirectory(subDir, parent, sourceDir, destDir, siteName, forbidenDirectoriesList, forbidenFileNamesList);
             }
         }
     }

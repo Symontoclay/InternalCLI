@@ -21,10 +21,10 @@ namespace SiteBuilder
 
             ClearDir();
 
-            var siteElementsList = SiteElementInfoReader.Read(GeneralSettings.SourcePath, new List<string>() { GeneralSettings.TempPath }, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
+            var rootSiteElement = SiteElementInfoReader.Read(GeneralSettings.SourcePath, GeneralSettings.DestPath, GeneralSettings.SiteName, new List<string>() { GeneralSettings.TempPath }, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
 
 #if DEBUG
-            _logger.Info($" = {siteElementsList.WriteListToString()}");
+            _logger.Info($"rootSiteElement = {rootSiteElement}");
 #endif
 
 #if DEBUG
