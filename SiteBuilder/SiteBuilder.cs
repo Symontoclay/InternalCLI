@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using CommonUtils.DebugHelpers;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,14 +21,18 @@ namespace SiteBuilder
 
             ClearDir();
 
+            var siteElementsList = SiteElementInfoReader.Read(GeneralSettings.SourcePath, new List<string>() { GeneralSettings.TempPath }, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
+
+#if DEBUG
+            _logger.Info($" = {siteElementsList.WriteListToString()}");
+#endif
+
 #if DEBUG
             //_logger.Info($" = {}");
 #endif
 
             throw new NotImplementedException();
         }
-
-
 
         private void ClearDir()
         {
