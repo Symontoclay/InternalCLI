@@ -4,6 +4,7 @@ using SiteBuilder.SiteData;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace SiteBuilder
@@ -37,11 +38,51 @@ namespace SiteBuilder
 
             ProcessSiteElementsList(siteElementsList);
 
+            GenerateSiteMap(siteElementsList);
+
 #if DEBUG
-            //_logger.Info($" = {}");
+            _logger.Info("End");
+#endif
+        }
+
+        private void GenerateSiteMap(List<SiteElementInfo> siteElementsList)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("<?xml version='1.0' encoding='UTF-8'?>");
+            sb.AppendLine("<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>");
+            foreach (var siteElement in siteElementsList.Where(p => p.Kind == KindOfSiteElement.Page))
+            {
+                //var uriBuilder = new UriBuilder();
+                //uriBuilder.Scheme = "https";
+                //uriBuilder.Host = GeneralSettings.SiteName;
+                //uriBuilder.Path = page.RelativeHref;
+
+                //var lastMod = DateTime.Now;
+
+                sb.AppendLine("<url>");
+                sb.AppendLine($"<loc>{siteElement.Href}</loc>");
+                //sb.AppendLine($"<lastmod>{lastMod.ToString("yyyy-MM-dd")}</lastmod>");
+                //sb.AppendLine("<changefreq>always</changefreq>");
+                //sb.AppendLine("<priority>0.8</priority>");
+                sb.AppendLine("</url>");
+            }
+            sb.AppendLine("</urlset>");
+
+#if DEBUG
+            //NLog.LogManager.GetCurrentClassLogger().Info($"PredictionProcessingOfConcreteDir sb.ToString() = {sb.ToString()}");
 #endif
 
-            throw new NotImplementedException();
+            var newPath = Path.Combine(GeneralSettings.DestPath, "sitemap.xml");
+
+#if DEBUG
+            //NLog.LogManager.GetCurrentClassLogger().Info($"PredictionProcessingOfConcreteDir newPath = {newPath}");
+#endif
+
+            using (var tmpTextWriter = new StreamWriter(newPath, false, new UTF8Encoding(true)))
+            {
+                tmpTextWriter.Write(sb.ToString());
+                tmpTextWriter.Flush();
+            }
         }
 
         private void ProcessSiteElementsList(List<SiteElementInfo> siteElementsList)
@@ -51,6 +92,11 @@ namespace SiteBuilder
 #if DEBUG
                 _logger.Info($"siteElement = {siteElement}");
 #endif
+
+                if (!Directory.Exists(siteElement.DirectoryName))
+                {
+                    Directory.CreateDirectory(siteElement.DirectoryName);
+                }
 
                 var kind = siteElement.Kind;
 
@@ -63,12 +109,14 @@ namespace SiteBuilder
                         }
                         break;
 
+                    case KindOfSiteElement.File:
+                        File.Copy(siteElement.InitialFullFileName, siteElement.TargetFullFileName);
+                        break;
+
                     default:
                         throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                 }
             }
-
-            throw new NotImplementedException();
         }
 
         private List<SiteElementInfo> LinearizeSiteElementInfoTreeWithoutRoot(SiteElementInfo rootSiteElement)

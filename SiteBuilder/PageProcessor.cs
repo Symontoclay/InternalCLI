@@ -40,13 +40,27 @@ namespace SiteBuilder
             CreateFile();
         }
 
+        private StringBuilder mResult;
+
         private void CreateFile()
+        {
+            mResult = new StringBuilder();
+            GenerateText();
+
+            using (var tmpTextWriter = new StreamWriter(_siteElement.TargetFullFileName, false, new UTF8Encoding(false)))
+            {
+                tmpTextWriter.Write(mResult.ToString());
+                tmpTextWriter.Flush();
+            }
+        }
+
+        private void GenerateText()
         {
 #if DEBUG
             //_logger.Info($" = {}");
 #endif
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private string GetContent()

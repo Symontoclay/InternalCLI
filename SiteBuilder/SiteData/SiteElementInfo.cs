@@ -9,6 +9,7 @@ namespace SiteBuilder.SiteData
     {
         public KindOfSiteElement Kind { get; set; } = KindOfSiteElement.Unknown;
         public string InitialFullFileName { get; set; }
+        public string DirectoryName { get; set; }
         public string THtmlFullFileName { get; set; }
         public string TargetFullFileName { get; set; }
         public string Href { get; set; }
@@ -38,6 +39,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
 
             sb.AppendLine($"{spaces}{nameof(InitialFullFileName)} = {InitialFullFileName}");
+            sb.AppendLine($"{spaces}{nameof(DirectoryName)} = {DirectoryName}");
             sb.AppendLine($"{spaces}{nameof(THtmlFullFileName)} = {THtmlFullFileName}");
             sb.AppendLine($"{spaces}{nameof(TargetFullFileName)} = {TargetFullFileName}");
             sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
@@ -71,6 +73,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
 
             sb.AppendLine($"{spaces}{nameof(InitialFullFileName)} = {InitialFullFileName}");
+            sb.AppendLine($"{spaces}{nameof(DirectoryName)} = {DirectoryName}");
             sb.AppendLine($"{spaces}{nameof(THtmlFullFileName)} = {THtmlFullFileName}");
             sb.AppendLine($"{spaces}{nameof(TargetFullFileName)} = {TargetFullFileName}");
             sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
@@ -104,6 +107,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
 
             sb.AppendLine($"{spaces}{nameof(InitialFullFileName)} = {InitialFullFileName}");
+            sb.AppendLine($"{spaces}{nameof(DirectoryName)} = {DirectoryName}");
             sb.AppendLine($"{spaces}{nameof(THtmlFullFileName)} = {THtmlFullFileName}");
             sb.AppendLine($"{spaces}{nameof(TargetFullFileName)} = {TargetFullFileName}");
             sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");

@@ -91,6 +91,10 @@ namespace SiteBuilder
 
                 parent.TargetFullFileName = targetPath;
 
+                var fileTargetInfo = new FileInfo(targetPath);
+
+                parent.DirectoryName = fileTargetInfo.DirectoryName;
+
                 parent.Href = $"https://{siteName}/{relativePath}";
 
 #if DEBUG
@@ -161,6 +165,10 @@ namespace SiteBuilder
 
                     item.TargetFullFileName = targetPath;
 
+                    var fileTargetInfo = new FileInfo(targetPath);
+
+                    item.DirectoryName = fileTargetInfo.DirectoryName;
+
                     item.Href = $"https://{siteName}/{relativePath}";
 
 #if DEBUG
@@ -183,7 +191,7 @@ namespace SiteBuilder
                 }
 
 #if DEBUG
-                //_logger.Info($"fileName = {fileName}");
+                _logger.Info($"fileName = {fileName}");
 #endif
 
                 var item = new SiteElementInfo() { Kind = KindOfSiteElement.File };
@@ -192,7 +200,7 @@ namespace SiteBuilder
 
                 item.InitialFullFileName = fileName;
 
-                var relativePath = fileName.Replace(sourceDir, string.Empty).Replace(".sp", ".html").Trim();
+                var relativePath = fileName.Replace(sourceDir, string.Empty).Trim();
 
 #if DEBUG
                 //_logger.Info($"relativePath = {relativePath}");
@@ -205,6 +213,10 @@ namespace SiteBuilder
 #endif
 
                 item.TargetFullFileName = targetPath;
+
+                var fileInfo = new FileInfo(targetPath);
+
+                item.DirectoryName = fileInfo.DirectoryName;
 
                 item.Href = $"https://{siteName}/{relativePath}";
 
