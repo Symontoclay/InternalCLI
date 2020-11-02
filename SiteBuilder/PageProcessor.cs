@@ -56,11 +56,39 @@ namespace SiteBuilder
 
         private void GenerateText()
         {
+            AppendLine("<!DOCTYPE html>");
+            AppendLine("<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>");
+            AppendLine("<head>");
+            AppendLine("<meta charset='utf-8' />");
+            AppendLine("<meta name='generator' content='SymOntoClay/InternalCLI'>");
+            AppendLine("<meta property='og:type' content='article' />");
+            AppendLine("<meta name='viewport' content='width=device-width, initial-scale=1'>");
+
 #if DEBUG
             //_logger.Info($" = {}");
 #endif
 
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        protected void Append(string val)
+        {
+            if (GeneralSettings.UseMinification)
+            {
+                val = val.Trim();
+            }
+            mResult.Append(val);
+        }
+
+        protected void AppendLine(string val)
+        {
+            if (GeneralSettings.UseMinification)
+            {
+                Append(val);
+                return;
+            }
+
+            mResult.AppendLine(val);
         }
 
         private string GetContent()

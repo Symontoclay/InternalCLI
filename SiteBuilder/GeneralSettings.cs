@@ -94,6 +94,8 @@ namespace SiteBuilder
 
         public static SiteInfo SiteSettings { get; private set; }
 
+        public static bool UseMinification { get; set; } = false;
+
         private static void ReadSiteSettings()
         {
             var tmpSiteSettingsPath = Path.Combine(SourcePath, "site.site");
