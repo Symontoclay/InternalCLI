@@ -18,7 +18,7 @@ namespace SiteBuilder
         public static SiteElementInfo Read(string sourceDir, string destDir, string siteName, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList)
         {
 #if DEBUG
-            _logger.Info($"sourceDir = {sourceDir}");
+            //_logger.Info($"sourceDir = {sourceDir}");
 #endif
 
             var result = new SiteElementInfo() { Kind = KindOfSiteElement.Root };
@@ -35,23 +35,23 @@ namespace SiteBuilder
         private static void ProcessDirectory(string directory, SiteElementInfo parent, string sourceDir, string destDir, string siteName, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList)
         {
 #if DEBUG
-            _logger.Info($"sourceDir = {sourceDir}");
-            _logger.Info($"destDir = {destDir}");
-            _logger.Info($"directory = {directory}");
-            _logger.Info($"siteName = {siteName}");
-            _logger.Info($"parent = {parent?.ToBriefString()}");
+            //_logger.Info($"sourceDir = {sourceDir}");
+            //_logger.Info($"destDir = {destDir}");
+            //_logger.Info($"directory = {directory}");
+            //_logger.Info($"siteName = {siteName}");
+            //_logger.Info($"parent = {parent?.ToBriefString()}");
 #endif
 
             var fileNamesList = Directory.EnumerateFiles(directory);
 
 #if DEBUG
-            _logger.Info($"fileNamesList = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
+            //_logger.Info($"fileNamesList = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
 #endif
 
             var indexSpFileName = fileNamesList.Where(p => p.EndsWith("index.sp")).SingleOrDefault();
 
 #if DEBUG
-            _logger.Info($"indexSpFileName = {indexSpFileName}");
+            //_logger.Info($"indexSpFileName = {indexSpFileName}");
 #endif
 
             if(!string.IsNullOrWhiteSpace(indexSpFileName))
@@ -59,13 +59,13 @@ namespace SiteBuilder
                 var indexTHtmlFileName = fileNamesList.Where(p => p.EndsWith("index.thtml")).Single();
 
 #if DEBUG
-                _logger.Info($"indexTHtmlFileName = {indexTHtmlFileName}");
+                //_logger.Info($"indexTHtmlFileName = {indexTHtmlFileName}");
 #endif
 
                 fileNamesList = fileNamesList.Except(new List<string> { indexSpFileName, indexTHtmlFileName });
 
 #if DEBUG
-                _logger.Info($"fileNamesList (2) = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
+                //_logger.Info($"fileNamesList (2) = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
 #endif
 
                 var oldParent = parent;
@@ -75,16 +75,18 @@ namespace SiteBuilder
                 parent.InitialFullFileName = indexSpFileName;
                 parent.THtmlFullFileName = indexTHtmlFileName;
 
+                parent.SitePageInfo = SitePageInfo.LoadFromFile(indexSpFileName);
+
                 var relativePath = indexSpFileName.Replace(sourceDir, string.Empty).Replace(".sp", ".html").Trim();
 
 #if DEBUG
-                _logger.Info($"relativePath = {relativePath}");
+                //_logger.Info($"relativePath = {relativePath}");
 #endif
 
                 var targetPath = Path.Combine(destDir, relativePath);
 
 #if DEBUG
-                _logger.Info($"targetPath = {targetPath}");
+                //_logger.Info($"targetPath = {targetPath}");
 #endif
 
                 parent.TargetFullFileName = targetPath;
@@ -93,14 +95,14 @@ namespace SiteBuilder
 
 #if DEBUG
                 //_logger.Info($"oldParent = {oldParent}");
-                _logger.Info($"parent (after) = {parent}");
+                //_logger.Info($"parent (after) = {parent}");
 #endif
             }
 
             var spFileNamesList = fileNamesList.Where(p => p.EndsWith(".sp")).ToList();
 
 #if DEBUG
-            _logger.Info($"spFileNamesList = {JsonConvert.SerializeObject(spFileNamesList, Formatting.Indented)}");
+            //_logger.Info($"spFileNamesList = {JsonConvert.SerializeObject(spFileNamesList, Formatting.Indented)}");
 #endif
 
             if(spFileNamesList.Any())
@@ -112,13 +114,13 @@ namespace SiteBuilder
                     var fileInfo = new FileInfo(spFileName);
 
 #if DEBUG
-                    _logger.Info($"fileInfo.Name = {fileInfo.Name}");
+                    //_logger.Info($"fileInfo.Name = {fileInfo.Name}");
 #endif
 
                     var tHtmlFileName = spFileName.Replace(fileInfo.Name, fileInfo.Name.Replace(".sp", ".thtml"));
 
 #if DEBUG
-                    _logger.Info($"tHtmlFileName = {tHtmlFileName}");
+                    //_logger.Info($"tHtmlFileName = {tHtmlFileName}");
 #endif
 
                     if(!File.Exists(tHtmlFileName))
@@ -136,16 +138,25 @@ namespace SiteBuilder
                     item.InitialFullFileName = spFileName;
                     item.THtmlFullFileName = tHtmlFileName;
 
+                    item.SitePageInfo = SitePageInfo.LoadFromFile(spFileName);
+
+                    item.BreadcrumbTitle = item.SitePageInfo.BreadcrumbTitle;
+
+                    if(string.IsNullOrWhiteSpace(item.BreadcrumbTitle))
+                    {
+                        item.BreadcrumbTitle = item.SitePageInfo.Title;
+                    }
+
                     var relativePath = spFileName.Replace(sourceDir, string.Empty).Replace(".sp", ".html").Trim();
 
 #if DEBUG
-                    _logger.Info($"relativePath = {relativePath}");
+                    //_logger.Info($"relativePath = {relativePath}");
 #endif
 
                     var targetPath = Path.Combine(destDir, relativePath);
 
 #if DEBUG
-                    _logger.Info($"targetPath = {targetPath}");
+                    //_logger.Info($"targetPath = {targetPath}");
 #endif
 
                     item.TargetFullFileName = targetPath;
@@ -153,14 +164,14 @@ namespace SiteBuilder
                     item.Href = $"https://{siteName}/{relativePath}";
 
 #if DEBUG
-                    _logger.Info($"item = {item}");
+                    //_logger.Info($"item = {item}");
 #endif
                 }
 
                 fileNamesList = fileNamesList.Except(exceptFileNamesList);
 
 #if DEBUG
-                _logger.Info($"fileNamesList (3) = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
+                //_logger.Info($"fileNamesList (3) = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
 #endif
             }
 
@@ -172,7 +183,7 @@ namespace SiteBuilder
                 }
 
 #if DEBUG
-                _logger.Info($"fileName = {fileName}");
+                //_logger.Info($"fileName = {fileName}");
 #endif
 
                 var item = new SiteElementInfo() { Kind = KindOfSiteElement.File };
@@ -184,13 +195,13 @@ namespace SiteBuilder
                 var relativePath = fileName.Replace(sourceDir, string.Empty).Replace(".sp", ".html").Trim();
 
 #if DEBUG
-                _logger.Info($"relativePath = {relativePath}");
+                //_logger.Info($"relativePath = {relativePath}");
 #endif
 
                 var targetPath = Path.Combine(destDir, relativePath);
 
 #if DEBUG
-                _logger.Info($"targetPath = {targetPath}");
+                //_logger.Info($"targetPath = {targetPath}");
 #endif
 
                 item.TargetFullFileName = targetPath;
@@ -198,7 +209,7 @@ namespace SiteBuilder
                 item.Href = $"https://{siteName}/{relativePath}";
 
 #if DEBUG
-                _logger.Info($"item = {item}");
+                //_logger.Info($"item = {item}");
 #endif
             }
 

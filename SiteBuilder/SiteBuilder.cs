@@ -1,5 +1,6 @@
 ﻿using CommonUtils.DebugHelpers;
 using NLog;
+using SiteBuilder.SiteData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,14 +25,76 @@ namespace SiteBuilder
             var rootSiteElement = SiteElementInfoReader.Read(GeneralSettings.SourcePath, GeneralSettings.DestPath, GeneralSettings.SiteName, new List<string>() { GeneralSettings.TempPath }, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
 
 #if DEBUG
-            _logger.Info($"rootSiteElement = {rootSiteElement}");
+            //_logger.Info($"rootSiteElement = {rootSiteElement}");
 #endif
+
+            var siteElementsList = LinearizeSiteElementInfoTreeWithoutRoot(rootSiteElement);
+
+#if DEBUG
+            _logger.Info($"siteElementsList.Count = {siteElementsList.Count}");
+            //_logger.Info($"siteElementsList = {siteElementsList.WriteListToString()}");
+#endif
+
+            ProcessSiteElementsList(siteElementsList);
 
 #if DEBUG
             //_logger.Info($" = {}");
 #endif
 
             throw new NotImplementedException();
+        }
+
+        private void ProcessSiteElementsList(List<SiteElementInfo> siteElementsList)
+        {
+            foreach(var siteElement in siteElementsList)
+            {
+#if DEBUG
+                _logger.Info($"siteElement = {siteElement}");
+#endif
+
+                var kind = siteElement.Kind;
+
+                switch(kind)
+                {
+                    case KindOfSiteElement.Page:
+                        {
+                            var pageProcessor = new PageProcessor(siteElement);
+                            pageProcessor.Run();
+                        }
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+                }
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private List<SiteElementInfo> LinearizeSiteElementInfoTreeWithoutRoot(SiteElementInfo rootSiteElement)
+        {
+            var result = new List<SiteElementInfo>();
+
+            LinearizeSiteElementInfoTreeWithoutRoot(rootSiteElement, result);
+
+            return result;
+        }
+
+        private void LinearizeSiteElementInfoTreeWithoutRoot(SiteElementInfo siteElement, List<SiteElementInfo> result)
+        {
+#if DEBUG
+            //_logger.Info($"siteElement = {siteElement}");
+#endif
+
+            if(siteElement.Kind != KindOfSiteElement.Root && !result.Contains(siteElement))
+            {
+                result.Add(siteElement);
+            }
+
+            foreach(var subItem in siteElement.SubItemsList)
+            {
+                LinearizeSiteElementInfoTreeWithoutRoot(subItem, result);
+            }
         }
 
         private void ClearDir()
