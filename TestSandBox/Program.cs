@@ -20,9 +20,19 @@ namespace TestSandBox
 
             EVPath.RegVar("APPDIR", Directory.GetCurrentDirectory());
 
-            TstBuild();
+            TstRoadMap();
+            //TstBuild();
             //TstSimplifyFullNameOfType();
             //TstReadXMLDoc();
+        }
+
+        private static void TstRoadMap()
+        {
+            _logger.Info("Begin");
+
+
+
+            _logger.Info("End");
         }
 
         private static void TstBuild()

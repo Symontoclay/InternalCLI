@@ -1,6 +1,8 @@
 ﻿using CommonUtils.DebugHelpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace SiteBuilder.SiteData
@@ -30,6 +32,25 @@ namespace SiteBuilder.SiteData
             sb.PrintObjListProp(n, nameof(Items), Items);
 
             return sb.ToString();
+        }
+
+        public static MenuInfo GetMenu(string menuName)
+        {
+            if (mMenuDict.ContainsKey(menuName))
+            {
+                return mMenuDict[menuName];
+            }
+
+            var menu = LoadFromFile(Path.Combine(GeneralSettings.SourcePath, menuName));
+            mMenuDict[menuName] = menu;
+            return menu;
+        }
+
+        private static Dictionary<string, MenuInfo> mMenuDict = new Dictionary<string, MenuInfo>();
+
+        public static MenuInfo LoadFromFile(string path)
+        {
+            return JsonConvert.DeserializeObject<MenuInfo>(File.ReadAllText(path));
         }
     }
 }

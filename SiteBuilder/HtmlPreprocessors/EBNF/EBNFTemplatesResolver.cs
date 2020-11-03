@@ -16,7 +16,7 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
 
         public static string Run(string initialContent)
         {
-            //_logger.Info("Begin");
+            _logger.Info("Begin");
 
             var n = 0;
 
@@ -29,22 +29,32 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
             {
                 n++;
 
-                //_logger.Info($"n = {n}");
+                _logger.Info($"n = {n}");
 
                 if (n > 100)
                 {
                     throw new NotSupportedException($"Too much iterations!!!");
                 }
 
-                var intermediateContent = modifiedDoc.Text;
+                var strWriter = new StringWriter();
+                modifiedDoc.Save(strWriter);
+
+                var intermediateContent = strWriter.ToString();
+
+#if DEBUG
+                _logger.Info($"intermediateContent = {intermediateContent}");
+#endif
 
                 modifiedDoc = new HtmlDocument();
                 modifiedDoc.LoadHtml(intermediateContent);
             };
 
-            //_logger.Info("End");
+            _logger.Info("End");
 
-            return modifiedDoc.Text;
+            var resultStrWriter = new StringWriter();
+            modifiedDoc.Save(resultStrWriter);
+
+            return resultStrWriter.ToString();
         }
 
         private static bool RunIteration(HtmlDocument doc, TEBNFCDECLStorage tEBNFCDECLStorage)

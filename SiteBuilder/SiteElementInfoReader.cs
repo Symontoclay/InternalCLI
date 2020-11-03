@@ -75,7 +75,21 @@ namespace SiteBuilder
                 parent.InitialFullFileName = indexSpFileName;
                 parent.THtmlFullFileName = indexTHtmlFileName;
 
-                parent.SitePageInfo = SitePageInfo.LoadFromFile(indexSpFileName);
+                var sitePageInfo = SitePageInfo.LoadFromFile(indexSpFileName);
+
+                parent.SitePageInfo = sitePageInfo;
+
+                if (!string.IsNullOrWhiteSpace(sitePageInfo.AdditionalMenu))
+                {
+                    parent.AdditionalMenu = MenuInfo.GetMenu(sitePageInfo.AdditionalMenu);
+                }
+
+                parent.BreadcrumbTitle = sitePageInfo.BreadcrumbTitle;
+
+                if (string.IsNullOrWhiteSpace(parent.BreadcrumbTitle))
+                {
+                    parent.BreadcrumbTitle = sitePageInfo.Title;
+                }
 
                 var relativePath = indexSpFileName.Replace(sourceDir, string.Empty).Replace(".sp", ".html").Trim();
 
@@ -135,20 +149,27 @@ namespace SiteBuilder
                     exceptFileNamesList.Add(spFileName);
                     exceptFileNamesList.Add(tHtmlFileName);
 
-                    var item = new SiteElementInfo() { Kind = KindOfSiteElement.File };
+                    var item = new SiteElementInfo() { Kind = KindOfSiteElement.Page };
                     item.Parent = parent;
                     parent.SubItemsList.Add(item);
 
                     item.InitialFullFileName = spFileName;
                     item.THtmlFullFileName = tHtmlFileName;
 
-                    item.SitePageInfo = SitePageInfo.LoadFromFile(spFileName);
+                    var sitePageInfo = SitePageInfo.LoadFromFile(spFileName);
 
-                    item.BreadcrumbTitle = item.SitePageInfo.BreadcrumbTitle;
+                    item.SitePageInfo = sitePageInfo;
+
+                    if (!string.IsNullOrWhiteSpace(sitePageInfo.AdditionalMenu))
+                    {
+                        item.AdditionalMenu = MenuInfo.GetMenu(sitePageInfo.AdditionalMenu);
+                    }
+
+                    item.BreadcrumbTitle = sitePageInfo.BreadcrumbTitle;
 
                     if(string.IsNullOrWhiteSpace(item.BreadcrumbTitle))
                     {
-                        item.BreadcrumbTitle = item.SitePageInfo.Title;
+                        item.BreadcrumbTitle = sitePageInfo.Title;
                     }
 
                     var relativePath = spFileName.Replace(sourceDir, string.Empty).Replace(".sp", ".html").Trim();

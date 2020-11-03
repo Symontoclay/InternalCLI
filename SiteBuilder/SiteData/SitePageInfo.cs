@@ -14,7 +14,7 @@ namespace SiteBuilder.SiteData
         public string Title { get; set; } = string.Empty;
         public string BreadcrumbTitle { get; set; } = string.Empty;
         public bool IsBreadcrumbRoot { get; set; }
-        public string AdditionalMenu { get; set; } = null;
+        public string AdditionalMenu { get; set; }
         public bool EnableMathML { get; set; }
         public bool UseMarkdown { get; set; }
         public bool IsReady { get; set; }
@@ -55,7 +55,14 @@ namespace SiteBuilder.SiteData
 
         public static SitePageInfo LoadFromFile(string path)
         {
-            return JsonConvert.DeserializeObject<SitePageInfo>(File.ReadAllText(path));
+            var result = JsonConvert.DeserializeObject<SitePageInfo>(File.ReadAllText(path));
+
+            if(result.Microdata == null)
+            {
+                result.Microdata = new MicroDataInfo();
+            }
+
+            return result;
         }
     }
 }

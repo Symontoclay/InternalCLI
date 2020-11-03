@@ -2,6 +2,7 @@
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -26,7 +27,10 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
 
             DiscoverNodes(doc.DocumentNode, doc);
 
-            return doc.Text;
+            var strWriter = new StringWriter();
+            doc.Save(strWriter);
+
+            return strWriter.ToString();
         }
 
         private static void DiscoverNodes(HtmlNode rootNode, HtmlDocument doc)

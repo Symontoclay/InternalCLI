@@ -2,6 +2,7 @@
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -27,7 +28,10 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
 #endif
             CreateContents(contentsInfo, doc);
 
-            return doc.Text;
+            var strWriter = new StringWriter();
+            doc.Save(strWriter);
+
+            return strWriter.ToString();
         }
 
         private static void CreateContents(ReaderResultOfHtmlContentGenerator contentsInfo, HtmlDocument doc)

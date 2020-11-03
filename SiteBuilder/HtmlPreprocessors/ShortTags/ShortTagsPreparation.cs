@@ -2,6 +2,7 @@
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -32,7 +33,10 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             DiscoverHrefNodes(doc.DocumentNode, hrefsDict);
             DiscoverNodes(doc.DocumentNode, doc, hrefsDict);
 
-            return doc.Text;
+            var strWriter = new StringWriter();
+            doc.Save(strWriter);
+
+            return strWriter.ToString();
         }
 
         private static void DiscoverHrefNodes(HtmlNode rootNode, Dictionary<string, string> hrefsDict)
