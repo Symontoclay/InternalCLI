@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommonUtils\CommonUtils.csproj" />
+    <ProjectReference Include="..\XMLDocReader\XMLDocReader.csproj" />
   </ItemGroup>
 
   <ItemGroup>

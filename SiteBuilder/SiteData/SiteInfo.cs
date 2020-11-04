@@ -18,6 +18,7 @@ namespace SiteBuilder.SiteData
         public string Logo { get; set; } = string.Empty;
         public string RoadMapJsonPath { get; set; } = string.Empty;
         public string ReleaseNotesJsonPath { get; set; } = string.Empty;
+        public string CSharpApiJsonPath { get; set; } = string.Empty;
 
         private void Init()
         {
@@ -29,6 +30,11 @@ namespace SiteBuilder.SiteData
             if(!string.IsNullOrWhiteSpace(ReleaseNotesJsonPath))
             {
                 ReleaseNotesJsonPath = EVPath.Normalize(ReleaseNotesJsonPath);
+            }
+
+            if (!string.IsNullOrWhiteSpace(CSharpApiJsonPath))
+            {
+                CSharpApiJsonPath = EVPath.Normalize(CSharpApiJsonPath);
             }
         }
 
@@ -58,6 +64,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(Logo)} = {Logo}");
             sb.AppendLine($"{spaces}{nameof(RoadMapJsonPath)} = {RoadMapJsonPath}");
             sb.AppendLine($"{spaces}{nameof(ReleaseNotesJsonPath)} = {ReleaseNotesJsonPath}");
+            sb.AppendLine($"{spaces}{nameof(CSharpApiJsonPath)} = {CSharpApiJsonPath}");
 
             return sb.ToString();
         }

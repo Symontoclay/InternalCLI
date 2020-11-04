@@ -131,6 +131,13 @@ namespace SiteBuilder
 #if DEBUG
             _logger.Info($"ReleaseItemsList = {ReleaseItemsList.WriteListToString()}");
 #endif
+
+            var csharpApiJsonPath = SiteSettings.CSharpApiJsonPath;
+
+            if (!string.IsNullOrWhiteSpace(csharpApiJsonPath))
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
