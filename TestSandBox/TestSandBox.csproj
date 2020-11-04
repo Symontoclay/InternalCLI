@@ -23,6 +23,9 @@
     <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="roadmap.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="SymOntoClay.Core.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

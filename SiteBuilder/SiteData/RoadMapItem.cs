@@ -10,17 +10,16 @@ namespace SiteBuilder.SiteData
         public KindOfRoadMapItem Kind { get; set; } = KindOfRoadMapItem.Unknown;
         public DateTime? Start { get; set; }
         public DateTime? End { get; set; }
-        public DateTime? ClaculatedStart { get; set; }
-        public DateTime? ClaculatedEnd { get; set; }
         public int? ExpectedDuration { get; set; }
         public KindOfDuration KindOfExpectedDuration { get; set; } = KindOfDuration.Unknown;
         public KindOfRoadMapItemCompeltion KindOfCompeltion { get; set; }
-        public string Name { get; set; }
-        public string Version { get; set; }
-        public string ShortDescription { get; set; }
-        public string Description { get; set; }
-        public string SeeMoreHref { get; set; }
-        public string Remarks { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Version { get; set; } = string.Empty;
+        public string ShortDescription { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string SeeMoreHref { get; set; } = string.Empty;
+        public string Remarks { get; set; } = string.Empty;
+        public List<string> Tags { get; set; } = new List<string>();
         public bool IsMarkdown { get; set; }
         public RoadMapItem Parent { get; set; }
         public List<RoadMapItem> SubItemsList { get; set; } = new List<RoadMapItem>();
@@ -46,8 +45,6 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Start)} = {Start}");
             sb.AppendLine($"{spaces}{nameof(End)} = {End}");
-            sb.AppendLine($"{spaces}{nameof(ClaculatedStart)} = {ClaculatedStart}");
-            sb.AppendLine($"{spaces}{nameof(ClaculatedEnd)} = {ClaculatedEnd}");
             sb.AppendLine($"{spaces}{nameof(ExpectedDuration)} = {ExpectedDuration}");
             sb.AppendLine($"{spaces}{nameof(KindOfExpectedDuration)} = {KindOfExpectedDuration}");
             sb.AppendLine($"{spaces}{nameof(KindOfCompeltion)} = {KindOfCompeltion}");
@@ -57,6 +54,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(Description)} = {Description}");
             sb.AppendLine($"{spaces}{nameof(SeeMoreHref)} = {SeeMoreHref}");
             sb.AppendLine($"{spaces}{nameof(Remarks)} = {Remarks}");
+            sb.PrintPODList(n, nameof(Tags), Tags);
             sb.AppendLine($"{spaces}{nameof(IsMarkdown)} = {IsMarkdown}");
 
             sb.PrintBriefObjProp(n, nameof(Parent), Parent);
@@ -86,8 +84,6 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Start)} = {Start}");
             sb.AppendLine($"{spaces}{nameof(End)} = {End}");
-            sb.AppendLine($"{spaces}{nameof(ClaculatedStart)} = {ClaculatedStart}");
-            sb.AppendLine($"{spaces}{nameof(ClaculatedEnd)} = {ClaculatedEnd}");
             sb.AppendLine($"{spaces}{nameof(ExpectedDuration)} = {ExpectedDuration}");
             sb.AppendLine($"{spaces}{nameof(KindOfExpectedDuration)} = {KindOfExpectedDuration}");
             sb.AppendLine($"{spaces}{nameof(KindOfCompeltion)} = {KindOfCompeltion}");
@@ -97,6 +93,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(Description)} = {Description}");
             sb.AppendLine($"{spaces}{nameof(SeeMoreHref)} = {SeeMoreHref}");
             sb.AppendLine($"{spaces}{nameof(Remarks)} = {Remarks}");
+            sb.PrintPODList(n, nameof(Tags), Tags);
             sb.AppendLine($"{spaces}{nameof(IsMarkdown)} = {IsMarkdown}");
 
             sb.PrintBriefObjProp(n, nameof(Parent), Parent);
@@ -126,8 +123,6 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Start)} = {Start}");
             sb.AppendLine($"{spaces}{nameof(End)} = {End}");
-            sb.AppendLine($"{spaces}{nameof(ClaculatedStart)} = {ClaculatedStart}");
-            sb.AppendLine($"{spaces}{nameof(ClaculatedEnd)} = {ClaculatedEnd}");
             sb.AppendLine($"{spaces}{nameof(ExpectedDuration)} = {ExpectedDuration}");
             sb.AppendLine($"{spaces}{nameof(KindOfExpectedDuration)} = {KindOfExpectedDuration}");
             sb.AppendLine($"{spaces}{nameof(KindOfCompeltion)} = {KindOfCompeltion}");
@@ -137,6 +132,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(Description)} = {Description}");
             sb.AppendLine($"{spaces}{nameof(SeeMoreHref)} = {SeeMoreHref}");
             sb.AppendLine($"{spaces}{nameof(Remarks)} = {Remarks}");
+            sb.PrintPODList(n, nameof(Tags), Tags);
             sb.AppendLine($"{spaces}{nameof(IsMarkdown)} = {IsMarkdown}");
 
             sb.PrintExisting(n, nameof(Parent), Parent);

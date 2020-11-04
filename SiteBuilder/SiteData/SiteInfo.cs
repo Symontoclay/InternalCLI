@@ -17,12 +17,18 @@ namespace SiteBuilder.SiteData
         public bool EnableFavicon { get; set; }
         public string Logo { get; set; } = string.Empty;
         public string RoadMapJsonPath { get; set; } = string.Empty;
+        public string ReleaseNotesJsonPath { get; set; } = string.Empty;
 
         private void Init()
         {
             if (!string.IsNullOrWhiteSpace(RoadMapJsonPath))
             {
                 RoadMapJsonPath = EVPath.Normalize(RoadMapJsonPath);
+            }
+
+            if(!string.IsNullOrWhiteSpace(ReleaseNotesJsonPath))
+            {
+                ReleaseNotesJsonPath = EVPath.Normalize(ReleaseNotesJsonPath);
             }
         }
 
@@ -51,6 +57,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(EnableFavicon)} = {EnableFavicon}");
             sb.AppendLine($"{spaces}{nameof(Logo)} = {Logo}");
             sb.AppendLine($"{spaces}{nameof(RoadMapJsonPath)} = {RoadMapJsonPath}");
+            sb.AppendLine($"{spaces}{nameof(ReleaseNotesJsonPath)} = {ReleaseNotesJsonPath}");
 
             return sb.ToString();
         }

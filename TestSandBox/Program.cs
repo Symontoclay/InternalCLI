@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using NLog;
+using SiteBuilder.SiteData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,7 +31,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-
+            var handler = new RoadMapHandler();
+            handler.Run();
 
             _logger.Info("End");
         }

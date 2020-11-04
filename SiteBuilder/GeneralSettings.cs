@@ -1,4 +1,5 @@
 ﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
 using NLog;
 using SiteBuilder.SiteData;
 using System;
@@ -96,6 +97,9 @@ namespace SiteBuilder
 
         public static bool UseMinification { get; set; } = false;
 
+        public static List<RoadMapItem> RoadMapItemsList { get; private set; } = new List<RoadMapItem>();
+        public static List<ReleaseItem> ReleaseItemsList { get; private set; } = new List<ReleaseItem>();
+
         private static void ReadSiteSettings()
         {
             var tmpSiteSettingsPath = Path.Combine(SourcePath, "site.site");
@@ -104,6 +108,28 @@ namespace SiteBuilder
 
 #if DEBUG
             _logger.Info($"SiteSettings = {SiteSettings}");
+#endif
+
+            var roadMapFileName = SiteSettings.RoadMapJsonPath;
+
+            if (!string.IsNullOrWhiteSpace(roadMapFileName))
+            {
+                RoadMapItemsList = RoadMapReader.ReadAndPrepare(roadMapFileName);
+            }
+
+#if DEBUG
+            _logger.Info($"RoadMapItemsList = {RoadMapItemsList.WriteListToString()}");
+#endif
+
+            var releaseNotesFileName = SiteSettings.ReleaseNotesJsonPath;
+
+            if(!string.IsNullOrWhiteSpace(releaseNotesFileName))
+            {
+                ReleaseItemsList = ReleaseItemsReader.Read(releaseNotesFileName);
+            }
+
+#if DEBUG
+            _logger.Info($"ReleaseItemsList = {ReleaseItemsList.WriteListToString()}");
 #endif
         }
     }
