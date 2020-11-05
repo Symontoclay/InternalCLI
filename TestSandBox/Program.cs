@@ -1,4 +1,5 @@
 ﻿using CommonUtils;
+using Newtonsoft.Json;
 using NLog;
 using SiteBuilder.SiteData;
 using System;
@@ -21,9 +22,10 @@ namespace TestSandBox
 
             EVPath.RegVar("APPDIR", Directory.GetCurrentDirectory());
 
-            TstRoadMap();
-            //TstBuild();
+            //TstRoadMap();
+            TstBuild();
             //TstSimplifyFullNameOfType();
+            //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
         }
 
@@ -66,6 +68,37 @@ namespace TestSandBox
             name = NamesHelper.SimplifyFullNameOfType(typesDict.GetType().FullName);
 
             _logger.Info($"name (2) = {name}");
+
+            _logger.Info("End");
+        }
+
+        private static void TstCreateCSharpApiOptionsFile()
+        {
+            _logger.Info("Begin");
+
+            var options = new CSharpApiOptions()
+            {
+                SolutionDir = "%USERPROFILE%/Documents/GitHub/SymOntoClay",
+                AlternativeSolutionDir = "%USERPROFILE%/source/repos/SymOntoClay",
+                XmlDocFiles = new List<string>()
+                {
+                    "SymOntoClayCoreHelper/SymOntoClay.CoreHelper.xml",
+                    "SymOntoClayCore/SymOntoClay.Core.xml",
+                    "SymOntoClayUnityAssetCore/SymOntoClay.UnityAsset.Core.xml"
+                },
+                UnityAssetCoreRootTypes = new List<string>()
+                {
+                    "T:SymOntoClay.UnityAsset.Core.WorldFactory"
+                },
+                PublicMembersOnly = true,
+                IgnoreErrors = true
+            };
+
+            _logger.Info($"options = {options}");
+
+            var jsonStr = JsonConvert.SerializeObject(options, Formatting.Indented);
+
+            _logger.Info($"jsonStr = {jsonStr}");
 
             _logger.Info("End");
         }

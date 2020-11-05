@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Text;
+using XMLDocReader.CSharpDoc;
 
 namespace SiteBuilder
 {
@@ -99,6 +101,7 @@ namespace SiteBuilder
 
         public static List<RoadMapItem> RoadMapItemsList { get; private set; } = new List<RoadMapItem>();
         public static List<ReleaseItem> ReleaseItemsList { get; private set; } = new List<ReleaseItem>();
+        public static List<PackageCard> CSharpApiXMLDocsList { get; private set; } = new List<PackageCard>();
 
         private static void ReadSiteSettings()
         {
@@ -132,12 +135,71 @@ namespace SiteBuilder
             _logger.Info($"ReleaseItemsList = {ReleaseItemsList.WriteListToString()}");
 #endif
 
+            ReadCSharpApiXMLDocsList();
+        }
+
+        private static void ReadCSharpApiXMLDocsList()
+        {
             var csharpApiJsonPath = SiteSettings.CSharpApiJsonPath;
 
-            if (!string.IsNullOrWhiteSpace(csharpApiJsonPath))
+#if DEBUG
+            _logger.Info($"csharpApiJsonPath = {csharpApiJsonPath}");
+#endif
+
+            if (string.IsNullOrWhiteSpace(csharpApiJsonPath))
             {
-                throw new NotImplementedException();
+                return;
             }
+
+            var csharpApiOptions = CSharpApiOptions.LoadFromFile(csharpApiJsonPath);
+
+#if DEBUG
+            _logger.Info($"csharpApiOptions = {csharpApiOptions}");
+#endif
+
+            var targetSolutionDir = EVPath.Normalize(csharpApiOptions.SolutionDir);
+
+            _logger.Info($"targetSolutionDir = {targetSolutionDir}");
+
+            if(string.IsNullOrWhiteSpace(targetSolutionDir) || !Directory.Exists(targetSolutionDir))
+            {
+                targetSolutionDir = EVPath.Normalize(csharpApiOptions.AlternativeSolutionDir);
+
+                if(string.IsNullOrWhiteSpace(targetSolutionDir) || !Directory.Exists(targetSolutionDir))
+                {
+                    throw new Exception($"Both '{csharpApiOptions.SolutionDir}' and '{csharpApiOptions.AlternativeSolutionDir}' paths are invalid.");
+                }                
+            }
+
+            _logger.Info($"targetSolutionDir (after) = {targetSolutionDir}");
+
+            if(!csharpApiOptions.XmlDocFiles.Any())
+            {
+                throw new Exception("There are not any xml documentation files.");
+            }
+
+            var fileNamesList = new List<string>();
+
+            foreach (var xmlDocFile in csharpApiOptions.XmlDocFiles)
+            {
+                fileNamesList.Add(Path.Combine(targetSolutionDir, xmlDocFile));
+            }
+
+            var options = new CSharpXMLDocLoaderOptions()
+            {
+                XmlFileNamesList = fileNamesList,
+                TargetRootTypeNamesList = csharpApiOptions.UnityAssetCoreRootTypes,
+                PublicMembersOnly = csharpApiOptions.PublicMembersOnly,
+                IgnoreErrors = csharpApiOptions.IgnoreErrors
+            };
+
+            _logger.Info($"options = {options}");
+
+            CSharpApiXMLDocsList = CSharpXMLDocLoader.Load(options);
+
+#if DEBUG
+            _logger.Info($"CSharpApiXMLDocsList.Count = {CSharpApiXMLDocsList.Count}");
+#endif
         }
     }
 }

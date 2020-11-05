@@ -16,7 +16,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var solutionDir = "%USERPROFILE%/Documents/GitHub/SymOntoClay";
+            //var solutionDir = "%USERPROFILE%/Documents/GitHub/SymOntoClay";
+            var solutionDir = "%USERPROFILE%/source/repos/SymOntoClay";
 
             _logger.Info($"solutionDir = {solutionDir}");
 
@@ -85,11 +86,11 @@ namespace TestSandBox
 
             //options.TargetsOptions.Add(target);
 
-            //var target = new BuildTargetOptions();
-            //target.TargetDir = targetLibraryFolderDir;
-            //target.Kind = KindOfBuildTarget.LibraryFolder;
+            var target = new BuildTargetOptions();
+            target.TargetDir = targetLibraryFolderDir;
+            target.Kind = KindOfBuildTarget.LibraryFolder;
 
-            //options.TargetsOptions.Add(target);
+            options.TargetsOptions.Add(target);
 
             //var target = new BuildTargetOptions();
             //target.TargetDir = targetLibraryArchDir;
@@ -109,11 +110,11 @@ namespace TestSandBox
 
             //options.TargetsOptions.Add(target);
 
-            var target = new BuildTargetOptions();
-            target.TargetDir = targetCLIArchDir;
-            target.Kind = KindOfBuildTarget.CLIArch;
-
-            options.TargetsOptions.Add(target);
+            //var target = new BuildTargetOptions();
+            //target.TargetDir = targetCLIArchDir;
+            //target.Kind = KindOfBuildTarget.CLIArch;
+            
+            //options.TargetsOptions.Add(target);
 
             //_logger.Info($"options = {options}");
 
