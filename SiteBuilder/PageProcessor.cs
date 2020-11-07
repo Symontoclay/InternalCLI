@@ -271,7 +271,7 @@ namespace SiteBuilder
             Append("</span>");
             Append("&nbsp;");
             Append("<span>");
-            Append("An open source experimental domain-specific language for game NPC.");
+            Append("is game AI experimental open source indie-framework with its own DSL.");
             Append("</span>");
             AppendLine("</p>");
         }
