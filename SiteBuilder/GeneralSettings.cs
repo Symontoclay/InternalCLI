@@ -63,6 +63,8 @@ namespace SiteBuilder
 
                 TempPath = EVPath.Normalize(initTempPath);
 
+                IgnoredDirsList.Add(TempPath);
+
 #if DEBUG
                 _logger.Info($"GeneralSettings() TempPath = {TempPath}");
 #endif
@@ -94,6 +96,8 @@ namespace SiteBuilder
         public static string DestPath { get; private set; } = string.Empty;
 
         public static string TempPath { get; private set; } = string.Empty;
+
+        public static List<string> IgnoredDirsList { get; private set; } = new List<string>();
 
         public static SiteInfo SiteSettings { get; private set; }
 
@@ -173,7 +177,9 @@ namespace SiteBuilder
 
             _logger.Info($"targetSolutionDir (after) = {targetSolutionDir}");
 
-            if(!csharpApiOptions.XmlDocFiles.Any())
+            IgnoredDirsList.Add(targetSolutionDir);
+
+            if (!csharpApiOptions.XmlDocFiles.Any())
             {
                 throw new Exception("There are not any xml documentation files.");
             }

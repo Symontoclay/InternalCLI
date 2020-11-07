@@ -1,4 +1,5 @@
 ﻿using CommonUtils.DebugHelpers;
+using Newtonsoft.Json;
 using NLog;
 using SiteBuilder.SiteData;
 using System;
@@ -23,7 +24,11 @@ namespace SiteBuilder
 
             ClearDir();
 
-            var rootSiteElement = SiteElementInfoReader.Read(GeneralSettings.SourcePath, GeneralSettings.DestPath, GeneralSettings.SiteName, new List<string>() { GeneralSettings.TempPath }, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
+#if DEBUG
+            _logger.Info($"GeneralSettings.IgnoredDirsList = {JsonConvert.SerializeObject(GeneralSettings.IgnoredDirsList, Formatting.Indented)}");
+#endif
+
+            var rootSiteElement = SiteElementInfoReader.Read(GeneralSettings.SourcePath, GeneralSettings.DestPath, GeneralSettings.SiteName, GeneralSettings.IgnoredDirsList, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
 
 #if DEBUG
             //_logger.Info($"rootSiteElement = {rootSiteElement}");
