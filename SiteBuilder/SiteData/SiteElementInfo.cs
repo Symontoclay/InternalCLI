@@ -13,6 +13,11 @@ namespace SiteBuilder.SiteData
         public string THtmlFullFileName { get; set; }
         public string TargetFullFileName { get; set; }
         public string Href { get; set; }
+        public bool AddCssToPage { get; set; }
+        public bool ProcessLessForPage { get; set; }
+        public string InitiallCssFullFileName { get; set; }
+        public string TargetCssFullFileName { get; set; }
+        public string CssHrefForPage { get; set; }
         public string BreadcrumbTitle { get; set; } = string.Empty;
         public SitePageInfo SitePageInfo { get; set; }
         public MenuInfo AdditionalMenu { get; set; }
@@ -45,6 +50,13 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(THtmlFullFileName)} = {THtmlFullFileName}");
             sb.AppendLine($"{spaces}{nameof(TargetFullFileName)} = {TargetFullFileName}");
             sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
+
+            sb.AppendLine($"{spaces}{nameof(AddCssToPage)} = {AddCssToPage}");
+            sb.AppendLine($"{spaces}{nameof(ProcessLessForPage)} = {ProcessLessForPage}");
+            sb.AppendLine($"{spaces}{nameof(InitiallCssFullFileName)} = {InitiallCssFullFileName}");
+            sb.AppendLine($"{spaces}{nameof(TargetCssFullFileName)} = {TargetCssFullFileName}");
+            sb.AppendLine($"{spaces}{nameof(CssHrefForPage)} = {CssHrefForPage}");
+
             sb.AppendLine($"{spaces}{nameof(BreadcrumbTitle)} = {BreadcrumbTitle}");
             sb.PrintObjProp(n, nameof(SitePageInfo), SitePageInfo);
             sb.PrintObjProp(n, nameof(AdditionalMenu), AdditionalMenu);
@@ -81,6 +93,13 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(THtmlFullFileName)} = {THtmlFullFileName}");
             sb.AppendLine($"{spaces}{nameof(TargetFullFileName)} = {TargetFullFileName}");
             sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
+
+            sb.AppendLine($"{spaces}{nameof(AddCssToPage)} = {AddCssToPage}");
+            sb.AppendLine($"{spaces}{nameof(ProcessLessForPage)} = {ProcessLessForPage}");
+            sb.AppendLine($"{spaces}{nameof(InitiallCssFullFileName)} = {InitiallCssFullFileName}");
+            sb.AppendLine($"{spaces}{nameof(TargetCssFullFileName)} = {TargetCssFullFileName}");
+            sb.AppendLine($"{spaces}{nameof(CssHrefForPage)} = {CssHrefForPage}");
+
             sb.AppendLine($"{spaces}{nameof(BreadcrumbTitle)} = {BreadcrumbTitle}");
             sb.PrintObjProp(n, nameof(SitePageInfo), SitePageInfo);
             sb.PrintObjProp(n, nameof(AdditionalMenu), AdditionalMenu);
@@ -117,6 +136,13 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(THtmlFullFileName)} = {THtmlFullFileName}");
             sb.AppendLine($"{spaces}{nameof(TargetFullFileName)} = {TargetFullFileName}");
             sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
+
+            sb.AppendLine($"{spaces}{nameof(AddCssToPage)} = {AddCssToPage}");
+            sb.AppendLine($"{spaces}{nameof(ProcessLessForPage)} = {ProcessLessForPage}");
+            sb.AppendLine($"{spaces}{nameof(InitiallCssFullFileName)} = {InitiallCssFullFileName}");
+            sb.AppendLine($"{spaces}{nameof(TargetCssFullFileName)} = {TargetCssFullFileName}");
+            sb.AppendLine($"{spaces}{nameof(CssHrefForPage)} = {CssHrefForPage}");
+
             sb.AppendLine($"{spaces}{nameof(BreadcrumbTitle)} = {BreadcrumbTitle}");
             sb.AppendLine($"{spaces}{nameof(LastUpdateDate)} = {LastUpdateDate}");
 

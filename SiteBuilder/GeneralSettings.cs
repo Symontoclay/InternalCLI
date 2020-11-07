@@ -18,10 +18,35 @@ namespace SiteBuilder
 
         static GeneralSettings()
         {
+            var useLocalhostStr = ConfigurationManager.AppSettings["useLocalhost"];
+
+            if(!string.IsNullOrWhiteSpace(useLocalhostStr))
+            {
+                UseLocalhost = bool.Parse(useLocalhostStr);
+            }
+
+#if DEBUG
+            _logger.Info($"UseLocalhost = {UseLocalhost}");
+#endif
+
+
             SiteName = ConfigurationManager.AppSettings["siteName"];
 
 #if DEBUG
             _logger.Info($"SiteName = {SiteName}");
+#endif
+
+            if(UseLocalhost)
+            {
+                SiteHref = "http://localhost";
+            }
+            else
+            {
+                SiteHref = $"https://{SiteName}";
+            }
+
+#if DEBUG
+            _logger.Info($"SiteHref = {SiteHref}");
 #endif
 
             var rootPath = ConfigAppSettingsHelper.GetExistingDirectoryName("rootPath");
@@ -90,6 +115,7 @@ namespace SiteBuilder
         public const string VSDir = ".vs";
 
         public static string SiteName { get; private set; } = string.Empty;
+        public static string SiteHref { get; private set; } = string.Empty;
 
         public static string SourcePath { get; private set; } = string.Empty;
 
@@ -102,6 +128,8 @@ namespace SiteBuilder
         public static SiteInfo SiteSettings { get; private set; }
 
         public static bool UseMinification { get; set; } = false;
+
+        public static bool UseLocalhost { get; set; }
 
         public static List<RoadMapItem> RoadMapItemsList { get; private set; } = new List<RoadMapItem>();
         public static List<ReleaseItem> ReleaseItemsList { get; private set; } = new List<ReleaseItem>();

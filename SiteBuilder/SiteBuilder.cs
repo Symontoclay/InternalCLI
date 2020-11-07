@@ -1,4 +1,5 @@
 ﻿using CommonUtils.DebugHelpers;
+using dotless.Core;
 using Newtonsoft.Json;
 using NLog;
 using SiteBuilder.SiteData;
@@ -28,7 +29,7 @@ namespace SiteBuilder
             _logger.Info($"GeneralSettings.IgnoredDirsList = {JsonConvert.SerializeObject(GeneralSettings.IgnoredDirsList, Formatting.Indented)}");
 #endif
 
-            var rootSiteElement = SiteElementInfoReader.Read(GeneralSettings.SourcePath, GeneralSettings.DestPath, GeneralSettings.SiteName, GeneralSettings.IgnoredDirsList, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
+            var rootSiteElement = SiteElementInfoReader.Read(GeneralSettings.SourcePath, GeneralSettings.DestPath, GeneralSettings.SiteHref, GeneralSettings.IgnoredDirsList, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
 
 #if DEBUG
             //_logger.Info($"rootSiteElement = {rootSiteElement}");
@@ -116,6 +117,24 @@ namespace SiteBuilder
 
                     case KindOfSiteElement.File:
                         File.Copy(siteElement.InitialFullFileName, siteElement.TargetFullFileName);
+                        break;
+
+                    case KindOfSiteElement.Less:
+                        {
+                            var lessContent = File.ReadAllText(siteElement.InitialFullFileName);
+
+#if DEBUG
+                            _logger.Info($"lessContent = {lessContent}");
+#endif
+
+                            var cssContent = Less.Parse(lessContent);
+
+#if DEBUG
+                            _logger.Info($"cssContent = {cssContent}");
+#endif
+
+                            File.WriteAllText(siteElement.TargetFullFileName, cssContent);
+                        }
                         break;
 
                     default:

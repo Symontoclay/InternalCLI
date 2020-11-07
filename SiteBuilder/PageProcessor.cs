@@ -1,4 +1,6 @@
 ﻿using CommonMark;
+using dotless.Core;
+using HtmlAgilityPack;
 using NLog;
 using SiteBuilder.HtmlPreprocessors.EBNF;
 using SiteBuilder.HtmlPreprocessors.InThePageContentGen;
@@ -6,6 +8,7 @@ using SiteBuilder.HtmlPreprocessors.ShortTags;
 using SiteBuilder.SiteData;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -41,19 +44,57 @@ namespace SiteBuilder
                 return;
             }
 
+            ProcessCssOrLess();
+
             CreateFile();
+
+#if DEBUG
+            //_logger.Info($" = {}");
+#endif
         }
 
         private StringBuilder mResult;
+        private bool _addOwnCss;
+
+        private void ProcessCssOrLess()
+        {
+            if(!_siteElement.AddCssToPage)
+            {
+                return;
+            }
+
+            var targetFile = _siteElement.InitiallCssFullFileName;
+
+#if DEBUG
+            _logger.Info($"targetFile = {targetFile}");
+#endif
+
+            var content = File.ReadAllText(targetFile);
+
+            if(string.IsNullOrWhiteSpace(content))
+            {
+                return;
+            }
+
+            _addOwnCss = true;
+
+            if (_siteElement.ProcessLessForPage)
+            {
+                content = Less.Parse(content);
+            }
+
+            File.WriteAllText(_siteElement.TargetCssFullFileName, content);
+        }
 
         private void CreateFile()
         {
             mResult = new StringBuilder();
             GenerateText();
+            var content = FillAppDomainNameInHrefs(mResult.ToString());
 
             using (var textWriter = new StreamWriter(_siteElement.TargetFullFileName, false, new UTF8Encoding(false)))
             {
-                textWriter.Write(mResult.ToString());
+                textWriter.Write(content);
                 textWriter.Flush();
             }
 
@@ -134,7 +175,12 @@ namespace SiteBuilder
 
             if (_siteElement.AdditionalMenu != null)
             {
-                AppendLine("<link rel='stylesheet' href='/gnu-clay-menu.css'>");
+                AppendLine("<link rel='stylesheet' href='/sym-onto-clay-menu.css'>");
+            }
+
+            if(_addOwnCss)
+            {
+                AppendLine($"<link rel='stylesheet' href='{_siteElement.CssHrefForPage}'>");
             }
 
             AppendLine("<script src='https://code.jquery.com/jquery-3.2.1.js'></script>");
@@ -297,7 +343,7 @@ namespace SiteBuilder
 
                 if (item.Items.Any())
                 {
-                    var tmpId = $"id{Guid.NewGuid().ToString("D")}";
+                    var tmpId = $"id{Guid.NewGuid():D}";
                     tmpSb.Append("<div class='dropdown' style='display:inline;'>");
                     tmpSb.Append($"<button class='btn dropdown-toggle' type='button' id='{tmpId}' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>");
                     tmpSb.Append(item.Label);
@@ -538,6 +584,85 @@ namespace SiteBuilder
             }
 
             return sb.ToString().Trim();
+        }
+
+        private string FillAppDomainNameInHrefs(string content)
+        {
+            var doc = new HtmlDocument();
+            doc.LoadHtml(content);
+
+            FillAppDomainNameInHrefs(doc.DocumentNode);
+
+            var strWriter = new StringWriter();
+            doc.Save(strWriter);
+
+            return strWriter.ToString();
+        }
+
+        private void FillAppDomainNameInHrefs(HtmlNode rootNode)
+        {
+#if DEBUG
+            _logger.Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
+#endif
+
+            var href = rootNode.GetAttributeValue("href", null);
+
+#if DEBUG
+            _logger.Info($"href = {href}");
+#endif
+
+            if(!string.IsNullOrWhiteSpace(href))
+            {
+                if(!href.StartsWith("https://") && !href.StartsWith("http://"))
+                {
+                    if(href.StartsWith("/"))
+                    {
+                        href = $"{GeneralSettings.SiteHref}{href}";
+                    }
+                    else
+                    {
+                        href = $"{GeneralSettings.SiteHref}/{href}";
+                    }
+
+#if DEBUG
+                    _logger.Info($"href (after) = {href}");
+#endif
+
+                    rootNode.SetAttributeValue("href", href);
+                }                
+            }
+
+            var src = rootNode.GetAttributeValue("src", null);
+
+#if DEBUG
+            _logger.Info($"src = {src}");
+#endif
+
+            if (!string.IsNullOrWhiteSpace(src))
+            {
+                if(!src.StartsWith("https://") && !src.StartsWith("http://"))
+                {
+                    if (src.StartsWith("/"))
+                    {
+                        src = $"{GeneralSettings.SiteHref}{src}";
+                    }
+                    else
+                    {
+                        src = $"{GeneralSettings.SiteHref}/{src}";
+                    }
+
+#if DEBUG
+                    _logger.Info($"src (after) = {src}");
+#endif
+
+                    rootNode.SetAttributeValue("src", src);
+                }
+            }
+
+            foreach(var child in rootNode.ChildNodes.ToList())
+            {
+                FillAppDomainNameInHrefs(child);
+            }
         }
     }
 }

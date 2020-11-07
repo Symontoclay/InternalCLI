@@ -9,6 +9,7 @@ namespace SiteBuilder.SiteData
         Unknown,
         Root,
         Page,
+        Less,
         File
     }
 }

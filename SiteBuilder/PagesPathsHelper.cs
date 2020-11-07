@@ -18,7 +18,7 @@ namespace SiteBuilder
 
         public static string RelativeHrefToAbsolute(string relativeHref)
         {
-            var domainHref = $"https://{GeneralSettings.SiteName}";
+            var domainHref = GeneralSettings.SiteHref;
 
 #if DEBUG
             //_logger.Info($"RelativeHrefToAbsolute relativeHref = {relativeHref}");

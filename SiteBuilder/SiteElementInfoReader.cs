@@ -15,15 +15,16 @@ namespace SiteBuilder
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        public static SiteElementInfo Read(string sourceDir, string destDir, string siteName, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList)
+        public static SiteElementInfo Read(string sourceDir, string destDir, string siteHref, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList)
         {
 #if DEBUG
             //_logger.Info($"sourceDir = {sourceDir}");
+            _logger.Info($"siteHref = {siteHref}");
 #endif
 
             var result = new SiteElementInfo() { Kind = KindOfSiteElement.Root };
 
-            ProcessDirectory(sourceDir, result, sourceDir, destDir, siteName, forbidenDirectoriesList, forbidenFileNamesList);
+            ProcessDirectory(sourceDir, result, sourceDir, destDir, siteHref, forbidenDirectoriesList, forbidenFileNamesList);
 
 #if DEBUG
             //_logger.Info($" = {}");
@@ -32,7 +33,7 @@ namespace SiteBuilder
             return result;
         }
 
-        private static void ProcessDirectory(string directory, SiteElementInfo parent, string sourceDir, string destDir, string siteName, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList)
+        private static void ProcessDirectory(string directory, SiteElementInfo parent, string sourceDir, string destDir, string siteHref, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList)
         {
 #if DEBUG
             //_logger.Info($"sourceDir = {sourceDir}");
@@ -45,13 +46,13 @@ namespace SiteBuilder
             var fileNamesList = Directory.EnumerateFiles(directory);
 
 #if DEBUG
-            //_logger.Info($"fileNamesList = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
+            _logger.Info($"fileNamesList = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
 #endif
 
             var indexSpFileName = fileNamesList.Where(p => p.EndsWith("index.sp")).SingleOrDefault();
 
 #if DEBUG
-            //_logger.Info($"indexSpFileName = {indexSpFileName}");
+            _logger.Info($"indexSpFileName = {indexSpFileName}");
 #endif
 
             if(!string.IsNullOrWhiteSpace(indexSpFileName))
@@ -59,13 +60,40 @@ namespace SiteBuilder
                 var indexTHtmlFileName = fileNamesList.Where(p => p.EndsWith("index.thtml")).Single();
 
 #if DEBUG
-                //_logger.Info($"indexTHtmlFileName = {indexTHtmlFileName}");
+                _logger.Info($"indexTHtmlFileName = {indexTHtmlFileName}");
 #endif
+
+                var cssFileName = fileNamesList.Where(p => p.EndsWith("index.css")).SingleOrDefault();
+
+#if DEBUG
+                _logger.Info($"cssFileName = {cssFileName}");
+#endif
+
+                if(!string.IsNullOrWhiteSpace(cssFileName))
+                {
+                    fileNamesList = fileNamesList.Except(new List<string> { cssFileName });
+                }
+
+                var lessFileName = fileNamesList.Where(p => p.EndsWith("index.less")).SingleOrDefault();
+
+#if DEBUG
+                _logger.Info($"lessFileName = {lessFileName}");
+#endif
+
+                if (!string.IsNullOrWhiteSpace(lessFileName))
+                {
+                    fileNamesList = fileNamesList.Except(new List<string> { lessFileName });
+                }
+
+                if (!string.IsNullOrWhiteSpace(cssFileName) && !string.IsNullOrWhiteSpace(lessFileName))
+                {
+                    throw new Exception($"Ambiguous resolving '{cssFileName}' and '{lessFileName}'.");
+                }
 
                 fileNamesList = fileNamesList.Except(new List<string> { indexSpFileName, indexTHtmlFileName });
 
 #if DEBUG
-                //_logger.Info($"fileNamesList (2) = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
+                _logger.Info($"fileNamesList (2) = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
 #endif
 
                 var oldParent = parent;
@@ -94,13 +122,13 @@ namespace SiteBuilder
                 var relativePath = indexSpFileName.Replace(sourceDir, string.Empty).Replace(".sp", ".html").Trim();
 
 #if DEBUG
-                //_logger.Info($"relativePath = {relativePath}");
+                _logger.Info($"relativePath = {relativePath}");
 #endif
 
                 var targetPath = Path.Combine(destDir, relativePath);
 
 #if DEBUG
-                //_logger.Info($"targetPath = {targetPath}");
+                _logger.Info($"targetPath = {targetPath}");
 #endif
 
                 parent.TargetFullFileName = targetPath;
@@ -109,11 +137,37 @@ namespace SiteBuilder
 
                 parent.DirectoryName = fileTargetInfo.DirectoryName;
 
-                parent.Href = $"https://{siteName}/{relativePath}";
+                parent.Href = $"{siteHref}/{relativePath}";
+
+                if(!string.IsNullOrWhiteSpace(cssFileName) || !string.IsNullOrWhiteSpace(lessFileName))
+                {
+                    if(!string.IsNullOrWhiteSpace(cssFileName))
+                    {
+                        parent.AddCssToPage = true;
+                        parent.InitiallCssFullFileName = cssFileName;
+
+                        var cssRelativePath = cssFileName.Replace(sourceDir, string.Empty).Trim();
+
+                        parent.TargetCssFullFileName = Path.Combine(destDir, cssRelativePath);
+                        parent.CssHrefForPage = $"{siteHref}/{cssRelativePath}";
+                    }
+
+                    if(!string.IsNullOrWhiteSpace(lessFileName))
+                    {
+                        parent.AddCssToPage = true;
+                        parent.ProcessLessForPage = true;
+                        parent.InitiallCssFullFileName = lessFileName;
+
+                        var cssRelativePath = lessFileName.Replace(sourceDir, string.Empty).Replace(".less", ".css").Trim();
+
+                        parent.TargetCssFullFileName = Path.Combine(destDir, cssRelativePath);
+                        parent.CssHrefForPage = $"{siteHref}/{cssRelativePath}";
+                    }
+                }
 
 #if DEBUG
-                //_logger.Info($"oldParent = {oldParent}");
-                //_logger.Info($"parent (after) = {parent}");
+                _logger.Info($"oldParent = {oldParent}");
+                _logger.Info($"parent (after) = {parent}");
 #endif
             }
 
@@ -190,10 +244,63 @@ namespace SiteBuilder
 
                     item.DirectoryName = fileTargetInfo.DirectoryName;
 
-                    item.Href = $"https://{siteName}/{relativePath}";
+                    item.Href = $"{siteHref}/{relativePath}";
+
+                    var cssFileName = spFileName.Replace(fileInfo.Name, fileInfo.Name.Replace(".sp", ".css"));
+
+                    if(fileNamesList.Contains(cssFileName))
+                    {
+                        exceptFileNamesList.Add(cssFileName);
+                    }
+                    else
+                    {
+                        cssFileName = null;
+                    }
+
+                    var lessFileName = spFileName.Replace(fileInfo.Name, fileInfo.Name.Replace(".sp", ".less"));
+
+                    if (fileNamesList.Contains(lessFileName))
+                    {
+                        exceptFileNamesList.Add(lessFileName);
+                    }
+                    else
+                    { 
+                        lessFileName = null;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(cssFileName) && !string.IsNullOrWhiteSpace(lessFileName))
+                    {
+                        throw new Exception($"Ambiguous resolving '{cssFileName}' and '{lessFileName}'.");
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(cssFileName) || !string.IsNullOrWhiteSpace(lessFileName))
+                    {
+                        if (!string.IsNullOrWhiteSpace(cssFileName))
+                        {
+                            item.AddCssToPage = true;
+                            item.InitiallCssFullFileName = cssFileName;
+
+                            var cssRelativePath = cssFileName.Replace(sourceDir, string.Empty).Trim();
+
+                            item.TargetCssFullFileName = Path.Combine(destDir, cssRelativePath);
+                            item.CssHrefForPage = $"{siteHref}/{cssRelativePath}";
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(lessFileName))
+                        {
+                            item.AddCssToPage = true;
+                            item.ProcessLessForPage = true;
+                            item.InitiallCssFullFileName = lessFileName;
+
+                            var cssRelativePath = lessFileName.Replace(sourceDir, string.Empty).Replace(".less", ".css").Trim();
+
+                            item.TargetCssFullFileName = Path.Combine(destDir, cssRelativePath);
+                            item.CssHrefForPage = $"{siteHref}/{cssRelativePath}";
+                        }
+                    }
 
 #if DEBUG
-                    //_logger.Info($"item = {item}");
+                    _logger.Info($"item = {item}");
 #endif
                 }
 
@@ -211,11 +318,29 @@ namespace SiteBuilder
                     continue;
                 }
 
+                var isLessFile = false;
+
+                if (fileName.EndsWith(".less"))
+                {
+                    isLessFile = true;
+                }
+
 #if DEBUG
                 _logger.Info($"fileName = {fileName}");
+                _logger.Info($"isLessFile = {isLessFile}");
 #endif
 
-                var item = new SiteElementInfo() { Kind = KindOfSiteElement.File };
+                var item = new SiteElementInfo();
+
+                if(isLessFile)
+                {
+                    item.Kind = KindOfSiteElement.Less;
+                }
+                else
+                {
+                    item.Kind = KindOfSiteElement.File;
+                }
+
                 item.Parent = parent;
                 parent.SubItemsList.Add(item);
 
@@ -223,14 +348,19 @@ namespace SiteBuilder
 
                 var relativePath = fileName.Replace(sourceDir, string.Empty).Trim();
 
+                if (isLessFile)
+                {
+                    relativePath = relativePath.Replace(".less", ".css");
+                }
+
 #if DEBUG
-                //_logger.Info($"relativePath = {relativePath}");
+                _logger.Info($"relativePath = {relativePath}");
 #endif
 
                 var targetPath = Path.Combine(destDir, relativePath);
 
 #if DEBUG
-                //_logger.Info($"targetPath = {targetPath}");
+                _logger.Info($"targetPath = {targetPath}");
 #endif
 
                 item.TargetFullFileName = targetPath;
@@ -239,10 +369,10 @@ namespace SiteBuilder
 
                 item.DirectoryName = fileInfo.DirectoryName;
 
-                item.Href = $"https://{siteName}/{relativePath}";
+                item.Href = $"{siteHref}/{relativePath}";
 
 #if DEBUG
-                //_logger.Info($"item = {item}");
+                _logger.Info($"item = {item}");
 #endif
             }
 
@@ -250,7 +380,7 @@ namespace SiteBuilder
 
             foreach(var subDir in subDirsList)
             {
-                ProcessDirectory(subDir, parent, sourceDir, destDir, siteName, forbidenDirectoriesList, forbidenFileNamesList);
+                ProcessDirectory(subDir, parent, sourceDir, destDir, siteHref, forbidenDirectoriesList, forbidenFileNamesList);
             }
         }
     }
