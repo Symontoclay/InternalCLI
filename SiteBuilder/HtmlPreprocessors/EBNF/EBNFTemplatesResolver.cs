@@ -36,10 +36,7 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
                     throw new NotSupportedException($"Too much iterations!!!");
                 }
 
-                var strWriter = new StringWriter();
-                modifiedDoc.Save(strWriter);
-
-                var intermediateContent = strWriter.ToString();
+                var intermediateContent = modifiedDoc.ToHtmlString();
 
 #if DEBUG
                 _logger.Info($"intermediateContent = {intermediateContent}");

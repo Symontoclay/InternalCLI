@@ -28,10 +28,7 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
 #endif
             CreateContents(contentsInfo, doc);
 
-            var strWriter = new StringWriter();
-            doc.Save(strWriter);
-
-            return strWriter.ToString();
+            return doc.ToHtmlString();
         }
 
         private static void CreateContents(ReaderResultOfHtmlContentGenerator contentsInfo, HtmlDocument doc)

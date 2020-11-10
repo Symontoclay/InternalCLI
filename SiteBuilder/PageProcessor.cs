@@ -3,6 +3,7 @@ using dotless.Core;
 using dotless.Core.Parser.Tree;
 using HtmlAgilityPack;
 using NLog;
+using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
 using SiteBuilder.HtmlPreprocessors.EBNF;
 using SiteBuilder.HtmlPreprocessors.InThePageContentGen;
 using SiteBuilder.HtmlPreprocessors.ShortTags;
@@ -215,15 +216,6 @@ namespace SiteBuilder
             {
                 AppendLine("<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>");
             }
-
-            AppendLine("<script>");
-            AppendLine(@"Rainbow.extend('soc', [
-    {
-        name: 'keyword',
-        pattern: /npc|on|is/g
-    }
-]);");
-            AppendLine("</script>");
 
             //var tmpGAScript = new StringBuilder();
 
@@ -590,7 +582,6 @@ namespace SiteBuilder
         {
             var content = EBNFPreparation.Run(initialContent);
 
-
 #if DEBUG
             _logger.Info($"content (1) = {content}");
 #endif
@@ -599,6 +590,12 @@ namespace SiteBuilder
 
 #if DEBUG
             _logger.Info($"content (2) = {content}");
+#endif
+
+            content = CodeHighlightor.Run(content);
+
+#if DEBUG
+            _logger.Info($"content (3) = {content}");
 #endif
 
             return InThePageContentGenerator.Run(content);

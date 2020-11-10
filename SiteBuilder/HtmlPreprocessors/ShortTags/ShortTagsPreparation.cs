@@ -33,10 +33,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             DiscoverHrefNodes(doc.DocumentNode, hrefsDict);
             DiscoverNodes(doc.DocumentNode, doc, hrefsDict);
 
-            var strWriter = new StringWriter();
-            doc.Save(strWriter);
-
-            return strWriter.ToString();
+            return doc.ToHtmlString();
         }
 
         private static void DiscoverHrefNodes(HtmlNode rootNode, Dictionary<string, string> hrefsDict)

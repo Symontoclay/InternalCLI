@@ -19,7 +19,7 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
             var content = EBNFTemplatesResolver.Run(initialContent);
 
 #if DEBUG
-            _logger.Info($"content = {content}");
+            //_logger.Info($"content = {content}");
 #endif
 
             var doc = new HtmlDocument();
@@ -27,10 +27,7 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
 
             DiscoverNodes(doc.DocumentNode, doc);
 
-            var strWriter = new StringWriter();
-            doc.Save(strWriter);
-
-            return strWriter.ToString();
+            return doc.ToHtmlString();
         }
 
         private static void DiscoverNodes(HtmlNode rootNode, HtmlDocument doc)
