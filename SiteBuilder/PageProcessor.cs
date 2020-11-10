@@ -1,5 +1,6 @@
 ﻿using CommonMark;
 using dotless.Core;
+using dotless.Core.Parser.Tree;
 using HtmlAgilityPack;
 using NLog;
 using SiteBuilder.HtmlPreprocessors.EBNF;
@@ -19,10 +20,42 @@ namespace SiteBuilder
     public class PageProcessor
     {
 #if DEBUG
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        private readonly CultureInfo TargetCulture = new CultureInfo("en-GB");
+        private static readonly List<string> _commonCssLinksList = new List<string>();
+        private static readonly List<string> _commonJsLinksList = new List<string>();
+
+        private static readonly CultureInfo TargetCulture = new CultureInfo("en-GB");
+
+        static PageProcessor()
+        {
+#if DEBUG
+            _logger.Info("Begin");
+#endif
+
+            SetUpBootstrap();
+            SetUpFontAwesome();
+            SetUpCodeHighlighter();
+        }
+
+        private static void SetUpBootstrap()
+        {
+            _commonCssLinksList.Add("<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css' integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2' crossorigin='anonymous'>");
+
+            _commonJsLinksList.Add("<script src='https://code.jquery.com/jquery-3.5.1.slim.min.js' integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj' crossorigin='anonymous'></script>");
+            _commonJsLinksList.Add("<script src='https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx' crossorigin='anonymous'></script>");
+        }
+
+        private static void SetUpFontAwesome()
+        {
+            _commonJsLinksList.Add("<script src='/assets/fontawesome_5.15.1/all.js'></script>");
+        }
+
+        private static void SetUpCodeHighlighter()
+        {
+            _commonJsLinksList.Add("<script src='/assets/rainbow-custom.min.js'></script>");
+        }
 
         public PageProcessor(SiteElementInfo siteElement)
         {
@@ -164,13 +197,8 @@ namespace SiteBuilder
                 AppendLine("<link rel='icon' href='/favicon.png' type='image/png'>");
             }
 
-            AppendLine("<script src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script>");
-            AppendLine("<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'></script>");
-            AppendLine("<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous'></script>");
-
-            //AppendLine("<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u' crossorigin='anonymous'>");
-            //AppendLine("<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css' integrity='sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp' crossorigin='anonymous'>");
-            AppendLine("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>");
+            GenerateCommonLinks();
+   
             AppendLine("<link rel='stylesheet' href='/site.css'>");
 
             if (_siteElement.AdditionalMenu != null)
@@ -183,14 +211,19 @@ namespace SiteBuilder
                 AppendLine($"<link rel='stylesheet' href='{_siteElement.CssHrefForPage}'>");
             }
 
-            AppendLine("<script src='https://code.jquery.com/jquery-3.2.1.js'></script>");
-            AppendLine("<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa' crossorigin='anonymous'></script>");
-            AppendLine("<script src='https://kit.fontawesome.com/78db54b323.js'></script>");
-
             if (sitePageInfo.EnableMathML)
             {
                 AppendLine("<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>");
             }
+
+            AppendLine("<script>");
+            AppendLine(@"Rainbow.extend('soc', [
+    {
+        name: 'keyword',
+        pattern: /npc|on|is/g
+    }
+]);");
+            AppendLine("</script>");
 
             //var tmpGAScript = new StringBuilder();
 
@@ -270,6 +303,19 @@ namespace SiteBuilder
 #endif
 
             //throw new NotImplementedException();
+        }
+
+        private void GenerateCommonLinks()
+        {
+            foreach (var commonCssLink in _commonCssLinksList)
+            {
+                AppendLine(commonCssLink);
+            }
+
+            foreach (var commonJsLink in _commonJsLinksList)
+            {
+                AppendLine(commonJsLink);
+            }
         }
 
         private string GetCopyRightDate()
@@ -602,13 +648,13 @@ namespace SiteBuilder
         private void FillAppDomainNameInHrefs(HtmlNode rootNode)
         {
 #if DEBUG
-            _logger.Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
+            //_logger.Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
 #endif
 
             var href = rootNode.GetAttributeValue("href", null);
 
 #if DEBUG
-            _logger.Info($"href = {href}");
+            //_logger.Info($"href = {href}");
 #endif
 
             if(!string.IsNullOrWhiteSpace(href))
@@ -625,7 +671,7 @@ namespace SiteBuilder
                     }
 
 #if DEBUG
-                    _logger.Info($"href (after) = {href}");
+                    //_logger.Info($"href (after) = {href}");
 #endif
 
                     rootNode.SetAttributeValue("href", href);
@@ -635,7 +681,7 @@ namespace SiteBuilder
             var src = rootNode.GetAttributeValue("src", null);
 
 #if DEBUG
-            _logger.Info($"src = {src}");
+            //_logger.Info($"src = {src}");
 #endif
 
             if (!string.IsNullOrWhiteSpace(src))
@@ -652,7 +698,7 @@ namespace SiteBuilder
                     }
 
 #if DEBUG
-                    _logger.Info($"src (after) = {src}");
+                    //_logger.Info($"src (after) = {src}");
 #endif
 
                     rootNode.SetAttributeValue("src", src);
