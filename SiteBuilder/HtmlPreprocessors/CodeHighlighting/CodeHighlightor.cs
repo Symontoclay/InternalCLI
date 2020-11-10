@@ -108,31 +108,13 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 var codeLineNode = doc.CreateElement("div");
                 newCodeNode.AppendChild(codeLineNode);
 
-                var textBeforeComment = string.Empty;
-                var textInComment = string.Empty;
-
-                var singleLinePos = codeLine.IndexOf("//");
+                var targetPositionsList = GetTargetPositionsList(codeLine);
 
 #if DEBUG
-                _logger.Info($"singleLinePos = {singleLinePos}");
+                _logger.Info($"targetPositionsList = {JsonConvert.SerializeObject(targetPositionsList, Formatting.Indented)}");
 #endif
 
-                var beginMultiLinePos = codeLine.IndexOf("/*");
-
-#if DEBUG
-                _logger.Info($"beginMultiLinePos = {beginMultiLinePos}");
-#endif
-
-                var endMultiLinePos = codeLine.IndexOf(@"*\");
-
-#if DEBUG
-                _logger.Info($"endMultiLinePos = {endMultiLinePos}");
-#endif
-
-#if DEBUG
-                _logger.Info($"textBeforeComment = '{textBeforeComment}'");
-                _logger.Info($"textInComment = '{textInComment}'");
-#endif
+                throw new NotImplementedException();
 
                 codeLineNode.InnerHtml = codeLine;
             }
@@ -145,6 +127,43 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 #if DEBUG
             _logger.Info($"text = {text}");
 #endif
+
+            var result = new List<(KindOfPosition, int)>();
+
+            var singleLinePos = text.IndexOf("//");
+
+#if DEBUG
+            _logger.Info($"singleLinePos = {singleLinePos}");
+#endif
+
+            if(singleLinePos != -1)
+            {
+                result.Add((KindOfPosition.SingleLineComment, singleLinePos));
+            }
+
+            var beginMultiLinePos = text.IndexOf("/*");
+
+#if DEBUG
+            _logger.Info($"beginMultiLinePos = {beginMultiLinePos}");
+#endif
+
+            if (beginMultiLinePos != -1)
+            {
+                result.Add((KindOfPosition.BeginMultiLineComment, beginMultiLinePos));
+            }
+
+            var endMultiLinePos = text.IndexOf(@"*\");
+
+#if DEBUG
+            _logger.Info($"endMultiLinePos = {endMultiLinePos}");
+#endif
+
+            if (endMultiLinePos != -1)
+            {
+                result.Add((KindOfPosition.EndMultiLineComment, endMultiLinePos));
+            }
+
+            return result;
         }
 
         private static List<string> ClearCode(string initialContent)
