@@ -1,8 +1,10 @@
-﻿using HtmlAgilityPack;
+﻿using CommonUtils.DebugHelpers;
+using HtmlAgilityPack;
 using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
@@ -108,14 +110,19 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
             var startInMultiLineComment = false;
 
+            uint n = 0;
+
             foreach(var codeLineItem in codeList)
             {
                 var codeLine = codeLineItem;
 
 #if DEBUG
                 _logger.Info($"codeLine = '{codeLine}'");
+                _logger.Info($"n = {n}");
                 _logger.Info($"startInMultiLineComment = {startInMultiLineComment}");
 #endif
+
+                var newN = n;
 
                 var codeLineNode = doc.CreateElement("div");
                 newCodeNode.AppendChild(codeLineNode);
@@ -124,7 +131,9 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
                 var needRun = true;
 
-                while(needRun)
+                var startWithComment = startInMultiLineComment;
+
+                while (needRun)
                 {
                     var targetPositionsList = GetTargetPositionsList(codeLine);
 
@@ -134,7 +143,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
                     if(!targetPositionsList.Any())
                     {
-                        ProcessCodeLineChank(codeLineNode, sb, codeLine, startInMultiLineComment, kindOfLng);
+                        ProcessCodeLineChank(codeLineNode, sb, codeLine, startInMultiLineComment, kindOfLng, ref newN);
                         needRun = false;
                         break;
                     }
@@ -157,9 +166,9 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     switch (kindOfPosition)
                     {
                         case KindOfPosition.SingleLineComment:
-                            if(startInMultiLineComment)
+                            if (startInMultiLineComment)
                             {
-                                ProcessCodeLineChank(codeLineNode, sb, "//", true, kindOfLng);
+                                ProcessCodeLineChank(codeLineNode, sb, "//", true, kindOfLng, ref newN);
 
                                 codeLine = codeLine.Substring(2);
 
@@ -175,9 +184,13 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 _logger.Info($"chank = {chank}");
 #endif
 
-                                if(!string.IsNullOrWhiteSpace(chank))
+                                if (string.IsNullOrWhiteSpace(chank))
                                 {
-                                    ProcessCodeLineChank(codeLineNode, sb, chank, false, kindOfLng);
+                                    startWithComment = true;
+                                }
+                                else
+                                {
+                                    ProcessCodeLineChank(codeLineNode, sb, chank, false, kindOfLng, ref newN);
                                 }
 
                                 var comment = codeLine.Substring(targetPos);
@@ -186,7 +199,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 _logger.Info($"comment = {comment}");
 #endif
 
-                                ProcessCodeLineChank(codeLineNode, sb, comment, true, kindOfLng);
+                                ProcessCodeLineChank(codeLineNode, sb, comment, true, kindOfLng, ref newN);
 
                                 needRun = false;
                             }
@@ -195,7 +208,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                         case KindOfPosition.BeginMultiLineComment:
                             if (startInMultiLineComment)
                             {
-                                ProcessCodeLineChank(codeLineNode, sb, "/*", true, kindOfLng);
+                                ProcessCodeLineChank(codeLineNode, sb, "/*", true, kindOfLng, ref newN);
 
                                 codeLine = codeLine.Substring(2);
 
@@ -211,9 +224,13 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 _logger.Info($"chank = {chank}");
 #endif
 
-                                if (!string.IsNullOrWhiteSpace(chank))
+                                if (string.IsNullOrWhiteSpace(chank))
                                 {
-                                    ProcessCodeLineChank(codeLineNode, sb, chank, false, kindOfLng);
+                                    startWithComment = true;
+                                }
+                                else
+                                {
+                                    ProcessCodeLineChank(codeLineNode, sb, chank, false, kindOfLng, ref newN);
                                 }
 
                                 codeLine = codeLine.Substring(targetPos);
@@ -232,7 +249,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 {
                                     startInMultiLineComment = true;
 
-                                    ProcessCodeLineChank(codeLineNode, sb, codeLine, true, kindOfLng);
+                                    ProcessCodeLineChank(codeLineNode, sb, codeLine, true, kindOfLng, ref newN);
 
                                     needRun = false;
                                 }
@@ -244,7 +261,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                     _logger.Info($"comment = {comment}");
 #endif
 
-                                    ProcessCodeLineChank(codeLineNode, sb, comment, true, kindOfLng);
+                                    ProcessCodeLineChank(codeLineNode, sb, comment, true, kindOfLng, ref newN);
 
                                     codeLine = codeLine.Substring(endMultilineCommentPos + 2);
 
@@ -263,7 +280,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 _logger.Info($"comment = {comment}");
 #endif
 
-                                ProcessCodeLineChank(codeLineNode, sb, comment, true, kindOfLng);
+                                ProcessCodeLineChank(codeLineNode, sb, comment, true, kindOfLng, ref newN);
 
                                 codeLine = codeLine.Substring(targetPos + 2);
 
@@ -280,8 +297,69 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     }
                 }
 
-                codeLineNode.InnerHtml = sb.ToString();
+#if DEBUG
+                _logger.Info($"n = {n}");
+                _logger.Info($"newN = {newN}");
+#endif
+
+                int diff = (int)newN - (int)n;
+
+#if DEBUG
+                _logger.Info($"diff = {diff}");
+                _logger.Info($"startWithComment = {startWithComment}");
+#endif
+
+                string spaces;
+
+                if(codeLine.StartsWith("#") && !startWithComment && kindOfLng == KindOfLng.CSharp)
+                {
+                    spaces = string.Empty;
+                }
+                else
+                {
+                    if (diff > 0)
+                    {
+                        spaces = Spaces(4 * n);
+                    }
+                    else
+                    {
+                        if (diff == 0)
+                        {
+                            spaces = Spaces(4 * n);
+                        }
+                        else
+                        {
+                            spaces = Spaces(4 * newN);
+                        }
+                    }
+                }
+
+#if DEBUG
+                _logger.Info($"spaces = '{spaces}'");
+                _logger.Info($"'{spaces}{sb}'");
+#endif
+
+                codeLineNode.InnerHtml = $"{spaces}{sb}";
+
+                n = newN;
             }
+        }
+
+        public static string Spaces(uint n)
+        {
+            if (n == 0)
+            {
+                return string.Empty;
+            }
+
+            var sb = new StringBuilder();
+
+            for (var i = 0; i < n; i++)
+            {
+                sb.Append("&nbsp;");
+            }
+
+            return sb.ToString();
         }
 
         private enum KindOfString
@@ -292,183 +370,251 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             Preprocessor
         }
 
-        private static void ProcessCodeLineChank(HtmlNode rootNode, StringBuilder sb, string chank, bool isComment, KindOfLng kindOfLng)
+        private static void ProcessCodeLineChank(HtmlNode rootNode, StringBuilder sb, string chank, bool isComment, KindOfLng kindOfLng, ref uint n)
         {
 #if DEBUG
             _logger.Info($"chank = {chank}");
             _logger.Info($"isComment = {isComment}");
+            _logger.Info($"n = {n}");
             _logger.Info($"kindOfLng = {kindOfLng}");
 #endif
 
             if(isComment)
             {
                 sb.Append($"<span style='color:lime;'>{chank}</span>");
+
+                return;
+            }
+
+            if(chank.Contains("{"))
+            {
+                if(!chank.Contains("}"))
+                {
+                    n++;
+                }                
             }
             else
             {
-                var kindOfString = KindOfString.Symbol;
-
-                StringBuilder strSb = null;
-
-                foreach (var ch in chank)
+                if(chank.Contains("}"))
                 {
+                    if(!chank.Contains("{"))
+                    {
+                        n--;
+                    }
+                }
+            }
+
+            var kindOfString = KindOfString.Symbol;
+
+            StringBuilder strSb = null;
+
+            foreach (var ch in chank)
+            {
 #if DEBUG
-                    _logger.Info($"ch = '{ch}'; (int)ch = {(int)ch}; kindOfString = {kindOfString}; strSb = '{strSb}'");
+                //_logger.Info($"ch = '{ch}'; (int)ch = {(int)ch}; kindOfString = {kindOfString}; strSb = '{strSb}'");
 #endif
 
-                    switch(kindOfString)
-                    {
-                        case KindOfString.Symbol:
+                switch (kindOfString)
+                {
+                    case KindOfString.Symbol:
+                        {
+                            if (char.IsLetter(ch))
                             {
-                                if(char.IsLetter(ch))
-                                {
-                                    strSb = new StringBuilder();
-                                    strSb.Append(ch);
+                                strSb = new StringBuilder();
+                                strSb.Append(ch);
 
-                                    kindOfString = KindOfString.Word;
+                                kindOfString = KindOfString.Word;
 
-                                    break;
-                                }
-
-                                if(char.IsDigit(ch))
-                                {
-                                    strSb = new StringBuilder();
-                                    strSb.Append(ch);
-
-                                    kindOfString = KindOfString.Mix;
-
-                                    break;
-                                }
-
-                                if(ch == '_')
-                                {
-                                    strSb = new StringBuilder();
-                                    strSb.Append(ch);
-
-                                    kindOfString = KindOfString.Mix;
-
-                                    break;
-                                }
-
-                                if(ch == '#')
-                                {
-                                    strSb = new StringBuilder();
-                                    strSb.Append(ch);
-
-                                    kindOfString = KindOfString.Preprocessor;
-
-                                    break;
-                                }
-
-                                sb.Append(ch);
+                                break;
                             }
-                            break;
 
-                        case KindOfString.Word:
+                            if (char.IsDigit(ch))
                             {
-                                if (char.IsLetter(ch))
-                                {
-                                    strSb.Append(ch);
-                                    break;
-                                }
+                                strSb = new StringBuilder();
+                                strSb.Append(ch);
 
-                                if(char.IsDigit(ch))
-                                {
-                                    strSb.Append(ch);
-                                    kindOfString = KindOfString.Mix;
-                                    break;
-                                }
+                                kindOfString = KindOfString.Mix;
 
-                                if(ch == '_')
-                                {
-                                    strSb.Append(ch);
-                                    kindOfString = KindOfString.Mix;
-                                    break;
-                                }
-
-                                ProcessWord(sb, strSb.ToString(), kindOfLng);
-                                kindOfString = KindOfString.Symbol;
-                                sb.Append(ch);
-                                strSb = null;
+                                break;
                             }
-                            break;
 
-                        case KindOfString.Preprocessor:
+                            if (ch == '_')
                             {
-                                if (char.IsLetter(ch))
-                                {
-                                    strSb.Append(ch);
-                                    break;
-                                }
+                                strSb = new StringBuilder();
+                                strSb.Append(ch);
 
-                                if (char.IsDigit(ch))
-                                {
-                                    strSb.Append(ch);
-                                    kindOfString = KindOfString.Mix;
-                                    break;
-                                }
+                                kindOfString = KindOfString.Mix;
 
-                                if (ch == '_')
-                                {
-                                    strSb.Append(ch);
-                                    kindOfString = KindOfString.Mix;
-                                    break;
-                                }
-
-                                ProcessPreprocessor(sb, strSb.ToString(), kindOfLng);
-                                kindOfString = KindOfString.Symbol;
-                                sb.Append(ch);
-                                strSb = null;
+                                break;
                             }
-                            break;
 
-                        case KindOfString.Mix:
+                            if (ch == '#')
                             {
-                                if (char.IsLetter(ch))
-                                {
-                                    strSb.Append(ch);
-                                    break;
-                                }
+                                strSb = new StringBuilder();
+                                strSb.Append(ch);
 
-                                if (char.IsDigit(ch))
-                                {
-                                    strSb.Append(ch);
-                                    break;
-                                }
+                                kindOfString = KindOfString.Preprocessor;
 
-                                if (ch == '_')
-                                {
-                                    strSb.Append(ch);
-                                    break;
-                                }
-
-                                sb.Append(strSb.ToString());
-                                kindOfString = KindOfString.Symbol;
-                                sb.Append(ch);
-                                strSb = null;
+                                break;
                             }
-                            break;
 
-                        default:
-                            throw new ArgumentOutOfRangeException(nameof(kindOfString), kindOfString, null);
-                    }
+                            sb.Append(ch);
+                        }
+                        break;
+
+                    case KindOfString.Word:
+                        {
+                            if (char.IsLetter(ch))
+                            {
+                                strSb.Append(ch);
+                                break;
+                            }
+
+                            if (char.IsDigit(ch))
+                            {
+                                strSb.Append(ch);
+                                kindOfString = KindOfString.Mix;
+                                break;
+                            }
+
+                            if (ch == '_')
+                            {
+                                strSb.Append(ch);
+                                kindOfString = KindOfString.Mix;
+                                break;
+                            }
+
+                            ProcessWord(sb, strSb.ToString(), kindOfLng);
+                            kindOfString = KindOfString.Symbol;
+                            sb.Append(ch);
+                            strSb = null;
+                        }
+                        break;
+
+                    case KindOfString.Preprocessor:
+                        {
+                            if (char.IsLetter(ch))
+                            {
+                                strSb.Append(ch);
+                                break;
+                            }
+
+                            if (char.IsDigit(ch))
+                            {
+                                strSb.Append(ch);
+                                kindOfString = KindOfString.Mix;
+                                break;
+                            }
+
+                            if (ch == '_')
+                            {
+                                strSb.Append(ch);
+                                kindOfString = KindOfString.Mix;
+                                break;
+                            }
+
+                            ProcessPreprocessor(sb, strSb.ToString(), kindOfLng);
+                            kindOfString = KindOfString.Symbol;
+                            sb.Append(ch);
+                            strSb = null;
+                        }
+                        break;
+
+                    case KindOfString.Mix:
+                        {
+                            if (char.IsLetter(ch))
+                            {
+                                strSb.Append(ch);
+                                break;
+                            }
+
+                            if (char.IsDigit(ch))
+                            {
+                                strSb.Append(ch);
+                                break;
+                            }
+
+                            if (ch == '_')
+                            {
+                                strSb.Append(ch);
+                                break;
+                            }
+
+                            sb.Append(strSb.ToString());
+                            kindOfString = KindOfString.Symbol;
+                            sb.Append(ch);
+                            strSb = null;
+                        }
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(kindOfString), kindOfString, null);
+                }
+            }
+
+#if DEBUG
+            //_logger.Info($"strSb = '{strSb}'");
+            //_logger.Info($"kindOfString = {kindOfString}");
+#endif
+
+            if (strSb != null)
+            {
+                switch (kindOfString)
+                {
+                    case KindOfString.Word:
+                        ProcessWord(sb, strSb.ToString(), kindOfLng);
+                        break;
+
+                    case KindOfString.Preprocessor:
+                        ProcessPreprocessor(sb, strSb.ToString(), kindOfLng);
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(kindOfString), kindOfString, null);
                 }
             }
         }
 
         private static void ProcessWord(StringBuilder sb, string word, KindOfLng kindOfLng)
         {
+#if DEBUG
+            _logger.Info($"word = '{word}'");
+            _logger.Info($"kindOfLng = {kindOfLng}");
+#endif
+
+            if(IsKeyWord(word, kindOfLng))
+            {
+                sb.Append($"<span style='font-weight:bold;'>{word}</span>");
+
+                return;
+            }
+
             sb.Append(word);
             //throw new NotImplementedException();
+        }
+
+        private static bool IsKeyWord(string word, KindOfLng kindOfLng)
+        {
+            throw new NotImplementedException();
         }
 
         private static void ProcessPreprocessor(StringBuilder sb, string word, KindOfLng kindOfLng)
         {
+#if DEBUG
+            _logger.Info($"word = '{word}'");
+            _logger.Info($"kindOfLng = {kindOfLng}");
+#endif
+
+            if(kindOfLng == KindOfLng.CSharp)
+            {
+                sb.Append($"<span style='color:red;'>{word}</span>");
+
+                return;
+            }
+
             sb.Append(word);
             //throw new NotImplementedException();
         }
-
-
 
         private static List<(KindOfPosition, int)> GetTargetPositionsList(string text)
         {
