@@ -16,6 +16,48 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
+        private static List<string> _cSharpKeyWordsList = new List<string>()
+        {
+
+        };
+
+        /*
+        abstract	as	base	bool	
+break	byte	case	catch	
+char	checked	class	const	
+continue	decimal	default	delegate	
+do	double	else	enum	
+event	explicit	extern	false	
+finally	fixed	float	for	
+foreach	goto	if	implicit	
+in	int	interface	internal	
+is	lock	long	namespace	
+new	null	object	operator	
+out	override	params	private	
+protected	public	readonly	ref	
+return	sbyte	sealed	short	
+sizeof	stackalloc	static	string	
+struct	switch	this	throw	
+true	try	typeof	uint	
+ulong	unchecked	unsafe	ushort	
+using	virtual	void	volatile	
+while
+        */
+
+        /*
+        add	alias	ascending
+async	await	by
+descending	dynamic	equals
+from	get	global
+group	into	join
+let	nameof	notnull
+on	orderby	partial (тип)
+partial (метод)	remove	select
+set	unmanaged (ограничение универсального типа)	value
+var	when (условие фильтра)	where (ограничение универсального типа)
+where (предложение запроса)	yield
+        */
+
         private enum KindOfPosition
         {
             Unknown,
@@ -595,6 +637,11 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
         private static bool IsKeyWord(string word, KindOfLng kindOfLng)
         {
+            if(kindOfLng == KindOfLng.CSharp)
+            {
+                return _cSharpKeyWordsList.Any(p => p == word);
+            }
+
             throw new NotImplementedException();
         }
 
