@@ -134,11 +134,27 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
             newCodeNode.SetAttributeValue("style", "background-color: red;");
 
+            var copyButtonId = $"id{Guid.NewGuid().ToString("D").Replace("-", "_")}";
+
             copyButtonNode.InnerHtml = "Copy";
             copyButtonNode.AddClass("btn btn-outline-info");
             copyButtonNode.SetAttributeValue("title", "Copy to clipboard");
             copyButtonNode.SetAttributeValue("style", "font-size: 12px;");
+            copyButtonNode.Id = copyButtonId;
 
+            var scriptNode = doc.CreateElement("script");
+
+            var base64Array = System.Text.UTF8Encoding.UTF8.GetBytes(initialText);
+
+            var base64Str = Convert.ToBase64String(base64Array);
+
+            var scriptSb = new StringBuilder();
+
+            scriptSb.Append($"$('#{copyButtonId}').click(function() {{navigator.clipboard.writeText(atob('{base64Str}'));}});");
+
+            scriptNode.InnerHtml = scriptSb.ToString();
+
+            newCodeNode.AppendChild(scriptNode);
 
             var codeList = ClearCode(initialText);
 
