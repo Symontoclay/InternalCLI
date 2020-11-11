@@ -18,45 +18,20 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
         private static List<string> _cSharpKeyWordsList = new List<string>()
         {
-
+            "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal",
+            "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for",
+            "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object",
+            "operator", "out", "override", "params", "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short",
+            "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked",
+            "unsafe", "ushort", "using", "virtual", "void", "volatile", "while", "add", "alias", "ascending", "async", "await", "by", "descending",
+            "dynamic", "equals", "from", "get", "global", "group", "into", "join", "let", "nameof", "notnull", "on", "orderby", "partial", "remove",
+            "select", "set", "unmanaged", "value", "var", "when", "where", "yield"
         };
 
-        /*
-        abstract	as	base	bool	
-break	byte	case	catch	
-char	checked	class	const	
-continue	decimal	default	delegate	
-do	double	else	enum	
-event	explicit	extern	false	
-finally	fixed	float	for	
-foreach	goto	if	implicit	
-in	int	interface	internal	
-is	lock	long	namespace	
-new	null	object	operator	
-out	override	params	private	
-protected	public	readonly	ref	
-return	sbyte	sealed	short	
-sizeof	stackalloc	static	string	
-struct	switch	this	throw	
-true	try	typeof	uint	
-ulong	unchecked	unsafe	ushort	
-using	virtual	void	volatile	
-while
-        */
-
-        /*
-        add	alias	ascending
-async	await	by
-descending	dynamic	equals
-from	get	global
-group	into	join
-let	nameof	notnull
-on	orderby	partial (тип)
-partial (метод)	remove	select
-set	unmanaged (ограничение универсального типа)	value
-var	when (условие фильтра)	where (ограничение универсального типа)
-where (предложение запроса)	yield
-        */
+        private static List<string> _symOntoClayKeyWordsList = new List<string>() 
+        {
+            "npc","class", "world", "host", "is", "on",  "select", "insert", "not", "use"//, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+        };
 
         private enum KindOfPosition
         {
@@ -121,8 +96,14 @@ where (предложение запроса)	yield
                         ProcessLng(rootNode, doc, KindOfLng.CSharp);
                         return;
 
-                    //default:
-                        //throw new ArgumentOutOfRangeException(nameof(language), language, null);
+                    case "soc":
+                    case "SymOntoClay":
+                    case "symontoclay":
+                        ProcessLng(rootNode, doc, KindOfLng.SymOntoClay);
+                        return;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(language), language, null);
                 }
             }
 
@@ -147,6 +128,17 @@ where (предложение запроса)	yield
             var newCodeNode = doc.CreateElement("div");
             var parentNode = rootNode.ParentNode;
             parentNode.ReplaceChild(newCodeNode, rootNode);
+
+            var copyButtonNode = doc.CreateElement("button");
+            newCodeNode.AppendChild(copyButtonNode);
+
+            newCodeNode.SetAttributeValue("style", "background-color: red;");
+
+            copyButtonNode.InnerHtml = "Copy";
+            copyButtonNode.AddClass("btn btn-outline-info");
+            copyButtonNode.SetAttributeValue("title", "Copy to clipboard");
+            copyButtonNode.SetAttributeValue("style", "font-size: 12px;");
+
 
             var codeList = ClearCode(initialText);
 
@@ -642,7 +634,7 @@ where (предложение запроса)	yield
                 return _cSharpKeyWordsList.Any(p => p == word);
             }
 
-            throw new NotImplementedException();
+            return _symOntoClayKeyWordsList.Any(p => p == word);
         }
 
         private static void ProcessPreprocessor(StringBuilder sb, string word, KindOfLng kindOfLng)
