@@ -284,6 +284,14 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             }
         }
 
+        private enum KindOfString
+        {
+            Symbol,
+            Mix,
+            Word,
+            Preprocessor
+        }
+
         private static void ProcessCodeLineChank(HtmlNode rootNode, StringBuilder sb, string chank, bool isComment, KindOfLng kindOfLng)
         {
 #if DEBUG
@@ -298,10 +306,169 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             }
             else
             {
-                sb.Append(chank);
-                //throw new NotImplementedException();
+                var kindOfString = KindOfString.Symbol;
+
+                StringBuilder strSb = null;
+
+                foreach (var ch in chank)
+                {
+#if DEBUG
+                    _logger.Info($"ch = '{ch}'; (int)ch = {(int)ch}; kindOfString = {kindOfString}; strSb = '{strSb}'");
+#endif
+
+                    switch(kindOfString)
+                    {
+                        case KindOfString.Symbol:
+                            {
+                                if(char.IsLetter(ch))
+                                {
+                                    strSb = new StringBuilder();
+                                    strSb.Append(ch);
+
+                                    kindOfString = KindOfString.Word;
+
+                                    break;
+                                }
+
+                                if(char.IsDigit(ch))
+                                {
+                                    strSb = new StringBuilder();
+                                    strSb.Append(ch);
+
+                                    kindOfString = KindOfString.Mix;
+
+                                    break;
+                                }
+
+                                if(ch == '_')
+                                {
+                                    strSb = new StringBuilder();
+                                    strSb.Append(ch);
+
+                                    kindOfString = KindOfString.Mix;
+
+                                    break;
+                                }
+
+                                if(ch == '#')
+                                {
+                                    strSb = new StringBuilder();
+                                    strSb.Append(ch);
+
+                                    kindOfString = KindOfString.Preprocessor;
+
+                                    break;
+                                }
+
+                                sb.Append(ch);
+                            }
+                            break;
+
+                        case KindOfString.Word:
+                            {
+                                if (char.IsLetter(ch))
+                                {
+                                    strSb.Append(ch);
+                                    break;
+                                }
+
+                                if(char.IsDigit(ch))
+                                {
+                                    strSb.Append(ch);
+                                    kindOfString = KindOfString.Mix;
+                                    break;
+                                }
+
+                                if(ch == '_')
+                                {
+                                    strSb.Append(ch);
+                                    kindOfString = KindOfString.Mix;
+                                    break;
+                                }
+
+                                ProcessWord(sb, strSb.ToString(), kindOfLng);
+                                kindOfString = KindOfString.Symbol;
+                                sb.Append(ch);
+                                strSb = null;
+                            }
+                            break;
+
+                        case KindOfString.Preprocessor:
+                            {
+                                if (char.IsLetter(ch))
+                                {
+                                    strSb.Append(ch);
+                                    break;
+                                }
+
+                                if (char.IsDigit(ch))
+                                {
+                                    strSb.Append(ch);
+                                    kindOfString = KindOfString.Mix;
+                                    break;
+                                }
+
+                                if (ch == '_')
+                                {
+                                    strSb.Append(ch);
+                                    kindOfString = KindOfString.Mix;
+                                    break;
+                                }
+
+                                ProcessPreprocessor(sb, strSb.ToString(), kindOfLng);
+                                kindOfString = KindOfString.Symbol;
+                                sb.Append(ch);
+                                strSb = null;
+                            }
+                            break;
+
+                        case KindOfString.Mix:
+                            {
+                                if (char.IsLetter(ch))
+                                {
+                                    strSb.Append(ch);
+                                    break;
+                                }
+
+                                if (char.IsDigit(ch))
+                                {
+                                    strSb.Append(ch);
+                                    break;
+                                }
+
+                                if (ch == '_')
+                                {
+                                    strSb.Append(ch);
+                                    break;
+                                }
+
+                                sb.Append(strSb.ToString());
+                                kindOfString = KindOfString.Symbol;
+                                sb.Append(ch);
+                                strSb = null;
+                            }
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(kindOfString), kindOfString, null);
+                    }
+                }
             }
         }
+
+        private static void ProcessWord(StringBuilder sb, string word, KindOfLng kindOfLng)
+        {
+            sb.Append(word);
+            //throw new NotImplementedException();
+        }
+
+        private static void ProcessPreprocessor(StringBuilder sb, string word, KindOfLng kindOfLng)
+        {
+            sb.Append(word);
+            //throw new NotImplementedException();
+        }
+
+
 
         private static List<(KindOfPosition, int)> GetTargetPositionsList(string text)
         {
