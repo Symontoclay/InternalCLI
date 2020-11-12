@@ -214,6 +214,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
                 var codeLineNode = doc.CreateElement("div");
                 newCodeNode.AppendChild(codeLineNode);
+                codeLineNode.AddClass("code-viewer-line");
 
                 var sb = new StringBuilder();
 
@@ -678,7 +679,6 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             }
 
             sb.Append(word);
-            //throw new NotImplementedException();
         }
 
         private static bool IsKeyWord(string word, KindOfLng kindOfLng)
@@ -706,7 +706,6 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             }
 
             sb.Append(word);
-            //throw new NotImplementedException();
         }
 
         private static List<(KindOfPosition, int)> GetTargetPositionsList(string text)
