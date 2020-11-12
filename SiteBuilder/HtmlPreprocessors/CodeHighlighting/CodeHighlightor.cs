@@ -82,7 +82,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     return;
                 }
 
-                var language = rootNode.GetAttributeValue("data-language", null);
+                var language = rootNode.GetAttributeValue("data-lng", null);
 
 #if DEBUG
                 _logger.Info($"language = {language}");
@@ -129,10 +129,13 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             var parentNode = rootNode.ParentNode;
             parentNode.ReplaceChild(newCodeNode, rootNode);
 
-            var copyButtonNode = doc.CreateElement("button");
-            newCodeNode.AppendChild(copyButtonNode);
+            newCodeNode.AddClass("code-viewer");
 
-            newCodeNode.SetAttributeValue("style", "background-color: red;");
+            var buttonsBarNode = doc.CreateElement("div");
+            newCodeNode.AppendChild(buttonsBarNode);
+
+            var copyButtonNode = doc.CreateElement("button");
+            buttonsBarNode.AppendChild(copyButtonNode);                 
 
             var copyButtonId = $"id{Guid.NewGuid().ToString("D").Replace("-", "_")}";
 
@@ -155,6 +158,41 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             scriptNode.InnerHtml = scriptSb.ToString();
 
             newCodeNode.AppendChild(scriptNode);
+
+            var exampleHref = rootNode.GetAttributeValue("example-href", null);
+
+#if DEBUG
+            _logger.Info($"exampleHref = {exampleHref}");
+#endif
+
+            if(!string.IsNullOrWhiteSpace(exampleHref))
+            {
+                if (!exampleHref.StartsWith("https://") && !exampleHref.StartsWith("http://"))
+                {
+                    if (exampleHref.StartsWith("/"))
+                    {
+                        exampleHref = $"{GeneralSettings.SiteHref}{exampleHref}";
+                    }
+                    else
+                    {
+                        exampleHref = $"{GeneralSettings.SiteHref}/{exampleHref}";
+                    }
+                }
+
+#if DEBUG
+                _logger.Info($"exampleHref (after) = {exampleHref}");
+#endif
+
+                var downloadButtonNode = doc.CreateElement("a");
+                buttonsBarNode.AppendChild(downloadButtonNode);
+                downloadButtonNode.SetAttributeValue("href", exampleHref);
+
+                downloadButtonNode.AddClass("btn btn-outline-info");
+                downloadButtonNode.InnerHtml = "Download";
+
+                downloadButtonNode.SetAttributeValue("title", "Download example project");
+                downloadButtonNode.SetAttributeValue("style", "font-size: 12px;");
+            }
 
             var codeList = ClearCode(initialText);
 
