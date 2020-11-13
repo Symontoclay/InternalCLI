@@ -39,6 +39,11 @@ namespace SiteBuilder
 
             foreach (var item in items)
             {
+                if(item.Kind == KindOfRoadMapItem.Unknown)
+                {
+                    item.Kind = KindOfRoadMapItem.Step;
+                }
+
                 if (item.End.HasValue && item.KindOfCompeltion != KindOfRoadMapItemCompeltion.Completed && !item.SubItemsList.Any())
                 {
                     throw new Exception($"It is weird! '{item.Name}' is finished at {item.End} but is not completed");
@@ -60,12 +65,34 @@ namespace SiteBuilder
                     continue;
                 }
 
-                if (!item.Start.HasValue)
+                if (item.Start.HasValue)
                 {
+                    if (item.KindOfCompeltion == KindOfRoadMapItemCompeltion.Unknown)
+                    {
+                        if(item.End.HasValue)
+                        {
+                            item.KindOfCompeltion = KindOfRoadMapItemCompeltion.Completed;
+                        }
+                        else
+                        {
+                            item.KindOfCompeltion = KindOfRoadMapItemCompeltion.Developed;
+                        }
+                    }
+                }
+                else
+                {
+                    item.KindOfCompeltion = KindOfRoadMapItemCompeltion.Planned;
                     item.Start = prevEnd.Value.AddDays(1);
                 }
 
-                if (!item.End.HasValue)
+                if (item.End.HasValue)
+                {
+                    if(item.KindOfCompeltion == KindOfRoadMapItemCompeltion.Unknown)
+                    {
+                        item.KindOfCompeltion = KindOfRoadMapItemCompeltion.Completed;
+                    }
+                }
+                else
                 {
                     item.End = CalculateEnd(item.Start.Value, item.ExpectedDuration.Value, item.KindOfExpectedDuration);
                 }

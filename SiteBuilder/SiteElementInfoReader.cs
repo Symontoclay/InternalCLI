@@ -19,7 +19,7 @@ namespace SiteBuilder
         {
 #if DEBUG
             //_logger.Info($"sourceDir = {sourceDir}");
-            _logger.Info($"siteHref = {siteHref}");
+            //_logger.Info($"siteHref = {siteHref}");
 #endif
 
             var result = new SiteElementInfo() { Kind = KindOfSiteElement.Root };
@@ -46,13 +46,13 @@ namespace SiteBuilder
             var fileNamesList = Directory.EnumerateFiles(directory);
 
 #if DEBUG
-            _logger.Info($"fileNamesList = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
+            //_logger.Info($"fileNamesList = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
 #endif
 
             var indexSpFileName = fileNamesList.Where(p => p.EndsWith("index.sp")).SingleOrDefault();
 
 #if DEBUG
-            _logger.Info($"indexSpFileName = {indexSpFileName}");
+            //_logger.Info($"indexSpFileName = {indexSpFileName}");
 #endif
 
             if(!string.IsNullOrWhiteSpace(indexSpFileName))
@@ -60,13 +60,13 @@ namespace SiteBuilder
                 var indexTHtmlFileName = fileNamesList.Where(p => p.EndsWith("index.thtml")).Single();
 
 #if DEBUG
-                _logger.Info($"indexTHtmlFileName = {indexTHtmlFileName}");
+                //_logger.Info($"indexTHtmlFileName = {indexTHtmlFileName}");
 #endif
 
                 var cssFileName = fileNamesList.Where(p => p.EndsWith("index.css")).SingleOrDefault();
 
 #if DEBUG
-                _logger.Info($"cssFileName = {cssFileName}");
+                //_logger.Info($"cssFileName = {cssFileName}");
 #endif
 
                 if(!string.IsNullOrWhiteSpace(cssFileName))
@@ -77,7 +77,7 @@ namespace SiteBuilder
                 var lessFileName = fileNamesList.Where(p => p.EndsWith("index.less")).SingleOrDefault();
 
 #if DEBUG
-                _logger.Info($"lessFileName = {lessFileName}");
+                //_logger.Info($"lessFileName = {lessFileName}");
 #endif
 
                 if (!string.IsNullOrWhiteSpace(lessFileName))
@@ -93,7 +93,7 @@ namespace SiteBuilder
                 fileNamesList = fileNamesList.Except(new List<string> { indexSpFileName, indexTHtmlFileName });
 
 #if DEBUG
-                _logger.Info($"fileNamesList (2) = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
+                //_logger.Info($"fileNamesList (2) = {JsonConvert.SerializeObject(fileNamesList, Formatting.Indented)}");
 #endif
 
                 var oldParent = parent;
@@ -122,13 +122,13 @@ namespace SiteBuilder
                 var relativePath = indexSpFileName.Replace(sourceDir, string.Empty).Replace(".sp", ".html").Trim();
 
 #if DEBUG
-                _logger.Info($"relativePath = {relativePath}");
+                //_logger.Info($"relativePath = {relativePath}");
 #endif
 
                 var targetPath = Path.Combine(destDir, relativePath);
 
 #if DEBUG
-                _logger.Info($"targetPath = {targetPath}");
+                //_logger.Info($"targetPath = {targetPath}");
 #endif
 
                 parent.TargetFullFileName = targetPath;
@@ -166,8 +166,8 @@ namespace SiteBuilder
                 }
 
 #if DEBUG
-                _logger.Info($"oldParent = {oldParent}");
-                _logger.Info($"parent (after) = {parent}");
+                //_logger.Info($"oldParent = {oldParent}");
+                //_logger.Info($"parent (after) = {parent}");
 #endif
             }
 
@@ -326,8 +326,8 @@ namespace SiteBuilder
                 }
 
 #if DEBUG
-                _logger.Info($"fileName = {fileName}");
-                _logger.Info($"isLessFile = {isLessFile}");
+                //_logger.Info($"fileName = {fileName}");
+                //_logger.Info($"isLessFile = {isLessFile}");
 #endif
 
                 var item = new SiteElementInfo();
@@ -354,13 +354,13 @@ namespace SiteBuilder
                 }
 
 #if DEBUG
-                _logger.Info($"relativePath = {relativePath}");
+                //_logger.Info($"relativePath = {relativePath}");
 #endif
 
                 var targetPath = Path.Combine(destDir, relativePath);
 
 #if DEBUG
-                _logger.Info($"targetPath = {targetPath}");
+                //_logger.Info($"targetPath = {targetPath}");
 #endif
 
                 item.TargetFullFileName = targetPath;
@@ -372,7 +372,7 @@ namespace SiteBuilder
                 item.Href = $"{siteHref}/{relativePath}";
 
 #if DEBUG
-                _logger.Info($"item = {item}");
+                //_logger.Info($"item = {item}");
 #endif
             }
 

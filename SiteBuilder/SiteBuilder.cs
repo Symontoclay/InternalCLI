@@ -96,7 +96,7 @@ namespace SiteBuilder
             foreach(var siteElement in siteElementsList)
             {
 #if DEBUG
-                _logger.Info($"siteElement = {siteElement}");
+                //_logger.Info($"siteElement = {siteElement}");
 #endif
 
                 if (!Directory.Exists(siteElement.DirectoryName))

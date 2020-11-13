@@ -6,6 +6,7 @@ using NLog;
 using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
 using SiteBuilder.HtmlPreprocessors.EBNF;
 using SiteBuilder.HtmlPreprocessors.InThePageContentGen;
+using SiteBuilder.HtmlPreprocessors.RoadmapGeneration;
 using SiteBuilder.HtmlPreprocessors.ShortTags;
 using SiteBuilder.SiteData;
 using System;
@@ -27,7 +28,7 @@ namespace SiteBuilder
         private static readonly List<string> _commonCssLinksList = new List<string>();
         private static readonly List<string> _commonJsLinksList = new List<string>();
 
-        private static readonly CultureInfo TargetCulture = new CultureInfo("en-GB");
+        private static readonly CultureInfo _targetCulture = new CultureInfo("en-GB");
 
         static PageProcessor()
         {
@@ -277,7 +278,7 @@ namespace SiteBuilder
             AppendLine("<footer class='container' role='contentinfo'>");
             AppendLine("<div class='row justify-content-center'>");
             AppendLine("<div class='col col-md-10'>");
-            AppendLine($"This page was last modified on {_siteElement.LastUpdateDate.ToString("dd MMMM yyyy", TargetCulture)}</br>");
+            AppendLine($"This page was last modified on {_siteElement.LastUpdateDate.ToString("dd MMMM yyyy", _targetCulture)}</br>");
             //Append(", at ");
             //Append(LastUpdateDate.ToString("HH:mm", tmpFormat));
 
@@ -596,6 +597,12 @@ namespace SiteBuilder
 
 #if DEBUG
             _logger.Info($"content (3) = {content}");
+#endif
+
+            content = RoadmapGenerator.Run(content);
+
+#if DEBUG
+            _logger.Info($"content (4) = {content}");
 #endif
 
             return InThePageContentGenerator.Run(content);
