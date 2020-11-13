@@ -140,9 +140,8 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             var copyButtonId = $"id{Guid.NewGuid().ToString("D").Replace("-", "_")}";
 
             copyButtonNode.InnerHtml = "Copy";
-            copyButtonNode.AddClass("btn btn-outline-info");
+            copyButtonNode.AddClass("btn btn-outline-info code-viewer-btn");
             copyButtonNode.SetAttributeValue("title", "Copy to clipboard");
-            copyButtonNode.SetAttributeValue("style", "font-size: 12px;");
             copyButtonNode.Id = copyButtonId;
 
             var scriptNode = doc.CreateElement("script");
@@ -187,11 +186,10 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 buttonsBarNode.AppendChild(downloadButtonNode);
                 downloadButtonNode.SetAttributeValue("href", exampleHref);
 
-                downloadButtonNode.AddClass("btn btn-outline-info");
+                downloadButtonNode.AddClass("btn btn-outline-info code-viewer-btn");
                 downloadButtonNode.InnerHtml = "Download";
 
                 downloadButtonNode.SetAttributeValue("title", "Download example project");
-                downloadButtonNode.SetAttributeValue("style", "font-size: 12px;");
             }
 
             var codeList = ClearCode(initialText);
@@ -470,7 +468,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
             if(isComment)
             {
-                sb.Append($"<span style='color:lime;'>{chank}</span>");
+                sb.Append($"<span class='code-viewer-comment'>{chank}</span>");
 
                 return;
             }
@@ -673,7 +671,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
             if(IsKeyWord(word, kindOfLng))
             {
-                sb.Append($"<span style='font-weight:bold;'>{word}</span>");
+                sb.Append($"<span class='code-viewer-keyword'>{word}</span>");
 
                 return;
             }
@@ -700,7 +698,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
             if(kindOfLng == KindOfLng.CSharp)
             {
-                sb.Append($"<span style='color:red;'>{word}</span>");
+                sb.Append($"<span class='code-viewer-preprocessor-statement'>{word}</span>");
 
                 return;
             }
