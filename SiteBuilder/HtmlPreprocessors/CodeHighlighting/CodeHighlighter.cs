@@ -10,7 +10,7 @@ using System.Text;
 
 namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 {
-    public static class CodeHighlightor
+    public static class CodeHighlighter
     {
 #if DEBUG
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -50,7 +50,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         public static string Run(string initialContent)
         {
 #if DEBUG
-            _logger.Info($"initialContent = {initialContent}");
+            //_logger.Info($"initialContent = {initialContent}");
 #endif
 
             var doc = new HtmlDocument();
@@ -64,13 +64,13 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         private static void ProcessNodes(HtmlNode rootNode, HtmlDocument doc)
         {
 #if DEBUG
-            if (rootNode.Name != "#document")
-            {
-                _logger.Info($"rootNode.Name = '{rootNode.Name}'");
-                _logger.Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
-                _logger.Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
-                _logger.Info($"rootNode.InnerText = {rootNode.InnerText}");
-            }
+            //if (rootNode.Name != "#document")
+            //{
+            //    _logger.Info($"rootNode.Name = '{rootNode.Name}'");
+            //    _logger.Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
+            //    _logger.Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
+            //    _logger.Info($"rootNode.InnerText = {rootNode.InnerText}");
+            //}
 #endif
 
             if(rootNode.Name == "code")
@@ -85,7 +85,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 var language = rootNode.GetAttributeValue("data-lng", null);
 
 #if DEBUG
-                _logger.Info($"language = {language}");
+                //_logger.Info($"language = {language}");
 #endif
 
                 switch(language)
@@ -116,13 +116,13 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         private static void ProcessLng(HtmlNode rootNode, HtmlDocument doc, KindOfLng kindOfLng)
         {
 #if DEBUG
-            _logger.Info($"kindOfLng = {kindOfLng}");
+            //_logger.Info($"kindOfLng = {kindOfLng}");
 #endif
 
             var initialText = rootNode.GetDirectInnerText();
 
 #if DEBUG
-            _logger.Info($"initialText = {initialText}");
+            //_logger.Info($"initialText = {initialText}");
 #endif
 
             var codeList = ClearCode(initialText);
@@ -151,7 +151,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             var normalizedCode = NormalizeCodeForClipboard(codeList, kindOfLng);
 
 #if DEBUG
-            _logger.Info($"normalizedCode = {normalizedCode}");
+            //_logger.Info($"normalizedCode = {normalizedCode}");
 #endif
 
             var base64Array = Encoding.UTF8.GetBytes(normalizedCode);
@@ -169,7 +169,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             var exampleHref = rootNode.GetAttributeValue("example-href", null);
 
 #if DEBUG
-            _logger.Info($"exampleHref = {exampleHref}");
+            //_logger.Info($"exampleHref = {exampleHref}");
 #endif
 
             if(!string.IsNullOrWhiteSpace(exampleHref))
@@ -187,7 +187,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 }
 
 #if DEBUG
-                _logger.Info($"exampleHref (after) = {exampleHref}");
+                //_logger.Info($"exampleHref (after) = {exampleHref}");
 #endif
 
                 var downloadButtonNode = doc.CreateElement("a");
@@ -206,7 +206,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         private static string NormalizeCodeForClipboard(List<string> codeList, KindOfLng kindOfLng)
         {
 #if DEBUG
-            _logger.Info($"kindOfLng = {kindOfLng}");
+            //_logger.Info($"kindOfLng = {kindOfLng}");
 #endif
 
             var startInMultiLineComment = false;
@@ -220,9 +220,9 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 var codeLine = codeLineItem;
 
 #if DEBUG
-                _logger.Info($"codeLine = '{codeLine}'");
-                _logger.Info($"n = {n}");
-                _logger.Info($"startInMultiLineComment = {startInMultiLineComment}");
+                //_logger.Info($"codeLine = '{codeLine}'");
+                //_logger.Info($"n = {n}");
+                //_logger.Info($"startInMultiLineComment = {startInMultiLineComment}");
 #endif
 
                 var newN = n;
@@ -238,7 +238,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     var targetPositionsList = GetTargetPositionsList(codeLine);
 
 #if DEBUG
-                    _logger.Info($"targetPositionsList = {JsonConvert.SerializeObject(targetPositionsList, Formatting.Indented)}");
+                    //_logger.Info($"targetPositionsList = {JsonConvert.SerializeObject(targetPositionsList, Formatting.Indented)}");
 #endif
 
                     if (!targetPositionsList.Any())
@@ -251,13 +251,13 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     var minPos = targetPositionsList.Min(p => p.Item2);
 
 #if DEBUG
-                    _logger.Info($"minPos = {minPos}");
+                    //_logger.Info($"minPos = {minPos}");
 #endif
 
                     var targetPosition = targetPositionsList.Single(p => p.Item2 == minPos);
 
 #if DEBUG
-                    _logger.Info($"targetPosition = {targetPosition}");
+                    //_logger.Info($"targetPosition = {targetPosition}");
 #endif
 
                     var kindOfPosition = targetPosition.Item1;
@@ -273,7 +273,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 codeLine = codeLine.Substring(2);
 
 #if DEBUG
-                                _logger.Info($"codeLine = {codeLine}");
+                                //_logger.Info($"codeLine = {codeLine}");
 #endif
                             }
                             else
@@ -281,7 +281,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 var chank = codeLine.Substring(0, targetPos);
 
 #if DEBUG
-                                _logger.Info($"chank = {chank}");
+                                //_logger.Info($"chank = {chank}");
 #endif
 
                                 if (string.IsNullOrWhiteSpace(chank))
@@ -296,7 +296,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 var comment = codeLine.Substring(targetPos);
 
 #if DEBUG
-                                _logger.Info($"comment = {comment}");
+                                //_logger.Info($"comment = {comment}");
 #endif
 
                                 ProcessCodeLineChankInCodeNormalizing(sb, comment, true, kindOfLng, ref newN);
@@ -313,7 +313,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 codeLine = codeLine.Substring(2);
 
 #if DEBUG
-                                _logger.Info($"codeLine = {codeLine}");
+                                //_logger.Info($"codeLine = {codeLine}");
 #endif
                             }
                             else
@@ -321,7 +321,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 var chank = codeLine.Substring(0, targetPos);
 
 #if DEBUG
-                                _logger.Info($"chank = {chank}");
+                                //_logger.Info($"chank = {chank}");
 #endif
 
                                 if (string.IsNullOrWhiteSpace(chank))
@@ -336,13 +336,13 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 codeLine = codeLine.Substring(targetPos);
 
 #if DEBUG
-                                _logger.Info($"codeLine = {codeLine}");
+                                //_logger.Info($"codeLine = {codeLine}");
 #endif
 
                                 var endMultilineCommentPos = codeLine.IndexOf("*/");
 
 #if DEBUG
-                                _logger.Info($"endMultilineCommentPos = {endMultilineCommentPos}");
+                                //_logger.Info($"endMultilineCommentPos = {endMultilineCommentPos}");
 #endif
 
                                 if (endMultilineCommentPos == -1)
@@ -358,7 +358,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                     var comment = codeLine.Substring(0, endMultilineCommentPos + 2);
 
 #if DEBUG
-                                    _logger.Info($"comment = {comment}");
+                                    //_logger.Info($"comment = {comment}");
 #endif
 
                                     ProcessCodeLineChankInCodeNormalizing(sb, comment, true, kindOfLng, ref newN);
@@ -366,7 +366,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                     codeLine = codeLine.Substring(endMultilineCommentPos + 2);
 
 #if DEBUG
-                                    _logger.Info($"codeLine = {codeLine}");
+                                    //_logger.Info($"codeLine = {codeLine}");
 #endif
                                 }
                             }
@@ -377,7 +377,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 var comment = codeLine.Substring(0, targetPos + 2);
 
 #if DEBUG
-                                _logger.Info($"comment = {comment}");
+                                //_logger.Info($"comment = {comment}");
 #endif
 
                                 ProcessCodeLineChankInCodeNormalizing(sb, comment, true, kindOfLng, ref newN);
@@ -385,7 +385,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 codeLine = codeLine.Substring(targetPos + 2);
 
 #if DEBUG
-                                _logger.Info($"codeLine = {codeLine}");
+                                //_logger.Info($"codeLine = {codeLine}");
 #endif
 
                                 startInMultiLineComment = false;
@@ -398,15 +398,15 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 }
 
 #if DEBUG
-                _logger.Info($"n = {n}");
-                _logger.Info($"newN = {newN}");
+                //_logger.Info($"n = {n}");
+                //_logger.Info($"newN = {newN}");
 #endif
 
                 int diff = (int)newN - (int)n;
 
 #if DEBUG
-                _logger.Info($"diff = {diff}");
-                _logger.Info($"startWithComment = {startWithComment}");
+                //_logger.Info($"diff = {diff}");
+                //_logger.Info($"startWithComment = {startWithComment}");
 #endif
 
                 string spaces;
@@ -435,8 +435,8 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 }
 
 #if DEBUG
-                _logger.Info($"spaces = '{spaces}'");
-                _logger.Info($"'{spaces}{sb}'");
+                //_logger.Info($"spaces = '{spaces}'");
+                //_logger.Info($"'{spaces}{sb}'");
 #endif
 
                 resultSb.AppendLine($"{spaces}{sb}");
@@ -450,10 +450,10 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         private static void ProcessCodeLineChankInCodeNormalizing(StringBuilder sb, string chank, bool isComment, KindOfLng kindOfLng, ref uint n)
         {
 #if DEBUG
-            _logger.Info($"chank = {chank}");
-            _logger.Info($"isComment = {isComment}");
-            _logger.Info($"n = {n}");
-            _logger.Info($"kindOfLng = {kindOfLng}");
+            //_logger.Info($"chank = {chank}");
+            //_logger.Info($"isComment = {isComment}");
+            //_logger.Info($"n = {n}");
+            //_logger.Info($"kindOfLng = {kindOfLng}");
 #endif
 
             if (isComment)
@@ -655,8 +655,8 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         private static void ProcessWordInCodeNormalizing(StringBuilder sb, string word, KindOfLng kindOfLng)
         {
 #if DEBUG
-            _logger.Info($"word = '{word}'");
-            _logger.Info($"kindOfLng = {kindOfLng}");
+            //_logger.Info($"word = '{word}'");
+            //_logger.Info($"kindOfLng = {kindOfLng}");
 #endif
 
             sb.Append(word);
@@ -665,8 +665,8 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         private static void ProcessPreprocessorInCodeNormalizing(StringBuilder sb, string word, KindOfLng kindOfLng)
         {
 #if DEBUG
-            _logger.Info($"word = '{word}'");
-            _logger.Info($"kindOfLng = {kindOfLng}");
+            //_logger.Info($"word = '{word}'");
+            //_logger.Info($"kindOfLng = {kindOfLng}");
 #endif
 
             sb.Append(word);
@@ -683,9 +683,9 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 var codeLine = codeLineItem;
 
 #if DEBUG
-                _logger.Info($"codeLine = '{codeLine}'");
-                _logger.Info($"n = {n}");
-                _logger.Info($"startInMultiLineComment = {startInMultiLineComment}");
+                //_logger.Info($"codeLine = '{codeLine}'");
+                //_logger.Info($"n = {n}");
+                //_logger.Info($"startInMultiLineComment = {startInMultiLineComment}");
 #endif
 
                 var newN = n;
@@ -705,7 +705,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     var targetPositionsList = GetTargetPositionsList(codeLine);
 
 #if DEBUG
-                    _logger.Info($"targetPositionsList = {JsonConvert.SerializeObject(targetPositionsList, Formatting.Indented)}");
+                    //_logger.Info($"targetPositionsList = {JsonConvert.SerializeObject(targetPositionsList, Formatting.Indented)}");
 #endif
 
                     if (!targetPositionsList.Any())
@@ -718,13 +718,13 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     var minPos = targetPositionsList.Min(p => p.Item2);
 
 #if DEBUG
-                    _logger.Info($"minPos = {minPos}");
+                    //_logger.Info($"minPos = {minPos}");
 #endif
 
                     var targetPosition = targetPositionsList.Single(p => p.Item2 == minPos);
 
 #if DEBUG
-                    _logger.Info($"targetPosition = {targetPosition}");
+                    //_logger.Info($"targetPosition = {targetPosition}");
 #endif
 
                     var kindOfPosition = targetPosition.Item1;
@@ -740,7 +740,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 codeLine = codeLine.Substring(2);
 
 #if DEBUG
-                                _logger.Info($"codeLine = {codeLine}");
+                                //_logger.Info($"codeLine = {codeLine}");
 #endif
                             }
                             else
@@ -748,7 +748,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 var chank = codeLine.Substring(0, targetPos);
 
 #if DEBUG
-                                _logger.Info($"chank = {chank}");
+                                //_logger.Info($"chank = {chank}");
 #endif
 
                                 if (string.IsNullOrWhiteSpace(chank))
@@ -763,7 +763,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 var comment = codeLine.Substring(targetPos);
 
 #if DEBUG
-                                _logger.Info($"comment = {comment}");
+                                //_logger.Info($"comment = {comment}");
 #endif
 
                                 ProcessCodeLineChank(sb, comment, true, kindOfLng, ref newN);
@@ -780,7 +780,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 codeLine = codeLine.Substring(2);
 
 #if DEBUG
-                                _logger.Info($"codeLine = {codeLine}");
+                                //_logger.Info($"codeLine = {codeLine}");
 #endif
                             }
                             else
@@ -788,7 +788,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 var chank = codeLine.Substring(0, targetPos);
 
 #if DEBUG
-                                _logger.Info($"chank = {chank}");
+                                //_logger.Info($"chank = {chank}");
 #endif
 
                                 if (string.IsNullOrWhiteSpace(chank))
@@ -803,13 +803,13 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 codeLine = codeLine.Substring(targetPos);
 
 #if DEBUG
-                                _logger.Info($"codeLine = {codeLine}");
+                                //_logger.Info($"codeLine = {codeLine}");
 #endif
 
                                 var endMultilineCommentPos = codeLine.IndexOf("*/");
 
 #if DEBUG
-                                _logger.Info($"endMultilineCommentPos = {endMultilineCommentPos}");
+                                //_logger.Info($"endMultilineCommentPos = {endMultilineCommentPos}");
 #endif
 
                                 if (endMultilineCommentPos == -1)
@@ -825,7 +825,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                     var comment = codeLine.Substring(0, endMultilineCommentPos + 2);
 
 #if DEBUG
-                                    _logger.Info($"comment = {comment}");
+                                    //_logger.Info($"comment = {comment}");
 #endif
 
                                     ProcessCodeLineChank(sb, comment, true, kindOfLng, ref newN);
@@ -833,7 +833,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                     codeLine = codeLine.Substring(endMultilineCommentPos + 2);
 
 #if DEBUG
-                                    _logger.Info($"codeLine = {codeLine}");
+                                    //_logger.Info($"codeLine = {codeLine}");
 #endif
                                 }
                             }
@@ -844,7 +844,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 var comment = codeLine.Substring(0, targetPos + 2);
 
 #if DEBUG
-                                _logger.Info($"comment = {comment}");
+                                //_logger.Info($"comment = {comment}");
 #endif
 
                                 ProcessCodeLineChank(sb, comment, true, kindOfLng, ref newN);
@@ -852,7 +852,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 codeLine = codeLine.Substring(targetPos + 2);
 
 #if DEBUG
-                                _logger.Info($"codeLine = {codeLine}");
+                                //_logger.Info($"codeLine = {codeLine}");
 #endif
 
                                 startInMultiLineComment = false;
@@ -865,15 +865,15 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 }
 
 #if DEBUG
-                _logger.Info($"n = {n}");
-                _logger.Info($"newN = {newN}");
+                //_logger.Info($"n = {n}");
+                //_logger.Info($"newN = {newN}");
 #endif
 
                 int diff = (int)newN - (int)n;
 
 #if DEBUG
-                _logger.Info($"diff = {diff}");
-                _logger.Info($"startWithComment = {startWithComment}");
+                //_logger.Info($"diff = {diff}");
+                //_logger.Info($"startWithComment = {startWithComment}");
 #endif
 
                 string spaces;
@@ -902,8 +902,8 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 }
 
 #if DEBUG
-                _logger.Info($"spaces = '{spaces}'");
-                _logger.Info($"'{spaces}{sb}'");
+                //_logger.Info($"spaces = '{spaces}'");
+                //_logger.Info($"'{spaces}{sb}'");
 #endif
 
                 codeLineNode.InnerHtml = $"{spaces}{sb}";
@@ -940,10 +940,10 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         private static void ProcessCodeLineChank(StringBuilder sb, string chank, bool isComment, KindOfLng kindOfLng, ref uint n)
         {
 #if DEBUG
-            _logger.Info($"chank = {chank}");
-            _logger.Info($"isComment = {isComment}");
-            _logger.Info($"n = {n}");
-            _logger.Info($"kindOfLng = {kindOfLng}");
+            //_logger.Info($"chank = {chank}");
+            //_logger.Info($"isComment = {isComment}");
+            //_logger.Info($"n = {n}");
+            //_logger.Info($"kindOfLng = {kindOfLng}");
 #endif
 
             if(isComment)
@@ -1145,8 +1145,8 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         private static void ProcessWord(StringBuilder sb, string word, KindOfLng kindOfLng)
         {
 #if DEBUG
-            _logger.Info($"word = '{word}'");
-            _logger.Info($"kindOfLng = {kindOfLng}");
+            //_logger.Info($"word = '{word}'");
+            //_logger.Info($"kindOfLng = {kindOfLng}");
 #endif
 
             if(IsKeyWord(word, kindOfLng))
@@ -1172,8 +1172,8 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         private static void ProcessPreprocessor(StringBuilder sb, string word, KindOfLng kindOfLng)
         {
 #if DEBUG
-            _logger.Info($"word = '{word}'");
-            _logger.Info($"kindOfLng = {kindOfLng}");
+            //_logger.Info($"word = '{word}'");
+            //_logger.Info($"kindOfLng = {kindOfLng}");
 #endif
 
             if(kindOfLng == KindOfLng.CSharp)
@@ -1189,7 +1189,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         private static List<(KindOfPosition, int)> GetTargetPositionsList(string text)
         {
 #if DEBUG
-            _logger.Info($"text = {text}");
+            //_logger.Info($"text = {text}");
 #endif
 
             var result = new List<(KindOfPosition, int)>();
@@ -1197,7 +1197,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             var singleLinePos = text.IndexOf("//");
 
 #if DEBUG
-            _logger.Info($"singleLinePos = {singleLinePos}");
+            //_logger.Info($"singleLinePos = {singleLinePos}");
 #endif
 
             if(singleLinePos != -1)
@@ -1208,7 +1208,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             var beginMultiLinePos = text.IndexOf("/*");
 
 #if DEBUG
-            _logger.Info($"beginMultiLinePos = {beginMultiLinePos}");
+            //_logger.Info($"beginMultiLinePos = {beginMultiLinePos}");
 #endif
 
             if (beginMultiLinePos != -1)
@@ -1219,7 +1219,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             var endMultiLinePos = text.IndexOf("*/");
 
 #if DEBUG
-            _logger.Info($"endMultiLinePos = {endMultiLinePos}");
+            //_logger.Info($"endMultiLinePos = {endMultiLinePos}");
 #endif
 
             if (endMultiLinePos != -1)

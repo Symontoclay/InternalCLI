@@ -592,7 +592,7 @@ namespace SiteBuilder
             _logger.Info($"content (2) = {content}");
 #endif
 
-            content = CodeHighlightor.Run(content);
+            content = CodeHighlighter.Run(content);
 
 #if DEBUG
             _logger.Info($"content (3) = {content}");
