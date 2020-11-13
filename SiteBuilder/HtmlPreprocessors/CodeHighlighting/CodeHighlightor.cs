@@ -125,6 +125,8 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             _logger.Info($"initialText = {initialText}");
 #endif
 
+            var codeList = ClearCode(initialText);
+
             var newCodeNode = doc.CreateElement("div");
             var parentNode = rootNode.ParentNode;
             parentNode.ReplaceChild(newCodeNode, rootNode);
@@ -192,13 +194,16 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 downloadButtonNode.SetAttributeValue("title", "Download example project");
             }
 
-            var codeList = ClearCode(initialText);
+            CreateCodeLinesNodes(codeList, newCodeNode, doc, kindOfLng);
+        }
 
+        private static void CreateCodeLinesNodes(List<string> codeList, HtmlNode rootNode, HtmlDocument doc, KindOfLng kindOfLng)
+        {
             var startInMultiLineComment = false;
 
             uint n = 0;
 
-            foreach(var codeLineItem in codeList)
+            foreach (var codeLineItem in codeList)
             {
                 var codeLine = codeLineItem;
 
@@ -211,7 +216,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 var newN = n;
 
                 var codeLineNode = doc.CreateElement("div");
-                newCodeNode.AppendChild(codeLineNode);
+                rootNode.AppendChild(codeLineNode);
                 codeLineNode.AddClass("code-viewer-line");
 
                 var sb = new StringBuilder();
@@ -228,7 +233,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     _logger.Info($"targetPositionsList = {JsonConvert.SerializeObject(targetPositionsList, Formatting.Indented)}");
 #endif
 
-                    if(!targetPositionsList.Any())
+                    if (!targetPositionsList.Any())
                     {
                         ProcessCodeLineChank(codeLineNode, sb, codeLine, startInMultiLineComment, kindOfLng, ref newN);
                         needRun = false;
@@ -332,7 +337,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                                 _logger.Info($"endMultilineCommentPos = {endMultilineCommentPos}");
 #endif
 
-                                if(endMultilineCommentPos == -1)
+                                if (endMultilineCommentPos == -1)
                                 {
                                     startInMultiLineComment = true;
 
@@ -355,7 +360,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 #if DEBUG
                                     _logger.Info($"codeLine = {codeLine}");
 #endif
-                                }                                
+                                }
                             }
                             break;
 
@@ -398,7 +403,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
                 string spaces;
 
-                if(codeLine.StartsWith("#") && !startWithComment && kindOfLng == KindOfLng.CSharp)
+                if (codeLine.StartsWith("#") && !startWithComment && kindOfLng == KindOfLng.CSharp)
                 {
                     spaces = string.Empty;
                 }
