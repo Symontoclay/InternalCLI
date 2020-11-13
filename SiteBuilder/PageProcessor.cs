@@ -281,7 +281,7 @@ namespace SiteBuilder
             //Append(", at ");
             //Append(LastUpdateDate.ToString("HH:mm", tmpFormat));
 
-            AppendLine($"&copy;&nbsp; <a href='https://github.com/metatypeman'>metatypeman</a> {GetCopyRightDate()}</br>");
+            AppendLine($"&copy;&nbsp; <a href='https://github.com/metatypeman'>Sergiy Tolkachov AKA metatypeman</a> {GetCopyRightDate()}</br>");
             AppendLine("The text is available under the <a href='https://creativecommons.org/licenses/by-sa/3.0/'>Creative Commons Attribution-ShareAlike 3.0 Unported License</a>");
             AppendLine("</div>");
             AppendLine("</div>");
