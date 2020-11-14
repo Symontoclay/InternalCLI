@@ -15,14 +15,8 @@ namespace SiteBuilder.SiteData
         public KindOfRoadMapItemCompeltion KindOfCompeltion { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Version { get; set; } = string.Empty;
-        public string ShortDescription { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public string SeeMoreHref { get; set; } = string.Empty;
-        public string Remarks { get; set; } = string.Empty;
-        public List<string> Tags { get; set; } = new List<string>();
         public bool IsMarkdown { get; set; }
-        public RoadMapItem Parent { get; set; }
-        public List<RoadMapItem> SubItemsList { get; set; } = new List<RoadMapItem>();
 
         /// <inheritdoc/>
         public override string ToString()
@@ -50,15 +44,8 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(KindOfCompeltion)} = {KindOfCompeltion}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
-            sb.AppendLine($"{spaces}{nameof(ShortDescription)} = {ShortDescription}");
             sb.AppendLine($"{spaces}{nameof(Description)} = {Description}");
-            sb.AppendLine($"{spaces}{nameof(SeeMoreHref)} = {SeeMoreHref}");
-            sb.AppendLine($"{spaces}{nameof(Remarks)} = {Remarks}");
-            sb.PrintPODList(n, nameof(Tags), Tags);
             sb.AppendLine($"{spaces}{nameof(IsMarkdown)} = {IsMarkdown}");
-
-            sb.PrintBriefObjProp(n, nameof(Parent), Parent);
-            sb.PrintObjListProp(n, nameof(SubItemsList), SubItemsList);
 
             return sb.ToString();
         }
@@ -89,15 +76,8 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(KindOfCompeltion)} = {KindOfCompeltion}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
-            sb.AppendLine($"{spaces}{nameof(ShortDescription)} = {ShortDescription}");
             sb.AppendLine($"{spaces}{nameof(Description)} = {Description}");
-            sb.AppendLine($"{spaces}{nameof(SeeMoreHref)} = {SeeMoreHref}");
-            sb.AppendLine($"{spaces}{nameof(Remarks)} = {Remarks}");
-            sb.PrintPODList(n, nameof(Tags), Tags);
             sb.AppendLine($"{spaces}{nameof(IsMarkdown)} = {IsMarkdown}");
-
-            sb.PrintBriefObjProp(n, nameof(Parent), Parent);
-            sb.PrintShortObjListProp(n, nameof(SubItemsList), SubItemsList);
 
             return sb.ToString();
         }
@@ -128,15 +108,8 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(KindOfCompeltion)} = {KindOfCompeltion}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
-            sb.AppendLine($"{spaces}{nameof(ShortDescription)} = {ShortDescription}");
             sb.AppendLine($"{spaces}{nameof(Description)} = {Description}");
-            sb.AppendLine($"{spaces}{nameof(SeeMoreHref)} = {SeeMoreHref}");
-            sb.AppendLine($"{spaces}{nameof(Remarks)} = {Remarks}");
-            sb.PrintPODList(n, nameof(Tags), Tags);
             sb.AppendLine($"{spaces}{nameof(IsMarkdown)} = {IsMarkdown}");
-
-            sb.PrintExisting(n, nameof(Parent), Parent);
-            sb.PrintExistingList(n, nameof(SubItemsList), SubItemsList);
 
             return sb.ToString();
         }

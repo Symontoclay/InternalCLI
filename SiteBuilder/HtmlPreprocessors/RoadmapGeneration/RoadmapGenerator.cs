@@ -71,7 +71,7 @@ namespace SiteBuilder.HtmlPreprocessors.RoadmapGeneration
                 //_logger.Info($"item = {item}");
 #endif
 
-                if(item.Kind != KindOfRoadMapItem.Step)
+                if(item.Kind != KindOfRoadMapItem.Step && item.Kind != KindOfRoadMapItem.Unplanned)
                 {
                     throw new NotImplementedException();
                 }
@@ -87,23 +87,40 @@ namespace SiteBuilder.HtmlPreprocessors.RoadmapGeneration
 
                 var itemNode = doc.CreateElement("div");
                 newRoadMapNode.AppendChild(itemNode);
+                itemNode.SetAttributeValue("style", "margin-bottom: 20px;");
 
                 var sb = new StringBuilder();
 
-                sb.AppendLine($"<h2>{item.Name}</h2>");
-
-                if(item.KindOfCompeltion == KindOfRoadMapItemCompeltion.Developed)
+                if(item.Kind == KindOfRoadMapItem.Step)
                 {
-                    sb.AppendLine($"<div><i class='fas fa-tasks'></i>&nbsp;&nbsp;In developing</div>");
+                    sb.AppendLine($"<h2>{item.Name}</h2>");
+
+                    if (item.KindOfCompeltion == KindOfRoadMapItemCompeltion.Developed)
+                    {
+                        sb.AppendLine($"<div><i class='fas fa-tasks'></i>&nbsp;&nbsp;In developing</div>");
+                    }
+                    else
+                    {
+                        sb.AppendLine($"<div><i class='fas fa-hourglass-start'></i>&nbsp;&nbsp;Planned</div>");
+                    }
+
+                    sb.AppendLine($"<div><i class='far fa-calendar-alt'></i>&nbsp;&nbsp;<span style='font-weight: bold;'>Period</span>: {item.Start.Value.ToString("D", _targetCulture)} - {item.End.Value.ToString("D", _targetCulture)}</div>");
+
+                    sb.AppendLine($"<div><span style='font-weight: bold;'>Version</span>: {item.Version}</div>");
                 }
                 else
                 {
-                    sb.AppendLine($"<div><i class='fas fa-hourglass-start'></i>&nbsp;&nbsp;Planned</div>");
+                    if(item.Kind == KindOfRoadMapItem.Unplanned)
+                    {
+                        sb.AppendLine("<h2><i class='fas fa-warehouse'></i>&nbsp;&nbsp;Unplanned backlog</h2>");
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
                 }
 
-                sb.AppendLine($"<div><i class='far fa-calendar-alt'></i>&nbsp;&nbsp;Period: {item.Start.Value.ToString("D", _targetCulture)} - {item.End.Value.ToString("D", _targetCulture)}</div>");
-
-                sb.AppendLine($"<div>Version: {item.Version}</div>");
+                sb.AppendLine($"<div>{ContentPreprocessor.Run(item.Description, item.IsMarkdown)}</div>");
 
                 itemNode.InnerHtml = sb.ToString();
             }

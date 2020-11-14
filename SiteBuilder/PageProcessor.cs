@@ -3,6 +3,7 @@ using dotless.Core;
 using dotless.Core.Parser.Tree;
 using HtmlAgilityPack;
 using NLog;
+using SiteBuilder.HtmlPreprocessors;
 using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
 using SiteBuilder.HtmlPreprocessors.EBNF;
 using SiteBuilder.HtmlPreprocessors.InThePageContentGen;
@@ -361,13 +362,6 @@ namespace SiteBuilder
             AppendLine("</p>");
         }
 
-        private void GenerateMainWarning()
-        {
-            AppendLine("<div class='not-suitable-danger'>");
-            AppendLine("<i class='fa fa-exclamation-triangle' aria-hidden='true' style='font-size:20px;'></i> <span class='not-suitable-danger-text'>This project is experimental. And it is not suitable for practical using.</span>");
-            AppendLine("</div>");
-        }
-
         private void GenerateMainMenu()
         {
             var tmpItems = new List<string>();
@@ -571,41 +565,7 @@ namespace SiteBuilder
             _logger.Info($"content = {content}");
 #endif
 
-            if(_siteElement.SitePageInfo.UseMarkdown)
-            {
-                return CommonMarkConverter.Convert(content);
-            }
-
-            return PreprocessContent(content);
-        }
-
-        private string PreprocessContent(string initialContent)
-        {
-            var content = EBNFPreparation.Run(initialContent);
-
-#if DEBUG
-            _logger.Info($"content (1) = {content}");
-#endif
-
-            content = ShortTagsPreparation.Run(content);
-
-#if DEBUG
-            _logger.Info($"content (2) = {content}");
-#endif
-
-            content = CodeHighlighter.Run(content);
-
-#if DEBUG
-            _logger.Info($"content (3) = {content}");
-#endif
-
-            content = RoadmapGenerator.Run(content);
-
-#if DEBUG
-            _logger.Info($"content (4) = {content}");
-#endif
-
-            return InThePageContentGenerator.Run(content);
+            return ContentPreprocessor.Run(content, _siteElement.SitePageInfo.UseMarkdown);
         }
 
         private string GetTitle()

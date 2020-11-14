@@ -44,19 +44,14 @@ namespace SiteBuilder
                     item.Kind = KindOfRoadMapItem.Step;
                 }
 
-                if (item.End.HasValue && item.KindOfCompeltion != KindOfRoadMapItemCompeltion.Completed && !item.SubItemsList.Any())
+                if (item.End.HasValue && item.KindOfCompeltion != KindOfRoadMapItemCompeltion.Completed)
                 {
                     throw new Exception($"It is weird! '{item.Name}' is finished at {item.End} but is not completed");
                 }
 
-                if (item.KindOfCompeltion == KindOfRoadMapItemCompeltion.Completed && !item.End.HasValue && !item.SubItemsList.Any())
+                if (item.KindOfCompeltion == KindOfRoadMapItemCompeltion.Completed && !item.End.HasValue)
                 {
                     throw new Exception($"It is weird! '{item.Name}' is completed finished but does not have any End date.");
-                }
-
-                if (item.SubItemsList.Any())
-                {
-                    throw new NotImplementedException();
                 }
 
                 if (item.KindOfCompeltion == KindOfRoadMapItemCompeltion.Completed)
@@ -141,11 +136,6 @@ namespace SiteBuilder
                 if (item.End.HasValue && !item.Start.HasValue)
                 {
                     throw new Exception($"In which way can you finish step '{item.Name}' at {item.End} without start.");
-                }
-
-                if (item.SubItemsList.Any())
-                {
-                    throw new NotImplementedException();
                 }
 
                 if (item.KindOfCompeltion == KindOfRoadMapItemCompeltion.Unknown)
