@@ -62,7 +62,7 @@ namespace SiteBuilder.HtmlPreprocessors.RoadmapGeneration
             parentNode.ReplaceChild(newRoadMapNode, rootNode);
 
 #if DEBUG
-            _logger.Info($"GeneralSettings.RoadMapItemsList.Count = {GeneralSettings.RoadMapItemsList.Count}");
+            //_logger.Info($"GeneralSettings.RoadMapItemsList.Count = {GeneralSettings.RoadMapItemsList.Count}");
 #endif
 
             foreach (var item in GeneralSettings.RoadMapItemsList)
@@ -82,7 +82,7 @@ namespace SiteBuilder.HtmlPreprocessors.RoadmapGeneration
                 }
 
 #if DEBUG
-                _logger.Info($"item = {item}");
+                //_logger.Info($"item = {item}");
 #endif
 
                 var itemNode = doc.CreateElement("div");
@@ -97,7 +97,7 @@ namespace SiteBuilder.HtmlPreprocessors.RoadmapGeneration
 
                     if (item.KindOfCompeltion == KindOfRoadMapItemCompeltion.Developed)
                     {
-                        sb.AppendLine($"<div><i class='fas fa-tasks'></i>&nbsp;&nbsp;In developing</div>");
+                        sb.AppendLine($"<div><i class='fas fa-tasks'></i>&nbsp;&nbsp;In development</div>");
                     }
                     else
                     {
