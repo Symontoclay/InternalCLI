@@ -22,12 +22,23 @@ namespace TestSandBox
 
             EVPath.RegVar("APPDIR", Directory.GetCurrentDirectory());
 
-            TstLessHandler();
+            TstReleaseItemsHandler();
+            //TstLessHandler();
             //TstRoadMap();
             //TstBuild();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstReleaseItemsHandler()
+        {
+            _logger.Info("Begin");
+
+            var handler = new ReleaseItemsHandler();
+            handler.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstLessHandler()

@@ -3,6 +3,7 @@ using NLog;
 using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
 using SiteBuilder.HtmlPreprocessors.EBNF;
 using SiteBuilder.HtmlPreprocessors.InThePageContentGen;
+using SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration;
 using SiteBuilder.HtmlPreprocessors.RoadmapGeneration;
 using SiteBuilder.HtmlPreprocessors.ShortTags;
 using System;
@@ -51,6 +52,12 @@ namespace SiteBuilder.HtmlPreprocessors
 
 #if DEBUG
             _logger.Info($"content (4) = {content}");
+#endif
+
+            content = ReleaseInfoGenerator.Run(content);
+
+#if DEBUG
+            _logger.Info($"content (5) = {content}");
 #endif
 
             return InThePageContentGenerator.Run(content);

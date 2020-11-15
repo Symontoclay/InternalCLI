@@ -1,4 +1,5 @@
 ﻿using CommonUtils.DebugHelpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,10 @@ namespace SiteBuilder.SiteData
         public List<ReleaseAssetItem> AssetsList { get; set; } = new List<ReleaseAssetItem>();
         public string Description { get; set; }
         public bool IsMarkdown { get; set; }
+        [JsonIgnore]
+        public bool IsLatest { get; set; }
+        [JsonIgnore]
+        public string Href { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -38,6 +43,8 @@ namespace SiteBuilder.SiteData
 
             sb.AppendLine($"{spaces}{nameof(Description)} = {Description}");
             sb.AppendLine($"{spaces}{nameof(IsMarkdown)} = {IsMarkdown}");
+            sb.AppendLine($"{spaces}{nameof(IsLatest)} = {IsLatest}");
+            sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
 
             return sb.ToString();
         }
@@ -67,6 +74,8 @@ namespace SiteBuilder.SiteData
 
             sb.AppendLine($"{spaces}{nameof(Description)} = {Description}");
             sb.AppendLine($"{spaces}{nameof(IsMarkdown)} = {IsMarkdown}");
+            sb.AppendLine($"{spaces}{nameof(IsLatest)} = {IsLatest}");
+            sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
 
             return sb.ToString();
         }
@@ -91,6 +100,7 @@ namespace SiteBuilder.SiteData
 
             sb.AppendLine($"{spaces}{nameof(Date)} = {Date}");
             sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
+            sb.AppendLine($"{spaces}{nameof(IsLatest)} = {IsLatest}");
 
             return sb.ToString();
         }
