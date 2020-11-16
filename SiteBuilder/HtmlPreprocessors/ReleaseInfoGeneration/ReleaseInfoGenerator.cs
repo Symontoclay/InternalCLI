@@ -41,13 +41,30 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
 
             if (rootNode.Name == "release")
             {
-                throw new NotImplementedException();
+                ProcessReleaseInfo(rootNode, doc);
+                return;
             }
 
             foreach (var node in rootNode.ChildNodes.ToList())
             {
                 ProcessNodes(node, doc);
             }
+        }
+
+        private static void ProcessReleaseInfo(HtmlNode rootNode, HtmlDocument doc)
+        {
+            var version = rootNode.GetAttributeValue("version", string.Empty);
+
+            if(string.IsNullOrWhiteSpace(version))
+            {
+                version = "latest";
+            }
+
+#if DEBUG
+            _logger.Info($"version = '{version}'");
+#endif
+
+            throw new NotImplementedException();
         }
     }
 }
