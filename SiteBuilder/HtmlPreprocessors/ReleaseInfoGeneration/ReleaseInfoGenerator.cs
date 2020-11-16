@@ -1,7 +1,9 @@
 ﻿using HtmlAgilityPack;
 using NLog;
+using SiteBuilder.SiteData;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -12,6 +14,8 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
 #if DEBUG
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
+
+        private static readonly CultureInfo _targetCulture = new CultureInfo("en-GB");
 
         public static string Run(string initialContent)
         {
@@ -64,7 +68,74 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
             _logger.Info($"version = '{version}'");
 #endif
 
-            throw new NotImplementedException();
+            var targetItem = GetTargetReleaseItem(version);
+
+#if DEBUG
+            _logger.Info($"targetItem = {targetItem}");
+#endif
+
+            var newRootNode = doc.CreateElement("div");
+            var parentNode = rootNode.ParentNode;
+            parentNode.ReplaceChild(newRootNode, rootNode);
+
+            var sb = new StringBuilder();
+
+            var latestMark = string.Empty;
+
+            if(targetItem.IsLatest)
+            {
+                latestMark = " (latest)";
+            }
+
+            sb.AppendLine($"<h1>Version {targetItem.Version}{latestMark}</h1>");
+            sb.AppendLine($"<div><i class='far fa-calendar-alt'></i>&nbsp;&nbsp;{targetItem.Date.Value.ToString("D", _targetCulture)}</div>");
+
+            sb.AppendLine("<div class='downloads-block'>");
+
+            foreach(var asset in targetItem.AssetsList)
+            {
+                sb.AppendLine("<div class='downloads-asset-block'>");
+                sb.AppendLine($"<a href='{asset.Href}'>{GetAssetIconHtml(asset.Kind)}&nbsp;&nbsp;{asset.Title}</a>");
+                sb.AppendLine("</div>");
+            }
+
+            sb.AppendLine("</div>");
+
+            sb.AppendLine($"<h2>Release notes</h2>");
+
+            sb.AppendLine($"<div>{ContentPreprocessor.Run(targetItem.Description, targetItem.IsMarkdown)}</div>");
+
+            newRootNode.InnerHtml = sb.ToString();
+        }
+
+        private static string GetAssetIconHtml(KindOfReleaseAssetItem kind)
+        {
+            switch(kind)
+            {
+
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+            }
+
+            /*
+        SourceCodeZip,
+        NuGet,
+        LibraryArch,
+        LibraryFolder,
+        CLIArch,
+        CLIFolder,
+             */
+        }
+
+        private static ReleaseItem GetTargetReleaseItem(string version)
+        {
+            if(version == "latest")
+            {
+                return GeneralSettings.ReleaseItemsList.Single(p => p.IsLatest);
+            }
+
+            return GeneralSettings.ReleaseItemsList.Single(p => p.Version == version);
         }
     }
 }
