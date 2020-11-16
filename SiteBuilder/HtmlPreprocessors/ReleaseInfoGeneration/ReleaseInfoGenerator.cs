@@ -112,15 +112,19 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
         {
             switch(kind)
             {
+                case KindOfReleaseAssetItem.SourceCodeZip:
+                    return $"<img src='/assets/zip_file_icon_24px.png'/>";
 
+                case KindOfReleaseAssetItem.NuGet:
+                    return $"<img src='/assets/nuget.ico'/>";
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
             }
 
             /*
-        SourceCodeZip,
-        NuGet,
+        ,
+        ,
         LibraryArch,
         LibraryFolder,
         CLIArch,
