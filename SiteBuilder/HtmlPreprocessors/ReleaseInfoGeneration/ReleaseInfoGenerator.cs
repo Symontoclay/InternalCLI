@@ -90,16 +90,21 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
             sb.AppendLine($"<h1>Version {targetItem.Version}{latestMark}</h1>");
             sb.AppendLine($"<div><i class='far fa-calendar-alt'></i>&nbsp;&nbsp;{targetItem.Date.Value.ToString("D", _targetCulture)}</div>");
 
-            sb.AppendLine("<div class='downloads-block'>");
+            sb.AppendLine("<table class='downloads-block'>");
 
             foreach(var asset in targetItem.AssetsList)
             {
-                sb.AppendLine("<div class='downloads-asset-block'>");
-                sb.AppendLine($"<a href='{asset.Href}'>{GetAssetIconHtml(asset.Kind)}&nbsp;&nbsp;{asset.Title}</a>");
-                sb.AppendLine("</div>");
+                sb.AppendLine("<tr style='border-bottom: solid 1px #e2e2e2;'>");
+                sb.AppendLine("<td style='width: 180px;'>");
+                sb.AppendLine(GetAssetTitle(asset.Kind));
+                sb.AppendLine("</td>");
+                sb.AppendLine("<td>");
+                sb.AppendLine($"<a href='{asset.Href}'>{asset.Title}</a>");
+                sb.AppendLine("</td>");
+                sb.AppendLine("</tr>");
             }
 
-            sb.AppendLine("</div>");
+            sb.AppendLine("</table>");
 
             sb.AppendLine($"<h2>Release notes</h2>");
 
@@ -108,28 +113,31 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
             newRootNode.InnerHtml = sb.ToString();
         }
 
-        private static string GetAssetIconHtml(KindOfReleaseAssetItem kind)
+        private static string GetAssetTitle(KindOfReleaseAssetItem kind)
         {
             switch(kind)
             {
                 case KindOfReleaseAssetItem.SourceCodeZip:
-                    return $"<img src='/assets/zip_file_icon_24px.png'/>";
+                    return "Source code (.zip)";
 
                 case KindOfReleaseAssetItem.NuGet:
-                    return $"<img src='/assets/nuget.ico'/>";
+                    return "Nuget package";
+
+                case KindOfReleaseAssetItem.LibraryArch:
+                    return "Engine (.zip)";
+
+                case KindOfReleaseAssetItem.LibraryFolder:
+                    return "Engine (folder)";
+
+                case KindOfReleaseAssetItem.CLIArch:
+                    return "CLI (.zip)";
+
+                case KindOfReleaseAssetItem.CLIFolder:
+                    return "CLI (folder)";
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
             }
-
-            /*
-        ,
-        ,
-        LibraryArch,
-        LibraryFolder,
-        CLIArch,
-        CLIFolder,
-             */
         }
 
         private static ReleaseItem GetTargetReleaseItem(string version)
