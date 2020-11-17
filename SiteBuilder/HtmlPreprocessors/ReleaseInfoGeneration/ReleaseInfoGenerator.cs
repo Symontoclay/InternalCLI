@@ -20,7 +20,7 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
         public static string Run(string initialContent)
         {
 #if DEBUG
-            _logger.Info($"initialContent = {initialContent}");
+            //_logger.Info($"initialContent = {initialContent}");
 #endif
 
             var doc = new HtmlDocument();
@@ -34,13 +34,13 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
         private static void ProcessNodes(HtmlNode rootNode, HtmlDocument doc)
         {
 #if DEBUG
-            if (rootNode.Name != "#document")
-            {
-                _logger.Info($"rootNode.Name = '{rootNode.Name}'");
-                _logger.Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
-                _logger.Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
-                _logger.Info($"rootNode.InnerText = {rootNode.InnerText}");
-            }
+            //if (rootNode.Name != "#document")
+            //{
+            //    _logger.Info($"rootNode.Name = '{rootNode.Name}'");
+            //    _logger.Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
+            //    _logger.Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
+            //    _logger.Info($"rootNode.InnerText = {rootNode.InnerText}");
+            //}
 #endif
 
             if (rootNode.Name == "release")
@@ -83,8 +83,6 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
                 sb.AppendLine($"<div><a href='{releaseInfo.Href}'>{releaseInfo.Version}</a>&nbsp;&nbsp;<i class='far fa-calendar-alt'></i>&nbsp;&nbsp;{releaseInfo.Date.Value.ToString("D", _targetCulture)}</div>");
             }
 
-            //throw new NotImplementedException();
-
             newRootNode.InnerHtml = sb.ToString();
         }
 
@@ -98,13 +96,13 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
             }
 
 #if DEBUG
-            _logger.Info($"version = '{version}'");
+            //_logger.Info($"version = '{version}'");
 #endif
 
             var targetItem = GetTargetReleaseItem(version);
 
 #if DEBUG
-            _logger.Info($"targetItem = {targetItem}");
+            //_logger.Info($"targetItem = {targetItem}");
 #endif
 
             var newRootNode = doc.CreateElement("div");

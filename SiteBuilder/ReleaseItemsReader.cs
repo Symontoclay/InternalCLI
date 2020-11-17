@@ -18,11 +18,11 @@ namespace SiteBuilder
         public static List<ReleaseItem> Read(string fileName, string baseHref, string basePath, string sourceDir, string destDir)
         {
 #if DEBUG
-            _logger.Info($"fileName = {fileName}");
-            _logger.Info($"baseHref = {baseHref}");
-            _logger.Info($"basePath = {basePath}");
-            _logger.Info($"sourceDir = {sourceDir}");
-            _logger.Info($"destDir = {destDir}");
+            //_logger.Info($"fileName = {fileName}");
+            //_logger.Info($"baseHref = {baseHref}");
+            //_logger.Info($"basePath = {basePath}");
+            //_logger.Info($"sourceDir = {sourceDir}");
+            //_logger.Info($"destDir = {destDir}");
 #endif
 
             if (string.IsNullOrWhiteSpace(fileName))
@@ -49,13 +49,13 @@ namespace SiteBuilder
             var minDate = items.Min(p => p.Date);
 
 #if DEBUG
-            _logger.Info($"maxDate = {minDate}");
+            //_logger.Info($"maxDate = {minDate}");
 #endif
 
             var latestItem = items.SingleOrDefault(p => p.Date == minDate);
 
 #if DEBUG
-            _logger.Info($"latestItem = {latestItem}");
+            //_logger.Info($"latestItem = {latestItem}");
 #endif
 
             latestItem.IsLatest = true;
@@ -63,26 +63,26 @@ namespace SiteBuilder
             var relativePath = basePath.Replace(sourceDir, string.Empty);
 
 #if DEBUG
-            _logger.Info($"relativePath = {relativePath}");
+            //_logger.Info($"relativePath = {relativePath}");
 #endif
 
             foreach (var item in items)
             {
 #if DEBUG
-                _logger.Info($"item = {item}");
+                //_logger.Info($"item = {item}");
 #endif
 
                 var relativeItemName = Path.Combine(relativePath, $"{item.Version}.html");
 
 #if DEBUG
-                _logger.Info($"relativeItemName = {relativeItemName}");
+                //_logger.Info($"relativeItemName = {relativeItemName}");
 #endif
 
                 item.Href = Path.Combine(baseHref, relativeItemName).Replace("\\", "/");
                 item.TargetFullFileName = Path.Combine(destDir, relativeItemName).Replace("\\", "/");
 
 #if DEBUG
-                _logger.Info($"item (after) = {item}");
+                //_logger.Info($"item (after) = {item}");
 #endif
             }
         }
