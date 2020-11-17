@@ -160,7 +160,7 @@ namespace SiteBuilder
 
             if(!string.IsNullOrWhiteSpace(releaseNotesFileName))
             {
-                ReleaseItemsList = ReleaseItemsReader.Read(releaseNotesFileName);
+                ReleaseItemsList = ReleaseItemsReader.Read(releaseNotesFileName, SiteHref, SiteSettings.BaseReleaseNotesPath, SourcePath, DestPath);
             }
 
 #if DEBUG

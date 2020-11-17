@@ -136,11 +136,6 @@ namespace SiteBuilder
 
 #if DEBUG
             _logger.Info($"_siteElement.TargetFullFileName = {_siteElement.TargetFullFileName}");
-
-            //if (_siteElement.TargetFullFileName.EndsWith("spec.html"))
-            //{
-            //    throw new NotImplementedException();
-            //}
 #endif
         }
 
@@ -157,20 +152,20 @@ namespace SiteBuilder
             AppendLine("<meta property='og:type' content='article' />");
             AppendLine("<meta name='viewport' content='width=device-width, initial-scale=1'>");
 
-            if (!string.IsNullOrWhiteSpace(siteMictodata.Title))
+            if (!string.IsNullOrWhiteSpace(siteMictodata?.Title))
             {
                 AppendLine($"<meta property='og:title' content='{siteMictodata.Title}' />");
                 //AppendLine($"<meta itemprop='name' content='{MicrodataTitle}' />");
             }
 
-            if (!string.IsNullOrWhiteSpace(siteMictodata.ImageUrl))
+            if (!string.IsNullOrWhiteSpace(siteMictodata?.ImageUrl))
             {
                 AppendLine($"<meta property='og:image' content='{PagesPathsHelper.RelativeHrefToAbsolute(siteMictodata.ImageUrl)}' />");
                 //AppendLine($"<link rel='\"image_src\" href=\"{PagesPathsHelper.RelativeHrefToAbsolute(ImageUrl)}\" />");
                 //AppendLine("<meta property='og:image:type' content='image/png'>");
                 //AppendLine("<meta property='og:image:width' content='300'>");
                 //AppendLine("<meta property='og:image:height' content='300'>");
-                if (!string.IsNullOrWhiteSpace(siteMictodata.ImageAlt))
+                if (!string.IsNullOrWhiteSpace(siteMictodata?.ImageAlt))
                 {
                     //AppendLine($"<meta property='og:image:alt' content='{ImageAlt}' />");
                 }
@@ -178,7 +173,7 @@ namespace SiteBuilder
 
             AppendLine($"<meta property='og:url' content='{_siteElement.Href}' />");
 
-            if (!string.IsNullOrWhiteSpace(siteMictodata.Description))
+            if (!string.IsNullOrWhiteSpace(siteMictodata?.Description))
             {
                 Append("<meta name='description' content='");
                 Append(siteMictodata.Description);
@@ -557,9 +552,14 @@ namespace SiteBuilder
             mResult.AppendLine(val);
         }
 
+        protected virtual string GetInitialContent()
+        {
+            return File.ReadAllText(_siteElement.THtmlFullFileName);
+        }
+
         private string GetContent()
         {
-            var content = File.ReadAllText(_siteElement.THtmlFullFileName);
+            var content = GetInitialContent();
 
 #if DEBUG
             _logger.Info($"content = {content}");

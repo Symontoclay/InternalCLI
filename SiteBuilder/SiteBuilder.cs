@@ -23,11 +23,15 @@ namespace SiteBuilder
             _logger.Info("Begin");
 #endif
 
+            _hrefsList = new List<string>();
+
             ClearDir();
 
 #if DEBUG
             _logger.Info($"GeneralSettings.IgnoredDirsList = {JsonConvert.SerializeObject(GeneralSettings.IgnoredDirsList, Formatting.Indented)}");
 #endif
+
+            ProcessReleaseNotesPages();
 
             var rootSiteElement = SiteElementInfoReader.Read(GeneralSettings.SourcePath, GeneralSettings.DestPath, GeneralSettings.SiteHref, GeneralSettings.IgnoredDirsList, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
 
@@ -51,12 +55,38 @@ namespace SiteBuilder
 #endif
         }
 
+        private List<string> _hrefsList;
+
+        private void ProcessReleaseNotesPages()
+        {
+            foreach(var releaseItem in GeneralSettings.ReleaseItemsList)
+            {
+#if DEBUG
+                _logger.Info($"releaseItem = {releaseItem}");
+#endif
+
+                var fileInfo = new FileInfo(releaseItem.TargetFullFileName);
+
+                if(!fileInfo.Directory.Exists)
+                {
+                    fileInfo.Directory.Create();
+                }
+
+                _hrefsList.Add(releaseItem.Href);
+
+                var pageProcessor = new ReleaseItemPageProcessor(releaseItem);
+                pageProcessor.Run();
+            }
+
+            //throw new NotImplementedException();
+        }
+
         private void GenerateSiteMap(List<SiteElementInfo> siteElementsList)
         {
             var sb = new StringBuilder();
             sb.AppendLine("<?xml version='1.0' encoding='UTF-8'?>");
             sb.AppendLine("<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>");
-            foreach (var siteElement in siteElementsList.Where(p => p.Kind == KindOfSiteElement.Page))
+            foreach (var href in _hrefsList)
             {
                 //var uriBuilder = new UriBuilder();
                 //uriBuilder.Scheme = "https";
@@ -66,7 +96,7 @@ namespace SiteBuilder
                 //var lastMod = DateTime.Now;
 
                 sb.AppendLine("<url>");
-                sb.AppendLine($"<loc>{siteElement.Href}</loc>");
+                sb.AppendLine($"<loc>{href}</loc>");
                 //sb.AppendLine($"<lastmod>{lastMod.ToString("yyyy-MM-dd")}</lastmod>");
                 //sb.AppendLine("<changefreq>always</changefreq>");
                 //sb.AppendLine("<priority>0.8</priority>");
@@ -112,6 +142,8 @@ namespace SiteBuilder
                         {
                             var pageProcessor = new PageProcessor(siteElement);
                             pageProcessor.Run();
+
+                            _hrefsList.Add(siteElement.Href);
                         }
                         break;
 

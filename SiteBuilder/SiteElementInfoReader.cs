@@ -137,7 +137,7 @@ namespace SiteBuilder
 
                 parent.DirectoryName = fileTargetInfo.DirectoryName;
 
-                parent.Href = $"{siteHref}/{relativePath}";
+                parent.Href = $"{siteHref}/{relativePath}".Replace("\\", "/");
 
                 if(!string.IsNullOrWhiteSpace(cssFileName) || !string.IsNullOrWhiteSpace(lessFileName))
                 {
@@ -149,7 +149,7 @@ namespace SiteBuilder
                         var cssRelativePath = cssFileName.Replace(sourceDir, string.Empty).Trim();
 
                         parent.TargetCssFullFileName = Path.Combine(destDir, cssRelativePath);
-                        parent.CssHrefForPage = $"{siteHref}/{cssRelativePath}";
+                        parent.CssHrefForPage = $"{siteHref}/{cssRelativePath}".Replace("\\", "/");
                     }
 
                     if(!string.IsNullOrWhiteSpace(lessFileName))
@@ -161,7 +161,7 @@ namespace SiteBuilder
                         var cssRelativePath = lessFileName.Replace(sourceDir, string.Empty).Replace(".less", ".css").Trim();
 
                         parent.TargetCssFullFileName = Path.Combine(destDir, cssRelativePath);
-                        parent.CssHrefForPage = $"{siteHref}/{cssRelativePath}";
+                        parent.CssHrefForPage = $"{siteHref}/{cssRelativePath}".Replace("\\", "/");
                     }
                 }
 
@@ -244,7 +244,7 @@ namespace SiteBuilder
 
                     item.DirectoryName = fileTargetInfo.DirectoryName;
 
-                    item.Href = $"{siteHref}/{relativePath}";
+                    item.Href = $"{siteHref}/{relativePath}".Replace("\\", "/");
 
                     var cssFileName = spFileName.Replace(fileInfo.Name, fileInfo.Name.Replace(".sp", ".css"));
 
@@ -283,7 +283,7 @@ namespace SiteBuilder
                             var cssRelativePath = cssFileName.Replace(sourceDir, string.Empty).Trim();
 
                             item.TargetCssFullFileName = Path.Combine(destDir, cssRelativePath);
-                            item.CssHrefForPage = $"{siteHref}/{cssRelativePath}";
+                            item.CssHrefForPage = $"{siteHref}/{cssRelativePath}".Replace("\\", "/");
                         }
 
                         if (!string.IsNullOrWhiteSpace(lessFileName))
@@ -295,7 +295,7 @@ namespace SiteBuilder
                             var cssRelativePath = lessFileName.Replace(sourceDir, string.Empty).Replace(".less", ".css").Trim();
 
                             item.TargetCssFullFileName = Path.Combine(destDir, cssRelativePath);
-                            item.CssHrefForPage = $"{siteHref}/{cssRelativePath}";
+                            item.CssHrefForPage = $"{siteHref}/{cssRelativePath}".Replace("\\", "/");
                         }
                     }
 
@@ -369,7 +369,7 @@ namespace SiteBuilder
 
                 item.DirectoryName = fileInfo.DirectoryName;
 
-                item.Href = $"{siteHref}/{relativePath}";
+                item.Href = $"{siteHref}/{relativePath}".Replace("\\", "/");
 
 #if DEBUG
                 //_logger.Info($"item = {item}");
