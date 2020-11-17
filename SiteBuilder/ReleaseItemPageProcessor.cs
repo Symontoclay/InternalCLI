@@ -31,11 +31,24 @@ namespace SiteBuilder
             sitePageInfo.Title = title;
             sitePageInfo.BreadcrumbTitle = title;
 
+            var microdata = new MicroDataInfo();
+            sitePageInfo.Microdata = microdata;
+
+            var latestMark = string.Empty;
+
+            if (releaseItem.IsLatest)
+            {
+                latestMark = " (latest)";
+            }
+
+            microdata.Title = title;
+            microdata.Description = $"Download SymOntoClay version {releaseItem.Version}{latestMark}";
+
 #if DEBUG
             _logger.Info($"result = {result}");
 #endif
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
 
             return result;
         }
@@ -43,11 +56,14 @@ namespace SiteBuilder
         public ReleaseItemPageProcessor(ReleaseItem releaseItem)
             : base(ConvertReleaseItemToSiteElementInfo(releaseItem))
         {
+            _releaseItem = releaseItem;
         }
+
+        private readonly ReleaseItem _releaseItem;
 
         protected override string GetInitialContent()
         {
-            return ":)";
+            return $"<release version='{_releaseItem.Version}'/>";
         }
     }
 }
