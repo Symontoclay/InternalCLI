@@ -49,10 +49,43 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
                 return;
             }
 
+            if (rootNode.Name == "prev_releases")
+            {
+                ProcessPrevReleasesList(rootNode, doc);
+                return;
+            }
+
             foreach (var node in rootNode.ChildNodes.ToList())
             {
                 ProcessNodes(node, doc);
             }
+        }
+
+        private static void ProcessPrevReleasesList(HtmlNode rootNode, HtmlDocument doc)
+        {
+            var newRootNode = doc.CreateElement("div");
+            var parentNode = rootNode.ParentNode;
+            parentNode.ReplaceChild(newRootNode, rootNode);
+
+            var prevReleasesList = GeneralSettings.ReleaseItemsList.Where(p => !p.IsLatest).OrderBy(p => p.Date).ToList();
+
+            if(!prevReleasesList.Any())
+            {
+                return;
+            }
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"<h2>Previous versions:</h2>");
+
+            foreach(var releaseInfo in prevReleasesList)
+            {
+                sb.AppendLine($"<div><a href='{releaseInfo.Href}'>{releaseInfo.Version}</a>&nbsp;&nbsp;<i class='far fa-calendar-alt'></i>&nbsp;&nbsp;{releaseInfo.Date.Value.ToString("D", _targetCulture)}</div>");
+            }
+
+            //throw new NotImplementedException();
+
+            newRootNode.InnerHtml = sb.ToString();
         }
 
         private static void ProcessReleaseInfo(HtmlNode rootNode, HtmlDocument doc)
