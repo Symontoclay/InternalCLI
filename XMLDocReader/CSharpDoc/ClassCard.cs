@@ -66,6 +66,9 @@ namespace XMLDocReader.CSharpDoc
             }
         }
 
+        public string Href { get; set; }
+        public string TargetFullFileName { get; set; }
+
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
         {
@@ -83,6 +86,9 @@ namespace XMLDocReader.CSharpDoc
             sb.PrintObjListProp(n, nameof(PropertiesList), PropertiesList);
             sb.PrintObjListProp(n, nameof(MethodsList), MethodsList);
 
+            sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
+            sb.AppendLine($"{spaces}{nameof(TargetFullFileName)} = {TargetFullFileName}");
+
             sb.Append(base.PropertiesToString(n));
             return sb.ToString();
         }
@@ -96,6 +102,9 @@ namespace XMLDocReader.CSharpDoc
             sb.AppendLine($"{spaces}{nameof(KindOfType)} = {KindOfType}");
             sb.AppendLine($"{spaces}{nameof(Type)} = {Type.FullName}");
             sb.AppendLine($"{spaces}{nameof(IsPublic)} = {IsPublic}");
+
+            sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
+            sb.AppendLine($"{spaces}{nameof(TargetFullFileName)} = {TargetFullFileName}");
 
             sb.Append(base.PropertiesToShortString(n));
             return sb.ToString();

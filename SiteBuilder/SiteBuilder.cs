@@ -32,6 +32,7 @@ namespace SiteBuilder
 #endif
 
             ProcessReleaseNotesPages();
+            ProcessCSharpUserApiXMLDocsList();
 
             var rootSiteElement = SiteElementInfoReader.Read(GeneralSettings.SourcePath, GeneralSettings.DestPath, GeneralSettings.SiteHref, GeneralSettings.IgnoredDirsList, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
 
@@ -56,6 +57,75 @@ namespace SiteBuilder
         }
 
         private List<string> _hrefsList;
+
+        private void ProcessCSharpUserApiXMLDocsList()
+        {
+            foreach(var packageCard in GeneralSettings.CSharpUserApiXMLDocsList)
+            {
+#if DEBUG
+                _logger.Info($"packageCard = {packageCard.ToBriefString()}");
+                _logger.Info($"packageCard.InterfacesList.Count = {packageCard.InterfacesList.Count}");
+                _logger.Info($"packageCard.InterfacesList.Count = {packageCard.ClassesList.Count}");
+                _logger.Info($"packageCard.InterfacesList.Count = {packageCard.EnumsList.Count}");
+#endif
+
+                foreach(var item in packageCard.InterfacesList)
+                {
+#if DEBUG
+                    _logger.Info($"item.Name.FullName = {item.Name.FullName}");
+                    _logger.Info($"item.Href = {item.Href}");
+                    _logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
+#endif
+
+                    var fileInfo = new FileInfo(item.TargetFullFileName);
+
+                    if(!fileInfo.Directory.Exists)
+                    {
+                        fileInfo.Directory.Create();
+                    }
+
+                    throw new NotImplementedException();
+                }
+
+                foreach(var item in packageCard.ClassesList)
+                {
+#if DEBUG
+                    _logger.Info($"item.Name.FullName = {item.Name.FullName}");
+                    _logger.Info($"item.Href = {item.Href}");
+                    _logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
+#endif
+
+                    var fileInfo = new FileInfo(item.TargetFullFileName);
+
+                    if (!fileInfo.Directory.Exists)
+                    {
+                        fileInfo.Directory.Create();
+                    }
+
+                    throw new NotImplementedException();
+                }
+
+                foreach (var item in packageCard.EnumsList)
+                {
+#if DEBUG
+                    _logger.Info($"item.Name.FullName = {item.Name.FullName}");
+                    _logger.Info($"item.Href = {item.Href}");
+                    _logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
+#endif
+
+                    var fileInfo = new FileInfo(item.TargetFullFileName);
+
+                    if (!fileInfo.Directory.Exists)
+                    {
+                        fileInfo.Directory.Create();
+                    }
+
+                    throw new NotImplementedException();
+                }
+            }
+
+            throw new NotImplementedException();
+        }
 
         private void ProcessReleaseNotesPages()
         {

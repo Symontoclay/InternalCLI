@@ -11,6 +11,10 @@ namespace XMLDocReader.CSharpDoc
         public List<string> TargetRootTypeNamesList { get; set; } = new List<string>();
         public bool PublicMembersOnly { get; set; }
         public bool IgnoreErrors { get; set; }
+        public string BaseHref { get; set; }
+        public string BasePath { get; set; }
+        public string SourceDir { get; set; }
+        public string DestDir { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -34,6 +38,10 @@ namespace XMLDocReader.CSharpDoc
             sb.PrintPODList(n, nameof(TargetRootTypeNamesList), TargetRootTypeNamesList);
             sb.AppendLine($"{spaces}{nameof(PublicMembersOnly)} = {PublicMembersOnly}");
             sb.AppendLine($"{spaces}{nameof(IgnoreErrors)} = {IgnoreErrors}");
+            sb.AppendLine($"{spaces}{nameof(BaseHref)} = {BaseHref}");
+            sb.AppendLine($"{spaces}{nameof(BasePath)} = {BasePath}");
+            sb.AppendLine($"{spaces}{nameof(SourceDir)} = {SourceDir}");
+            sb.AppendLine($"{spaces}{nameof(DestDir)} = {DestDir}");
 
             return sb.ToString();
         }

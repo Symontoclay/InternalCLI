@@ -19,7 +19,8 @@ namespace SiteBuilder.SiteData
         public string RoadMapJsonPath { get; set; } = string.Empty;
         public string ReleaseNotesJsonPath { get; set; } = string.Empty;
         public string BaseReleaseNotesPath { get; set; } = string.Empty;
-        public string CSharpApiJsonPath { get; set; } = string.Empty;
+        public string CSharpUserApiJsonPath { get; set; } = string.Empty;
+        public string BaseCSharpUserApiPath { get; set; } = string.Empty;
 
         private void Init()
         {
@@ -38,9 +39,14 @@ namespace SiteBuilder.SiteData
                 BaseReleaseNotesPath = EVPath.Normalize(BaseReleaseNotesPath);
             }
 
-            if (!string.IsNullOrWhiteSpace(CSharpApiJsonPath))
+            if (!string.IsNullOrWhiteSpace(CSharpUserApiJsonPath))
             {
-                CSharpApiJsonPath = EVPath.Normalize(CSharpApiJsonPath);
+                CSharpUserApiJsonPath = EVPath.Normalize(CSharpUserApiJsonPath);
+            }
+
+            if(!string.IsNullOrWhiteSpace(BaseCSharpUserApiPath))
+            {
+                BaseCSharpUserApiPath = EVPath.Normalize(BaseCSharpUserApiPath);
             }
         }
 
@@ -71,7 +77,8 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(RoadMapJsonPath)} = {RoadMapJsonPath}");
             sb.AppendLine($"{spaces}{nameof(ReleaseNotesJsonPath)} = {ReleaseNotesJsonPath}");
             sb.AppendLine($"{spaces}{nameof(BaseReleaseNotesPath)} = {BaseReleaseNotesPath}");
-            sb.AppendLine($"{spaces}{nameof(CSharpApiJsonPath)} = {CSharpApiJsonPath}");
+            sb.AppendLine($"{spaces}{nameof(CSharpUserApiJsonPath)} = {CSharpUserApiJsonPath}");
+            sb.AppendLine($"{spaces}{nameof(BaseCSharpUserApiPath)} = {BaseCSharpUserApiPath}");
 
             return sb.ToString();
         }

@@ -133,7 +133,7 @@ namespace SiteBuilder
 
         public static List<RoadMapItem> RoadMapItemsList { get; private set; } = new List<RoadMapItem>();
         public static List<ReleaseItem> ReleaseItemsList { get; private set; } = new List<ReleaseItem>();
-        public static List<PackageCard> CSharpApiXMLDocsList { get; private set; } = new List<PackageCard>();
+        public static List<PackageCard> CSharpUserApiXMLDocsList { get; private set; } = new List<PackageCard>();
 
         private static void ReadSiteSettings()
         {
@@ -167,12 +167,12 @@ namespace SiteBuilder
             _logger.Info($"ReleaseItemsList = {ReleaseItemsList.WriteListToString()}");
 #endif
 
-            ReadCSharpApiXMLDocsList();
+            ReadCSharpUserApiXMLDocsList();
         }
 
-        private static void ReadCSharpApiXMLDocsList()
+        private static void ReadCSharpUserApiXMLDocsList()
         {
-            var csharpApiJsonPath = SiteSettings.CSharpApiJsonPath;
+            var csharpApiJsonPath = SiteSettings.CSharpUserApiJsonPath;
 
 #if DEBUG
             _logger.Info($"csharpApiJsonPath = {csharpApiJsonPath}");
@@ -224,15 +224,19 @@ namespace SiteBuilder
                 XmlFileNamesList = fileNamesList,
                 TargetRootTypeNamesList = csharpApiOptions.UnityAssetCoreRootTypes,
                 PublicMembersOnly = csharpApiOptions.PublicMembersOnly,
-                IgnoreErrors = csharpApiOptions.IgnoreErrors
+                IgnoreErrors = csharpApiOptions.IgnoreErrors,
+                BaseHref = SiteHref,
+                BasePath = SiteSettings.BaseCSharpUserApiPath,
+                SourceDir = SourcePath,
+                DestDir = DestPath
             };
 
             _logger.Info($"options = {options}");
 
-            CSharpApiXMLDocsList = CSharpXMLDocLoader.Load(options);
+            CSharpUserApiXMLDocsList = CSharpXMLDocLoader.Load(options);
 
 #if DEBUG
-            _logger.Info($"CSharpApiXMLDocsList.Count = {CSharpApiXMLDocsList.Count}");
+            _logger.Info($"CSharpApiXMLDocsList.Count = {CSharpUserApiXMLDocsList.Count}");
 #endif
         }
     }
