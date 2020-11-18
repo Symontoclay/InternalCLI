@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using XMLDocReader.CSharpDoc;
 
 namespace SiteBuilder
 {
@@ -34,20 +35,7 @@ namespace SiteBuilder
             ProcessReleaseNotesPages();
             ProcessCSharpUserApiXMLDocsList();
 
-            var rootSiteElement = SiteElementInfoReader.Read(GeneralSettings.SourcePath, GeneralSettings.DestPath, GeneralSettings.SiteHref, GeneralSettings.IgnoredDirsList, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
-
-#if DEBUG
-            //_logger.Info($"rootSiteElement = {rootSiteElement}");
-#endif
-
-            var siteElementsList = LinearizeSiteElementInfoTreeWithoutRoot(rootSiteElement);
-
-#if DEBUG
-            _logger.Info($"siteElementsList.Count = {siteElementsList.Count}");
-            //_logger.Info($"siteElementsList = {siteElementsList.WriteListToString()}");
-#endif
-
-            ProcessSiteElementsList(siteElementsList);
+            ProcessSiteElementsList(GeneralSettings.SiteElementsList);
 
             GenerateSiteMap();
 
@@ -86,7 +74,10 @@ namespace SiteBuilder
                         fileInfo.Directory.Create();
                     }
 
-                    //throw new NotImplementedException();
+                    var pageProcessor = new InterfaceCSharpUserApiXMLDocPageProcessor(item);
+                    pageProcessor.Run();
+
+                    ProcessCSharpUserApiXMLDocsClassCardMembersList(item);
                 }
 
                 foreach(var item in packageCard.ClassesList)
@@ -107,6 +98,8 @@ namespace SiteBuilder
                     }
 
                     //throw new NotImplementedException();
+
+                    ProcessCSharpUserApiXMLDocsClassCardMembersList(item);
                 }
 
                 foreach (var item in packageCard.EnumsList)
@@ -131,6 +124,33 @@ namespace SiteBuilder
             }
 
             //throw new NotImplementedException();
+        }
+
+        private void ProcessCSharpUserApiXMLDocsClassCardMembersList(ClassCard classCard)
+        {
+            foreach (var prop in classCard.PropertiesList)
+            {
+#if DEBUG
+                _logger.Info($"prop.Name.InitialName = {prop.Name.InitialName}");
+                _logger.Info($"prop.Name.FullName = {prop.Name.FullName}");
+                _logger.Info($"prop.Href = {prop.Href}");
+                _logger.Info($"prop.TargetFullFileName = {prop.TargetFullFileName}");
+#endif
+
+                throw new NotImplementedException();
+            }
+
+            foreach (var method in classCard.MethodsList)
+            {
+#if DEBUG
+                _logger.Info($"method.Name.InitialName = {method.Name.InitialName}");
+                _logger.Info($"method.Name.FullName = {method.Name.FullName}");
+                _logger.Info($"method.Href = {method.Href}");
+                _logger.Info($"method.TargetFullFileName = {method.TargetFullFileName}");
+#endif
+
+                throw new NotImplementedException();
+            }
         }
 
         private void ProcessReleaseNotesPages()
@@ -248,32 +268,6 @@ namespace SiteBuilder
                     default:
                         throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                 }
-            }
-        }
-
-        private List<SiteElementInfo> LinearizeSiteElementInfoTreeWithoutRoot(SiteElementInfo rootSiteElement)
-        {
-            var result = new List<SiteElementInfo>();
-
-            LinearizeSiteElementInfoTreeWithoutRoot(rootSiteElement, result);
-
-            return result;
-        }
-
-        private void LinearizeSiteElementInfoTreeWithoutRoot(SiteElementInfo siteElement, List<SiteElementInfo> result)
-        {
-#if DEBUG
-            //_logger.Info($"siteElement = {siteElement}");
-#endif
-
-            if(siteElement.Kind != KindOfSiteElement.Root && !result.Contains(siteElement))
-            {
-                result.Add(siteElement);
-            }
-
-            foreach(var subItem in siteElement.SubItemsList)
-            {
-                LinearizeSiteElementInfoTreeWithoutRoot(subItem, result);
             }
         }
 

@@ -131,6 +131,9 @@ namespace SiteBuilder
 
         public static bool UseLocalhost { get; set; }
 
+        public static List<SiteElementInfo> SiteElementsList { get; private set; }
+        public static SiteElementInfo RootCSharpUserApiXMLDocSiteElement { get; private set; }
+
         public static List<RoadMapItem> RoadMapItemsList { get; private set; } = new List<RoadMapItem>();
         public static List<ReleaseItem> ReleaseItemsList { get; private set; } = new List<ReleaseItem>();
         public static List<PackageCard> CSharpUserApiXMLDocsList { get; private set; } = new List<PackageCard>();
@@ -143,6 +146,31 @@ namespace SiteBuilder
 
 #if DEBUG
             _logger.Info($"SiteSettings = {SiteSettings}");
+#endif
+
+            var rootSiteElement = SiteElementInfoReader.Read(SourcePath, DestPath, SiteHref, IgnoredDirsList, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
+
+#if DEBUG
+            //_logger.Info($"rootSiteElement = {rootSiteElement}");
+#endif
+
+            SiteElementsList = LinearizeSiteElementInfoTreeWithoutRoot(rootSiteElement);
+
+#if DEBUG
+            _logger.Info($"SiteElementsList.Count = {SiteElementsList.Count}");
+            //_logger.Info($"SiteElementsList = {SiteElementsList.WriteListToString()}");
+#endif
+
+            var rootCSharpUserApiXMLDocSiteElementFullName = Path.Combine(SiteSettings.BaseCSharpUserApiPath, "index.sp");
+
+#if DEBUG
+            _logger.Info($"rootCSharpUserApiXMLDocSiteElementFullName = {rootCSharpUserApiXMLDocSiteElementFullName}");
+#endif
+
+            RootCSharpUserApiXMLDocSiteElement = SiteElementsList.SingleOrDefault(p => p.InitialFullFileName == rootCSharpUserApiXMLDocSiteElementFullName);
+
+#if DEBUG
+            _logger.Info($"RootCSharpUserApiXMLDocSiteElement = {RootCSharpUserApiXMLDocSiteElement}");
 #endif
 
             var roadMapFileName = SiteSettings.RoadMapJsonPath;
@@ -168,6 +196,32 @@ namespace SiteBuilder
 #endif
 
             ReadCSharpUserApiXMLDocsList();
+        }
+
+        private static List<SiteElementInfo> LinearizeSiteElementInfoTreeWithoutRoot(SiteElementInfo rootSiteElement)
+        {
+            var result = new List<SiteElementInfo>();
+
+            LinearizeSiteElementInfoTreeWithoutRoot(rootSiteElement, result);
+
+            return result;
+        }
+
+        private static void LinearizeSiteElementInfoTreeWithoutRoot(SiteElementInfo siteElement, List<SiteElementInfo> result)
+        {
+#if DEBUG
+            //_logger.Info($"siteElement = {siteElement}");
+#endif
+
+            if (siteElement.Kind != KindOfSiteElement.Root && !result.Contains(siteElement))
+            {
+                result.Add(siteElement);
+            }
+
+            foreach (var subItem in siteElement.SubItemsList)
+            {
+                LinearizeSiteElementInfoTreeWithoutRoot(subItem, result);
+            }
         }
 
         private static void ReadCSharpUserApiXMLDocsList()

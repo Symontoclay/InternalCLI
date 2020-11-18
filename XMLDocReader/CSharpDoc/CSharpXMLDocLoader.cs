@@ -45,7 +45,7 @@ namespace XMLDocReader.CSharpDoc
             var relativePath = basePath.Replace(sourceDir, string.Empty);
 
 #if DEBUG
-            //_logger.Info($"relativePath = {relativePath}");
+            _logger.Info($"relativePath = {relativePath}");
 #endif
 
             foreach (var packageCard in packageCardsList)
@@ -78,6 +78,54 @@ namespace XMLDocReader.CSharpDoc
                     //_logger.Info($"item.Href (after) = {item.Href}");
                     //_logger.Info($"item.TargetFullFileName (after) = {item.TargetFullFileName}");
 #endif
+
+                    foreach(var prop in item.PropertiesList)
+                    {
+#if DEBUG
+                        _logger.Info($"prop.Name.InitialName = {prop.Name.InitialName}");
+                        _logger.Info($"prop.Name.FullName = {prop.Name.FullName}");
+                        _logger.Info($"prop.Href = {prop.Href}");
+                        _logger.Info($"prop.TargetFullFileName = {prop.TargetFullFileName}");
+#endif
+
+                        var relativeName = GetRelativeName(relativePath, prop.Name.InitialName);
+
+#if DEBUG
+                        _logger.Info($"relativeName = {relativeName}");
+#endif
+
+                        prop.Href = Path.Combine(baseHref, relativeName).Replace("\\", "/");
+                        prop.TargetFullFileName = Path.Combine(destDir, relativeName).Replace("\\", "/");
+
+#if DEBUG
+                        _logger.Info($"prop.Href (after) = {prop.Href}");
+                        _logger.Info($"prop.TargetFullFileName (after) = {prop.TargetFullFileName}");
+#endif
+                    }
+
+                    foreach (var method in item.MethodsList)
+                    {
+#if DEBUG
+                        _logger.Info($"method.Name.InitialName = {method.Name.InitialName}");
+                        _logger.Info($"method.Name.FullName = {method.Name.FullName}");
+                        _logger.Info($"method.Href = {method.Href}");
+                        _logger.Info($"method.TargetFullFileName = {method.TargetFullFileName}");
+#endif
+
+                        var relativeName = GetRelativeName(relativePath, method.Name.InitialName);
+
+#if DEBUG
+                        _logger.Info($"relativeName = {relativeName}");
+#endif
+
+                        method.Href = Path.Combine(baseHref, relativeName).Replace("\\", "/");
+                        method.TargetFullFileName = Path.Combine(destDir, relativeName).Replace("\\", "/");
+
+#if DEBUG
+                        _logger.Info($"method.Href (after) = {method.Href}");
+                        _logger.Info($"method.TargetFullFileName (after) = {method.TargetFullFileName}");
+#endif
+                    }
                 }
 
                 foreach (var item in packageCard.ClassesList)
@@ -101,6 +149,54 @@ namespace XMLDocReader.CSharpDoc
                     //_logger.Info($"item.Href (after) = {item.Href}");
                     //_logger.Info($"item.TargetFullFileName (after) = {item.TargetFullFileName}");
 #endif
+
+                    foreach (var prop in item.PropertiesList)
+                    {
+#if DEBUG
+                        _logger.Info($"prop.Name.InitialName = {prop.Name.InitialName}");
+                        _logger.Info($"prop.Name.FullName = {prop.Name.FullName}");
+                        _logger.Info($"prop.Href = {prop.Href}");
+                        _logger.Info($"prop.TargetFullFileName = {prop.TargetFullFileName}");
+#endif
+
+                        var relativeName = GetRelativeName(relativePath, prop.Name.InitialName);
+
+#if DEBUG
+                        _logger.Info($"relativeName = {relativeName}");
+#endif
+
+                        prop.Href = Path.Combine(baseHref, relativeName).Replace("\\", "/");
+                        prop.TargetFullFileName = Path.Combine(destDir, relativeName).Replace("\\", "/");
+
+#if DEBUG
+                        _logger.Info($"prop.Href (after) = {prop.Href}");
+                        _logger.Info($"prop.TargetFullFileName (after) = {prop.TargetFullFileName}");
+#endif
+                    }
+
+                    foreach (var method in item.MethodsList)
+                    {
+#if DEBUG
+                        _logger.Info($"method.Name.InitialName = {method.Name.InitialName}");
+                        _logger.Info($"method.Name.FullName = {method.Name.FullName}");
+                        _logger.Info($"method.Href = {method.Href}");
+                        _logger.Info($"method.TargetFullFileName = {method.TargetFullFileName}");
+#endif
+
+                        var relativeName = GetRelativeName(relativePath, method.Name.InitialName);
+
+#if DEBUG
+                        _logger.Info($"relativeName = {relativeName}");
+#endif
+
+                        method.Href = Path.Combine(baseHref, relativeName).Replace("\\", "/");
+                        method.TargetFullFileName = Path.Combine(destDir, relativeName).Replace("\\", "/");
+
+#if DEBUG
+                        _logger.Info($"method.Href (after) = {method.Href}");
+                        _logger.Info($"method.TargetFullFileName (after) = {method.TargetFullFileName}");
+#endif
+                    }
                 }
 
                 foreach (var item in packageCard.EnumsList)
@@ -126,6 +222,17 @@ namespace XMLDocReader.CSharpDoc
 #endif
                 }
             }
+        }
+
+        private static string GetRelativeName(string relativePath, string initialName)
+        {
+            var preparedInitialName = initialName.Substring(2).Replace("(", "_").Replace(")", "_").Replace("{", "_").Replace("}", "_").Replace(",", "_").ToLower();
+
+#if DEBUG
+            _logger.Info($"preparedInitialName = {preparedInitialName}");
+#endif
+
+            return Path.Combine(relativePath, $"{preparedInitialName}.html");
         }
     }
 }

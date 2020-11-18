@@ -12,7 +12,7 @@ namespace SiteBuilder
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        public static SiteElementInfo ConvertReleaseItemToSiteElementInfo(ReleaseItem releaseItem)
+        private static SiteElementInfo ConvertReleaseItemToSiteElementInfo(ReleaseItem releaseItem)
         {
             var result = new SiteElementInfo();
 
