@@ -48,8 +48,6 @@ namespace SiteBuilder
             _logger.Info($"result = {result}");
 #endif
 
-            //throw new NotImplementedException();
-
             return result;
         }
 

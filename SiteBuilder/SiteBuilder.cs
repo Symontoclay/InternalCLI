@@ -49,7 +49,7 @@ namespace SiteBuilder
 
             ProcessSiteElementsList(siteElementsList);
 
-            GenerateSiteMap(siteElementsList);
+            GenerateSiteMap();
 
 #if DEBUG
             _logger.Info("End");
@@ -60,7 +60,7 @@ namespace SiteBuilder
 
         private void ProcessCSharpUserApiXMLDocsList()
         {
-            foreach(var packageCard in GeneralSettings.CSharpUserApiXMLDocsList)
+            foreach (var packageCard in GeneralSettings.CSharpUserApiXMLDocsList)
             {
 #if DEBUG
                 _logger.Info($"packageCard = {packageCard.ToBriefString()}");
@@ -77,6 +77,8 @@ namespace SiteBuilder
                     _logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
 #endif
 
+                    _hrefsList.Add(item.Href);
+
                     var fileInfo = new FileInfo(item.TargetFullFileName);
 
                     if(!fileInfo.Directory.Exists)
@@ -84,7 +86,7 @@ namespace SiteBuilder
                         fileInfo.Directory.Create();
                     }
 
-                    throw new NotImplementedException();
+                    //throw new NotImplementedException();
                 }
 
                 foreach(var item in packageCard.ClassesList)
@@ -95,6 +97,8 @@ namespace SiteBuilder
                     _logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
 #endif
 
+                    _hrefsList.Add(item.Href);
+
                     var fileInfo = new FileInfo(item.TargetFullFileName);
 
                     if (!fileInfo.Directory.Exists)
@@ -102,7 +106,7 @@ namespace SiteBuilder
                         fileInfo.Directory.Create();
                     }
 
-                    throw new NotImplementedException();
+                    //throw new NotImplementedException();
                 }
 
                 foreach (var item in packageCard.EnumsList)
@@ -113,6 +117,8 @@ namespace SiteBuilder
                     _logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
 #endif
 
+                    _hrefsList.Add(item.Href);
+
                     var fileInfo = new FileInfo(item.TargetFullFileName);
 
                     if (!fileInfo.Directory.Exists)
@@ -120,11 +126,11 @@ namespace SiteBuilder
                         fileInfo.Directory.Create();
                     }
 
-                    throw new NotImplementedException();
+                    //throw new NotImplementedException();
                 }
             }
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void ProcessReleaseNotesPages()
@@ -147,12 +153,12 @@ namespace SiteBuilder
                 var pageProcessor = new ReleaseItemPageProcessor(releaseItem);
                 pageProcessor.Run();
             }
-
-            //throw new NotImplementedException();
         }
 
-        private void GenerateSiteMap(List<SiteElementInfo> siteElementsList)
+        private void GenerateSiteMap()
         {
+            _hrefsList = _hrefsList.Distinct().ToList();
+
             var sb = new StringBuilder();
             sb.AppendLine("<?xml version='1.0' encoding='UTF-8'?>");
             sb.AppendLine("<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>");

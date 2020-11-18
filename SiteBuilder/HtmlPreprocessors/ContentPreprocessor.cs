@@ -1,6 +1,7 @@
 ﻿using CommonMark;
 using NLog;
 using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
+using SiteBuilder.HtmlPreprocessors.CSharpUserApiContentsGeneration;
 using SiteBuilder.HtmlPreprocessors.EBNF;
 using SiteBuilder.HtmlPreprocessors.InThePageContentGen;
 using SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration;
@@ -58,6 +59,12 @@ namespace SiteBuilder.HtmlPreprocessors
 
 #if DEBUG
             _logger.Info($"content (5) = {content}");
+#endif
+
+            content = CSharpUserApiContentsGenerator.Run(content);
+
+#if DEBUG
+            _logger.Info($"content (6) = {content}");
 #endif
 
             return InThePageContentGenerator.Run(content);
