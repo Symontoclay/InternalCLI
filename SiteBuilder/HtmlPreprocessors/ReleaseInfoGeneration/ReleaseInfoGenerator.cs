@@ -12,7 +12,7 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
     public class ReleaseInfoGenerator
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static readonly CultureInfo _targetCulture = new CultureInfo("en-GB");
