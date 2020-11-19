@@ -11,6 +11,7 @@ namespace XMLDocReader.CSharpDoc
         public KindOfMember Kind { get; set; } = KindOfMember.Unknown;
         public string Name { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
+        public string DisplayedName { get; set; } = string.Empty;
         public string Path { get; set; } = string.Empty;
         public string ImplInterfaceName { get; set; } = string.Empty;
         public List<string> TypeParametersList { get; set; } = new List<string>();
@@ -38,6 +39,7 @@ namespace XMLDocReader.CSharpDoc
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(FullName)} = {FullName}");
+            sb.AppendLine($"{spaces}{nameof(DisplayedName)} = {DisplayedName}");
             sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
             sb.AppendLine($"{spaces}{nameof(ImplInterfaceName)} = {ImplInterfaceName}");
             sb.PrintPODList(n, nameof(TypeParametersList), TypeParametersList);

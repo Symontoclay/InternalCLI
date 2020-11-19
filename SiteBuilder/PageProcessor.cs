@@ -67,6 +67,8 @@ namespace SiteBuilder
 
         private readonly SiteElementInfo _siteElement;
 
+        public SiteElementInfo SiteElementInfo => _siteElement;
+
         public void Run()
         {
 #if DEBUG

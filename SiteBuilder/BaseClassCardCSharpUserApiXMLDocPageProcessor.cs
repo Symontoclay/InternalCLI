@@ -61,24 +61,9 @@ namespace SiteBuilder
             _classCard = classCard;
 
 #if DEBUG
-            if (!string.IsNullOrWhiteSpace(_classCard.Remarks))
-            {
-                throw new NotImplementedException();
-            }
-
             if(_classCard.ExamplesList.Any())
             {
                 throw new NotImplementedException();
-            }
-
-            if(_classCard.PropertiesList.Any())
-            {
-                //throw new NotImplementedException();
-            }
-
-            if(_classCard.MethodsList.Any())
-            {
-                //throw new NotImplementedException();
             }
 #endif
         }
@@ -90,9 +75,68 @@ namespace SiteBuilder
             sb.AppendLine($"<h1>{_classCard.Name.Name} {(_classCard.KindOfType == KindOfType.Class ? "Class" : "Interface")}</h1>");
         }
 
+        protected void PrintMetadata(StringBuilder sb)
+        {
+            PrintMetadata(sb, _classCard.Name, _classCard.Package.AssemblyName);
+        }
+
         protected void PrintSummary(StringBuilder sb)
         {
             PrintSummary(sb, _classCard.Summary);
+        }
+
+        protected void PrintRemarks(StringBuilder sb)
+        {
+            PrintRemarks(sb, _classCard.Remarks);
+        }
+
+        protected void PrintProperties(StringBuilder sb)
+        {
+            if (!_classCard.PropertiesList.Any())
+            {
+                return;
+            }
+
+            sb.AppendLine("<h2>Properties</h2>");
+
+            PrintMembersList(sb, _classCard.PropertiesList);
+        }
+
+        protected void PrintMethods(StringBuilder sb)
+        {
+            if (!_classCard.MethodsList.Any())
+            {
+                return;
+            }
+
+            sb.AppendLine("<h2>Methods</h2>");
+
+            PrintMembersList(sb, _classCard.MethodsList);
+        }
+
+        protected void PrintMembersList(StringBuilder sb, IEnumerable<MemberCard> membersList)
+        {
+            sb.AppendLine("<table style='font-size: 14px; margin-bottom: 20px;'>");
+            foreach (var item in membersList)
+            {
+#if DEBUG
+                //_logger.Info($"item.Name.InitialName = {item.Name.InitialName}");
+                //_logger.Info($"item.Name.Name = {item.Name.Name}");
+                //_logger.Info($"item.Name.FullName = {item.Name.FullName}");
+                //_logger.Info($"item.Name.DisplayedName = {item.Name.DisplayedName}");
+#endif
+
+                sb.AppendLine("<tr style='border-bottom: solid 1px #e2e2e2;'>");
+                sb.AppendLine("<td style='width: 300px;'>");
+                sb.AppendLine($"<a href='{item.Href}'>{item.Name.DisplayedName.Replace("<", "&lt;").Replace(">", "&gt;").Trim()}</a>");
+                sb.AppendLine("</td>");
+                sb.AppendLine("<td>");
+                sb.AppendLine(GetContent(item.Summary));
+                sb.AppendLine("</td>");
+                sb.AppendLine("</tr>");
+            }
+
+            sb.AppendLine("</table>");
         }
     }
 }

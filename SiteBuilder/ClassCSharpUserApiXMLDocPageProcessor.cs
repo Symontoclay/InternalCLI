@@ -5,11 +5,10 @@ using XMLDocReader.CSharpDoc;
 
 namespace SiteBuilder
 {
-    public class InterfaceCSharpUserApiXMLDocPageProcessor: BaseClassCardCSharpUserApiXMLDocPageProcessor
+    public class ClassCSharpUserApiXMLDocPageProcessor : BaseClassCardCSharpUserApiXMLDocPageProcessor
     {
-
-        public InterfaceCSharpUserApiXMLDocPageProcessor(ClassCard interfaceInfo)
-            : base(interfaceInfo)
+        public ClassCSharpUserApiXMLDocPageProcessor(ClassCard classInfo)
+            : base(classInfo)
         {
         }
 

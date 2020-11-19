@@ -52,6 +52,7 @@ namespace XMLDocReader.CSharpDoc
             if (initialNameWithoutType.Contains("{") && memberName.Kind == KindOfMember.Type)
             {
                 ReadAsGenericMemberName(initialNameWithoutType, memberName);
+                FillUpDisplayedName(memberName);
                 return memberName;
             }
 
@@ -128,7 +129,148 @@ namespace XMLDocReader.CSharpDoc
 
             memberName.FullName = $"{memberName.Path}.{memberName.Name}";
 
+            FillUpDisplayedName(memberName);
+
             return memberName;
+        }
+
+        private static void FillUpDisplayedName(MemberName memberName)
+        {
+            switch (memberName.Kind)
+            {
+                case KindOfMember.Type:
+                    memberName.DisplayedName = GetDisplayedNameForType(memberName.Name, memberName.TypeParametersList);
+                    break;
+
+                case KindOfMember.Property:
+                case KindOfMember.Field:
+                case KindOfMember.Event:
+                    memberName.DisplayedName = memberName.Name;
+                    break;
+
+                case KindOfMember.Method:
+                    memberName.DisplayedName = GetDisplayedNameForMethod(memberName.Name, memberName.TypeParametersList, memberName.ParametersList);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(memberName.Kind), memberName.Kind, null);
+            }
+
+#if DEBUG
+            //_logger.Info($"memberName.DisplayedName = '{memberName.DisplayedName}'");
+#endif
+        }
+
+        private static string GetDisplayedNameForType(string name, List<string> typeParametersList)
+        {
+#if DEBUG
+            //_logger.Info($"name = '{name}'");
+            //_logger.Info($"typeParametersList = {JsonConvert.SerializeObject(typeParametersList)}");
+#endif
+
+            if(!typeParametersList.Any())
+            {
+                return name;
+            }
+
+            var sb = new StringBuilder(name);
+
+            sb.Append("<");
+
+            var resultParamsList = new List<string>();
+
+            foreach (var parameter in typeParametersList)
+            {
+#if DEBUG
+                //_logger.Info($"parameter = '{parameter}'");
+#endif
+
+                var paramName = Parse($"T:{parameter}");
+
+#if DEBUG
+                //_logger.Info($"paramName = {paramName}");
+#endif
+
+                resultParamsList.Add(paramName.DisplayedName);
+            }
+
+            sb.Append(string.Join(',', resultParamsList));
+            sb.Append(">");
+
+#if DEBUG
+            //_logger.Info($"sb = {sb}");
+#endif
+
+            return sb.ToString();
+        }
+
+        private static string GetDisplayedNameForMethod(string name, List<string> typeParametersList, List<string> parametersList)
+        {
+#if DEBUG
+            //_logger.Info($"name = '{name}'");
+            //_logger.Info($"parametersList = {JsonConvert.SerializeObject(parametersList)}");
+#endif
+
+            var sb = new StringBuilder(name);
+
+            if(!parametersList.Any())
+            {
+                sb.Append("()");
+                return sb.ToString();
+            }
+
+            var resultParamsList = new List<string>();
+
+            if(typeParametersList.Any())
+            {
+                sb.Append("<");
+
+                foreach (var parameter in typeParametersList)
+                {
+#if DEBUG
+                    //_logger.Info($"parameter = '{parameter}'");
+#endif
+
+                    var paramName = Parse($"T:{parameter}");
+
+#if DEBUG
+                    //_logger.Info($"paramName = {paramName}");
+#endif
+
+                    resultParamsList.Add(paramName.DisplayedName);
+                }
+
+                sb.Append(string.Join(',', resultParamsList));
+                sb.Append(">");
+            }
+
+            sb.Append("(");
+
+            resultParamsList = new List<string>();
+
+            foreach(var parameter in parametersList)
+            {
+#if DEBUG
+                //_logger.Info($"parameter = '{parameter}'");
+#endif
+
+                var paramName = Parse($"T:{parameter}");
+
+#if DEBUG
+                //_logger.Info($"paramName = {paramName}");
+#endif
+
+                resultParamsList.Add(paramName.DisplayedName);
+            }
+
+            sb.Append(string.Join(',', resultParamsList));
+            sb.Append(")");
+
+#if DEBUG
+            //_logger.Info($"sb = {sb}");
+#endif
+
+            return sb.ToString();
         }
 
         private static void ReadAsGenericMemberName(string initialNameWithoutType, MemberName memberName)

@@ -77,7 +77,7 @@ namespace SiteBuilder
                     var pageProcessor = new InterfaceCSharpUserApiXMLDocPageProcessor(item);
                     pageProcessor.Run();
 
-                    ProcessCSharpUserApiXMLDocsClassCardMembersList(item);
+                    ProcessCSharpUserApiXMLDocsClassCardMembersList(item, pageProcessor.SiteElementInfo);
                 }
 
                 foreach(var item in packageCard.ClassesList)
@@ -97,9 +97,10 @@ namespace SiteBuilder
                         fileInfo.Directory.Create();
                     }
 
-                    //throw new NotImplementedException();
+                    var pageProcessor = new ClassCSharpUserApiXMLDocPageProcessor(item);
+                    pageProcessor.Run();
 
-                    ProcessCSharpUserApiXMLDocsClassCardMembersList(item);
+                    ProcessCSharpUserApiXMLDocsClassCardMembersList(item, pageProcessor.SiteElementInfo);
                 }
 
                 foreach (var item in packageCard.EnumsList)
@@ -126,7 +127,7 @@ namespace SiteBuilder
             //throw new NotImplementedException();
         }
 
-        private void ProcessCSharpUserApiXMLDocsClassCardMembersList(ClassCard classCard)
+        private void ProcessCSharpUserApiXMLDocsClassCardMembersList(ClassCard classCard, SiteElementInfo parent)
         {
             foreach (var prop in classCard.PropertiesList)
             {
@@ -137,7 +138,10 @@ namespace SiteBuilder
                 _logger.Info($"prop.TargetFullFileName = {prop.TargetFullFileName}");
 #endif
 
-                throw new NotImplementedException();
+                _hrefsList.Add(prop.Href);
+
+                var pageProcessor = new PropertyCSharpUserApiXMLDocPageProcessor(prop, parent);
+                pageProcessor.Run();
             }
 
             foreach (var method in classCard.MethodsList)
@@ -149,7 +153,11 @@ namespace SiteBuilder
                 _logger.Info($"method.TargetFullFileName = {method.TargetFullFileName}");
 #endif
 
-                throw new NotImplementedException();
+                _hrefsList.Add(method.Href);
+
+
+                var pageProcessor = new MethodCSharpUserApiXMLDocPageProcessor(method, parent);
+                pageProcessor.Run();
             }
         }
 
