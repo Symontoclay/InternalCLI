@@ -16,7 +16,7 @@ namespace SiteBuilder.HtmlPreprocessors
     public static class ContentPreprocessor
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static string Run(string initialContent, bool useMarkdown)
@@ -34,37 +34,37 @@ namespace SiteBuilder.HtmlPreprocessors
             var content = EBNFPreparation.Run(initialContent);
 
 #if DEBUG
-            _logger.Info($"content (1) = {content}");
+            //_logger.Info($"content (1) = {content}");
 #endif
 
             content = ShortTagsPreparation.Run(content);
 
 #if DEBUG
-            _logger.Info($"content (2) = {content}");
+            //_logger.Info($"content (2) = {content}");
 #endif
 
             content = CodeHighlighter.Run(content);
 
 #if DEBUG
-            _logger.Info($"content (3) = {content}");
+            //_logger.Info($"content (3) = {content}");
 #endif
 
             content = RoadmapGenerator.Run(content);
 
 #if DEBUG
-            _logger.Info($"content (4) = {content}");
+            //_logger.Info($"content (4) = {content}");
 #endif
 
             content = ReleaseInfoGenerator.Run(content);
 
 #if DEBUG
-            _logger.Info($"content (5) = {content}");
+            //_logger.Info($"content (5) = {content}");
 #endif
 
             content = CSharpUserApiContentsGenerator.Run(content);
 
 #if DEBUG
-            _logger.Info($"content (6) = {content}");
+            //_logger.Info($"content (6) = {content}");
 #endif
 
             return InThePageContentGenerator.Run(content);

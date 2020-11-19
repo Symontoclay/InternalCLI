@@ -23,7 +23,7 @@ namespace SiteBuilder
     public class PageProcessor
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static readonly List<string> _commonCssLinksList = new List<string>();
@@ -34,7 +34,7 @@ namespace SiteBuilder
         static PageProcessor()
         {
 #if DEBUG
-            _logger.Info("Begin");
+            //_logger.Info("Begin");
 #endif
 
             SetUpBootstrap();
@@ -72,7 +72,7 @@ namespace SiteBuilder
         public void Run()
         {
 #if DEBUG
-            _logger.Info("Begin");
+            //_logger.Info("Begin");
 #endif
 
             var sitePageInfo = _siteElement.SitePageInfo;
@@ -104,7 +104,7 @@ namespace SiteBuilder
             var targetFile = _siteElement.InitiallCssFullFileName;
 
 #if DEBUG
-            _logger.Info($"targetFile = {targetFile}");
+            //_logger.Info($"targetFile = {targetFile}");
 #endif
 
             var content = File.ReadAllText(targetFile);
@@ -137,7 +137,7 @@ namespace SiteBuilder
             }
 
 #if DEBUG
-            _logger.Info($"_siteElement.TargetFullFileName = {_siteElement.TargetFullFileName}");
+            //_logger.Info($"_siteElement.TargetFullFileName = {_siteElement.TargetFullFileName}");
 #endif
         }
 
@@ -327,7 +327,7 @@ namespace SiteBuilder
             var content = GetContent();
 
 #if DEBUG
-            _logger.Info($"content = {content}");
+            //_logger.Info($"content = {content}");
 #endif
 
             AppendLine("<article>");
@@ -564,7 +564,7 @@ namespace SiteBuilder
             var content = GetInitialContent();
 
 #if DEBUG
-            _logger.Info($"content = {content}");
+            //_logger.Info($"content = {content}");
 #endif
 
             return ContentPreprocessor.Run(content, _siteElement.SitePageInfo.UseMarkdown);

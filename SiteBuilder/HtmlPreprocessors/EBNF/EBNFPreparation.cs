@@ -11,7 +11,7 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
     public static class EBNFPreparation
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static string Run(string initialContent)

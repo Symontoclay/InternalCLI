@@ -9,7 +9,7 @@ namespace SiteBuilder
     public class ReleaseItemPageProcessor: PageProcessor
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static SiteElementInfo ConvertReleaseItemToSiteElementInfo(ReleaseItem releaseItem)
@@ -45,7 +45,7 @@ namespace SiteBuilder
             microdata.Description = $"Download SymOntoClay version {releaseItem.Version}{latestMark}";
 
 #if DEBUG
-            _logger.Info($"result = {result}");
+            //_logger.Info($"result = {result}");
 #endif
 
             return result;

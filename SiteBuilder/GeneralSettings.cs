@@ -14,7 +14,9 @@ namespace SiteBuilder
 {
     public static class GeneralSettings
     {
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#if DEBUG
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
 
         static GeneralSettings()
         {
@@ -26,14 +28,14 @@ namespace SiteBuilder
             }
 
 #if DEBUG
-            _logger.Info($"UseLocalhost = {UseLocalhost}");
+            //_logger.Info($"UseLocalhost = {UseLocalhost}");
 #endif
 
 
             SiteName = ConfigurationManager.AppSettings["siteName"];
 
 #if DEBUG
-            _logger.Info($"SiteName = {SiteName}");
+            //_logger.Info($"SiteName = {SiteName}");
 #endif
 
             if(UseLocalhost)
@@ -46,13 +48,13 @@ namespace SiteBuilder
             }
 
 #if DEBUG
-            _logger.Info($"SiteHref = {SiteHref}");
+            //_logger.Info($"SiteHref = {SiteHref}");
 #endif
 
             var rootPath = ConfigAppSettingsHelper.GetExistingDirectoryName("rootPath");
 
 #if DEBUG
-            _logger.Info($"GeneralSettings() rootPath = {rootPath}");
+            //_logger.Info($"GeneralSettings() rootPath = {rootPath}");
 #endif
 
             EVPath.RegVar("SITE_ROOT_PATH", rootPath);
@@ -60,7 +62,7 @@ namespace SiteBuilder
             SourcePath = EVPath.Normalize(ConfigurationManager.AppSettings["sourcePath"]);
 
 #if DEBUG
-            _logger.Info($"GeneralSettings() SourcePath = {SourcePath}");
+            //_logger.Info($"GeneralSettings() SourcePath = {SourcePath}");
 #endif
 
             EVPath.RegVar("SITE_SOURCE_PATH", SourcePath);
@@ -68,8 +70,8 @@ namespace SiteBuilder
             DestPath = EVPath.Normalize(ConfigurationManager.AppSettings["destPath"]);
 
 #if DEBUG
-            _logger.Info($"GeneralSettings() DestPath = {DestPath}");
-            _logger.Info($"ConfigurationManager.AppSettings['tempPath'] = {ConfigurationManager.AppSettings["tempPath"]}");
+            //_logger.Info($"GeneralSettings() DestPath = {DestPath}");
+            //_logger.Info($"ConfigurationManager.AppSettings['tempPath'] = {ConfigurationManager.AppSettings["tempPath"]}");
 #endif
 
             EVPath.RegVar("SITE_DEST_PATH", DestPath);
@@ -77,13 +79,13 @@ namespace SiteBuilder
             var initTempPath = ConfigurationManager.AppSettings["tempPath"];
 
 #if DEBUG
-            _logger.Info($"initTempPath = {initTempPath}");
+            //_logger.Info($"initTempPath = {initTempPath}");
 #endif
 
             if (!string.IsNullOrWhiteSpace(initTempPath))
             {
 #if DEBUG
-                _logger.Info($"GeneralSettings() initTempPath = {initTempPath}");
+                //_logger.Info($"GeneralSettings() initTempPath = {initTempPath}");
 #endif
 
                 TempPath = EVPath.Normalize(initTempPath);
@@ -91,7 +93,7 @@ namespace SiteBuilder
                 IgnoredDirsList.Add(TempPath);
 
 #if DEBUG
-                _logger.Info($"GeneralSettings() TempPath = {TempPath}");
+                //_logger.Info($"GeneralSettings() TempPath = {TempPath}");
 #endif
 
                 EVPath.RegVar("SITE_TEMP_PATH", TempPath);
@@ -145,7 +147,7 @@ namespace SiteBuilder
             SiteSettings = SiteInfo.LoadFromFile(tmpSiteSettingsPath);
 
 #if DEBUG
-            _logger.Info($"SiteSettings = {SiteSettings}");
+            //_logger.Info($"SiteSettings = {SiteSettings}");
 #endif
 
             var rootSiteElement = SiteElementInfoReader.Read(SourcePath, DestPath, SiteHref, IgnoredDirsList, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
@@ -157,20 +159,20 @@ namespace SiteBuilder
             SiteElementsList = LinearizeSiteElementInfoTreeWithoutRoot(rootSiteElement);
 
 #if DEBUG
-            _logger.Info($"SiteElementsList.Count = {SiteElementsList.Count}");
+            //_logger.Info($"SiteElementsList.Count = {SiteElementsList.Count}");
             //_logger.Info($"SiteElementsList = {SiteElementsList.WriteListToString()}");
 #endif
 
             var rootCSharpUserApiXMLDocSiteElementFullName = Path.Combine(SiteSettings.BaseCSharpUserApiPath, "index.sp");
 
 #if DEBUG
-            _logger.Info($"rootCSharpUserApiXMLDocSiteElementFullName = {rootCSharpUserApiXMLDocSiteElementFullName}");
+            //_logger.Info($"rootCSharpUserApiXMLDocSiteElementFullName = {rootCSharpUserApiXMLDocSiteElementFullName}");
 #endif
 
             RootCSharpUserApiXMLDocSiteElement = SiteElementsList.SingleOrDefault(p => p.InitialFullFileName == rootCSharpUserApiXMLDocSiteElementFullName);
 
 #if DEBUG
-            _logger.Info($"RootCSharpUserApiXMLDocSiteElement = {RootCSharpUserApiXMLDocSiteElement}");
+            //_logger.Info($"RootCSharpUserApiXMLDocSiteElement = {RootCSharpUserApiXMLDocSiteElement}");
 #endif
 
             var roadMapFileName = SiteSettings.RoadMapJsonPath;
@@ -181,7 +183,7 @@ namespace SiteBuilder
             }
 
 #if DEBUG
-            _logger.Info($"RoadMapItemsList = {RoadMapItemsList.WriteListToString()}");
+            //_logger.Info($"RoadMapItemsList = {RoadMapItemsList.WriteListToString()}");
 #endif
 
             var releaseNotesFileName = SiteSettings.ReleaseNotesJsonPath;
@@ -192,7 +194,7 @@ namespace SiteBuilder
             }
 
 #if DEBUG
-            _logger.Info($"ReleaseItemsList = {ReleaseItemsList.WriteListToString()}");
+            //_logger.Info($"ReleaseItemsList = {ReleaseItemsList.WriteListToString()}");
 #endif
 
             ReadCSharpUserApiXMLDocsList();
@@ -229,7 +231,7 @@ namespace SiteBuilder
             var csharpApiJsonPath = SiteSettings.CSharpUserApiJsonPath;
 
 #if DEBUG
-            _logger.Info($"csharpApiJsonPath = {csharpApiJsonPath}");
+            //_logger.Info($"csharpApiJsonPath = {csharpApiJsonPath}");
 #endif
 
             if (string.IsNullOrWhiteSpace(csharpApiJsonPath))
@@ -240,12 +242,12 @@ namespace SiteBuilder
             var csharpApiOptions = CSharpApiOptions.LoadFromFile(csharpApiJsonPath);
 
 #if DEBUG
-            _logger.Info($"csharpApiOptions = {csharpApiOptions}");
+            //_logger.Info($"csharpApiOptions = {csharpApiOptions}");
 #endif
 
             var targetSolutionDir = EVPath.Normalize(csharpApiOptions.SolutionDir);
 
-            _logger.Info($"targetSolutionDir = {targetSolutionDir}");
+            //_logger.Info($"targetSolutionDir = {targetSolutionDir}");
 
             if(string.IsNullOrWhiteSpace(targetSolutionDir) || !Directory.Exists(targetSolutionDir))
             {
@@ -257,7 +259,9 @@ namespace SiteBuilder
                 }                
             }
 
-            _logger.Info($"targetSolutionDir (after) = {targetSolutionDir}");
+#if DEBUG
+            //_logger.Info($"targetSolutionDir (after) = {targetSolutionDir}");
+#endif
 
             IgnoredDirsList.Add(targetSolutionDir);
 
@@ -285,12 +289,13 @@ namespace SiteBuilder
                 DestDir = DestPath
             };
 
-            _logger.Info($"options = {options}");
-
+#if DEBUG
+            //_logger.Info($"options = {options}");
+#endif
             CSharpUserApiXMLDocsList = CSharpXMLDocLoader.Load(options);
 
 #if DEBUG
-            _logger.Info($"CSharpApiXMLDocsList.Count = {CSharpUserApiXMLDocsList.Count}");
+            //_logger.Info($"CSharpApiXMLDocsList.Count = {CSharpUserApiXMLDocsList.Count}");
 #endif
         }
     }

@@ -10,13 +10,13 @@ namespace SiteBuilder
     public class PropertyCSharpUserApiXMLDocPageProcessor : BaseCSharpUserApiXMLDocPageProcessor
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static SiteElementInfo ConvertPropertyCardToSiteElementInfo(PropertyCard propertyCard, SiteElementInfo parent)
         {
 #if DEBUG
-            _logger.Info($"propertyCard = {propertyCard}");
+            //_logger.Info($"propertyCard = {propertyCard}");
 #endif
 
             var result = new SiteElementInfo();
@@ -46,7 +46,7 @@ namespace SiteBuilder
             parent.SubItemsList.Add(result);
 
 #if DEBUG
-            _logger.Info($"result = {result}");
+            //_logger.Info($"result = {result}");
 #endif
 
             return result;

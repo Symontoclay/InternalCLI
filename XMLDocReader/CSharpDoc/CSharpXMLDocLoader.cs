@@ -11,7 +11,7 @@ namespace XMLDocReader.CSharpDoc
     public static class CSharpXMLDocLoader
     {
 #if DEBUG
-        private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
+        //private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
         public static List<PackageCard> Load(CSharpXMLDocLoaderOptions options)
         {
@@ -45,7 +45,7 @@ namespace XMLDocReader.CSharpDoc
             var relativePath = basePath.Replace(sourceDir, string.Empty);
 
 #if DEBUG
-            _logger.Info($"relativePath = {relativePath}");
+            //_logger.Info($"relativePath = {relativePath}");
 #endif
 
             foreach (var packageCard in packageCardsList)

@@ -11,13 +11,13 @@ namespace SiteBuilder
     public class MethodCSharpUserApiXMLDocPageProcessor : BaseCSharpUserApiXMLDocPageProcessor
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static SiteElementInfo ConvertMethodCardToSiteElementInfo(MethodCard methodCard, SiteElementInfo parent)
         {
 #if DEBUG
-            _logger.Info($"methodCard = {methodCard}");
+            //_logger.Info($"methodCard = {methodCard}");
 #endif
 
             var result = new SiteElementInfo();
@@ -47,7 +47,7 @@ namespace SiteBuilder
             parent.SubItemsList.Add(result);
 
 #if DEBUG
-            _logger.Info($"result = {result}");
+            //_logger.Info($"result = {result}");
 #endif
 
             return result;
@@ -82,7 +82,7 @@ namespace SiteBuilder
                 foreach(var param in _methodCard.ParamsList)
                 {
 #if DEBUG
-                    _logger.Info($"param = {param}");
+                    //_logger.Info($"param = {param}");
 #endif
 
                     sb.AppendLine($"<dt>{param.Name}</dt>");
@@ -102,7 +102,7 @@ namespace SiteBuilder
                 sb.AppendLine("</div>");
 
 #if DEBUG
-                _logger.Info($"sb = {sb}");
+                //_logger.Info($"sb = {sb}");
 #endif
             }
 

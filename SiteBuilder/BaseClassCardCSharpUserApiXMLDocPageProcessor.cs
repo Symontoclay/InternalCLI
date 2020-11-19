@@ -13,13 +13,13 @@ namespace SiteBuilder
     public abstract class BaseClassCardCSharpUserApiXMLDocPageProcessor : BaseCSharpUserApiXMLDocPageProcessor
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static SiteElementInfo ConvertClassCardToSiteElementInfo(ClassCard classCard)
         {
 #if DEBUG
-            _logger.Info($"classCard = {classCard}");
+            //_logger.Info($"classCard = {classCard}");
 #endif
 
             var result = new SiteElementInfo();
@@ -49,7 +49,7 @@ namespace SiteBuilder
             GeneralSettings.RootCSharpUserApiXMLDocSiteElement.SubItemsList.Add(result);
 
 #if DEBUG
-            _logger.Info($"result = {result}");
+            //_logger.Info($"result = {result}");
 #endif
 
             return result;

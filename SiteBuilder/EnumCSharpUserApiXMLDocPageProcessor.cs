@@ -10,13 +10,13 @@ namespace SiteBuilder
     public class EnumCSharpUserApiXMLDocPageProcessor : BaseCSharpUserApiXMLDocPageProcessor
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static SiteElementInfo ConvertEnumCardToSiteElementInfo(EnumCard enumCard)
         {
 #if DEBUG
-            _logger.Info($"enumCard = {enumCard}");
+            //_logger.Info($"enumCard = {enumCard}");
 #endif
 
             var result = new SiteElementInfo();
@@ -46,7 +46,7 @@ namespace SiteBuilder
             GeneralSettings.RootCSharpUserApiXMLDocSiteElement.SubItemsList.Add(result);
 
 #if DEBUG
-            _logger.Info($"result = {result}");
+            //_logger.Info($"result = {result}");
 #endif
 
             return result;
@@ -78,7 +78,7 @@ namespace SiteBuilder
             foreach (var field in _enumCard.FieldsList)
             {
 #if DEBUG
-                _logger.Info($"field = {field}");
+                //_logger.Info($"field = {field}");
 #endif
 
                 sb.AppendLine($"<dt>{field.Name.DisplayedName}</dt>");

@@ -12,7 +12,7 @@ namespace SiteBuilder
     public static class SiteElementInfoReader
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static SiteElementInfo Read(string sourceDir, string destDir, string siteHref, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList)
@@ -300,7 +300,7 @@ namespace SiteBuilder
                     }
 
 #if DEBUG
-                    _logger.Info($"item = {item}");
+                    //_logger.Info($"item = {item}");
 #endif
                 }
 

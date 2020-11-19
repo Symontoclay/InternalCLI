@@ -29,7 +29,7 @@ namespace SiteBuilder
             ClearDir();
 
 #if DEBUG
-            _logger.Info($"GeneralSettings.IgnoredDirsList = {JsonConvert.SerializeObject(GeneralSettings.IgnoredDirsList, Formatting.Indented)}");
+            //_logger.Info($"GeneralSettings.IgnoredDirsList = {JsonConvert.SerializeObject(GeneralSettings.IgnoredDirsList, Formatting.Indented)}");
 #endif
 
             ProcessReleaseNotesPages();
@@ -51,18 +51,18 @@ namespace SiteBuilder
             foreach (var packageCard in GeneralSettings.CSharpUserApiXMLDocsList)
             {
 #if DEBUG
-                _logger.Info($"packageCard = {packageCard.ToBriefString()}");
-                _logger.Info($"packageCard.InterfacesList.Count = {packageCard.InterfacesList.Count}");
-                _logger.Info($"packageCard.InterfacesList.Count = {packageCard.ClassesList.Count}");
-                _logger.Info($"packageCard.InterfacesList.Count = {packageCard.EnumsList.Count}");
+                //_logger.Info($"packageCard = {packageCard.ToBriefString()}");
+                //_logger.Info($"packageCard.InterfacesList.Count = {packageCard.InterfacesList.Count}");
+                //_logger.Info($"packageCard.InterfacesList.Count = {packageCard.ClassesList.Count}");
+                //_logger.Info($"packageCard.InterfacesList.Count = {packageCard.EnumsList.Count}");
 #endif
 
                 foreach(var item in packageCard.InterfacesList)
                 {
 #if DEBUG
-                    _logger.Info($"item.Name.FullName = {item.Name.FullName}");
-                    _logger.Info($"item.Href = {item.Href}");
-                    _logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
+                    //_logger.Info($"item.Name.FullName = {item.Name.FullName}");
+                    //_logger.Info($"item.Href = {item.Href}");
+                    //_logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
 #endif
 
                     _hrefsList.Add(item.Href);
@@ -83,9 +83,9 @@ namespace SiteBuilder
                 foreach(var item in packageCard.ClassesList)
                 {
 #if DEBUG
-                    _logger.Info($"item.Name.FullName = {item.Name.FullName}");
-                    _logger.Info($"item.Href = {item.Href}");
-                    _logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
+                    //_logger.Info($"item.Name.FullName = {item.Name.FullName}");
+                    //_logger.Info($"item.Href = {item.Href}");
+                    //_logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
 #endif
 
                     _hrefsList.Add(item.Href);
@@ -106,9 +106,9 @@ namespace SiteBuilder
                 foreach (var item in packageCard.EnumsList)
                 {
 #if DEBUG
-                    _logger.Info($"item.Name.FullName = {item.Name.FullName}");
-                    _logger.Info($"item.Href = {item.Href}");
-                    _logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
+                    //_logger.Info($"item.Name.FullName = {item.Name.FullName}");
+                    //_logger.Info($"item.Href = {item.Href}");
+                    //_logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
 #endif
 
                     _hrefsList.Add(item.Href);
@@ -131,10 +131,10 @@ namespace SiteBuilder
             foreach (var prop in classCard.PropertiesList)
             {
 #if DEBUG
-                _logger.Info($"prop.Name.InitialName = {prop.Name.InitialName}");
-                _logger.Info($"prop.Name.FullName = {prop.Name.FullName}");
-                _logger.Info($"prop.Href = {prop.Href}");
-                _logger.Info($"prop.TargetFullFileName = {prop.TargetFullFileName}");
+                //_logger.Info($"prop.Name.InitialName = {prop.Name.InitialName}");
+                //_logger.Info($"prop.Name.FullName = {prop.Name.FullName}");
+                //_logger.Info($"prop.Href = {prop.Href}");
+                //_logger.Info($"prop.TargetFullFileName = {prop.TargetFullFileName}");
 #endif
 
                 _hrefsList.Add(prop.Href);
@@ -146,10 +146,10 @@ namespace SiteBuilder
             foreach (var method in classCard.MethodsList)
             {
 #if DEBUG
-                _logger.Info($"method.Name.InitialName = {method.Name.InitialName}");
-                _logger.Info($"method.Name.FullName = {method.Name.FullName}");
-                _logger.Info($"method.Href = {method.Href}");
-                _logger.Info($"method.TargetFullFileName = {method.TargetFullFileName}");
+                //_logger.Info($"method.Name.InitialName = {method.Name.InitialName}");
+                //_logger.Info($"method.Name.FullName = {method.Name.FullName}");
+                //_logger.Info($"method.Href = {method.Href}");
+                //_logger.Info($"method.TargetFullFileName = {method.TargetFullFileName}");
 #endif
 
                 _hrefsList.Add(method.Href);
@@ -165,7 +165,7 @@ namespace SiteBuilder
             foreach(var releaseItem in GeneralSettings.ReleaseItemsList)
             {
 #if DEBUG
-                _logger.Info($"releaseItem = {releaseItem}");
+                //_logger.Info($"releaseItem = {releaseItem}");
 #endif
 
                 var fileInfo = new FileInfo(releaseItem.TargetFullFileName);
@@ -259,13 +259,13 @@ namespace SiteBuilder
                             var lessContent = File.ReadAllText(siteElement.InitialFullFileName);
 
 #if DEBUG
-                            _logger.Info($"lessContent = {lessContent}");
+                            //_logger.Info($"lessContent = {lessContent}");
 #endif
 
                             var cssContent = Less.Parse(lessContent);
 
 #if DEBUG
-                            _logger.Info($"cssContent = {cssContent}");
+                            //_logger.Info($"cssContent = {cssContent}");
 #endif
 
                             File.WriteAllText(siteElement.TargetFullFileName, cssContent);
@@ -281,7 +281,7 @@ namespace SiteBuilder
         private void ClearDir()
         {
 #if DEBUG
-            _logger.Info($"GeneralSettings.DestPath = {GeneralSettings.DestPath}");
+            //_logger.Info($"GeneralSettings.DestPath = {GeneralSettings.DestPath}");
 #endif
 
             var dirs = Directory.GetDirectories(GeneralSettings.DestPath);

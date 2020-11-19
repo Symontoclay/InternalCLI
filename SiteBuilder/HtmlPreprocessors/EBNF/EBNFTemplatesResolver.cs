@@ -11,12 +11,12 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
     public static class EBNFTemplatesResolver
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static string Run(string initialContent)
         {
-            _logger.Info("Begin");
+            //_logger.Info("Begin");
 
             var n = 0;
 
@@ -29,7 +29,7 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
             {
                 n++;
 
-                _logger.Info($"n = {n}");
+                //_logger.Info($"n = {n}");
 
                 if (n > 100)
                 {
@@ -39,14 +39,14 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
                 var intermediateContent = modifiedDoc.ToHtmlString();
 
 #if DEBUG
-                _logger.Info($"intermediateContent = {intermediateContent}");
+                //_logger.Info($"intermediateContent = {intermediateContent}");
 #endif
 
                 modifiedDoc = new HtmlDocument();
                 modifiedDoc.LoadHtml(intermediateContent);
             };
 
-            _logger.Info("End");
+            //_logger.Info("End");
 
             var resultStrWriter = new StringWriter();
             modifiedDoc.Save(resultStrWriter);
