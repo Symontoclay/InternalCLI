@@ -19,9 +19,11 @@ namespace SiteBuilder
             PrintHeader(sb);
             PrintMetadata(sb);
             PrintSummary(sb);
-            PrintRemarks(sb);
+            
             PrintProperties(sb);
             PrintMethods(sb);
+
+            PrintRemarks(sb);
 
             return sb.ToString();
         }

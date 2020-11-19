@@ -68,8 +68,7 @@ namespace SiteBuilder
 
             PrintMetadata(sb, _propertyCard.Name, _propertyCard.Parent.Package.AssemblyName);
             PrintSummary(sb, _propertyCard.Summary);
-            PrintRemarks(sb, _propertyCard.Remarks);
-
+            
             if (!string.IsNullOrWhiteSpace(_propertyCard.Value))
             {
                 sb.AppendLine("<h2>Remarks</h2>");
@@ -77,6 +76,8 @@ namespace SiteBuilder
                 sb.AppendLine(GetContent(_propertyCard.Value));
                 sb.AppendLine("</div>");
             }
+
+            PrintRemarks(sb, _propertyCard.Remarks);
 
             return sb.ToString();
         }

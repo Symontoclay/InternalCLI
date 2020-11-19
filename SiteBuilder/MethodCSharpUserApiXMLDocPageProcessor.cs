@@ -31,7 +31,7 @@ namespace SiteBuilder
             result.SitePageInfo = sitePageInfo;
             sitePageInfo.IsReady = true;
 
-            var title = $"{methodCard.Parent.Name.DisplayedName}.{methodCard.Name.Name} Property ({methodCard.Name.Path}) | C# user API reference | SymOntoClay Docs";
+            var title = $"{methodCard.Parent.Name.DisplayedName}.{methodCard.Name.Name} Method ({methodCard.Name.Path}) | C# user API reference | SymOntoClay Docs";
 
             result.BreadcrumbTitle = methodCard.Name.Name;
             sitePageInfo.Title = title;
@@ -70,7 +70,7 @@ namespace SiteBuilder
             PrintMetadata(sb, _methodCard.Name, _methodCard.Parent.Package.AssemblyName);
 
             PrintSummary(sb, _methodCard.Summary);
-            PrintRemarks(sb, _methodCard.Remarks);
+            
 
             if (_methodCard.ParamsList.Any())
             {
@@ -105,6 +105,8 @@ namespace SiteBuilder
                 _logger.Info($"sb = {sb}");
 #endif
             }
+
+            PrintRemarks(sb, _methodCard.Remarks);
 
             return sb.ToString();
         }

@@ -120,11 +120,10 @@ namespace SiteBuilder
                         fileInfo.Directory.Create();
                     }
 
-                    //throw new NotImplementedException();
+                    var pageProcessor = new EnumCSharpUserApiXMLDocPageProcessor(item);
+                    pageProcessor.Run();
                 }
             }
-
-            //throw new NotImplementedException();
         }
 
         private void ProcessCSharpUserApiXMLDocsClassCardMembersList(ClassCard classCard, SiteElementInfo parent)
