@@ -46,16 +46,16 @@ namespace SiteBuilder
 
         private static void PrepareItems(List<ReleaseItem> items, string baseHref, string basePath, string sourceDir, string destDir)
         {
-            var minDate = items.Min(p => p.Date);
+            var maxDate = items.Max(p => p.Date);
 
 #if DEBUG
-            //_logger.Info($"maxDate = {minDate}");
+            _logger.Info($"maxDate = {maxDate}");
 #endif
 
-            var latestItem = items.SingleOrDefault(p => p.Date == minDate);
+            var latestItem = items.SingleOrDefault(p => p.Date == maxDate);
 
 #if DEBUG
-            //_logger.Info($"latestItem = {latestItem}");
+            _logger.Info($"latestItem = {latestItem}");
 #endif
 
             latestItem.IsLatest = true;

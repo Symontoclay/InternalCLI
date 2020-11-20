@@ -15,7 +15,7 @@ namespace SiteBuilder
     public static class GeneralSettings
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         static GeneralSettings()
@@ -194,7 +194,7 @@ namespace SiteBuilder
             }
 
 #if DEBUG
-            //_logger.Info($"ReleaseItemsList = {ReleaseItemsList.WriteListToString()}");
+            _logger.Info($"ReleaseItemsList = {ReleaseItemsList.WriteListToString()}");
 #endif
 
             ReadCSharpUserApiXMLDocsList();
