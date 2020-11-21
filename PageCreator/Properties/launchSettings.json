@@ -2,7 +2,7 @@
   "profiles": {
     "PageCreator": {
       "commandName": "Project",
-      "commandLineArgs": "contact_me"
+      "commandLineArgs": "source_code"
     }
   }
 }

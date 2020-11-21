@@ -354,7 +354,7 @@ namespace SiteBuilder
             Append("</span>");
             Append("&nbsp;");
             Append("<span>");
-            Append("is game AI experimental open source indie-framework with its own DSL.");
+            Append("is game AI experimental open source engine.");
             Append("</span>");
             AppendLine("</p>");
         }

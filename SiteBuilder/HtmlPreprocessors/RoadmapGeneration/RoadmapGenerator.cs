@@ -112,7 +112,7 @@ namespace SiteBuilder.HtmlPreprocessors.RoadmapGeneration
                 {
                     if(item.Kind == KindOfRoadMapItem.Unplanned)
                     {
-                        sb.AppendLine("<h2><i class='fas fa-warehouse'></i>&nbsp;&nbsp;Unplanned backlog</h2>");
+                        sb.AppendLine("<h2><i class='fas fa-warehouse'></i>&nbsp;&nbsp;Undivided backlog</h2>");
                     }
                     else
                     {
