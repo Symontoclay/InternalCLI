@@ -149,17 +149,38 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
                 var targetValue = rootNode.GetAttributeValue("target", string.Empty);
 
+                if(string.IsNullOrWhiteSpace(targetValue))
+                {
+                    targetValue = rootNode.GetAttributeValue("t", string.Empty);
+                }
 #if DEBUG
                 //NLog.LogManager.GetCurrentClassLogger().Info($"targetValue = '{targetValue}'");
 #endif
                 switch (targetValue)
                 {
+                    case "W":
+                    case "w":
+                    case "wikipedia":
                     case "Wikipedia":
                         {
                             var wikiNode = doc.CreateElement("i");
                             parentNode.ReplaceChild(wikiNode, rootNode);
                             wikiNode.AddClass("fab fa-wikipedia-w");
                             wikiNode.SetAttributeValue("title", "Wikipedia");
+                        }
+                        break;
+
+                    case "Facebook":
+                    case "facebook":
+                    case "Fb":
+                    case "fb":
+                    case "F":
+                    case "f":
+                        {
+                            var wikiNode = doc.CreateElement("i");
+                            parentNode.ReplaceChild(wikiNode, rootNode);
+                            wikiNode.AddClass("fab fa-facebook");
+                            wikiNode.SetAttributeValue("title", "Facebook");
                         }
                         break;
 
