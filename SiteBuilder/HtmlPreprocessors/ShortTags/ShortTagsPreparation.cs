@@ -96,6 +96,18 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 return;
             }
 
+            if(rootNode.Name == "license_info")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                ProcessLicenseInfo(newNode, doc);
+
+                return;
+            }
+
             if (rootNode.Name == "see")
             {
                 var parentNode = rootNode.ParentNode;
@@ -235,6 +247,20 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             {
                 DiscoverNodes(node, doc, hrefsDict);
             }
+        }
+
+        private static void ProcessLicenseInfo(HtmlNode rootNode, HtmlDocument doc)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("<p>");
+            sb.AppendLine("SymOntoClay is released under <a href='http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html'>LGPL-2.1 License</a>.");
+            sb.AppendLine("</p>");
+            sb.AppendLine("<p>");
+            sb.AppendLine("Please study the license before downloading and using!");
+            sb.AppendLine("</p>");
+
+            rootNode.InnerHtml = sb.ToString();
         }
     }
 }
