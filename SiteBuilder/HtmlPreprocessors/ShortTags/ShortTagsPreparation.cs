@@ -96,6 +96,19 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 return;
             }
 
+            if(rootNode.Name == "complete_me")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                newNode.SetAttributeValue("style", "font-weight: bold; color: red;");
+                newNode.InnerHtml = "COMPLETE ME!";
+
+                return;
+            }
+
             if(rootNode.Name == "license_info")
             {
                 var newNode = doc.CreateElement("div");

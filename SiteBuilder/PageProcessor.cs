@@ -23,7 +23,7 @@ namespace SiteBuilder
     public class PageProcessor
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static readonly List<string> _commonCssLinksList = new List<string>();
@@ -619,21 +619,28 @@ namespace SiteBuilder
 
             var href = rootNode.GetAttributeValue("href", null);
 
-#if DEBUG
-            //_logger.Info($"href = {href}");
-#endif
-
             if(!string.IsNullOrWhiteSpace(href))
             {
-                if(!href.StartsWith("https://") && !href.StartsWith("http://"))
+                if (!href.StartsWith("https://") && !href.StartsWith("http://"))
                 {
-                    if(href.StartsWith("/"))
+#if DEBUG
+                    //_logger.Info($"href = {href}");
+#endif
+
+                    if (href.StartsWith("#"))
                     {
-                        href = $"{GeneralSettings.SiteHref}{href}";
+                        href = $"{_siteElement.Href}{href}";
                     }
                     else
                     {
-                        href = $"{GeneralSettings.SiteHref}/{href}";
+                        if (href.StartsWith("/"))
+                        {
+                            href = $"{GeneralSettings.SiteHref}{href}";
+                        }
+                        else
+                        {
+                            href = $"{GeneralSettings.SiteHref}/{href}";
+                        }
                     }
 
 #if DEBUG
@@ -641,26 +648,33 @@ namespace SiteBuilder
 #endif
 
                     rootNode.SetAttributeValue("href", href);
-                }                
+                }
             }
 
             var src = rootNode.GetAttributeValue("src", null);
-
-#if DEBUG
-            //_logger.Info($"src = {src}");
-#endif
 
             if (!string.IsNullOrWhiteSpace(src))
             {
                 if(!src.StartsWith("https://") && !src.StartsWith("http://"))
                 {
-                    if (src.StartsWith("/"))
+#if DEBUG
+                    //_logger.Info($"src = {src}");
+#endif
+
+                    if (src.StartsWith("#"))
                     {
-                        src = $"{GeneralSettings.SiteHref}{src}";
+                        src = $"{_siteElement.Href}{src}";
                     }
                     else
                     {
-                        src = $"{GeneralSettings.SiteHref}/{src}";
+                        if (src.StartsWith("/"))
+                        {
+                            src = $"{GeneralSettings.SiteHref}{src}";
+                        }
+                        else
+                        {
+                            src = $"{GeneralSettings.SiteHref}/{src}";
+                        }
                     }
 
 #if DEBUG
