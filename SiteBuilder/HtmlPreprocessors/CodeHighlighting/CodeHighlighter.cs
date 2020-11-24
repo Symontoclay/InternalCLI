@@ -13,7 +13,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
     public static class CodeHighlighter
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static List<string> _cSharpKeyWordsList = new List<string>()
@@ -107,9 +107,43 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 }
             }
 
+            if(rootNode.Name == "console")
+            {
+                ProcessConsole(rootNode, doc);
+                return;
+            }
+
             foreach (var node in rootNode.ChildNodes.ToList())
             {
                 ProcessNodes(node, doc);
+            }
+        }
+
+        private static void ProcessConsole(HtmlNode rootNode, HtmlDocument doc)
+        {
+            var initialText = rootNode.GetDirectInnerText();
+
+#if DEBUG
+            //_logger.Info($"initialText = {initialText}");
+#endif
+
+            var codeList = ClearCode(initialText);
+
+            var newRootNode = doc.CreateElement("div");
+            var parentNode = rootNode.ParentNode;
+            parentNode.ReplaceChild(newRootNode, rootNode);
+
+            newRootNode.AddClass("console-viewer");
+
+            foreach(var line in codeList)
+            {
+#if DEBUG
+                //_logger.Info($"line = '{line}'");
+#endif
+
+                var lineNode = doc.CreateElement("div");
+                newRootNode.AppendChild(lineNode);
+                lineNode.InnerHtml = line;
             }
         }
 
