@@ -45,11 +45,11 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
             var rootContentNode = doc.CreateElement("p");
             parentOfContent.ReplaceChild(rootContentNode, contentNodePlace);
 
-            var contentsHeaderNode = doc.CreateElement("h1");
+            var contentsHeaderNode = doc.CreateElement("h2");
             parentOfContent.InsertBefore(contentsHeaderNode, rootContentNode);
             contentsHeaderNode.AddClass("center-h");
 
-            contentsHeaderNode.InnerHtml = @"    Content
+            contentsHeaderNode.InnerHtml = @"    Contens
     <a href='#Contents' name='Contents' class='permalink' title='The link to the section'>
         <i class='fas fa-link'></i>
     </a>";
