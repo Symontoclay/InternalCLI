@@ -307,6 +307,60 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
                         parentItem.Items.Add(currItem);
                         break;
 
+                    case "h5":
+                        ProcessH5Items(currItem, queue);
+                        return;
+
+                    default:
+                        throw new ArgumentOutOfRangeException("TagName", currentSourceItem.TagName, null);
+                }
+            }
+
+#if DEBUG
+            //NLog.LogManager.GetCurrentClassLogger().Info("End");
+#endif
+        }
+
+        private static void ProcessH5Items(ContentItem parentItem, Queue<ContentItem> queue)
+        {
+#if DEBUG
+            //NLog.LogManager.GetCurrentClassLogger().Info("Begin");
+#endif
+            ContentItem currItem = null;
+
+            while (queue.Count > 0)
+            {
+                var currentSourceItem = queue.Peek();
+
+#if DEBUG
+                //NLog.LogManager.GetCurrentClassLogger().Info($"currentSourceItem = {JsonConvert.SerializeObject(currentSourceItem, Formatting.Indented)}");
+#endif
+                switch (currentSourceItem.TagName)
+                {
+                    case "h1":
+                        return;
+
+                    case "h2":
+                        return;
+
+                    case "h3":
+                        return;
+
+                    case "h4":
+                        return;
+
+
+                    case "h5":
+                        queue.Dequeue();
+                        currItem = new ContentItem()
+                        {
+                            TagName = currentSourceItem.TagName,
+                            Title = currentSourceItem.Title,
+                            Href = currentSourceItem.Href
+                        };
+                        parentItem.Items.Add(currItem);
+                        break;
+
                     default:
                         throw new ArgumentOutOfRangeException("TagName", currentSourceItem.TagName, null);
                 }

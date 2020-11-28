@@ -680,6 +680,10 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                         ProcessPreprocessorInCodeNormalizing(sb, strSb.ToString(), kindOfLng);
                         break;
 
+                    case KindOfString.Mix:
+                        sb.Append(strSb.ToString());
+                        break;
+
                     default:
                         throw new ArgumentOutOfRangeException(nameof(kindOfString), kindOfString, null);
                 }
@@ -1168,6 +1172,10 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
                     case KindOfString.Preprocessor:
                         ProcessPreprocessor(sb, strSb.ToString(), kindOfLng);
+                        break;
+
+                    case KindOfString.Mix:
+                        sb.Append(strSb.ToString());
                         break;
 
                     default:
