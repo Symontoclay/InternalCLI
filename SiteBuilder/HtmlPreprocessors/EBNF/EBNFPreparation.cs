@@ -32,15 +32,15 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
 
         private static void DiscoverNodes(HtmlNode rootNode, HtmlDocument doc)
         {
-            //#if DEBUG
-            //            if (rootNode.Name != "#document")
-            //            {
-            //                NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.Name = '{rootNode.Name}'");
-            //                NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
-            //                NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
-            //                NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerText = {rootNode.InnerText}");
-            //            }
-            //#endif
+//#if DEBUG
+//            if (rootNode.Name != "#document")
+//            {
+//                NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.Name = '{rootNode.Name}'");
+//                NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
+//                NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
+//                NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerText = {rootNode.InnerText}");
+//            }
+//#endif
 
             if (rootNode.Name == "keywords")
             {
