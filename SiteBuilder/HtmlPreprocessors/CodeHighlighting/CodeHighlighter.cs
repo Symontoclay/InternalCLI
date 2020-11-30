@@ -129,6 +129,10 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
             var codeList = ClearCode(initialText);
 
+#if DEBUG
+            //_logger.Info($"codeList = {JsonConvert.SerializeObject(codeList, Formatting.Indented)}");
+#endif
+
             var newRootNode = doc.CreateElement("div");
             var parentNode = rootNode.ParentNode;
             parentNode.ReplaceChild(newRootNode, rootNode);
@@ -1293,8 +1297,6 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 switch(intCh)
                 {
                     case 10:
-                        continue;
-
                     case 13:
                         {
                             var codeLine = lineSb.ToString().Trim();
