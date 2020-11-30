@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -179,12 +180,12 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
 #if DEBUG
                 //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.Name = '{rootNode.Name}'");
                 //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
-                //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
+                NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
                 //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerText = {rootNode.InnerText}");
 #endif
                 var itemsList = EBNFHelpers.ParseGrammarBlock(rootNode.InnerHtml);
 #if DEBUG
-                //NLog.LogManager.GetCurrentClassLogger().Info($"itemsList = {JsonConvert.SerializeObject(itemsList, Formatting.Indented)}");
+                NLog.LogManager.GetCurrentClassLogger().Info($"itemsList = {JsonConvert.SerializeObject(itemsList, Formatting.Indented)}");
 #endif
                 var newNode = doc.CreateElement("div");
 
@@ -196,7 +197,7 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
                 foreach (var item in itemsList)
                 {
 #if DEBUG
-                    //NLog.LogManager.GetCurrentClassLogger().Info($"item = '{item}'");
+                    NLog.LogManager.GetCurrentClassLogger().Info($"item = '{item}'");
 #endif
 
                     var itemNode = doc.CreateElement("div");
