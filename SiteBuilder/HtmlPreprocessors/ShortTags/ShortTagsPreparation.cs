@@ -82,6 +82,13 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
             //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerText = {rootNode.InnerText}");
 #endif
+
+            if(rootNode.Name == "items")
+            {
+                ProcessItems(rootNode, doc);
+                return;
+            }
+
             if (rootNode.Name == "linktocontent")
             {
                 var parentNode = rootNode.ParentNode;
@@ -259,6 +266,91 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             foreach (var node in rootNode.ChildNodes.ToList())
             {
                 DiscoverNodes(node, doc, hrefsDict);
+            }
+        }
+
+        private static void ProcessItems(HtmlNode rootNode, HtmlDocument doc)
+        {
+            var targetColsCount = rootNode.GetAttributeValue("cols", 0);
+
+#if DEBUG
+            //NLog.LogManager.GetCurrentClassLogger().Info($"targetColsCount = '{targetColsCount}'");
+#endif
+
+            var tdWidth = 100 / targetColsCount;
+
+#if DEBUG
+            //NLog.LogManager.GetCurrentClassLogger().Info($"tdWidth = {tdWidth}");
+#endif
+
+            var list = rootNode.ChildNodes.Where(p => p.Name == "item").Select(p => p.GetAttributeValue("value", string.Empty)).Where(p => !string.IsNullOrWhiteSpace(p)).Distinct().OrderBy(p => p).ToList();
+
+#if DEBUG
+            //NLog.LogManager.GetCurrentClassLogger().Info($"list = {JsonConvert.SerializeObject(list, Formatting.Indented)}");
+#endif
+
+            var countInCol = list.Count / targetColsCount;
+
+#if DEBUG
+            //NLog.LogManager.GetCurrentClassLogger().Info($"list.Count = {list.Count}");
+            //NLog.LogManager.GetCurrentClassLogger().Info($"countInCol = {countInCol}");
+            //NLog.LogManager.GetCurrentClassLogger().Info($"list.Count % targetColsCount = {list.Count % targetColsCount}");
+#endif
+            if ((list.Count % targetColsCount) > 0)
+            {
+                countInCol++;
+            }
+
+#if DEBUG
+            //NLog.LogManager.GetCurrentClassLogger().Info($"countInCol (2) = {countInCol}");
+#endif
+            var counter = countInCol;
+
+            var groupedDict = list.GroupBy(p => counter++ / countInCol).ToDictionary(p => p.Key, p => p.ToList());
+
+#if DEBUG
+            //NLog.LogManager.GetCurrentClassLogger().Info($"groupedDict = {JsonConvert.SerializeObject(groupedDict, Newtonsoft.Json.Formatting.Indented)}");
+#endif
+            var parentNode = rootNode.ParentNode;
+            var tableNode = doc.CreateElement("table");
+            parentNode.ReplaceChild(tableNode, rootNode);
+            tableNode.AddClass("keywords-table");
+            //tableNode.SetAttributeValue("border", "1");
+
+            var tbodyNode = doc.CreateElement("tbody");
+            tableNode.AppendChild(tbodyNode);
+
+            for (var i = 0; i < countInCol; i++)
+            {
+#if DEBUG
+                //NLog.LogManager.GetCurrentClassLogger().Info($"i = {i}");
+#endif
+
+                var trNode = doc.CreateElement("tr");
+                tbodyNode.AppendChild(trNode);
+
+                foreach (var groupedItem in groupedDict)
+                {
+                    var tdNode = doc.CreateElement("td");
+                    trNode.AppendChild(tdNode);
+                    tdNode.SetAttributeValue("style", $"width: {tdWidth}%;");
+
+#if DEBUG
+                    //NLog.LogManager.GetCurrentClassLogger().Info($"groupedItem.Value.Count = {groupedItem.Value.Count}");
+#endif
+                    if (groupedItem.Value.Count > i)
+                    {
+                        var val = groupedItem.Value[i];
+#if DEBUG
+                        //NLog.LogManager.GetCurrentClassLogger().Info($"val = {val}");
+#endif
+
+                        var spanNode = doc.CreateElement("span");
+                        tdNode.AppendChild(spanNode);
+
+                        spanNode.InnerHtml = val;
+                    }
+                }
             }
         }
 
