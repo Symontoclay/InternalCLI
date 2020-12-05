@@ -39,7 +39,6 @@ namespace SiteBuilder
 
             SetUpBootstrap();
             SetUpFontAwesome();
-            SetUpCodeHighlighter();
         }
 
         private static void SetUpBootstrap()
@@ -53,11 +52,6 @@ namespace SiteBuilder
         private static void SetUpFontAwesome()
         {
             _commonJsLinksList.Add("<script src='/assets/fontawesome_5.15.1/all.js'></script>");
-        }
-
-        private static void SetUpCodeHighlighter()
-        {
-            _commonJsLinksList.Add("<script src='/assets/rainbow-custom.min.js'></script>");
         }
 
         public PageProcessor(SiteElementInfo siteElement)
@@ -213,7 +207,7 @@ namespace SiteBuilder
 
             if (sitePageInfo.EnableMathML)
             {
-                AppendLine("<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>");
+                AppendLine("<script src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>");
             }
 
             //var tmpGAScript = new StringBuilder();
@@ -333,6 +327,9 @@ namespace SiteBuilder
             AppendLine("<article>");
             AppendLine(content);
             AppendLine("</article>");
+            AppendLine("<p>");
+            AppendLine("&nbsp;");
+            AppendLine("</p>");
         }
 
         private void GenerateHeader()
