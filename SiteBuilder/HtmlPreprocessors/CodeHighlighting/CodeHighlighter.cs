@@ -13,7 +13,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
     public static class CodeHighlighter
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static List<string> _cSharpKeyWordsList = new List<string>()
