@@ -83,7 +83,7 @@ namespace SiteBuilder.HtmlPreprocessors.CSharpUserApiContentsGeneration
                         //_logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
 #endif
 
-                        sb.AppendLine($"<div><a href='{item.Href}'>{item.Name.FullName}</a></div>");
+                        sb.AppendLine($"<div><a href='{item.Href}'>{item.Name.DisplayedName}</a></div>");
                     }
                 }
 
@@ -99,7 +99,7 @@ namespace SiteBuilder.HtmlPreprocessors.CSharpUserApiContentsGeneration
                         //_logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
 #endif
 
-                        sb.AppendLine($"<div><a href='{item.Href}'>{item.Name.FullName}</a></div>");
+                        sb.AppendLine($"<div><a href='{item.Href}'>{item.Name.DisplayedName}</a></div>");
                     }
                 }
 
@@ -115,7 +115,7 @@ namespace SiteBuilder.HtmlPreprocessors.CSharpUserApiContentsGeneration
                         //_logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
 #endif
 
-                        sb.AppendLine($"<div><a href='{item.Href}'>{item.Name.FullName}</a></div>");
+                        sb.AppendLine($"<div><a href='{item.Href}'>{item.Name.DisplayedName}</a></div>");
                     }
                 }
             }

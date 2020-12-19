@@ -89,6 +89,17 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 return;
             }
 
+            if(rootNode.Name == "a")
+            {
+                var href = rootNode.GetAttributeValue("href", string.Empty);
+
+                if(href.StartsWith("T:") || href.StartsWith("P:") || href.StartsWith("F:") || href.StartsWith("M:") || href.StartsWith("E:"))
+                {
+                    ProcessTypeNameHref(rootNode, doc);
+                    return;
+                }
+            }
+
             if (rootNode.Name == "linktocontent")
             {
                 var parentNode = rootNode.ParentNode;
@@ -267,6 +278,25 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             {
                 DiscoverNodes(node, doc, hrefsDict);
             }
+        }
+        
+        private static void ProcessTypeNameHref(HtmlNode rootNode, HtmlDocument doc)
+        {
+            var href = rootNode.GetAttributeValue("href", string.Empty);
+
+#if DEBUG
+            //_logger.Info($"href = {href}");
+#endif
+
+            var codeDocument = GeneralSettings.CSharpUserApiXMLDocsCodeDocumentDict[href];
+
+#if DEBUG
+            //_logger.Info($"codeDocument = {codeDocument}");
+#endif
+
+            rootNode.SetAttributeValue("href", codeDocument.Href);
+
+            rootNode.InnerHtml = codeDocument.DisplayedName;
         }
 
         private static void ProcessItems(HtmlNode rootNode, HtmlDocument doc)

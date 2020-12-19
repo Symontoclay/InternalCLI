@@ -6,7 +6,7 @@ using System.Text;
 
 namespace XMLDocReader.CSharpDoc
 {
-    public class ClassCard: ParentElementCard, ITypeCard
+    public class ClassCard: ParentElementCard, ITypeCard, ICodeDocument
     {
         /// <inheritdoc/>
         public KindOfType KindOfType { get; set; } = KindOfType.Unknown;
@@ -68,6 +68,12 @@ namespace XMLDocReader.CSharpDoc
 
         public string Href { get; set; }
         public string TargetFullFileName { get; set; }
+
+        /// <inheritdoc/>
+        public string InitialName => Name.InitialName;
+
+        /// <inheritdoc/>
+        public string DisplayedName => Name.DisplayedName;
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)

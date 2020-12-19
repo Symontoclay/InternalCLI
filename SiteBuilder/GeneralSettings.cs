@@ -8,6 +8,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
+using XMLDocReader;
 using XMLDocReader.CSharpDoc;
 
 namespace SiteBuilder
@@ -139,6 +140,7 @@ namespace SiteBuilder
         public static List<RoadMapItem> RoadMapItemsList { get; private set; } = new List<RoadMapItem>();
         public static List<ReleaseItem> ReleaseItemsList { get; private set; } = new List<ReleaseItem>();
         public static List<PackageCard> CSharpUserApiXMLDocsList { get; private set; } = new List<PackageCard>();
+        public static Dictionary<string, ICodeDocument> CSharpUserApiXMLDocsCodeDocumentDict = new Dictionary<string, ICodeDocument>();
 
         private static void ReadSiteSettings()
         {
@@ -297,6 +299,44 @@ namespace SiteBuilder
 #if DEBUG
             //_logger.Info($"CSharpApiXMLDocsList.Count = {CSharpUserApiXMLDocsList.Count}");
 #endif
+
+            foreach (var packageCard in CSharpUserApiXMLDocsList)
+            {
+                foreach (var item in packageCard.InterfacesList)
+                {
+                    CSharpUserApiXMLDocsCodeDocumentDict[item.InitialName] = item;
+
+                    foreach (var prop in item.PropertiesList)
+                    {
+                        CSharpUserApiXMLDocsCodeDocumentDict[prop.InitialName] = prop;
+                    }
+
+                    foreach (var method in item.MethodsList)
+                    {
+                        CSharpUserApiXMLDocsCodeDocumentDict[method.InitialName] = method;
+                    }
+                }
+
+                foreach (var item in packageCard.ClassesList)
+                {
+                    CSharpUserApiXMLDocsCodeDocumentDict[item.InitialName] = item;
+
+                    foreach (var prop in item.PropertiesList)
+                    {
+                        CSharpUserApiXMLDocsCodeDocumentDict[prop.InitialName] = prop;
+                    }
+
+                    foreach (var method in item.MethodsList)
+                    {
+                        CSharpUserApiXMLDocsCodeDocumentDict[method.InitialName] = method;
+                    }
+                }
+
+                foreach (var item in packageCard.EnumsList)
+                {
+                    CSharpUserApiXMLDocsCodeDocumentDict[item.InitialName] = item;
+                }
+            }
         }
     }
 }

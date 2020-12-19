@@ -5,13 +5,19 @@ using System.Text;
 
 namespace XMLDocReader.CSharpDoc
 {
-    public class MemberCard : NamedElementCard
+    public class MemberCard : NamedElementCard, ICodeDocument
     {
         public ClassCard Parent { get; set; }
         public KindOfMemberAccess KindOfMemberAccess { get; set; } = KindOfMemberAccess.Unknown;
 
         public string Href { get; set; }
         public string TargetFullFileName { get; set; }
+
+        /// <inheritdoc/>
+        public string InitialName => Name.InitialName;
+
+        /// <inheritdoc/>
+        public string DisplayedName => Name.DisplayedName;
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
