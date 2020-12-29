@@ -132,6 +132,10 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
                     ProcessH2Items(item, queue);
                     break;
 
+                case "h3":
+                    ProcessH3Items(item, queue);
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(topTagName), topTagName, null);
             }

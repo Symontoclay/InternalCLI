@@ -88,6 +88,11 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 //_logger.Info($"language = {language}");
 #endif
 
+                if(string.IsNullOrWhiteSpace(language))
+                {
+                    return;
+                }
+
                 switch(language)
                 {
                     case "c#":

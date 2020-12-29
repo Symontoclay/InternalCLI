@@ -392,7 +392,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             sb.AppendLine("SymOntoClay is released under <a href='http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html'>LGPL-2.1 License</a>.");
             sb.AppendLine("</p>");
             sb.AppendLine("<p>");
-            sb.AppendLine("Please study the license before downloading and using!");
+            sb.AppendLine("Please read the license before downloading and using!");
             sb.AppendLine("</p>");
 
             rootNode.InnerHtml = sb.ToString();
