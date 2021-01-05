@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using NLog;
 using SiteBuilder.SiteData;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
@@ -22,13 +23,26 @@ namespace TestSandBox
 
             EVPath.RegVar("APPDIR", Directory.GetCurrentDirectory());
 
-            TstReleaseItemsHandler();
+            TstGetEnvironmentVariables();
+            //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
             //TstBuild();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstGetEnvironmentVariables()
+        {
+            _logger.Info("Begin");
+
+            foreach(DictionaryEntry varName in Environment.GetEnvironmentVariables())
+            {
+                _logger.Info($"varName.Key = '{varName.Key}'; varName.Value = '{varName.Value}'");
+            }
+
+            _logger.Info("End");
         }
 
         private static void TstReleaseItemsHandler()
