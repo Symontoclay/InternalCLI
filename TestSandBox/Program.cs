@@ -37,7 +37,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            foreach(DictionaryEntry varName in Environment.GetEnvironmentVariables())
+            var appName = AppDomain.CurrentDomain.FriendlyName;
+
+            _logger.Info($"appName = {appName}");
+
+            foreach (DictionaryEntry varName in Environment.GetEnvironmentVariables())
             {
                 _logger.Info($"varName.Key = '{varName.Key}'; varName.Value = '{varName.Value}'");
             }
