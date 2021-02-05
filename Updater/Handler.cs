@@ -36,7 +36,7 @@ namespace Updater
             _logger.Info($"_smallLicenceFile = {_smallLicenceFile}");
 #endif
 
-            ChangeProjects();
+            //ChangeProjects();
             AddCopyrightHeaderToCSharpFiles();
 
 #if DEBUG
