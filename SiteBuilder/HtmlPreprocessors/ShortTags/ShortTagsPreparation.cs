@@ -389,7 +389,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             var sb = new StringBuilder();
 
             sb.AppendLine("<p>");
-            sb.AppendLine("SymOntoClay is released under <a href='http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html'>LGPL-2.1 License</a>.");
+            sb.AppendLine("SymOntoClay is released under <a href='https://github.com/Symontoclay/SymOntoClay/blob/master/LICENSE'>MIT License</a>.");
             sb.AppendLine("</p>");
             sb.AppendLine("<p>");
             sb.AppendLine("Please read the license before downloading and using!");
