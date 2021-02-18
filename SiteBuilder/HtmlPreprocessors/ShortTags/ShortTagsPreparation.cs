@@ -227,6 +227,31 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                         }
                         break;
 
+                    case "GitHub":
+                    case "Github":
+                    case "github":
+                    case "git":
+                        {
+                            var wikiNode = doc.CreateElement("i");
+                            parentNode.ReplaceChild(wikiNode, rootNode);
+                            wikiNode.AddClass("fab fa-github");
+                            wikiNode.SetAttributeValue("title", "Facebook");
+                        }
+                        break;
+
+                    case "LinkedIn":
+                    case "Linkedin":
+                    case "linkedin":
+                    case "In":
+                    case "in":
+                        {
+                            var wikiNode = doc.CreateElement("i");
+                            parentNode.ReplaceChild(wikiNode, rootNode);
+                            wikiNode.AddClass("fab fa-linkedin");
+                            wikiNode.SetAttributeValue("title", "Facebook");
+                        }
+                        break;
+
                     default:
                         rootNode.Remove();
                         break;
