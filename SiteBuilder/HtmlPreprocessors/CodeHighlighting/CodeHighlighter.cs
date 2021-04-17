@@ -30,7 +30,8 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
         private static List<string> _symOntoClayKeyWordsList = new List<string>() 
         {
-            "app","class", "world", "is", "on",  "select", "insert", "not", "use"//, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+            "app","class", "world", "is", "on",  "select", "insert", "not", "use", "linvar", "for", "range", "terms", "constraints", "inheritance",
+            "relation", "inh", "rel", "null"//, "", "", "", "", "", "", "", "", ""
         };
 
         private enum KindOfPosition
