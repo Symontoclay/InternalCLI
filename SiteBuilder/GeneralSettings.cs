@@ -152,7 +152,7 @@ namespace SiteBuilder
             //_logger.Info($"SiteSettings = {SiteSettings}");
 #endif
 
-            var rootSiteElement = SiteElementInfoReader.Read(SourcePath, DestPath, SiteHref, IgnoredDirsList, new List<string>() { ".gitignore", "roadMap.json", "site.site" });
+            var rootSiteElement = SiteElementInfoReader.Read(SourcePath, DestPath, SiteHref, IgnoredDirsList, new List<string>() { /*".gitignore",*/ "roadMap.json", "site.site" });
 
 #if DEBUG
             //_logger.Info($"rootSiteElement = {rootSiteElement}");
@@ -199,7 +199,7 @@ namespace SiteBuilder
             }
 
 #if DEBUG
-            _logger.Info($"ReleaseItemsList = {ReleaseItemsList.WriteListToString()}");
+            //_logger.Info($"ReleaseItemsList = {ReleaseItemsList.WriteListToString()}");
 #endif
 
             ReadCSharpUserApiXMLDocsList();
