@@ -68,7 +68,7 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
             var parentNode = rootNode.ParentNode;
             parentNode.ReplaceChild(newRootNode, rootNode);
 
-            var prevReleasesList = GeneralSettings.ReleaseItemsList.Where(p => !p.IsLatest).OrderBy(p => p.Date).ToList();
+            var prevReleasesList = GeneralSettings.ReleaseItemsList.Where(p => !p.IsLatest).OrderByDescending(p => p.Date).ToList();
 
             if(!prevReleasesList.Any())
             {
