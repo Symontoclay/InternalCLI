@@ -28,10 +28,17 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             "select", "set", "unmanaged", "value", "var", "when", "where", "yield"
         };
 
+        private static List<string> _cSharpLargeSpaceMarksList = new List<string>();
+
         private static List<string> _symOntoClayKeyWordsList = new List<string>() 
         {
             "app","class", "world", "is", "on",  "select", "insert", "not", "use", "linvar", "for", "range", "terms", "constraints", "inheritance",
             "relation", "inh", "rel", "null"//, "", "", "", "", "", "", "", "", ""
+        };
+
+        private static List<string> _symOntoClayLargeSpaceMarksList = new List<string>()
+        {
+            "constraints:", "terms:"
         };
 
         private enum KindOfPosition
@@ -195,7 +202,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             var normalizedCode = NormalizeCodeForClipboard(codeList, kindOfLng);
 
 #if DEBUG
-            //_logger.Info($"normalizedCode = {normalizedCode}");
+             //_logger.Info($"normalizedCode = {normalizedCode}");
 #endif
 
             var base64Array = Encoding.UTF8.GetBytes(normalizedCode);
@@ -247,6 +254,13 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             CreateCodeLinesNodes(codeList, newCodeNode, doc, kindOfLng);
         }
 
+        private enum LargeSpaceState
+        {
+            None,
+            InLargeSpaceMark,
+            AfterLargeSpaceMark
+        }
+
         private static string NormalizeCodeForClipboard(List<string> codeList, KindOfLng kindOfLng)
         {
 #if DEBUG
@@ -257,6 +271,8 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
             uint n = 0;
 
+            var largeSpaceState = LargeSpaceState.None;
+
             var resultSb = new StringBuilder();
 
             foreach (var codeLineItem in codeList)
@@ -266,6 +282,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 #if DEBUG
                 //_logger.Info($"codeLine = '{codeLine}'");
                 //_logger.Info($"n = {n}");
+                //_logger.Info($"largeSpaceState = {largeSpaceState}");
                 //_logger.Info($"startInMultiLineComment = {startInMultiLineComment}");
 #endif
 
@@ -441,18 +458,6 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     }
                 }
 
-#if DEBUG
-                //_logger.Info($"n = {n}");
-                //_logger.Info($"newN = {newN}");
-#endif
-
-                int diff = (int)newN - (int)n;
-
-#if DEBUG
-                //_logger.Info($"diff = {diff}");
-                //_logger.Info($"startWithComment = {startWithComment}");
-#endif
-
                 string spaces;
 
                 if (codeLine.StartsWith("#") && !startWithComment && kindOfLng == KindOfLng.CSharp)
@@ -461,9 +466,87 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 }
                 else
                 {
+#if DEBUG
+                    //_logger.Info($"LLLLL----------------");
+                    //_logger.Info($"codeLine = '{codeLine}'");
+                    //_logger.Info($"IsLargeSpaceMark(codeLine, kindOfLng) = {IsLargeSpaceMark(codeLine, kindOfLng)}");
+                    //_logger.Info($"largeSpaceState (before) = {largeSpaceState}");
+#endif
+
+#if DEBUG
+                    //_logger.Info($"n = {n}");
+                    //_logger.Info($"newN = {newN}");
+#endif
+
+                    switch(largeSpaceState)
+                    {
+                        case LargeSpaceState.None:
+                            if(IsLargeSpaceMark(codeLine, kindOfLng) && !startWithComment)
+                            {
+                                largeSpaceState = LargeSpaceState.InLargeSpaceMark;
+                            }
+                            break;
+
+                        case LargeSpaceState.InLargeSpaceMark:
+                            if(IsLargeSpaceMark(codeLine, kindOfLng) && !startWithComment)
+                            {
+                                break;
+                            }
+                            newN++;
+                            largeSpaceState = LargeSpaceState.AfterLargeSpaceMark;
+                            break;
+
+                        case LargeSpaceState.AfterLargeSpaceMark:
+                            if(!startWithComment)
+                            {
+                                if (IsLargeSpaceMark(codeLine, kindOfLng))
+                                {
+                                    newN--;
+                                    largeSpaceState = LargeSpaceState.InLargeSpaceMark;
+                                }
+
+                                switch (codeLine)
+                                {
+                                    case "}":
+                                        largeSpaceState = LargeSpaceState.None;
+                                        newN--;
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+                            }
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(largeSpaceState), largeSpaceState, null);
+                    }
+
+#if DEBUG
+                    //_logger.Info($"largeSpaceState (after) = {largeSpaceState}");
+                    //_logger.Info($"newN (after) = {newN}");
+#endif
+
+                    int diff = (int)newN - (int)n;
+
+#if DEBUG
+                    //_logger.Info($"diff = {diff}");
+                    //_logger.Info($"startWithComment = {startWithComment}");
+#endif
+
                     if (diff > 0)
                     {
-                        spaces = DisplayHelper.Spaces(4 * n);
+                        switch(codeLine)
+                        {
+                            case "{":
+                                spaces = DisplayHelper.Spaces(4 * n);
+                                break;
+
+                           default:
+                                spaces = DisplayHelper.Spaces(4 * newN);
+                                break;
+                        }
+                        
                     }
                     else
                     {
@@ -478,17 +561,42 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     }
                 }
 
+                var resultStr = $"{spaces}{sb}";
+
 #if DEBUG
                 //_logger.Info($"spaces = '{spaces}'");
-                //_logger.Info($"'{spaces}{sb}'");
+                //_logger.Info($"resultStr = '{resultStr}'");
 #endif
 
-                resultSb.AppendLine($"{spaces}{sb}");
+                resultSb.AppendLine(resultStr);
 
+#if DEBUG
+                //_logger.Info($"resultSb = '{resultSb}'");
+#endif
                 n = newN;
             }
 
             return resultSb.ToString();
+        }
+
+        private static bool IsLargeSpaceMark(string codeLine, KindOfLng kindOfLng)
+        {
+            return GetLargeSpaceMarksList(kindOfLng).Any(p => p == codeLine);
+        }
+
+        private static List<string> GetLargeSpaceMarksList(KindOfLng kindOfLng)
+        {
+            switch(kindOfLng)
+            {
+                case KindOfLng.CSharp:
+                    return _cSharpLargeSpaceMarksList;
+
+                case KindOfLng.SymOntoClay:
+                    return _symOntoClayLargeSpaceMarksList;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kindOfLng), kindOfLng, null);
+            }
         }
 
         private static void ProcessCodeLineChankInCodeNormalizing(StringBuilder sb, string chank, bool isComment, KindOfLng kindOfLng, ref uint n)
@@ -725,6 +833,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             var startInMultiLineComment = false;
 
             uint n = 0;
+            var largeSpaceState = LargeSpaceState.None;
 
             foreach (var codeLineItem in codeList)
             {
@@ -912,18 +1021,6 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     }
                 }
 
-#if DEBUG
-                //_logger.Info($"n = {n}");
-                //_logger.Info($"newN = {newN}");
-#endif
-
-                int diff = (int)newN - (int)n;
-
-#if DEBUG
-                //_logger.Info($"diff = {diff}");
-                //_logger.Info($"startWithComment = {startWithComment}");
-#endif
-
                 string spaces;
 
                 if (codeLine.StartsWith("#") && !startWithComment && kindOfLng == KindOfLng.CSharp)
@@ -932,9 +1029,86 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 }
                 else
                 {
+#if DEBUG
+                    //_logger.Info($"LLLLL----------------");
+                    //_logger.Info($"codeLine = '{codeLine}'");
+                    //_logger.Info($"IsLargeSpaceMark(codeLine, kindOfLng) = {IsLargeSpaceMark(codeLine, kindOfLng)}");
+                    //_logger.Info($"largeSpaceState (before) = {largeSpaceState}");
+#endif
+
+#if DEBUG
+                    //_logger.Info($"n = {n}");
+                    //_logger.Info($"newN = {newN}");
+#endif
+
+                    switch (largeSpaceState)
+                    {
+                        case LargeSpaceState.None:
+                            if (IsLargeSpaceMark(codeLine, kindOfLng) && !startWithComment)
+                            {
+                                largeSpaceState = LargeSpaceState.InLargeSpaceMark;
+                            }
+                            break;
+
+                        case LargeSpaceState.InLargeSpaceMark:
+                            if (IsLargeSpaceMark(codeLine, kindOfLng) && !startWithComment)
+                            {
+                                break;
+                            }
+                            newN++;
+                            largeSpaceState = LargeSpaceState.AfterLargeSpaceMark;
+                            break;
+
+                        case LargeSpaceState.AfterLargeSpaceMark:
+                            if (!startWithComment)
+                            {
+                                if (IsLargeSpaceMark(codeLine, kindOfLng))
+                                {
+                                    newN--;
+                                    largeSpaceState = LargeSpaceState.InLargeSpaceMark;
+                                }
+
+                                switch (codeLine)
+                                {
+                                    case "}":
+                                        largeSpaceState = LargeSpaceState.None;
+                                        newN--;
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+                            }
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(largeSpaceState), largeSpaceState, null);
+                    }
+
+#if DEBUG
+                    //_logger.Info($"largeSpaceState (after) = {largeSpaceState}");
+                    //_logger.Info($"newN (after) = {newN}");
+#endif
+
+                    int diff = (int)newN - (int)n;
+
+#if DEBUG
+                    //_logger.Info($"diff = {diff}");
+                    //_logger.Info($"startWithComment = {startWithComment}");
+#endif
+
                     if (diff > 0)
                     {
-                        spaces = Spaces(4 * n);
+                        switch (codeLine)
+                        {
+                            case "{":
+                                spaces = Spaces(4 * n);
+                                break;
+
+                            default:
+                                spaces = Spaces(4 * newN);
+                                break;
+                        }
                     }
                     else
                     {
@@ -949,12 +1123,14 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     }
                 }
 
+                var resultStr = $"{spaces}{sb}";
+
 #if DEBUG
                 //_logger.Info($"spaces = '{spaces}'");
-                //_logger.Info($"'{spaces}{sb}'");
+                //_logger.Info($"resultStr = '{resultStr}'");
 #endif
 
-                codeLineNode.InnerHtml = $"{spaces}{sb}";
+                codeLineNode.InnerHtml = resultStr;
 
                 n = newN;
             }
