@@ -185,6 +185,21 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 return;
             }
 
+            if(rootNode.Name == "work_in_progress")
+            {
+                var parentNode = rootNode.ParentNode;
+
+                var node = doc.CreateElement("p");
+                parentNode.ReplaceChild(node, rootNode);
+
+                var imgNode = doc.CreateElement("img");
+                node.AppendChild(imgNode);
+
+                imgNode.SetAttributeValue("src", "/assets/work-in-progress.png");
+                imgNode.SetAttributeValue("alt", "Work in progress");
+
+                return;
+            }
 
             if (rootNode.Name == "ico")
             {
