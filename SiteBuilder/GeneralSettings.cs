@@ -21,37 +21,6 @@ namespace SiteBuilder
 
         static GeneralSettings()
         {
-            var useLocalhostStr = ConfigurationManager.AppSettings["useLocalhost"];
-
-            if(!string.IsNullOrWhiteSpace(useLocalhostStr))
-            {
-                UseLocalhost = bool.Parse(useLocalhostStr);
-            }
-
-#if DEBUG
-            //_logger.Info($"UseLocalhost = {UseLocalhost}");
-#endif
-
-
-            SiteName = ConfigurationManager.AppSettings["siteName"];
-
-#if DEBUG
-            //_logger.Info($"SiteName = {SiteName}");
-#endif
-
-            if(UseLocalhost)
-            {
-                SiteHref = "http://localhost";
-            }
-            else
-            {
-                SiteHref = $"https://{SiteName}";
-            }
-
-#if DEBUG
-            //_logger.Info($"SiteHref = {SiteHref}");
-#endif
-
             var rootPath = ConfigAppSettingsHelper.GetExistingDirectoryName("rootPath");
 
 #if DEBUG
@@ -59,6 +28,46 @@ namespace SiteBuilder
 #endif
 
             EVPath.RegVar("SITE_ROOT_PATH", rootPath);
+
+            var kindOfTargetUrlStr = ConfigurationManager.AppSettings["kindOfTargetUrl"];
+
+#if DEBUG
+            //_logger.Info($"GeneralSettings() kindOfTargetUrlStr = {kindOfTargetUrlStr}");
+#endif
+
+            KindOfTargetUrl = ParseKindOfTargetUrl(kindOfTargetUrlStr);
+
+#if DEBUG
+            //_logger.Info($"GeneralSettings() KindOfTargetUrl = {KindOfTargetUrl}");
+#endif
+
+            SiteName = ConfigurationManager.AppSettings["siteName"];
+
+#if DEBUG
+            //_logger.Info($"SiteName = {SiteName}");
+#endif
+
+            switch(KindOfTargetUrl)
+            {
+                case KindOfTargetUrl.Domain:
+                    SiteHref = $"https://{SiteName}";
+                    break;
+
+                case KindOfTargetUrl.Localhost:
+                    SiteHref = "http://localhost";
+                    break;
+
+                case KindOfTargetUrl.Path:
+                    SiteHref = rootPath;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(KindOfTargetUrl), KindOfTargetUrl, null);
+            }
+
+#if DEBUG
+            //_logger.Info($"SiteHref = {SiteHref}");
+#endif
 
             SourcePath = EVPath.Normalize(ConfigurationManager.AppSettings["sourcePath"]);
 
@@ -132,7 +141,7 @@ namespace SiteBuilder
 
         public static bool UseMinification { get; set; } = false;
 
-        public static bool UseLocalhost { get; set; }
+        public static KindOfTargetUrl KindOfTargetUrl { get; set; }
 
         public static List<SiteElementInfo> SiteElementsList { get; private set; }
         public static SiteElementInfo RootCSharpUserApiXMLDocSiteElement { get; private set; }
@@ -141,6 +150,27 @@ namespace SiteBuilder
         public static List<ReleaseItem> ReleaseItemsList { get; private set; } = new List<ReleaseItem>();
         public static List<PackageCard> CSharpUserApiXMLDocsList { get; private set; } = new List<PackageCard>();
         public static Dictionary<string, ICodeDocument> CSharpUserApiXMLDocsCodeDocumentDict = new Dictionary<string, ICodeDocument>();
+
+        private static KindOfTargetUrl ParseKindOfTargetUrl(string value)
+        {
+#if DEBUG
+            //_logger.Info($"value = {value}");
+#endif
+
+            if(string.IsNullOrWhiteSpace(value))
+            {
+                return KindOfTargetUrl.Domain;
+            }
+
+            var firstChar = value[0];
+
+            if (char.IsLower(firstChar))
+            {
+                value = value.Remove(0, 1).Insert(0, char.ToUpper(firstChar).ToString());
+            }
+
+            return (KindOfTargetUrl)Enum.Parse(typeof(KindOfTargetUrl), value);
+        }
 
         private static void ReadSiteSettings()
         {

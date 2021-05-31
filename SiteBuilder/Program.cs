@@ -11,12 +11,20 @@ namespace SiteBuilder
 
         static void Main(string[] args)
         {
+#if DEBUG
+            _logger.Info("Begin");
+#endif
+
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             EVPath.RegVar("APPDIR", Directory.GetCurrentDirectory());
 
             var siteBuilder = new SiteBuilder();
             siteBuilder.Run();
+
+#if DEBUG
+            _logger.Info("End");
+#endif
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

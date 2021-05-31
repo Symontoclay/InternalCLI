@@ -21,7 +21,7 @@ namespace SiteBuilder
         public void Run()
         {
 #if DEBUG
-            _logger.Info("Begin");
+            //_logger.Info("Begin");
 #endif
 
             _hrefsList = new List<string>();
@@ -40,7 +40,7 @@ namespace SiteBuilder
             GenerateSiteMap();
 
 #if DEBUG
-            _logger.Info("End");
+            //_logger.Info("End");
 #endif
         }
 

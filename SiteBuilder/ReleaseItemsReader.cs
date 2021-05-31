@@ -49,13 +49,13 @@ namespace SiteBuilder
             var maxDate = items.Max(p => p.Date);
 
 #if DEBUG
-            _logger.Info($"maxDate = {maxDate}");
+            //_logger.Info($"maxDate = {maxDate}");
 #endif
 
             var latestItem = items.SingleOrDefault(p => p.Date == maxDate);
 
 #if DEBUG
-            _logger.Info($"latestItem = {latestItem}");
+            //_logger.Info($"latestItem = {latestItem}");
 #endif
 
             latestItem.IsLatest = true;
