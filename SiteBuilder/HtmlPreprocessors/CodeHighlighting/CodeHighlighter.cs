@@ -33,7 +33,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         private static List<string> _symOntoClayKeyWordsList = new List<string>() 
         {
             "app","class", "world", "is", "on",  "select", "insert", "not", "use", "linvar", "for", "range", "terms", "constraints", "inheritance",
-            "relation", "inh", "rel", "null", "fun", "string", "fuzzy", "number"//, "", "", "", "", ""
+            "relation", "inh", "rel", "null", "fun", "string", "fuzzy", "number", "error", "try", "catch", "where", "else", "ensure"
         };
 
         private static List<string> _symOntoClayLargeSpaceMarksList = new List<string>()
