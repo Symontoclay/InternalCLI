@@ -19,3 +19,7 @@ Deployment/bin
 /CSharpUtils/obj
 PageCreator/bin
 PageCreator/obj
+/CoreToAsset/bin
+/CoreToAsset/obj
+/CoreToCLIFolder/bin
+/CoreToCLIFolder/obj
