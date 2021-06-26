@@ -49,6 +49,22 @@ namespace Deployment.Tasks
             _validationMessages.Add(validationMessage);
         }
 
+        protected void ValidateOptionsAsNonNull(object options)
+        {
+            if(options == null)
+            {
+                AddValidationMessage("The options can not be null!");
+            }
+        }
+
+        protected void ValidateDirectory(string optionName, string optionValue)
+        {
+            if (string.IsNullOrWhiteSpace(optionValue))
+            {
+                AddValidationMessage($"The {optionName} can not be null or empty!");
+            }
+        }
+
         protected virtual void CheckValidationOptions()
         {
             if(_validationMessages.Any())

@@ -23,10 +23,8 @@ namespace Deployment.Tasks.DirectoriesTasks.CreateDirectory
         /// <inheritdoc/>
         protected override void OnValidateOptions()
         {
-            if (string.IsNullOrWhiteSpace(_options?.TargetDir))
-            {
-                AddValidationMessage("The TargetDir can not be null or empty!");
-            }
+            ValidateOptionsAsNonNull(_options);
+            ValidateDirectory("TargetDir", _options.TargetDir);
         }
 
         /// <inheritdoc/>
