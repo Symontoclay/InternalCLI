@@ -1,5 +1,6 @@
 ﻿using CommonUtils.DebugHelpers;
 using Deployment;
+using Deployment.Tasks;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using NLog;
@@ -20,28 +21,18 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentTasksList = new List<IDeploymentTask>();
+            var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentTasksList.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions() { TargetDir = "a" }));
-            deploymentTasksList.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
+            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions() { TargetDir = "a" }));
+            deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
             {
                 SourceDir = @"c:\Users\Acer\source\repos\InternalCLI\CSharpUtils\",
                 DestDir = Path.Combine(Directory.GetCurrentDirectory(), "a")
             })); ;
 
-            _logger.Info($"deploymentTasksList = {deploymentTasksList.WriteListToString()}");
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
 
-            foreach(var deploymentTask in deploymentTasksList)
-            {
-                deploymentTask.ValidateOptions();
-            }
-
-            _logger.Info($"deploymentTasksList (2) = {deploymentTasksList.WriteListToString()}");
-
-            foreach (var deploymentTask in deploymentTasksList)
-            {
-                deploymentTask.Run();
-            }
+            deploymentPipeline.Run();
 
             //_logger.Info($" = {}");
 

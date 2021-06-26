@@ -1,5 +1,6 @@
 ﻿using CollectionsHelpers.CollectionsHelpers;
 using CommonUtils.DebugHelpers;
+using Deployment.Tasks.DirectoriesTasks.CopyTargetFiles;
 using Newtonsoft.Json;
 using NLog;
 using System;
@@ -27,7 +28,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
         {
             ValidateOptionsAsNonNull(_options);
             ValidateDirectory("SourceDir", _options.SourceDir);
-            ValidateDirectory("_options.DestDir", _options.DestDir);
+            ValidateDirectory("DestDir", _options.DestDir);
         }
 
         /// <inheritdoc/>
@@ -41,7 +42,19 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
 
             _logger.Info($"sourceFullFileNamesList = {JsonConvert.SerializeObject(sourceFullFileNamesList, Formatting.Indented)}");
             
-            throw new NotImplementedException();
+            if(!sourceFullFileNamesList.Any())
+            {
+                return;
+            }
+
+            Exec(new CopyTargetFilesTask(new CopyTargetFilesTaskOptions()
+            {
+                DestDir = _options.DestDir,
+                SaveSubDirs = _options.SaveSubDirs,
+                TargetFiles = sourceFullFileNamesList
+            }));
+
+            _logger.Info("End");
         }
 
         private void EnumerateFileNames(string directoryName, List<string> sourceFullFileNamesList)

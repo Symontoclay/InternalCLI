@@ -1,10 +1,10 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CollectionsHelpers.CollectionsHelpers;
+using CommonUtils.DebugHelpers;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks
 {
@@ -65,6 +65,14 @@ namespace Deployment.Tasks
             }
         }
 
+        protected void ValidateList<T>(string optionName, IEnumerable<T> list)
+        {
+            if(list.IsNullOrEmpty())
+            {
+                AddValidationMessage($"The {optionName} can not be null or empty!");
+            }
+        }
+
         protected virtual void CheckValidationOptions()
         {
             if(_validationMessages.Any())
@@ -107,6 +115,7 @@ namespace Deployment.Tasks
             {
                 if (!_isValid.Value)
                 {
+                    sb.AppendLine();
                     sb.AppendLine($"{spaces}The task is invalid:");
                     foreach (var validationMessage in _validationMessages)
                     {
@@ -120,6 +129,11 @@ namespace Deployment.Tasks
             }
 
             return sb.ToString();
+        }
+
+        protected void Exec(IDeploymentTask deploymentTask)
+        {
+            throw new NotImplementedException();
         }
     }
 }
