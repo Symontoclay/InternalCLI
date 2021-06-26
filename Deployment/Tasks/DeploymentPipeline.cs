@@ -58,6 +58,7 @@ namespace Deployment.Tasks
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
+            sb.PrintObjListProp(n, nameof(_deploymentTasksList), _deploymentTasksList);
             return sb.ToString();
         }
     }

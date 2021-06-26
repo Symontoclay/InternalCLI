@@ -1,8 +1,10 @@
 ﻿using CollectionsHelpers.CollectionsHelpers;
 using CommonUtils.DebugHelpers;
+using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,14 +13,14 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
 {
     public class CopyTargetFilesTask : BaseDeploymentTask
     {
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
         public CopyTargetFilesTask(CopyTargetFilesTaskOptions options)
         {
             _options = options;
+            _targetFiles = options?.TargetFiles.Select(p => p.Replace("\\", "/").Trim()).ToList();
         }
 
         private readonly CopyTargetFilesTaskOptions _options;
+        private List<string> _targetFiles;
 
         /// <inheritdoc/>
         protected override void OnValidateOptions()
@@ -31,7 +33,86 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            _logger.Info("Begin");
+            if(_options.SaveSubDirs)
+            {
+                CopyWithSaveSubDirs();
+            }
+            else
+            {
+                CopyWithoutSaveSubDirs();
+            }
+        }
+
+        private void CopyWithSaveSubDirs()
+        {
+            var baseSourceDir = _options.BaseSourceDir;
+
+            if (string.IsNullOrWhiteSpace(baseSourceDir))
+            {
+                baseSourceDir = CalculateBbaseSourceDir();
+            }
+
+            foreach (var fileName in _targetFiles)
+            {
+                var targetFileName = fileName.Replace(baseSourceDir, _options.DestDir);
+
+                var fileInfo = new FileInfo(targetFileName);
+
+                fileInfo.Directory.Create();
+
+                File.Copy(fileName, targetFileName, true);
+            }
+        }
+
+        private void CopyWithoutSaveSubDirs()
+        {
+            foreach (var fileName in _targetFiles)
+            {
+                var fileInfo = new FileInfo(fileName);
+                var targetFileName = fileName.Replace(fileInfo.DirectoryName.Replace("\\", "/"), _options.DestDir);
+                File.Copy(fileName, targetFileName, true);
+            }
+        }
+
+        private string CalculateBbaseSourceDir()
+        {
+            var firstItem = _targetFiles.First();
+
+            var directoryInfo = new FileInfo(firstItem).Directory;
+
+            var rootName = directoryInfo.Root.FullName.Replace("\\", "/");
+
+            if (!_targetFiles.All(p => p.StartsWith(rootName)))
+            {
+                return string.Empty;
+            }
+
+            var result = string.Empty;
+
+            var targetFilesWithoutRoot = _targetFiles.Select(p => p.Replace(rootName, string.Empty).Trim()).ToList();
+
+            firstItem = targetFilesWithoutRoot.First();
+
+            var pos = 0;
+
+            while (true)
+            {
+                pos = firstItem.IndexOf("/", pos + 1);
+
+                if(pos == -1)
+                {
+                    return Path.Combine(rootName, result);
+                }
+
+                var fragment = firstItem.Substring(0, pos).Trim();
+
+                if(!targetFilesWithoutRoot.All(p => p.StartsWith(fragment)))
+                {
+                    return Path.Combine(rootName, result);
+                }
+
+                result = fragment;
+            }
 
             throw new NotImplementedException();
         }
@@ -45,27 +126,24 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
 
             var sb = new StringBuilder();
 
-            sb.Append($"{spaces}Copies target files to directory {_options.DestDir}.");
+            sb.AppendLine($"{spaces}Copies target files to directory {_options.DestDir}.");
             if (_options.SaveSubDirs)
             {
-                sb.Append(" Saves subdirectories' structure.");
+                sb.AppendLine($"{spaces}Saves subdirectories' structure.");
             }
             else
             {
-                sb.Append(" All fles will be put to dest directory without saving subdirectories' structure.");
+                sb.AppendLine($"{spaces}All fles will be put to dest directory without saving subdirectories' structure.");
             }
             if (!_options.TargetFiles.IsNullOrEmpty())
             {
-                sb.AppendLine();
                 sb.AppendLine($"{spaces}The target copied files:");
                 foreach (var targetFile in _options.TargetFiles)
                 {
                     sb.AppendLine($"{nextSpaces}{targetFile}");
                 }
             }
-            sb.AppendLine();
             sb.Append(PrintValidation(n));
-            sb.AppendLine();
 
             return sb.ToString();
         }

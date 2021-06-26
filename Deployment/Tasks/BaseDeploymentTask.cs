@@ -133,7 +133,11 @@ namespace Deployment.Tasks
 
         protected void Exec(IDeploymentTask deploymentTask)
         {
-            throw new NotImplementedException();
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(deploymentTask);
+
+            deploymentPipeline.Run();
         }
     }
 }

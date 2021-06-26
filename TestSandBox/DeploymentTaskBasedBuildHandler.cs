@@ -27,8 +27,9 @@ namespace TestSandBox
             deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
             {
                 SourceDir = @"c:\Users\Acer\source\repos\InternalCLI\CSharpUtils\",
-                DestDir = Path.Combine(Directory.GetCurrentDirectory(), "a")
-            })); ;
+                DestDir = Path.Combine(Directory.GetCurrentDirectory(), "a"),
+                SaveSubDirs = false
+            }));
 
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");
 

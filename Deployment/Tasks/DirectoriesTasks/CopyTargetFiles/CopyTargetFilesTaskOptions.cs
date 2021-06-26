@@ -12,6 +12,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
         public string DestDir { get; set; }
         public bool SaveSubDirs { get; set; } = true;
         public List<string> TargetFiles { get; set; }
+        public string BaseSourceDir { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -33,6 +34,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
 
             sb.AppendLine($"{spaces}{nameof(DestDir)} = {DestDir}");
             sb.AppendLine($"{spaces}{nameof(SaveSubDirs)} = {SaveSubDirs}");
+            sb.AppendLine($"{spaces}{nameof(BaseSourceDir)} = {BaseSourceDir}");
             sb.PrintPODList(n, nameof(TargetFiles), TargetFiles);
 
             return sb.ToString();

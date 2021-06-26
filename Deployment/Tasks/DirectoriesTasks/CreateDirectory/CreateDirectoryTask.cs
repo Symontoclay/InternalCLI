@@ -52,18 +52,16 @@ namespace Deployment.Tasks.DirectoriesTasks.CreateDirectory
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.Append($"{spaces}Creates directory '{_options.TargetDir}' if It needs.");
+            sb.AppendLine($"{spaces}Creates directory '{_options.TargetDir}' if It needs.");
             if(_options.SkipExistingFilesInTargetDir)
             {
-                sb.Append(" Skips existing files in the directory.");
+                sb.AppendLine($"{spaces}Skips existing files in the directory.");
             }
             else
             {
-                sb.Append(" Removes existing files in the directory.");
+                sb.AppendLine($"{spaces}Removes existing files in the directory.");
             }
-            sb.AppendLine();
             sb.Append(PrintValidation(n));
-            sb.AppendLine();
 
             return sb.ToString();
         }
