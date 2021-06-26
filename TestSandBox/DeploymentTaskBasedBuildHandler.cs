@@ -23,14 +23,20 @@ namespace TestSandBox
 
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions() { TargetDir = "a" }));
+            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions() { TargetDir = "a", SkipExistingFilesInTargetDir = false }));
             deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
             {
                 SourceDir = @"c:\Users\Acer\source\repos\InternalCLI\CSharpUtils\",
                 DestDir = Path.Combine(Directory.GetCurrentDirectory(), "a"),
-                SaveSubDirs = false
+                SaveSubDirs = false,
+                OnlySubDirs = new List<string>() { "bin" },
+                ExceptSubDirs = new List<string>() { "Debug/net5.0" },
+                OnlyFileExts = new List<string>() { "dll", "pdb", "json", "cs" },
+                ExceptFileExts = new List<string>() { "json" },
+                FileNameShouldContain = new List<string>() { "CS" },
+                FileNameShouldNotContain = new List<string>() { "utils" }
             }));
-
+            
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");
 
             deploymentPipeline.Run();

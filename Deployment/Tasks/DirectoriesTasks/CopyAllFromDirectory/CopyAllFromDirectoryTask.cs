@@ -20,6 +20,13 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
         }
 
         private readonly CopyAllFromDirectoryTaskOptions _options;
+        private string _sourceDir;
+        private List<string> _onlySubDirs;
+        private List<string> _exceptSubDirs;
+        private List<string> _onlyFileExts;
+        private List<string> _exceptFileExts;
+        private List<string> _fileNameShouldContain;
+        private List<string> _fileNameShouldNotContain;
 
         /// <inheritdoc/>
         protected override void OnValidateOptions()
@@ -32,9 +39,18 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
         /// <inheritdoc/>
         protected override void OnRun()
         {
+            _sourceDir = _options.SourceDir.Replace("\\", "/");
+
+            _onlySubDirs = _options.OnlySubDirs?.Select(p => p.Replace("\\", "/").ToLower().Trim()).ToList();
+            _exceptSubDirs = _options.ExceptSubDirs?.Select(p => p.Replace("\\", "/").ToLower().Trim()).ToList();
+            _onlyFileExts = _options.OnlyFileExts?.Select(p => p.Replace("\\", "/").ToLower().Trim()).ToList();
+            _exceptFileExts = _options.ExceptFileExts?.Select(p => p.Replace("\\", "/").ToLower().Trim()).ToList();
+            _fileNameShouldContain = _options.FileNameShouldContain?.Select(p => p.Replace("\\", "/").ToLower().Trim()).ToList();
+            _fileNameShouldNotContain = _options.FileNameShouldNotContain?.Select(p => p.Replace("\\", "/").ToLower().Trim()).ToList();
+
             var sourceFullFileNamesList = new List<string>();
 
-            EnumerateFileNames(_options.SourceDir, sourceFullFileNamesList);
+            EnumerateFileNames(_sourceDir, sourceFullFileNamesList);
             
             if(!sourceFullFileNamesList.Any())
             {
@@ -53,13 +69,24 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
         {
             foreach (var subDirectoryName in Directory.GetDirectories(directoryName))
             {
-                if (!_options.OnlySubDirs.IsNullOrEmpty())
+                if(!_onlySubDirs.IsNullOrEmpty() || !_exceptSubDirs.IsNullOrEmpty())
                 {
-                    throw new NotImplementedException();
-                }
-                if (!_options.ExceptSubDirs.IsNullOrEmpty())
-                {
-                    throw new NotImplementedException();
+                    var pureDir = subDirectoryName.Replace("\\", "/").Replace(_sourceDir, string.Empty).ToLower();
+
+                    if (!_onlySubDirs.IsNullOrEmpty())
+                    {
+                        if(!_onlySubDirs.Any(p => pureDir.Contains(p)))
+                        {
+                            continue;
+                        }
+                    }
+                    if (!_exceptSubDirs.IsNullOrEmpty())
+                    {
+                        if (_exceptSubDirs.Any(p => pureDir.Contains(p)))
+                        {
+                            continue;
+                        }
+                    }
                 }
 
                 EnumerateFileNames(subDirectoryName, sourceFullFileNamesList);
@@ -67,21 +94,46 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
 
             foreach(var fileName in Directory.GetFiles(directoryName))
             {
-                if (!_options.OnlyFileExts.IsNullOrEmpty())
+                if(!_onlyFileExts.IsNullOrEmpty() || !_exceptFileExts.IsNullOrEmpty() || !_fileNameShouldContain.IsNullOrEmpty() || !_fileNameShouldNotContain.IsNullOrEmpty())
                 {
-                    throw new NotImplementedException();
-                }
-                if (!_options.ExceptFileExts.IsNullOrEmpty())
-                {
-                    throw new NotImplementedException();
-                }
-                if (!_options.FileNameShouldContain.IsNullOrEmpty())
-                {
-                    throw new NotImplementedException();
-                }
-                if (!_options.FileNameShouldNotContain.IsNullOrEmpty())
-                {
-                    throw new NotImplementedException();
+                    var fileInfo = new FileInfo(fileName);
+
+                    var fileInfoName = fileInfo.Name;
+
+                    var pureFileName = Path.Combine(fileInfo.DirectoryName, fileInfoName.Substring(0, fileInfoName.Length - fileInfo.Extension.Length)).Replace("\\", "/").Replace(_sourceDir, string.Empty).ToLower();
+
+                    var ext = fileInfo.Extension.Substring(1);
+
+                    if (!_onlyFileExts.IsNullOrEmpty())
+                    {
+                        if (!_onlyFileExts.Any(p => p == ext))
+                        {
+                            continue;
+                        }
+                    }
+                    if (!_exceptFileExts.IsNullOrEmpty())
+                    {
+                        if (_exceptFileExts.Any(p => p == ext))
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (!_fileNameShouldContain.IsNullOrEmpty())
+                    {
+                        if(!_fileNameShouldContain.Any(p => pureFileName.Contains(p)))
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (!_fileNameShouldNotContain.IsNullOrEmpty())
+                    {
+                        if(_fileNameShouldNotContain.Any(p => pureFileName.Contains(p)))
+                        {
+                            continue;
+                        }
+                    }
                 }
 
                 sourceFullFileNamesList.Add(fileName.Replace("\\", "/"));
@@ -92,6 +144,9 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
+            var next_N = n + 4;
+            var nextSpaces = DisplayHelper.Spaces(next_N);
+
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}Copies all files form directory '{_options.SourceDir}' to {_options.DestDir}.");
@@ -105,27 +160,51 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
             }
             if(!_options.OnlySubDirs.IsNullOrEmpty())
             {
-                throw new NotImplementedException();
+                sb.AppendLine($"{spaces}Copy when directory contains:");
+                foreach (var subdir in _options.OnlySubDirs)
+                {
+                    sb.AppendLine($"{nextSpaces}{subdir}");
+                }
             }
             if(!_options.ExceptSubDirs.IsNullOrEmpty())
             {
-                throw new NotImplementedException();
+                sb.AppendLine($"{spaces}Don't copy when directory contains:");
+                foreach (var subdir in _options.ExceptSubDirs)
+                {
+                    sb.AppendLine($"{nextSpaces}{subdir}");
+                }
             }
             if(!_options.OnlyFileExts.IsNullOrEmpty())
             {
-                throw new NotImplementedException();
+                sb.AppendLine($"{spaces}Copy when file name has extension:");
+                foreach (var item in _options.OnlyFileExts)
+                {
+                    sb.AppendLine($"{nextSpaces}{item}");
+                }
             }
             if(!_options.ExceptFileExts.IsNullOrEmpty())
             {
-                throw new NotImplementedException();
+                sb.AppendLine($"{spaces}Don't copy when file name has extension:");
+                foreach (var item in _options.ExceptFileExts)
+                {
+                    sb.AppendLine($"{nextSpaces}{item}");
+                }
             }
             if(!_options.FileNameShouldContain.IsNullOrEmpty())
             {
-                throw new NotImplementedException();
+                sb.AppendLine($"{spaces}Copy when file name contains:");
+                foreach (var item in _options.FileNameShouldContain)
+                {
+                    sb.AppendLine($"{nextSpaces}{item}");
+                }
             }
             if(!_options.FileNameShouldNotContain.IsNullOrEmpty())
             {
-                throw new NotImplementedException();
+                sb.AppendLine($"{spaces}Don't copy when file name contains:");
+                foreach (var item in _options.FileNameShouldNotContain)
+                {
+                    sb.AppendLine($"{nextSpaces}{item}");
+                }
             }
             sb.Append(PrintValidation(n));
 
