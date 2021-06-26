@@ -21,12 +21,11 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            EVPath.RegVar("APPDIR", Directory.GetCurrentDirectory());
-
-            TstGetEnvironmentVariables();
+            //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
+            TstDeploymentTaskBasedBuildHandler();
             //TstBuild();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
@@ -74,6 +73,16 @@ namespace TestSandBox
             _logger.Info("Begin");
 
             var handler = new RoadMapHandler();
+            handler.Run();
+
+            _logger.Info("End");
+        }
+
+        private static void TstDeploymentTaskBasedBuildHandler()
+        {
+            _logger.Info("Begin");
+
+            var handler = new DeploymentTaskBasedBuildHandler();
             handler.Run();
 
             _logger.Info("End");

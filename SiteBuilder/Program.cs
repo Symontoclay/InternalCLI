@@ -17,8 +17,6 @@ namespace SiteBuilder
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            EVPath.RegVar("APPDIR", Directory.GetCurrentDirectory());
-
             var siteBuilder = new SiteBuilder();
             siteBuilder.Run();
 

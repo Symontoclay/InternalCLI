@@ -9,6 +9,6 @@ namespace Deployment.Building
         Unknown,
         Library,
         CLI,
-        Unity3DAsset
+        Unity3DPackage
     }
 }

@@ -13,8 +13,6 @@ namespace Updater
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            EVPath.RegVar("APPDIR", Directory.GetCurrentDirectory());
-
             var handler = new Handler();
             handler.Run();
         }

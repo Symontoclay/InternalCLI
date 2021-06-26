@@ -13,6 +13,11 @@ namespace CommonUtils
         private static Regex _normalizeMatch = new Regex("(%(\\w|\\(|\\))+%)");
         private static Regex _normalizeMatch2 = new Regex("(\\w|\\(|\\))+");
 
+        static EVPath()
+        {
+            RegVar("APPDIR", Directory.GetCurrentDirectory());
+        }
+
         public static string Normalize(string sourcePath)
         {
             var match = _normalizeMatch.Match(sourcePath);
