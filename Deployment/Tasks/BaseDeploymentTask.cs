@@ -65,6 +65,14 @@ namespace Deployment.Tasks
             }
         }
 
+        protected void ValidateFileName(string optionName, string optionValue)
+        {
+            if (string.IsNullOrWhiteSpace(optionValue))
+            {
+                AddValidationMessage($"The {optionName} can not be null or empty!");
+            }
+        }
+
         protected void ValidateList<T>(string optionName, IEnumerable<T> list)
         {
             if(list.IsNullOrEmpty())

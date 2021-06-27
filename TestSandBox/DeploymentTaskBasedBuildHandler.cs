@@ -21,6 +21,15 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            Case1();
+
+            //_logger.Info($" = {}");
+
+            _logger.Info("End");
+        }
+
+        private void Case1()
+        {
             var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions() { TargetDir = "a", SkipExistingFilesInTargetDir = false }));
@@ -36,14 +45,10 @@ namespace TestSandBox
                 FileNameShouldContain = new List<string>() { "CS" },
                 FileNameShouldNotContain = new List<string>() { "utils" }
             }));
-            
+
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");
 
             deploymentPipeline.Run();
-
-            //_logger.Info($" = {}");
-
-            _logger.Info("End");
         }
     }
 }
