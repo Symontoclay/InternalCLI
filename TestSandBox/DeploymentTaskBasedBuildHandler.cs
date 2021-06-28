@@ -5,6 +5,7 @@ using Deployment.Tasks.BuildTasks;
 using Deployment.Tasks.BuildTasks.Build;
 using Deployment.Tasks.BuildTasks.Pack;
 using Deployment.Tasks.BuildTasks.Publish;
+using Deployment.Tasks.BuildTasks.Test;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using NLog;
@@ -77,9 +78,20 @@ namespace TestSandBox
                 NoLogo = true
             }));
 
+            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
+            {
+                TargetDir = "d",
+                SkipExistingFilesInTargetDir = false
+            }));
+
+            deploymentPipeline.Add(new TestTask(new TestTaskOptions()
+            {
+                ProjectOrSoutionFileName = @"c:\Users\Acer\Documents\GitHub\SymOntoClay\SymOntoClay.sln"
+            }));
+
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");
 
-            //deploymentPipeline.Run();
+            deploymentPipeline.Run();
         }
 
         private void Case1()

@@ -24,7 +24,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CreateDirectory
         protected override void OnValidateOptions()
         {
             ValidateOptionsAsNonNull(_options);
-            ValidateDirectory("TargetDir", _options.TargetDir);
+            ValidateDirectory(nameof(_options.TargetDir), _options.TargetDir);
         }
 
         /// <inheritdoc/>

@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tasks\BuildTasks\Test\" />
     <Folder Include="Tasks\UnityTasks\ExportPackage\" />
   </ItemGroup>
 

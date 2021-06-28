@@ -26,8 +26,8 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
         protected override void OnValidateOptions()
         {
             ValidateOptionsAsNonNull(_options);
-            ValidateDirectory("DestDir", _options.DestDir);
-            ValidateList("TargetFiles", _options.TargetFiles);
+            ValidateDirectory(nameof(_options.DestDir), _options.DestDir);
+            ValidateList(nameof(_options.TargetFiles), _options.TargetFiles);
         }
 
         /// <inheritdoc/>

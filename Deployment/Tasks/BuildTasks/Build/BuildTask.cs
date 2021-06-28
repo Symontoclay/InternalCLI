@@ -22,7 +22,7 @@ namespace Deployment.Tasks.BuildTasks.Build
         protected override void OnValidateOptions()
         {
             ValidateOptionsAsNonNull(_options);
-            ValidateFileName("ProjectFileName", _options.ProjectOrSoutionFileName);
+            ValidateFileName(nameof(_options.ProjectOrSoutionFileName), _options.ProjectOrSoutionFileName);
         }
 
         /// <inheritdoc/>

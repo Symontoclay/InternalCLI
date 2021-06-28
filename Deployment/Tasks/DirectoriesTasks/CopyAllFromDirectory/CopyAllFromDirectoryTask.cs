@@ -32,8 +32,8 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
         protected override void OnValidateOptions()
         {
             ValidateOptionsAsNonNull(_options);
-            ValidateDirectory("SourceDir", _options.SourceDir);
-            ValidateDirectory("DestDir", _options.DestDir);
+            ValidateDirectory(nameof(_options.SourceDir), _options.SourceDir);
+            ValidateDirectory(nameof(_options.DestDir), _options.DestDir);
         }
 
         /// <inheritdoc/>
