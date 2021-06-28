@@ -13,6 +13,8 @@ namespace Deployment.Tasks.BuildTasks.Build
         public KindOfBuildConfiguration BuildConfiguration { get; set; } = KindOfBuildConfiguration.Debug;
         public string OutputDir { get; set; }
         public bool NoLogo { get; set; }
+        //https://docs.microsoft.com/ru-ru/dotnet/core/rid-catalog
+        public string RuntimeIdentifier { get; set; } = "win-x64";
 
         /// <inheritdoc/>
         public override string ToString()
@@ -36,6 +38,7 @@ namespace Deployment.Tasks.BuildTasks.Build
             sb.AppendLine($"{spaces}{nameof(BuildConfiguration)} = {BuildConfiguration}");
             sb.AppendLine($"{spaces}{nameof(OutputDir)} = {OutputDir}");
             sb.AppendLine($"{spaces}{nameof(NoLogo)} = {NoLogo}");
+            sb.AppendLine($"{spaces}{nameof(RuntimeIdentifier)} = {RuntimeIdentifier}");
 
             return sb.ToString();
         }

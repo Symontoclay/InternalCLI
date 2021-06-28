@@ -5,18 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.BuildTasks.Pack
+namespace Deployment.Tasks.BuildTasks.Publish
 {
-    public class PackTaskOptions : IObjectToString
+    public class PublishTaskOptions : IObjectToString
     {
         public string ProjectOrSoutionFileName { get; set; }
         public KindOfBuildConfiguration BuildConfiguration { get; set; } = KindOfBuildConfiguration.Debug;
         public string OutputDir { get; set; }
         public bool NoLogo { get; set; }
-        public bool IncludeSource { get; set; }
-        public bool IncludeSymbols { get; set; }
         //https://docs.microsoft.com/ru-ru/dotnet/core/rid-catalog
         public string RuntimeIdentifier { get; set; } = "win-x64";
+        public bool SelfContained { get; set; } = true;
 
         /// <inheritdoc/>
         public override string ToString()
@@ -40,9 +39,8 @@ namespace Deployment.Tasks.BuildTasks.Pack
             sb.AppendLine($"{spaces}{nameof(BuildConfiguration)} = {BuildConfiguration}");
             sb.AppendLine($"{spaces}{nameof(OutputDir)} = {OutputDir}");
             sb.AppendLine($"{spaces}{nameof(NoLogo)} = {NoLogo}");
-            sb.AppendLine($"{spaces}{nameof(IncludeSource)} = {IncludeSource}");
-            sb.AppendLine($"{spaces}{nameof(IncludeSymbols)} = {IncludeSymbols}");
             sb.AppendLine($"{spaces}{nameof(RuntimeIdentifier)} = {RuntimeIdentifier}");
+            sb.AppendLine($"{spaces}{nameof(SelfContained)} = {SelfContained}");
 
             return sb.ToString();
         }

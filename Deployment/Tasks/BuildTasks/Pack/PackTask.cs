@@ -51,6 +51,11 @@ namespace Deployment.Tasks.BuildTasks.Pack
                 sb.Append(" --include-symbols");
             }
 
+            if (!string.IsNullOrWhiteSpace(_options.RuntimeIdentifier))
+            {
+                sb.Append($" --runtime {_options.RuntimeIdentifier}");
+            }
+
             var exitCode = RunProcess("dotnet", sb.ToString());
 
             if (exitCode != 0)
@@ -65,7 +70,7 @@ namespace Deployment.Tasks.BuildTasks.Pack
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Packs project '{_options.ProjectOrSoutionFileName}' with {_options.BuildConfiguration} configuration.");
+            sb.AppendLine($"{spaces}Packs project '{_options.ProjectOrSoutionFileName}' with '{_options.BuildConfiguration}' configuration for runtime '{_options.RuntimeIdentifier}'.");
             if (_options.NoLogo)
             {
                 sb.AppendLine($"{spaces}Hides Microsoft logo in ouput.");
@@ -77,6 +82,16 @@ namespace Deployment.Tasks.BuildTasks.Pack
             else
             {
                 sb.AppendLine($"{spaces}Packed files will be put into '{_options.OutputDir}'.");
+            }
+
+            if (_options.IncludeSource)
+            {
+                sb.AppendLine($"{spaces}With --include-source");
+            }
+
+            if (_options.IncludeSymbols)
+            {
+                sb.AppendLine($"{spaces}With --include-symbols");
             }
 
             sb.Append(PrintValidation(n));
