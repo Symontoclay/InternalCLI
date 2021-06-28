@@ -1,6 +1,8 @@
 ﻿using CommonUtils.DebugHelpers;
 using Deployment;
 using Deployment.Tasks;
+using Deployment.Tasks.BuildTasks;
+using Deployment.Tasks.BuildTasks.Build;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using NLog;
@@ -21,11 +23,28 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case1();
+            Case2();
+            //Case1();
 
             //_logger.Info($" = {}");
 
             _logger.Info("End");
+        }
+
+        private void Case2()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions() { TargetDir = "a", SkipExistingFilesInTargetDir = false }));
+            deploymentPipeline.Add(new BuildTask(new BuildTaskOptions() {
+                ProjectFileName = @"c:\Users\Acer\Documents\GitHub\SymOntoClay\SymOntoClayCore\SymOntoClayCore.csproj",
+                //BuildConfiguration = KindOfBuildConfiguration.Release,
+                OutputDir = Path.Combine(Directory.GetCurrentDirectory(), "a"),
+                NoLogo = true
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case1()

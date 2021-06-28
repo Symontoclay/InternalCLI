@@ -3,6 +3,7 @@ using CommonUtils.DebugHelpers;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -90,6 +91,15 @@ namespace Deployment.Tasks
         }
 
         protected abstract void OnRun();
+
+        protected int RunProcess(string fileName, string arguments)
+        {
+            var process = Process.Start(fileName, arguments);
+
+            process.WaitForExit();
+
+            return process.ExitCode;
+        }
 
         /// <inheritdoc/>
         public override string ToString()

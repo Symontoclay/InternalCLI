@@ -1,4 +1,5 @@
 ﻿using CommonUtils.DebugHelpers;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,9 +36,20 @@ namespace Deployment.Tasks
         /// <inheritdoc/>
         public void Run()
         {
+            var stepNumber = 0;
+
             foreach (var deploymentTask in _deploymentTasksList)
             {
-                deploymentTask.Run();
+                stepNumber++;
+
+                try
+                {
+                    deploymentTask.Run();
+                }
+                catch(Exception e)
+                {
+                    throw new Exception($"Error in step {stepNumber} ({deploymentTask.GetType().FullName}): {e.Message}", e);
+                }
             }
         }
 

@@ -1,6 +1,8 @@
 ﻿using CommonUtils.DebugHelpers;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +28,24 @@ namespace Deployment.Tasks.BuildTasks.Build
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder($"build \"{_options.ProjectFileName}\" --configuration {_options.BuildConfiguration}");
+
+            if(!string.IsNullOrWhiteSpace(_options.OutputDir))
+            {
+                sb.Append($" --output \"{_options.OutputDir}\"");
+            }
+
+            if(_options.NoLogo)
+            {
+                sb.Append(" --nologo");
+            }
+
+            var exitCode = RunProcess("dotnet", sb.ToString());
+
+            if (exitCode != 0)
+            {
+                throw new Exception($"Compilation of {_options.ProjectFileName} has been failed.");
+            }
         }
 
         /// <inheritdoc/>
