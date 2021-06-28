@@ -8,6 +8,7 @@ using Deployment.Tasks.BuildTasks.Publish;
 using Deployment.Tasks.BuildTasks.Test;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
+using Deployment.Tasks.UnityTasks.ExportPackage;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -26,12 +27,35 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case2();
+            Case3();
+            //Case2();
             //Case1();
 
             //_logger.Info($" = {}");
 
             _logger.Info("End");
+        }
+
+        private void Case3()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
+            {
+                TargetDir = "d",
+                SkipExistingFilesInTargetDir = false
+            }));
+
+            deploymentPipeline.Add(new ExportPackageTask(new ExportPackageTaskOptions() { 
+                UnityExeFilePath = @"c:\Program Files\Unity\Hub\Editor\2020.2.3f1\Editor\Unity.exe",
+                RootDir = @"c:\Users\Acer\Documents\GitHub\SymOntoClayAsset",
+                SourceDir = @"Assets\SymOntoClay",
+                OutputPackageName = @"c:\Users\Acer\Documents\GitHub\tmpSymOntoClay_2.unitypackage"
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case2()
@@ -76,12 +100,6 @@ namespace TestSandBox
                 //BuildConfiguration = KindOfBuildConfiguration.Release,
                 OutputDir = Path.Combine(Directory.GetCurrentDirectory(), "c"),
                 NoLogo = true
-            }));
-
-            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
-            {
-                TargetDir = "d",
-                SkipExistingFilesInTargetDir = false
             }));
 
             deploymentPipeline.Add(new TestTask(new TestTaskOptions()

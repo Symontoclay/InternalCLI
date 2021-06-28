@@ -15,8 +15,4 @@
     <ProjectReference Include="..\CSharpUtils\CSharpUtils.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Tasks\UnityTasks\ExportPackage\" />
-  </ItemGroup>
-
 </Project>
