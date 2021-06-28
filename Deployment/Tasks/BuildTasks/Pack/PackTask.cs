@@ -2,21 +2,22 @@
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.BuildTasks.Build
+namespace Deployment.Tasks.BuildTasks.Pack
 {
-    public class BuildTask : BaseDeploymentTask
+    public class PackTask : BaseDeploymentTask
     {
-        public BuildTask(BuildTaskOptions options)
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        public PackTask(PackTaskOptions options)
         {
             _options = options;
         }
 
-        private readonly BuildTaskOptions _options;
+        private readonly PackTaskOptions _options;
 
         /// <inheritdoc/>
         protected override void OnValidateOptions()
@@ -28,16 +29,26 @@ namespace Deployment.Tasks.BuildTasks.Build
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var sb = new StringBuilder($"build \"{_options.ProjectOrSoutionFileName}\" --configuration {_options.BuildConfiguration}");
+            var sb = new StringBuilder($"pack \"{_options.ProjectOrSoutionFileName}\" --configuration {_options.BuildConfiguration}");
 
-            if(!string.IsNullOrWhiteSpace(_options.OutputDir))
+            if (!string.IsNullOrWhiteSpace(_options.OutputDir))
             {
                 sb.Append($" --output \"{_options.OutputDir}\"");
             }
 
-            if(_options.NoLogo)
+            if (_options.NoLogo)
             {
                 sb.Append(" --nologo");
+            }
+
+            if(_options.IncludeSource)
+            {
+                sb.Append(" --include-source");
+            }
+
+            if(_options.IncludeSymbols)
+            {
+                sb.Append(" --include-symbols");
             }
 
             var exitCode = RunProcess("dotnet", sb.ToString());
@@ -54,18 +65,18 @@ namespace Deployment.Tasks.BuildTasks.Build
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Buils project '{_options.ProjectOrSoutionFileName}' with {_options.BuildConfiguration} configuration.");
-            if(_options.NoLogo)
+            sb.AppendLine($"{spaces}Packs project '{_options.ProjectOrSoutionFileName}' with {_options.BuildConfiguration} configuration.");
+            if (_options.NoLogo)
             {
                 sb.AppendLine($"{spaces}Hides Microsoft logo in ouput.");
             }
-            if(string.IsNullOrWhiteSpace(_options.OutputDir))
+            if (string.IsNullOrWhiteSpace(_options.OutputDir))
             {
-                sb.AppendLine($"{spaces}Built files will be put into default directory.");
+                sb.AppendLine($"{spaces}Packed files will be put into default directory.");
             }
             else
             {
-                sb.AppendLine($"{spaces}Built files will be put into '{_options.OutputDir}'.");
+                sb.AppendLine($"{spaces}Packed files will be put into '{_options.OutputDir}'.");
             }
 
             sb.Append(PrintValidation(n));

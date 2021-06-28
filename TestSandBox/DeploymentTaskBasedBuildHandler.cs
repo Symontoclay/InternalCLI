@@ -3,6 +3,7 @@ using Deployment;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks;
 using Deployment.Tasks.BuildTasks.Build;
+using Deployment.Tasks.BuildTasks.Pack;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using NLog;
@@ -34,12 +35,32 @@ namespace TestSandBox
         private void Case2()
         {
             var deploymentPipeline = new DeploymentPipeline();
-            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions() { TargetDir = "a", SkipExistingFilesInTargetDir = false }));
+
+            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions() {
+                TargetDir = "a", 
+                SkipExistingFilesInTargetDir = false 
+            }));
+
             deploymentPipeline.Add(new BuildTask(new BuildTaskOptions() {
-                ProjectFileName = @"c:\Users\Acer\Documents\GitHub\SymOntoClay\SymOntoClayCore\SymOntoClayCore.csproj",
+                ProjectOrSoutionFileName = @"c:\Users\Acer\Documents\GitHub\SymOntoClay\SymOntoClayCore\SymOntoClayCore.csproj",
                 //BuildConfiguration = KindOfBuildConfiguration.Release,
                 OutputDir = Path.Combine(Directory.GetCurrentDirectory(), "a"),
                 NoLogo = true
+            }));
+
+            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
+            {
+                TargetDir = "b",
+                SkipExistingFilesInTargetDir = false
+            }));
+
+            deploymentPipeline.Add(new PackTask(new PackTaskOptions() {
+                ProjectOrSoutionFileName = @"c:\Users\Acer\Documents\GitHub\SymOntoClay\SymOntoClayCore\SymOntoClayCore.csproj",
+                //BuildConfiguration = KindOfBuildConfiguration.Release,
+                OutputDir = Path.Combine(Directory.GetCurrentDirectory(), "b"),
+                NoLogo = true,
+                IncludeSource = true,
+                IncludeSymbols = true
             }));
 
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");
@@ -51,7 +72,11 @@ namespace TestSandBox
         {
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions() { TargetDir = "a", SkipExistingFilesInTargetDir = false }));
+            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions() {
+                TargetDir = "a",
+                SkipExistingFilesInTargetDir = false 
+            }));
+
             deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
             {
                 SourceDir = @"c:\Users\Acer\source\repos\InternalCLI\CSharpUtils\",

@@ -15,4 +15,10 @@
     <ProjectReference Include="..\CSharpUtils\CSharpUtils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Tasks\BuildTasks\Test\" />
+    <Folder Include="Tasks\BuildTasks\Publish\" />
+    <Folder Include="Tasks\UnityTasks\ExportPackage\" />
+  </ItemGroup>
+
 </Project>

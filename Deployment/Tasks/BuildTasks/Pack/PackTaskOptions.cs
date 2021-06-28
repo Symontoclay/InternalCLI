@@ -5,14 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.BuildTasks.Build
+namespace Deployment.Tasks.BuildTasks.Pack
 {
-    public class BuildTaskOptions : IObjectToString
+    public class PackTaskOptions : IObjectToString
     {
         public string ProjectOrSoutionFileName { get; set; }
         public KindOfBuildConfiguration BuildConfiguration { get; set; } = KindOfBuildConfiguration.Debug;
         public string OutputDir { get; set; }
         public bool NoLogo { get; set; }
+        public bool IncludeSource { get; set; }
+        public bool IncludeSymbols { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -36,6 +38,8 @@ namespace Deployment.Tasks.BuildTasks.Build
             sb.AppendLine($"{spaces}{nameof(BuildConfiguration)} = {BuildConfiguration}");
             sb.AppendLine($"{spaces}{nameof(OutputDir)} = {OutputDir}");
             sb.AppendLine($"{spaces}{nameof(NoLogo)} = {NoLogo}");
+            sb.AppendLine($"{spaces}{nameof(IncludeSource)} = {IncludeSource}");
+            sb.AppendLine($"{spaces}{nameof(IncludeSymbols)} = {IncludeSymbols}");
 
             return sb.ToString();
         }
