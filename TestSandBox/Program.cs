@@ -1,4 +1,5 @@
-﻿using CommonUtils;
+﻿using BaseDevPipeline;
+using CommonUtils;
 using Newtonsoft.Json;
 using NLog;
 using SiteBuilder.SiteData;
@@ -21,15 +22,25 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
-            TstDeploymentTaskBasedBuildHandler();
+            //TstDeploymentTaskBasedBuildHandler();
             //TstBuild();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstProjectsDataSource()
+        {
+            _logger.Info("Begin");
+
+            _logger.Info($"ProjectsDataSource.A = {ProjectsDataSource.A}");
+
+            _logger.Info("End");
         }
 
         private static void TstGetEnvironmentVariables()

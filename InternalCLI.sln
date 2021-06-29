@@ -21,9 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageCreator", "PageCreator\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevPipelines", "DevPipelines", "{247D30BB-7880-4F31-A862-3FB2D21FAF9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreToAsset", "CoreToAsset\CoreToAsset.csproj", "{557FF6AF-DB9F-4040-AF46-7704449BF87C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreToAsset", "CoreToAsset\CoreToAsset.csproj", "{557FF6AF-DB9F-4040-AF46-7704449BF87C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreToCLIFolder", "CoreToCLIFolder\CoreToCLIFolder.csproj", "{9B0391ED-B27C-4AED-905F-B8313155252E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreToCLIFolder", "CoreToCLIFolder\CoreToCLIFolder.csproj", "{9B0391ED-B27C-4AED-905F-B8313155252E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseDevPipeline", "BaseDevPipeline\BaseDevPipeline.csproj", "{0518923D-627A-4D7E-9326-69B004133FE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{9B0391ED-B27C-4AED-905F-B8313155252E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B0391ED-B27C-4AED-905F-B8313155252E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B0391ED-B27C-4AED-905F-B8313155252E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0518923D-627A-4D7E-9326-69B004133FE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0518923D-627A-4D7E-9326-69B004133FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0518923D-627A-4D7E-9326-69B004133FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0518923D-627A-4D7E-9326-69B004133FE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
