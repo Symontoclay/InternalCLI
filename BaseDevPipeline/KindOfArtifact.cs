@@ -9,6 +9,12 @@ namespace BaseDevPipeline
     public enum KindOfArtifact
     {
         Unknown,
-        ProjectSite
+        ProjectSite,
+        UnityPackage,
+        CLISetupExe,
+        CLIArch,
+        CLIFolder,
+        NuGet,
+        SourceArch
     }
 }

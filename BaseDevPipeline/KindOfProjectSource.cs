@@ -9,6 +9,15 @@ namespace BaseDevPipeline
     public enum KindOfProjectSource
     {
         Unknown,
-        ProjectSite
+        ProjectSite,
+        GeneralSolution,
+        Unity,
+        CLI,
+        CoreLib,
+        CorePlugin,
+        Library,
+        UnitTest,
+        IntegrationTest,
+        AdditionalApp
     }
 }

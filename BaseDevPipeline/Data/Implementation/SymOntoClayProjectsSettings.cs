@@ -5,11 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaseDevPipeline.Data
+namespace BaseDevPipeline.Data.Implementation
 {
-    public class ArtifactDest : IObjectToString
+    public class SymOntoClayProjectsSettings: ISymOntoClayProjectsSettings
     {
-        public string Kind { get; set; }
+        /// <inheritdoc/>
+        public string BasePath { get; set; }
+
+        public List<UtityExeInstance> UtityExeInstances { get; set; }
+
+        /// <inheritdoc/>
+        IReadOnlyList<IUtityExeInstance> ISymOntoClayProjectsSettings.UtityExeInstances => UtityExeInstances;
 
         /// <inheritdoc/>
         public override string ToString()
@@ -29,7 +35,8 @@ namespace BaseDevPipeline.Data
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            sb.AppendLine($"{spaces}{nameof(BasePath)} = {BasePath}");
+            sb.PrintObjListProp(n, nameof(UtityExeInstances), UtityExeInstances);
 
             return sb.ToString();
         }

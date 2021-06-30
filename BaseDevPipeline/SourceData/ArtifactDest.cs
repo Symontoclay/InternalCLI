@@ -5,16 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaseDevPipeline.Data
+namespace BaseDevPipeline.SourceData
 {
-    public class SolutionSource : IObjectToString
+    public class ArtifactDest : IObjectToString
     {
         public string Kind { get; set; }
-        public List<string> Paths { get; set; }
-        public string License { get; set; }
-        public string SourcePath { get; set; }
-        public string DestPath { get; set; }
-        public List<ProjectSource> Projects { get; set; }
+        public string Path { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -35,11 +31,7 @@ namespace BaseDevPipeline.Data
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
-            sb.PrintPODList(n, nameof(Paths), Paths);
-            sb.AppendLine($"{spaces}{nameof(License)} = {License}");
-            sb.AppendLine($"{spaces}{nameof(SourcePath)} = {SourcePath}");
-            sb.AppendLine($"{spaces}{nameof(DestPath)} = {DestPath}");
-            sb.PrintObjListProp(n, nameof(Projects), Projects);
+            sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
 
             return sb.ToString();
         }
