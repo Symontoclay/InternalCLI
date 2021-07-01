@@ -55,7 +55,7 @@ namespace BaseDevPipeline
 
             var symOntoClayUnityAssetCoreProject = new ProjectSource()
             {
-                Kind = KindOfProjectSource.CoreLib.ToString(),
+                Kind = KindOfProjectSource.CoreAssetLib.ToString(),
                 Path = "SymOntoClayUnityAssetCore"
             };
 

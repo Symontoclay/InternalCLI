@@ -14,6 +14,7 @@ namespace BaseDevPipeline
         Unity,
         CLI,
         CoreLib,
+        CoreAssetLib,
         CorePlugin,
         Library,
         UnitTest,
