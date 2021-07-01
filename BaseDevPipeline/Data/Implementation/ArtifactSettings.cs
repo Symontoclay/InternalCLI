@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace BaseDevPipeline.Data.Implementation
 {
-    public class UtityExeInstance: IUtityExeInstance
+    public class ArtifactSettings: IArtifactSettings
     {
-        /// <inheritdoc/>
-        public string Version { get; set; }
-
-        /// <inheritdoc/>
+        public KindOfArtifact Kind { get; set; }
         public string Path { get; set; }
 
         /// <inheritdoc/>
@@ -33,7 +30,7 @@ namespace BaseDevPipeline.Data.Implementation
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
 
             return sb.ToString();

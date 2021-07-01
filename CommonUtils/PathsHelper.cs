@@ -8,6 +8,11 @@ namespace CommonUtils
     {
         public static string Normalize(string path)
         {
+            if(string.IsNullOrWhiteSpace(path))
+            {
+                return string.Empty;
+            }
+
             return EVPath.Normalize(path).Replace("\\", "/");
         }
     }

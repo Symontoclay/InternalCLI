@@ -7,13 +7,23 @@ using System.Threading.Tasks;
 
 namespace BaseDevPipeline.Data.Implementation
 {
-    public class UtityExeInstance: IUtityExeInstance
+    public class ProjectSettings: IProjectSettings
     {
-        /// <inheritdoc/>
-        public string Version { get; set; }
+        public SolutionSettings Solution { get; set; }
 
         /// <inheritdoc/>
+        ISolutionSettings IProjectSettings.Solution => Solution;
+
+        public KindOfProjectSource Kind { get; set; }
         public string Path { get; set; }
+        public string CsProjPath { get; set; }
+
+        public string LicenseName { get; set; }
+
+        public LicenseSettings License { get; set; }
+
+        /// <inheritdoc/>
+        ILicenseSettings IProjectSettings.License => License;
 
         /// <inheritdoc/>
         public override string ToString()
@@ -33,8 +43,12 @@ namespace BaseDevPipeline.Data.Implementation
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
+            sb.PrintExisting(n, nameof(Solution), Solution);
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
+            sb.AppendLine($"{spaces}{nameof(CsProjPath)} = {CsProjPath}");
+            sb.AppendLine($"{spaces}{nameof(LicenseName)} = {LicenseName}");
+            sb.PrintObjProp(n, nameof(License), License);
 
             return sb.ToString();
         }

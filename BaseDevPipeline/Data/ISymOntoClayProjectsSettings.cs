@@ -11,5 +11,9 @@ namespace BaseDevPipeline.Data
     {
         string BasePath { get; }
         IReadOnlyList<IUtityExeInstance> UtityExeInstances { get; }
+        IReadOnlyList<ISolutionSettings> Solutions { get; }
+        IReadOnlyList<IProjectSettings> Projects { get; }
+        IReadOnlyList<IArtifactSettings> Artifacts { get; }
+        IReadOnlyList<ILicenseSettings> Licenses { get; }
     }
 }

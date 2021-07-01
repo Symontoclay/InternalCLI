@@ -17,6 +17,26 @@ namespace BaseDevPipeline.Data.Implementation
         /// <inheritdoc/>
         IReadOnlyList<IUtityExeInstance> ISymOntoClayProjectsSettings.UtityExeInstances => UtityExeInstances;
 
+        public List<SolutionSettings> Solutions { get; set; }
+
+        /// <inheritdoc/>
+        IReadOnlyList<ISolutionSettings> ISymOntoClayProjectsSettings.Solutions => Solutions;
+
+        public List<ProjectSettings> Projects { get; set; }
+
+        /// <inheritdoc/>
+        IReadOnlyList<IProjectSettings> ISymOntoClayProjectsSettings.Projects => Projects;
+
+        public List<ArtifactSettings> Artifacts { get; set; }
+
+        /// <inheritdoc/>
+        IReadOnlyList<IArtifactSettings> ISymOntoClayProjectsSettings.Artifacts => Artifacts;
+
+        public List<LicenseSettings> Licenses { get; set; }
+
+        /// <inheritdoc/>
+        IReadOnlyList<ILicenseSettings> ISymOntoClayProjectsSettings.Licenses => Licenses;
+
         /// <inheritdoc/>
         public override string ToString()
         {
@@ -37,6 +57,10 @@ namespace BaseDevPipeline.Data.Implementation
 
             sb.AppendLine($"{spaces}{nameof(BasePath)} = {BasePath}");
             sb.PrintObjListProp(n, nameof(UtityExeInstances), UtityExeInstances);
+            sb.PrintObjListProp(n, nameof(Solutions), Solutions);
+            sb.PrintObjListProp(n, nameof(Projects), Projects);
+            sb.PrintObjListProp(n, nameof(Artifacts), Artifacts);
+            sb.PrintObjListProp(n, nameof(Licenses), Licenses);
 
             return sb.ToString();
         }

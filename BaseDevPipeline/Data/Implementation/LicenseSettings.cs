@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace BaseDevPipeline.Data.Implementation
 {
-    public class UtityExeInstance: IUtityExeInstance
+    public class LicenseSettings: ILicenseSettings
     {
-        /// <inheritdoc/>
-        public string Version { get; set; }
-
-        /// <inheritdoc/>
-        public string Path { get; set; }
+        public string Name { get; set; }
+        public string HeaderFileName { get; set; }
+        public string HeaderContent { get; set; }
+        public string FileName { get; set; }
+        public string Content { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -33,8 +33,11 @@ namespace BaseDevPipeline.Data.Implementation
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
-            sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.AppendLine($"{spaces}{nameof(HeaderFileName)} = {HeaderFileName}");
+            sb.AppendLine($"{spaces}{nameof(HeaderContent)} = {HeaderContent}");
+            sb.AppendLine($"{spaces}{nameof(FileName)} = {FileName}");
+            sb.AppendLine($"{spaces}{nameof(Content)} = {Content}");
 
             return sb.ToString();
         }
