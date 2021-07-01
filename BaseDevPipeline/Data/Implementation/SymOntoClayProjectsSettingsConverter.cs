@@ -12,10 +12,8 @@ using System.Threading.Tasks;
 
 namespace BaseDevPipeline.Data.Implementation
 {
-    public static class SymOntoClayProjectsSettingsConvertor
+    public static class SymOntoClayProjectsSettingsConverter
     {
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
         public static ISymOntoClayProjectsSettings Convert(SymOntoClaySettingsSource source)
         {
             var result = new SymOntoClayProjectsSettings();
@@ -31,10 +29,6 @@ namespace BaseDevPipeline.Data.Implementation
             FillUpArtifacts(source, result);
             FillUpSolutions(source, result, licensesDict);
 
-            _logger.Info($"result = {result}");
-
-            //throw new NotImplementedException();
-
             return result;
         }
 
@@ -42,11 +36,7 @@ namespace BaseDevPipeline.Data.Implementation
         {
             var normalizedBasePaths = basePaths.Select(p => PathsHelper.Normalize(p));
 
-            _logger.Info($"normalizedBasePaths = {JsonConvert.SerializeObject(normalizedBasePaths, Formatting.Indented)}");
-
             var existingBasePaths = normalizedBasePaths.Where(p => Directory.Exists(p));
-
-            _logger.Info($"existingBasePaths = {JsonConvert.SerializeObject(existingBasePaths, Formatting.Indented)}");
 
             var count = existingBasePaths.Count();
 
@@ -63,11 +53,7 @@ namespace BaseDevPipeline.Data.Implementation
         {
             var normalizedUnityPaths = unityPaths.Select(p => PathsHelper.Normalize(p));
 
-            _logger.Info($"normalizedUnityPaths = {JsonConvert.SerializeObject(normalizedUnityPaths, Formatting.Indented)}");
-
             var existingUnityPaths = normalizedUnityPaths.Where(p => File.Exists(p));
-
-            _logger.Info($"existingUnityPaths = {JsonConvert.SerializeObject(existingUnityPaths, Formatting.Indented)}");
 
             if(!existingUnityPaths.Any())
             {
@@ -78,15 +64,11 @@ namespace BaseDevPipeline.Data.Implementation
 
             foreach(var utityPath in existingUnityPaths)
             {
-                _logger.Info($"utityPath = {utityPath}");
-
                 try
                 {
                     using (var process = new ProcessSyncWrapper(utityPath, "-version"))
                     {
                         var exitCode = process.Run();
-
-                        _logger.Info($"exitCode = {exitCode}");
 
                         if (exitCode != 0)
                         {
@@ -94,8 +76,6 @@ namespace BaseDevPipeline.Data.Implementation
                         }
 
                         var output = process.Output.SingleOrDefault();
-
-                        _logger.Info($"output = {output}");
 
                         var item = new UtityExeInstance()
                         {
@@ -121,8 +101,6 @@ namespace BaseDevPipeline.Data.Implementation
 
             foreach(var soutionSource in source.Solutions)
             {
-                _logger.Info($"soutionSource = {soutionSource}");
-
                 var item = new SolutionSettings();
                 item.Kind = Enum.Parse<KindOfProjectSource>(soutionSource.Kind);
                 item.Path = PathsHelper.Normalize(soutionSource.Path);
@@ -154,21 +132,14 @@ namespace BaseDevPipeline.Data.Implementation
                 {
                     FillUpProjects(item, soutionSource, result);
                 }
-
-                _logger.Info($"item = {item}");
             }
         }
 
         private static string DetectSlnPath(string sourceSlnPath, string path)
         {
-            _logger.Info($"sourceSlnPath = {sourceSlnPath}");
-            _logger.Info($"path = {path}");
-
             if (string.IsNullOrWhiteSpace(sourceSlnPath))
             {
                 var slnFiles = Directory.GetFiles(path, "*.sln").Select(p => PathsHelper.Normalize(p));
-
-                _logger.Info($"slnFiles = {JsonConvert.SerializeObject(slnFiles, Formatting.Indented)}");
 
                 if(!slnFiles.Any())
                 {
@@ -198,8 +169,6 @@ namespace BaseDevPipeline.Data.Implementation
 
             foreach(var projectSource in soutionSource.Projects)
             {
-                _logger.Info($"projectSource = {projectSource}");
-
                 var item = new ProjectSettings()
                 {
                     Solution = solution,
@@ -220,8 +189,6 @@ namespace BaseDevPipeline.Data.Implementation
 
                 item.CsProjPath = DetectCsProjPath(projectSource.CsProjPath, item.Path);
 
-                _logger.Info($"item = {item}");
-
                 solutionProjects.Add(item);
                 result.Projects.Add(item);
             }
@@ -229,14 +196,9 @@ namespace BaseDevPipeline.Data.Implementation
 
         private static string DetectCsProjPath(string sourceCsProjPath, string path)
         {
-            _logger.Info($"sourceCsProjPath = {sourceCsProjPath}");
-            _logger.Info($"path = {path}");
-
             if (string.IsNullOrWhiteSpace(sourceCsProjPath))
             {
                 var csProjFiles = Directory.GetFiles(path, "*.csproj").Select(p => PathsHelper.Normalize(p));
-
-                _logger.Info($"csProjFiles = {JsonConvert.SerializeObject(csProjFiles, Formatting.Indented)}");
 
                 if (!csProjFiles.Any())
                 {
@@ -262,8 +224,6 @@ namespace BaseDevPipeline.Data.Implementation
 
             foreach(var artifactDest in source.Artifacts)
             {
-                _logger.Info($"artifactDest = {artifactDest}");
-
                 var item = new ArtifactSettings();
 
                 item.Kind = Enum.Parse<KindOfArtifact>(artifactDest.Kind);
@@ -271,8 +231,6 @@ namespace BaseDevPipeline.Data.Implementation
                 item.Path = PathsHelper.Normalize(artifactDest.Path);
 
                 artifacts.Add(item);
-
-                _logger.Info($"item = {item}");
             }
         }
 
@@ -284,8 +242,6 @@ namespace BaseDevPipeline.Data.Implementation
 
             foreach (var licenseSource in source.Licenses)
             {
-                _logger.Info($"licenseSource = {licenseSource}");
-
                 var name = licenseSource.Name;
 
                 if(string.IsNullOrWhiteSpace(name))
@@ -340,8 +296,6 @@ namespace BaseDevPipeline.Data.Implementation
                 licenses.Add(item);
 
                 licensesDict[name] = item;
-
-                _logger.Info($"item = {item}");
             }
         }
 

@@ -174,7 +174,7 @@ namespace BaseDevPipeline
 
             _logger.Info($"settingsSource = {settingsSource}");
 
-            var settings = SymOntoClayProjectsSettingsConvertor.Convert(settingsSource);
+            var settings = SymOntoClayProjectsSettingsConverter.Convert(settingsSource);
 
             _logger.Info($"settings = {settings}");
         }
