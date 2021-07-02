@@ -9,7 +9,7 @@ namespace BaseDevPipeline.Data
 {
     public interface ISolutionSettings : IObjectToString
     {
-        KindOfProjectSource Kind { get; }
+        KindOfProject Kind { get; }
         string Path { get; }
         string SlnPath { get; }
         string SourcePath { get; }

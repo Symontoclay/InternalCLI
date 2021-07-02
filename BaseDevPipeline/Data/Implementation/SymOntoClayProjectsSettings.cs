@@ -38,6 +38,86 @@ namespace BaseDevPipeline.Data.Implementation
         IReadOnlyList<ILicenseSettings> ISymOntoClayProjectsSettings.Licenses => Licenses;
 
         /// <inheritdoc/>
+        public ISolutionSettings GetSolution(KindOfProject kind)
+        {
+            return GetSolutions(kind).SingleOrDefault();
+        }
+
+        /// <inheritdoc/>
+        public IReadOnlyList<ISolutionSettings> GetSolutions(KindOfProject kind)
+        {
+            if(_solutionsDict.ContainsKey(kind))
+            {
+                return _solutionsDict[kind];
+            }
+
+            return _emptySolutions;
+        }
+
+        /// <inheritdoc/>
+        public IProjectSettings GetProject(KindOfProject kind)
+        {
+            return GetProjects(kind).SingleOrDefault();
+        }
+
+        /// <inheritdoc/>
+        public IReadOnlyList<IProjectSettings> GetProjects(KindOfProject kind)
+        {
+            if (_projectsDict.ContainsKey(kind))
+            {
+                return _projectsDict[kind];
+            }
+
+            return _emptyProjects;
+        }
+
+        /// <inheritdoc/>
+        public IArtifactSettings GetArtifact(KindOfArtifact kind)
+        {
+            return GetArtifacts(kind).SingleOrDefault();
+        }
+
+        /// <inheritdoc/>
+        public IReadOnlyList<IArtifactSettings> GetArtifacts(KindOfArtifact kind)
+        {
+            if (_artifactsDict.ContainsKey(kind))
+            {
+                return _artifactsDict[kind];
+            }
+
+            return _emptyArtifacts;
+        }
+
+        /// <inheritdoc/>
+        public ILicenseSettings GetLicense(string name)
+        {
+            if (_licesnsesDict.ContainsKey(name))
+            {
+                return _licesnsesDict[name];
+            }
+
+            return null;
+        }
+
+        public void Prepare()
+        {
+            _solutionsDict = Solutions.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<ISolutionSettings>().ToList());
+            _projectsDict = Projects.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<IProjectSettings>().ToList());
+            _artifactsDict = Artifacts.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<IArtifactSettings>().ToList());
+
+            _licesnsesDict = Licenses.Cast<ILicenseSettings>().ToDictionary(p => p.Name, p => p);
+        }
+
+        private Dictionary<KindOfProject, List<ISolutionSettings>> _solutionsDict;
+        private Dictionary<KindOfProject, List<IProjectSettings>> _projectsDict;
+        private Dictionary<KindOfArtifact, List<IArtifactSettings>> _artifactsDict;
+        private Dictionary<string, ILicenseSettings> _licesnsesDict;
+
+        private IReadOnlyList<ISolutionSettings> _emptySolutions = new List<ISolutionSettings>();
+        private IReadOnlyList<IProjectSettings> _emptyProjects = new List<IProjectSettings>();
+        private IReadOnlyList<IArtifactSettings> _emptyArtifacts = new List<IArtifactSettings>();
+
+        /// <inheritdoc/>
         public override string ToString()
         {
             return ToString(0u);

@@ -13,4 +13,10 @@
     <ProjectReference Include="..\CommonUtils\CommonUtils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ProjectsDataSource.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

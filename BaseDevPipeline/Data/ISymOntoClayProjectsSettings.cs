@@ -15,5 +15,16 @@ namespace BaseDevPipeline.Data
         IReadOnlyList<IProjectSettings> Projects { get; }
         IReadOnlyList<IArtifactSettings> Artifacts { get; }
         IReadOnlyList<ILicenseSettings> Licenses { get; }
+
+        ISolutionSettings GetSolution(KindOfProject kind);
+        IReadOnlyList<ISolutionSettings> GetSolutions(KindOfProject kind);
+
+        IProjectSettings GetProject(KindOfProject kind);
+        IReadOnlyList<IProjectSettings> GetProjects(KindOfProject kind);
+
+        IArtifactSettings GetArtifact(KindOfArtifact kind);
+        IReadOnlyList<IArtifactSettings> GetArtifacts(KindOfArtifact kind);
+
+        ILicenseSettings GetLicense(string name);
     }
 }

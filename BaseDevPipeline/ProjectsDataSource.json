@@ -1,0 +1,82 @@
+{
+  "BasePaths": [
+    "%USERPROFILE%/Documents/GitHub",
+    "%USERPROFILE%/source/repos"
+  ],
+  "UnityPaths": [
+    "%ProgramFiles%/Unity/Editor/Unity.exe",
+    "%ProgramFiles%/Unity/Hub/Editor/2020.2.3f1/Editor/Unity.exe"
+  ],
+  "Solutions": [
+    {
+      "Kind": "GeneralSolution",
+      "Path": "%BASE_PATH%/SymOntoClay",
+      "License": "MIT",
+      "Projects": [
+        {
+          "Kind": "CoreLib",
+          "Path": "SymOntoClayCore"
+        },
+        {
+          "Kind": "CoreAssetLib",
+          "Path": "SymOntoClayUnityAssetCore"
+        },
+        {
+          "Kind": "Library",
+          "Path": "SymOntoClayCoreHelper"
+        },
+        {
+          "Kind": "Library",
+          "Path": "SymOntoClayProjectFiles"
+        },
+        {
+          "Kind": "Library",
+          "Path": "SymOntoClayDefaultCLIEnvironment"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "SymOntoClayCLI"
+        },
+        {
+          "Kind": "IntegrationTest",
+          "Path": "SymOntoClayUnity3DAssetTest"
+        },
+        {
+          "Kind": "AdditionalApp",
+          "Path": "TestSandbox"
+        },
+        {
+          "Kind": "AdditionalApp",
+          "Path": "LinguisticVariableViewer"
+        }
+      ]
+    },
+    {
+      "Kind": "ProjectSite",
+      "Path": "%BASE_PATH%/symontoclay.github.io",
+      "SourcePath": "%SLN_ROOT_PATH%/siteSource/"
+    },
+    {
+      "Kind": "Unity",
+      "Path": "%BASE_PATH%/SymOntoClayAsset",
+      "License": "MIT",
+      "SourcePath": "%SLN_ROOT_PATH%/Assets/SymOntoClay"
+    }
+  ],
+  "Artifacts": [
+    {
+      "Kind": "ProjectSite",
+      "Path": "%BASE_PATH%/symontoclay.github.io"
+    },
+    {
+      "Kind": "UnityPackage",
+      "Path": "%USERPROFILE%/Documents/MyFirstSymOntoClayAsset_2.unitypackage"
+    }
+  ],
+  "Licenses": [
+    {
+      "Name": "MIT",
+      "FileName": "%APPDIR%/smallLicence.txt"
+    }
+  ]
+}

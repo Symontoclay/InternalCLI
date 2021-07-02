@@ -29,6 +29,8 @@ namespace BaseDevPipeline.Data.Implementation
             FillUpArtifacts(source, result);
             FillUpSolutions(source, result, licensesDict);
 
+            result.Prepare();
+
             return result;
         }
 
@@ -102,7 +104,7 @@ namespace BaseDevPipeline.Data.Implementation
             foreach(var soutionSource in source.Solutions)
             {
                 var item = new SolutionSettings();
-                item.Kind = Enum.Parse<KindOfProjectSource>(soutionSource.Kind);
+                item.Kind = Enum.Parse<KindOfProject>(soutionSource.Kind);
                 item.Path = PathsHelper.Normalize(soutionSource.Path);
 
                 EVPath.RegVar("SLN_ROOT_PATH", item.Path);
@@ -176,7 +178,7 @@ namespace BaseDevPipeline.Data.Implementation
                     License = solution.License
                 };
 
-                item.Kind = Enum.Parse<KindOfProjectSource>(projectSource.Kind);
+                item.Kind = Enum.Parse<KindOfProject>(projectSource.Kind);
 
                 if(projectSource.Path.StartsWith("%") || projectSource.Path.Contains(":"))
                 {

@@ -10,7 +10,7 @@ namespace BaseDevPipeline.Data
     public interface IProjectSettings : IObjectToString
     {
         ISolutionSettings Solution { get; }
-        KindOfProjectSource Kind { get; }
+        KindOfProject Kind { get; }
         string Path { get; }
         string CsProjPath { get; }
         string LicenseName { get; }

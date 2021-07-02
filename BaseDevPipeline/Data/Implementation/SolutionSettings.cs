@@ -9,7 +9,7 @@ namespace BaseDevPipeline.Data.Implementation
 {
     public class SolutionSettings: ISolutionSettings
     {
-        public KindOfProjectSource Kind { get; set; }
+        public KindOfProject Kind { get; set; }
         public string Path { get; set; }
         public string SlnPath { get; set; }
         public string SourcePath { get; set; }

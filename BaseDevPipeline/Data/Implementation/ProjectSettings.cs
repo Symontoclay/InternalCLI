@@ -14,7 +14,7 @@ namespace BaseDevPipeline.Data.Implementation
         /// <inheritdoc/>
         ISolutionSettings IProjectSettings.Solution => Solution;
 
-        public KindOfProjectSource Kind { get; set; }
+        public KindOfProject Kind { get; set; }
         public string Path { get; set; }
         public string CsProjPath { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Deployment.DevPipelines.CoreToAsset;
+using System;
 
 namespace CoreToAsset
 {
@@ -6,7 +7,8 @@ namespace CoreToAsset
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var coreToAssetTask = new CoreToAssetTask();
+            coreToAssetTask.Run();
         }
     }
 }

@@ -10,4 +10,10 @@
     <PackageReference Include="NLog" Version="4.7.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BaseDevPipeline\BaseDevPipeline.csproj" />
+    <ProjectReference Include="..\CommonUtils\CommonUtils.csproj" />
+    <ProjectReference Include="..\Deployment\Deployment.csproj" />
+  </ItemGroup>
+
 </Project>

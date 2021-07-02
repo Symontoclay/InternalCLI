@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BaseDevPipeline
 {
-    public enum KindOfProjectSource
+    public enum KindOfProject
     {
         Unknown,
         ProjectSite,

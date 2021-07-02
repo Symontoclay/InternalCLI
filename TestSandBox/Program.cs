@@ -38,7 +38,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            _logger.Info($"ProjectsDataSource.A = {ProjectsDataSource.A}");
+            //var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+
+            //_logger.Info($"settings = {settings}");
+
+            ProjectsDataSource.SaveExampleFile("ProjectsDataSource_1.json");
 
             _logger.Info("End");
         }

@@ -1,9 +1,11 @@
 ﻿using BaseDevPipeline.Data;
 using BaseDevPipeline.Data.Implementation;
 using BaseDevPipeline.SourceData;
+using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +14,37 @@ namespace BaseDevPipeline
 {
     public static class ProjectsDataSource
     {
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static ISymOntoClayProjectsSettings _settings;
+        private static object _lockObj = new object();
 
-        static ProjectsDataSource()
+        public static ISymOntoClayProjectsSettings GetSymOntoClayProjectsSettings()
+        {
+            lock(_lockObj)
+            {
+                if(_settings == null)
+                {
+                    _settings = GetSymOntoClayProjectsSettings(Path.Combine(Directory.GetCurrentDirectory(), "ProjectsDataSource.json"));
+                }
+
+                return _settings;
+            }
+        }
+
+        public static ISymOntoClayProjectsSettings GetSymOntoClayProjectsSettings(string fileName)
+        {
+            return SymOntoClayProjectsSettingsConverter.Convert(JsonConvert.DeserializeObject<SymOntoClaySettingsSource>(File.ReadAllText(fileName)));
+        }
+
+        public static void SaveExampleFile(string fileName)
+        {
+            var settingsSource = CreateExampleSettings();
+
+            var jsonStr = JsonConvert.SerializeObject(settingsSource, Formatting.Indented);
+
+            File.WriteAllText(fileName, jsonStr);
+        }
+
+        private static SymOntoClaySettingsSource CreateExampleSettings()
         {
             var settingsSource = new SymOntoClaySettingsSource()
             {
@@ -36,7 +66,7 @@ namespace BaseDevPipeline
 
             var symOntoClaySolution = new SolutionSource()
             {
-                Kind = KindOfProjectSource.GeneralSolution.ToString(),
+                Kind = KindOfProject.GeneralSolution.ToString(),
                 Path = "%BASE_PATH%/SymOntoClay",
                 License = "MIT"
             };
@@ -47,7 +77,7 @@ namespace BaseDevPipeline
 
             var symOntoClayCoreProject = new ProjectSource()
             {
-                Kind = KindOfProjectSource.CoreLib.ToString(),
+                Kind = KindOfProject.CoreLib.ToString(),
                 Path = "SymOntoClayCore"
             };
 
@@ -55,7 +85,7 @@ namespace BaseDevPipeline
 
             var symOntoClayUnityAssetCoreProject = new ProjectSource()
             {
-                Kind = KindOfProjectSource.CoreAssetLib.ToString(),
+                Kind = KindOfProject.CoreAssetLib.ToString(),
                 Path = "SymOntoClayUnityAssetCore"
             };
 
@@ -63,7 +93,7 @@ namespace BaseDevPipeline
 
             var symOntoClayCoreHelperProject = new ProjectSource()
             {
-                Kind = KindOfProjectSource.Library.ToString(),
+                Kind = KindOfProject.Library.ToString(),
                 Path = "SymOntoClayCoreHelper"
             };
 
@@ -71,7 +101,7 @@ namespace BaseDevPipeline
 
             var symOntoClayProjectFilesProject = new ProjectSource()
             {
-                Kind = KindOfProjectSource.Library.ToString(),
+                Kind = KindOfProject.Library.ToString(),
                 Path = "SymOntoClayProjectFiles"
             };
 
@@ -79,7 +109,7 @@ namespace BaseDevPipeline
 
             var symOntoClayDefaultCLIEnvironmentProject = new ProjectSource()
             {
-                Kind = KindOfProjectSource.Library.ToString(),
+                Kind = KindOfProject.Library.ToString(),
                 Path = "SymOntoClayDefaultCLIEnvironment"
             };
 
@@ -87,7 +117,7 @@ namespace BaseDevPipeline
 
             var symOntoClayCLIProject = new ProjectSource()
             {
-                Kind = KindOfProjectSource.CLI.ToString(),
+                Kind = KindOfProject.CLI.ToString(),
                 Path = "SymOntoClayCLI"
             };
 
@@ -95,7 +125,7 @@ namespace BaseDevPipeline
 
             var symOntoClayUnity3DAssetTestProject = new ProjectSource()
             {
-                Kind = KindOfProjectSource.IntegrationTest.ToString(),
+                Kind = KindOfProject.IntegrationTest.ToString(),
                 Path = "SymOntoClayUnity3DAssetTest"
             };
 
@@ -103,7 +133,7 @@ namespace BaseDevPipeline
 
             var testSandboxProject = new ProjectSource()
             {
-                Kind = KindOfProjectSource.AdditionalApp.ToString(),
+                Kind = KindOfProject.AdditionalApp.ToString(),
                 Path = "TestSandbox"
             };
 
@@ -111,34 +141,28 @@ namespace BaseDevPipeline
 
             var linguisticVariableViewerProject = new ProjectSource()
             {
-                Kind = KindOfProjectSource.AdditionalApp.ToString(),
+                Kind = KindOfProject.AdditionalApp.ToString(),
                 Path = "LinguisticVariableViewer"
             };
 
             symOntoClaySolution.Projects.Add(linguisticVariableViewerProject);
 
-            _logger.Info($"symOntoClaySolution = {symOntoClaySolution}");
-
             var siteSolution = new SolutionSource()
             {
-                Kind = KindOfProjectSource.ProjectSite.ToString(),
+                Kind = KindOfProject.ProjectSite.ToString(),
                 Path = "%BASE_PATH%/symontoclay.github.io",
                 SourcePath = "%SLN_ROOT_PATH%/siteSource/"
             };
 
             settingsSource.Solutions.Add(siteSolution);
 
-            _logger.Info($"siteSolution = {siteSolution}");
-
             var unitySolution = new SolutionSource()
             {
-                Kind = KindOfProjectSource.Unity.ToString(),
+                Kind = KindOfProject.Unity.ToString(),
                 Path = "%BASE_PATH%/SymOntoClayAsset",
                 SourcePath = "%SLN_ROOT_PATH%/Assets/SymOntoClay",
                 License = "MIT"
             };
-
-            _logger.Info($"unitySolution = {unitySolution}");
 
             settingsSource.Solutions.Add(unitySolution);
 
@@ -148,8 +172,6 @@ namespace BaseDevPipeline
                 Path = "%BASE_PATH%/symontoclay.github.io"
             };
 
-            _logger.Info($"siteArtifact = {siteArtifact}");
-
             settingsSource.Artifacts.Add(siteArtifact);
 
             var unityArtifact = new ArtifactDest()
@@ -157,8 +179,6 @@ namespace BaseDevPipeline
                 Kind = KindOfArtifact.UnityPackage.ToString(),
                 Path = "%USERPROFILE%/Documents/MyFirstSymOntoClayAsset_2.unitypackage"
             };
-
-            _logger.Info($"unityArtifact = {unityArtifact}");
 
             settingsSource.Artifacts.Add(unityArtifact);
 
@@ -168,17 +188,9 @@ namespace BaseDevPipeline
                 FileName = "%APPDIR%/smallLicence.txt"
             };
 
-            _logger.Info($"mitLicense = {mitLicense}");
-
             settingsSource.Licenses.Add(mitLicense);
 
-            _logger.Info($"settingsSource = {settingsSource}");
-
-            var settings = SymOntoClayProjectsSettingsConverter.Convert(settingsSource);
-
-            _logger.Info($"settings = {settings}");
+            return settingsSource;
         }
-
-        public static int A { get; set; }
     }
 }

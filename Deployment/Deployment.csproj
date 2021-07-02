@@ -15,4 +15,8 @@
     <ProjectReference Include="..\CSharpUtils\CSharpUtils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DevTasks\" />
+  </ItemGroup>
+
 </Project>
