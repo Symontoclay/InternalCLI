@@ -11,12 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BaseDevPipeline\BaseDevPipeline.csproj" />
     <ProjectReference Include="..\CommonUtils\CommonUtils.csproj" />
     <ProjectReference Include="..\CSharpUtils\CSharpUtils.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DevTasks\" />
   </ItemGroup>
 
 </Project>

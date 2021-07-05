@@ -130,10 +130,12 @@ namespace BaseDevPipeline.Data.Implementation
                     }                    
                 }
 
-                if(!soutionSource.Projects.IsNullOrEmpty())
+                if (!soutionSource.Projects.IsNullOrEmpty())
                 {
                     FillUpProjects(item, soutionSource, result);
                 }
+
+                soulutions.Add(item);
             }
         }
 

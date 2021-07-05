@@ -35,6 +35,48 @@ namespace BaseDevPipeline
             return SymOntoClayProjectsSettingsConverter.Convert(JsonConvert.DeserializeObject<SymOntoClaySettingsSource>(File.ReadAllText(fileName)));
         }
 
+        public static ISolutionSettings GetSolution(KindOfProject kind)
+        {
+            var settings = GetSymOntoClayProjectsSettings();
+            return settings.GetSolution(kind);
+        }
+
+        public static IReadOnlyList<ISolutionSettings> GetSolutions(KindOfProject kind)
+        {
+            var settings = GetSymOntoClayProjectsSettings();
+            return settings.GetSolutions(kind);
+        }
+
+        public static IProjectSettings GetProject(KindOfProject kind)
+        {
+            var settings = GetSymOntoClayProjectsSettings();
+            return settings.GetProject(kind);
+        }
+
+        public static IReadOnlyList<IProjectSettings> GetProjects(KindOfProject kind)
+        {
+            var settings = GetSymOntoClayProjectsSettings();
+            return settings.GetProjects(kind);
+        }
+
+        public static IArtifactSettings GetArtifact(KindOfArtifact kind)
+        {
+            var settings = GetSymOntoClayProjectsSettings();
+            return settings.GetArtifact(kind);
+        }
+
+        public static IReadOnlyList<IArtifactSettings> GetArtifacts(KindOfArtifact kind)
+        {
+            var settings = GetSymOntoClayProjectsSettings();
+            return settings.GetArtifacts(kind);
+        }
+
+        public static ILicenseSettings GetLicense(string name)
+        {
+            var settings = GetSymOntoClayProjectsSettings();
+            return settings.GetLicense(name);
+        }
+
         public static void SaveExampleFile(string fileName)
         {
             var settingsSource = CreateExampleSettings();

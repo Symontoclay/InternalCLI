@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using CommonUtils;
+using Deployment.DevPipelines.CoreToAsset;
 using Newtonsoft.Json;
 using NLog;
 using SiteBuilder.SiteData;
@@ -22,7 +23,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstProjectsDataSource();
+            TstCoreToAssetTask();
+            //TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
@@ -34,15 +36,25 @@ namespace TestSandBox
             //TstReadXMLDoc();
         }
 
+        private static void TstCoreToAssetTask()
+        {
+            _logger.Info("Begin");
+
+            var coreToAssetTask = new CoreToAssetDevPipeline();
+            coreToAssetTask.Run();
+
+            _logger.Info("End");
+        }
+
         private static void TstProjectsDataSource()
         {
             _logger.Info("Begin");
 
-            //var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
 
-            //_logger.Info($"settings = {settings}");
+            _logger.Info($"settings = {settings}");
 
-            ProjectsDataSource.SaveExampleFile("ProjectsDataSource_1.json");
+            //ProjectsDataSource.SaveExampleFile("ProjectsDataSource_1.json");
 
             _logger.Info("End");
         }

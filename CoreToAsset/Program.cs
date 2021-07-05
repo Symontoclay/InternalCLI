@@ -7,7 +7,7 @@ namespace CoreToAsset
     {
         static void Main(string[] args)
         {
-            var coreToAssetTask = new CoreToAssetTask();
+            var coreToAssetTask = new CoreToAssetDevPipeline();
             coreToAssetTask.Run();
         }
     }
