@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CoreToAsset
 {
-    public class CoreToAssetTask : BaseDeploymentTask
+    public class CoreToAssetTask //: BaseDeploymentTask
     {
         public CoreToAssetTask(CoreToAssetTaskOptions options)
         {

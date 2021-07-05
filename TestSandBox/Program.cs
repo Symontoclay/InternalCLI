@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using CommonUtils;
+using Deployment;
 using Deployment.DevPipelines.CoreToAsset;
 using Newtonsoft.Json;
 using NLog;
@@ -23,7 +24,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstCoreToAssetTask();
+            TstTempDirectory();
+            //TstCoreToAssetTask();
             //TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
@@ -34,6 +36,18 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstTempDirectory()
+        {
+            _logger.Info("Begin");
+
+            using (var tempDir = new TempDirectory())
+            {
+                _logger.Info($"tempDir.FullName = {tempDir.FullName}");
+            }
+
+            _logger.Info("End");
         }
 
         private static void TstCoreToAssetTask()
