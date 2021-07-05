@@ -1,4 +1,5 @@
 ﻿using BaseDevPipeline;
+using Deployment.DevTasks.CoreToAsset;
 using Deployment.Tasks;
 using NLog;
 using System;
@@ -26,7 +27,13 @@ namespace Deployment.DevPipelines.CoreToAsset
 
             _logger.Info($"unitySolution = {unitySolution}");
 
-            throw new NotImplementedException();
+            var options = new CoreToAssetTaskOptions();
+            options.CoreCProjPath = sourceProject.CsProjPath;
+            options.DestDir = unitySolution.SourcePath;
+
+            _logger.Info($"options = {options}");
+
+            Exec(new CoreToAssetTask(options));
         }
 
         /// <inheritdoc/>

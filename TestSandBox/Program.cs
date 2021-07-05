@@ -24,8 +24,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstTempDirectory();
-            //TstCoreToAssetTask();
+            //TstTempDirectory();
+            TstCoreToAssetTask();
             //TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
