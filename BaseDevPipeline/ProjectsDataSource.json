@@ -76,7 +76,7 @@
   "Licenses": [
     {
       "Name": "MIT",
-      "FileName": "%APPDIR%/smallLicence.txt"
+      "FileName": "%APPDIR%/MITLicense.txt"
     }
   ]
 }

@@ -49,6 +49,7 @@ namespace Deployment.Tasks.UnityTasks.ExportPackage
 
             sb.AppendLine($"{spaces}Exports directory '{_options.SourceDir}' of '{_options.RootDir}' to Unity package '{_options.OutputPackageName}'");
             sb.AppendLine($"{spaces}'{_options.UnityExeFilePath}' will be used as exe.");
+            sb.Append(PrintValidation(n));
 
             return sb.ToString();
         }
