@@ -15,7 +15,7 @@ namespace TestSandBox
 
         public static Dictionary<string, string> ReadSecrets(string fileName)
         {
-            throw new NotImplementedException();
+            return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(fileName));
         }
 
         public static void WriteExample(string fileName)

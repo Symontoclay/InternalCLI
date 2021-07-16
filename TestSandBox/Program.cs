@@ -43,9 +43,17 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var exampleFile = Path.Combine(Directory.GetCurrentDirectory(), "example_secret.json");
+            //var exampleFile = Path.Combine(Directory.GetCurrentDirectory(), "example_secret.json");
 
-            TstSecretFile.WriteExample(exampleFile);
+            //TstSecretFile.WriteExample(exampleFile);
+
+            var secretsFileName = EVPath.Normalize("%USERPROFILE%/example_s.json");
+
+            _logger.Info($"secretsFileName = {secretsFileName}");
+
+            var secrets = TstSecretFile.ReadSecrets(secretsFileName);
+
+            _logger.Info($"secrets = {JsonConvert.SerializeObject(secrets, Formatting.Indented)}");
 
             _logger.Info("End");
         }
