@@ -24,8 +24,9 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstSecrets();
             //TstTempDirectory();
-            TstCoreToAssetTask();
+            //TstCoreToAssetTask();
             //TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
@@ -36,6 +37,17 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstSecrets()
+        {
+            _logger.Info("Begin");
+
+            var exampleFile = Path.Combine(Directory.GetCurrentDirectory(), "example_secret.json");
+
+            TstSecretFile.WriteExample(exampleFile);
+
+            _logger.Info("End");
         }
 
         private static void TstTempDirectory()
