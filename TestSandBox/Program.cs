@@ -4,6 +4,7 @@ using Deployment;
 using Deployment.DevPipelines.CoreToAsset;
 using Newtonsoft.Json;
 using NLog;
+using Octokit;
 using SiteBuilder.SiteData;
 using System;
 using System.Collections;
@@ -26,7 +27,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstSecrets();
+            TstOctokit();
+            //TstSecrets();
             //TstGitHubAPICreateRelease();
             //TstGitHubAPIGet();
             //TstTempDirectory();
@@ -42,7 +44,68 @@ namespace TestSandBox
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
         }
-        
+
+        private static void TstOctokit()
+        {
+            _logger.Info("Begin");
+
+            var client = new GitHubClient(new ProductHeaderValue("my-cool-app"));
+
+            var secretsFileName = EVPath.Normalize("%USERPROFILE%/example_s.json");
+
+            _logger.Info($"secretsFileName = {secretsFileName}");
+
+            var secrets = TstSecretFile.ReadSecrets(secretsFileName);
+
+            _logger.Info($"secrets = {JsonConvert.SerializeObject(secrets, Formatting.Indented)}");
+
+            var token = secrets["GitHub"];
+            var tokenAuth = new Credentials(token);
+            client.Credentials = tokenAuth;
+
+            var owner = "metatypeman";
+            var repo = "a1";
+
+            var version = "3.6.4";
+
+            var newRelease = new NewRelease(version);
+            newRelease.Name = version;
+            newRelease.Body = "**This** is some *Markdown*";
+            newRelease.Draft = false;
+            newRelease.Prerelease = false;
+
+            var resultTask = client.Repository.Release.Create(owner, repo, newRelease);
+
+            resultTask.Wait();
+
+            var result = resultTask.Result;
+            _logger.Info($"Created release id {result.Id}");
+
+            var packageFilePath = Path.Combine(Directory.GetCurrentDirectory(), "cleanedNPCPackage.unitypackage");
+
+            _logger.Info($"packageFilePath = {packageFilePath}");
+
+            using (var archiveContents = File.OpenRead(packageFilePath))
+            {
+                var assetUpload = new ReleaseAssetUpload()
+                {
+                    FileName = $"MyPackage-{version}.unitypackage",
+                    ContentType = "application/zip",
+                    RawData = archiveContents
+                };
+
+                var release = client.Repository.Release.Get(owner, repo, result.Id);
+
+                var assetTask = client.Repository.Release.UploadAsset(release.Result, assetUpload);
+
+                assetTask.Wait();
+
+                var asset = assetTask.Result;
+            }
+
+            _logger.Info("End");
+        }
+
         private static void TstSecrets()
         {
             _logger.Info("Begin");
@@ -115,51 +178,6 @@ namespace TestSandBox
 
             _logger.Info("End");
         }
-
-        //https://api.github.com/repos/metatypeman/a1/releases/46355625/assets
-        ///repos/metatypeman/a1/releases/46355625/assets
-        /*
-         
-         {
-        "url":"https://api.github.com/repos/metatypeman/a1/releases/46355625",
-        "assets_url":"https://api.github.com/repos/metatypeman/a1/releases/46355625/assets",
-        "upload_url":"https://uploads.github.com/repos/metatypeman/a1/releases/46355625/assets{?name,label}",
-        "html_url":"https://github.com/metatypeman/a1/releases/tag/3.6.0",
-        "id":46355625,
-        "author":{
-            "login":"metatypeman",
-            "id":13446159,
-            "node_id":"MDQ6VXNlcjEzNDQ2MTU5",
-            "avatar_url":"https://avatars.githubusercontent.com/u/13446159?v=4",
-            "gravatar_id":"",
-            "url":"https://api.github.com/users/metatypeman",
-            "html_url":"https://github.com/metatypeman",
-            "followers_url":"https://api.github.com/users/metatypeman/followers",
-            "following_url":"https://api.github.com/users/metatypeman/following{/other_user}",
-            "gists_url":"https://api.github.com/users/metatypeman/gists{/gist_id}",
-            "starred_url":"https://api.github.com/users/metatypeman/starred{/owner}{/repo}",
-            "subscriptions_url":"https://api.github.com/users/metatypeman/subscriptions",
-            "organizations_url":"https://api.github.com/users/metatypeman/orgs",
-            "repos_url":"https://api.github.com/users/metatypeman/repos",
-            "events_url":"https://api.github.com/users/metatypeman/events{/privacy}",
-            "received_events_url":"https://api.github.com/users/metatypeman/received_events",
-            "type":"User",
-            "site_admin":false
-        },
-        "node_id":"MDc6UmVsZWFzZTQ2MzU1NjI1",
-        "tag_name":"3.6.0",
-        "target_commitish":"main",
-        "name":null,
-        "draft":false,
-        "prerelease":false,
-        "created_at":"2021-07-16T14:41:51Z",
-        "published_at":"2021-07-17T09:29:23Z",
-        "assets":[],
-        "tarball_url":"https://api.github.com/repos/metatypeman/a1/tarball/3.6.0",
-        "zipball_url":"https://api.github.com/repos/metatypeman/a1/zipball/3.6.0",
-        "body":"Hello, World! 3.6.0"
-        } 
-         */
 
         private class TstReleaseResponce
         {
