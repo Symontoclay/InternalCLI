@@ -27,7 +27,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstOctokit();
+            //TstOctokit();
             //TstSecrets();
             //TstGitHubAPICreateRelease();
             //TstGitHubAPIGet();
@@ -38,7 +38,7 @@ namespace TestSandBox
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
-            //TstDeploymentTaskBasedBuildHandler();
+            TstDeploymentTaskBasedBuildHandler();
             //TstBuild();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
@@ -55,7 +55,7 @@ namespace TestSandBox
 
             _logger.Info($"secretsFileName = {secretsFileName}");
 
-            var secrets = TstSecretFile.ReadSecrets(secretsFileName);
+            var secrets = SecretFile.ReadSecrets(secretsFileName);
 
             _logger.Info($"secrets = {JsonConvert.SerializeObject(secrets, Formatting.Indented)}");
 
@@ -120,7 +120,7 @@ namespace TestSandBox
 
             _logger.Info($"secretsFileName = {secretsFileName}");
 
-            var secrets = TstSecretFile.ReadSecrets(secretsFileName);
+            var secrets = SecretFile.ReadSecrets(secretsFileName);
 
             _logger.Info($"secrets = {JsonConvert.SerializeObject(secrets, Formatting.Indented)}");
 
@@ -192,7 +192,7 @@ namespace TestSandBox
 
             _logger.Info($"secretsFileName = {secretsFileName}");
 
-            var secrets = TstSecretFile.ReadSecrets(secretsFileName);
+            var secrets = SecretFile.ReadSecrets(secretsFileName);
 
             _logger.Info($"secrets = {JsonConvert.SerializeObject(secrets, Formatting.Indented)}");
 
@@ -256,7 +256,7 @@ namespace TestSandBox
 
             _logger.Info($"secretsFileName = {secretsFileName}");
 
-            var secrets = TstSecretFile.ReadSecrets(secretsFileName);
+            var secrets = SecretFile.ReadSecrets(secretsFileName);
 
             _logger.Info($"secrets = {JsonConvert.SerializeObject(secrets, Formatting.Indented)}");
 

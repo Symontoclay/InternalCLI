@@ -1,9 +1,10 @@
 ﻿using CommonUtils.DebugHelpers;
 using Deployment;
 using Deployment.Tasks;
+using Deployment.Tasks.ArchTasks.Zip;
 using Deployment.Tasks.BuildTasks;
 using Deployment.Tasks.BuildTasks.Build;
-using Deployment.Tasks.BuildTasks.Pack;
+using Deployment.Tasks.BuildTasks.NuGetPack;
 using Deployment.Tasks.BuildTasks.Publish;
 using Deployment.Tasks.BuildTasks.Test;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
@@ -27,13 +28,42 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case3();
+            Case4();
+            //Case3();
             //Case2();
             //Case1();
 
             //_logger.Info($" = {}");
 
             _logger.Info("End");
+        }
+
+        private void Case4()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
+            {
+                TargetDir = "c",
+                SkipExistingFilesInTargetDir = false
+            }));
+
+            deploymentPipeline.Add(new PublishTask(new PublishTaskOptions()
+            {
+                ProjectOrSoutionFileName = @"c:\Users\Acer\source\repos\SymOntoClay\SymOntoClayCLI\SymOntoClayCLI.csproj",
+                //BuildConfiguration = KindOfBuildConfiguration.Release,
+                OutputDir = Path.Combine(Directory.GetCurrentDirectory(), "c"),
+                NoLogo = true
+            }));
+
+            deploymentPipeline.Add(new ZipTask(new ZipTaskOptions() { 
+                SourceDir = Path.Combine(Directory.GetCurrentDirectory(), "c"),
+                OutputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "CLI-0.3.6.zip")
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case3()
@@ -80,7 +110,7 @@ namespace TestSandBox
                 SkipExistingFilesInTargetDir = false
             }));
 
-            deploymentPipeline.Add(new PackTask(new PackTaskOptions() {
+            deploymentPipeline.Add(new NuGetPackTask(new NuGetPackTaskOptions() {
                 ProjectOrSoutionFileName = @"c:\Users\Acer\Documents\GitHub\SymOntoClay\SymOntoClayCore\SymOntoClayCore.csproj",
                 //BuildConfiguration = KindOfBuildConfiguration.Release,
                 OutputDir = Path.Combine(Directory.GetCurrentDirectory(), "b"),

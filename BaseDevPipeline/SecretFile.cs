@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,11 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestSandBox
+namespace BaseDevPipeline
 {
-    public static class TstSecretFile
+    public static class SecretFile
     {
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        public static string ReadKey(string fileName, string key)
+        {
+            return ReadSecrets(fileName)[key];
+        }
 
         public static Dictionary<string, string> ReadSecrets(string fileName)
         {

@@ -6,18 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.BuildTasks.Pack
+namespace Deployment.Tasks.BuildTasks.NuGetPack
 {
-    public class PackTask : BaseDeploymentTask
+    public class NuGetPackTask : BaseDeploymentTask
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public PackTask(PackTaskOptions options)
+        public NuGetPackTask(NuGetPackTaskOptions options)
         {
             _options = options;
         }
 
-        private readonly PackTaskOptions _options;
+        private readonly NuGetPackTaskOptions _options;
 
         /// <inheritdoc/>
         protected override void OnValidateOptions()

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.BuildTasks.Pack
+namespace Deployment.Tasks.BuildTasks.NuGetPack
 {
-    public class PackTaskOptions : IObjectToString
+    public class NuGetPackTaskOptions : IObjectToString
     {
         public string ProjectOrSoutionFileName { get; set; }
         public KindOfBuildConfiguration BuildConfiguration { get; set; } = KindOfBuildConfiguration.Debug;
