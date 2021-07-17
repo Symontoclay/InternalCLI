@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Xml.Linq;
 using TestSandBox.XMLDoc;
 using XMLDocReader;
@@ -54,6 +55,22 @@ namespace TestSandBox
             var secrets = TstSecretFile.ReadSecrets(secretsFileName);
 
             _logger.Info($"secrets = {JsonConvert.SerializeObject(secrets, Formatting.Indented)}");
+
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("https://api.github.com");
+            var token = secrets["GitHub"];
+
+            client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("AppName", "1.0"));
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", token);
+
+            var responseTask = client.GetAsync("/user");
+
+            responseTask.Wait();
+
+            var responce = responseTask.Result;
+
+            _logger.Info($"responce = {JsonConvert.SerializeObject(responce, Formatting.Indented)}");
 
             _logger.Info("End");
         }
