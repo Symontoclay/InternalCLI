@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Xml.Linq;
 using TestSandBox.XMLDoc;
 using XMLDocReader;
@@ -26,6 +27,8 @@ namespace TestSandBox
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             TstSecrets();
+            //TstGitHubAPICreateRelease();
+            //TstGitHubAPIGet();
             //TstTempDirectory();
             //TstCoreToAssetTask();
             //TstProjectsDataSource();
@@ -39,10 +42,12 @@ namespace TestSandBox
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
         }
-
+        
         private static void TstSecrets()
         {
             _logger.Info("Begin");
+
+            //var release_id = TstGitHubAPICreateRelease();
 
             //var exampleFile = Path.Combine(Directory.GetCurrentDirectory(), "example_secret.json");
 
@@ -56,7 +61,188 @@ namespace TestSandBox
 
             _logger.Info($"secrets = {JsonConvert.SerializeObject(secrets, Formatting.Indented)}");
 
-            HttpClient client = new HttpClient();
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("https://uploads.github.com");
+            var token = secrets["GitHub"];
+
+            client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("AppName", "1.0"));
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/zip"));
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", token);
+            client.DefaultRequestHeaders.Host = "uploads.github.com";
+            client.Timeout = new TimeSpan(1, 0, 0);
+
+
+            //var release_id = 46355165;
+            //var release_id = 46355447;
+            var release_id = 46355625;
+
+            _logger.Info($"release_id = {release_id}");
+
+            var packageFilePath = Path.Combine(Directory.GetCurrentDirectory(), "cleanedNPCPackage.unitypackage");
+
+            _logger.Info($"packageFilePath = {packageFilePath}");
+
+            var content = new StreamContent(File.OpenRead(packageFilePath));
+
+            var owner = "metatypeman";
+            var repo = "a1";
+
+            var path = $"/repos/{owner}/{repo}/releases/{release_id}/assets?name=test.zip&label=some-binary.zip";
+
+            _logger.Info($"path = {path}");
+
+            var responseTask = client.PostAsync(path, content);
+
+            responseTask.Wait();
+
+            var responce = responseTask.Result;
+
+            _logger.Info($"responce = {JsonConvert.SerializeObject(responce, Formatting.Indented)}");
+
+            var responceContent = responce.Content;
+
+            var readAsStringTask = responceContent.ReadAsStringAsync();
+
+            ////readAsStringTask.Wait();
+
+            var resultStr = readAsStringTask.Result;
+
+            _logger.Info($"resultStr = {resultStr}");
+
+            //var resultObj = JsonConvert.DeserializeObject<TstReleaseResponce>(resultStr);
+
+            //_logger.Info($"resultObj.id = {resultObj.id}");
+
+            _logger.Info("End");
+        }
+
+        //https://api.github.com/repos/metatypeman/a1/releases/46355625/assets
+        ///repos/metatypeman/a1/releases/46355625/assets
+        /*
+         
+         {
+        "url":"https://api.github.com/repos/metatypeman/a1/releases/46355625",
+        "assets_url":"https://api.github.com/repos/metatypeman/a1/releases/46355625/assets",
+        "upload_url":"https://uploads.github.com/repos/metatypeman/a1/releases/46355625/assets{?name,label}",
+        "html_url":"https://github.com/metatypeman/a1/releases/tag/3.6.0",
+        "id":46355625,
+        "author":{
+            "login":"metatypeman",
+            "id":13446159,
+            "node_id":"MDQ6VXNlcjEzNDQ2MTU5",
+            "avatar_url":"https://avatars.githubusercontent.com/u/13446159?v=4",
+            "gravatar_id":"",
+            "url":"https://api.github.com/users/metatypeman",
+            "html_url":"https://github.com/metatypeman",
+            "followers_url":"https://api.github.com/users/metatypeman/followers",
+            "following_url":"https://api.github.com/users/metatypeman/following{/other_user}",
+            "gists_url":"https://api.github.com/users/metatypeman/gists{/gist_id}",
+            "starred_url":"https://api.github.com/users/metatypeman/starred{/owner}{/repo}",
+            "subscriptions_url":"https://api.github.com/users/metatypeman/subscriptions",
+            "organizations_url":"https://api.github.com/users/metatypeman/orgs",
+            "repos_url":"https://api.github.com/users/metatypeman/repos",
+            "events_url":"https://api.github.com/users/metatypeman/events{/privacy}",
+            "received_events_url":"https://api.github.com/users/metatypeman/received_events",
+            "type":"User",
+            "site_admin":false
+        },
+        "node_id":"MDc6UmVsZWFzZTQ2MzU1NjI1",
+        "tag_name":"3.6.0",
+        "target_commitish":"main",
+        "name":null,
+        "draft":false,
+        "prerelease":false,
+        "created_at":"2021-07-16T14:41:51Z",
+        "published_at":"2021-07-17T09:29:23Z",
+        "assets":[],
+        "tarball_url":"https://api.github.com/repos/metatypeman/a1/tarball/3.6.0",
+        "zipball_url":"https://api.github.com/repos/metatypeman/a1/zipball/3.6.0",
+        "body":"Hello, World! 3.6.0"
+        } 
+         */
+
+        private class TstReleaseResponce
+        {
+            public int id { get; set; }
+        }
+
+        private static int TstGitHubAPICreateRelease()
+        {
+            _logger.Info("Begin");
+
+            var secretsFileName = EVPath.Normalize("%USERPROFILE%/example_s.json");
+
+            _logger.Info($"secretsFileName = {secretsFileName}");
+
+            var secrets = TstSecretFile.ReadSecrets(secretsFileName);
+
+            _logger.Info($"secrets = {JsonConvert.SerializeObject(secrets, Formatting.Indented)}");
+
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("https://api.github.com");
+            var token = secrets["GitHub"];
+
+            client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("AppName", "1.0"));
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", token);
+
+            var objToSerialize = new
+            {
+                tag_name = "3.6.0",
+                body = "Hello, World! 3.6.0"
+            };
+
+            var content = JsonContent.Create(objToSerialize);
+
+            _logger.Info($"content = {JsonConvert.SerializeObject(content, Formatting.Indented)}");
+
+            var owner = "metatypeman";
+            var repo = "a1";
+
+            var path = $"/repos/{owner}/{repo}/releases";
+
+            _logger.Info($"path = {path}");
+
+            var responseTask = client.PostAsync(path, content);
+
+            //responseTask.Wait();
+
+            var responce = responseTask.Result;
+
+            _logger.Info($"responce = {JsonConvert.SerializeObject(responce, Formatting.Indented)}");
+
+            var responceContent = responce.Content;
+
+            var readAsStringTask = responceContent.ReadAsStringAsync();
+
+            //readAsStringTask.Wait();
+
+            var resultStr = readAsStringTask.Result;
+
+            _logger.Info($"resultStr = {resultStr}");
+
+            var resultObj = JsonConvert.DeserializeObject<TstReleaseResponce>(resultStr);
+
+            _logger.Info($"resultObj.id = {resultObj.id}");
+
+            _logger.Info("End");
+
+            return resultObj.id;
+        }
+
+        private static void TstGitHubAPIGet()
+        {
+            _logger.Info("Begin");
+
+            var secretsFileName = EVPath.Normalize("%USERPROFILE%/example_s.json");
+
+            _logger.Info($"secretsFileName = {secretsFileName}");
+
+            var secrets = TstSecretFile.ReadSecrets(secretsFileName);
+
+            _logger.Info($"secrets = {JsonConvert.SerializeObject(secrets, Formatting.Indented)}");
+
+            var client = new HttpClient();
             client.BaseAddress = new Uri("https://api.github.com");
             var token = secrets["GitHub"];
 
