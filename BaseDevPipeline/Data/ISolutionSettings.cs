@@ -10,6 +10,10 @@ namespace BaseDevPipeline.Data
     public interface ISolutionSettings : IObjectToString
     {
         KindOfProject Kind { get; }
+        string Href { get; }
+        string GitFileHref { get; }
+        string RepositoryName { get; }
+        string OwnerName { get; }
         string Path { get; }
         string SlnPath { get; }
         string SourcePath { get; }

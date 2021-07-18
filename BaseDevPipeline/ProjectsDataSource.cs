@@ -113,6 +113,7 @@ namespace BaseDevPipeline
             var symOntoClaySolution = new SolutionSource()
             {
                 Kind = KindOfProject.GeneralSolution.ToString(),
+                Href = "https://github.com/Symontoclay/SymOntoClay",
                 Path = "%BASE_PATH%/SymOntoClay",
                 License = "MIT"
             };
@@ -196,6 +197,7 @@ namespace BaseDevPipeline
             var siteSolution = new SolutionSource()
             {
                 Kind = KindOfProject.ProjectSite.ToString(),
+                Href = "https://github.com/Symontoclay/symontoclay.github.io",
                 Path = "%BASE_PATH%/symontoclay.github.io",
                 SourcePath = "%SLN_ROOT_PATH%/siteSource/"
             };
@@ -205,6 +207,7 @@ namespace BaseDevPipeline
             var unitySolution = new SolutionSource()
             {
                 Kind = KindOfProject.Unity.ToString(),
+                Href = "https://github.com/Symontoclay/SymOntoClayAsset",
                 Path = "%BASE_PATH%/SymOntoClayAsset",
                 SourcePath = "%SLN_ROOT_PATH%/Assets/SymOntoClay",
                 License = "MIT"

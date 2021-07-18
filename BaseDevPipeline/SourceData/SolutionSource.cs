@@ -10,6 +10,7 @@ namespace BaseDevPipeline.SourceData
     public class SolutionSource : IObjectToString
     {
         public string Kind { get; set; }
+        public string Href { get; set; }
         public string Path { get; set; }
         /// <summary>
         /// This filed should be used if Sln has non standard name and can not be detected automatically.
@@ -38,6 +39,7 @@ namespace BaseDevPipeline.SourceData
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
             sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
             sb.AppendLine($"{spaces}{nameof(SlnPath)} = {SlnPath}");
             sb.AppendLine($"{spaces}{nameof(License)} = {License}");

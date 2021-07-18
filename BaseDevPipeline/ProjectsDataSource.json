@@ -13,6 +13,7 @@
   "Solutions": [
     {
       "Kind": "GeneralSolution",
+      "Href": "https://github.com/Symontoclay/SymOntoClay",
       "Path": "%BASE_PATH%/SymOntoClay",
       "License": "MIT",
       "Projects": [
@@ -56,11 +57,13 @@
     },
     {
       "Kind": "ProjectSite",
+      "Href": "https://github.com/Symontoclay/symontoclay.github.io",
       "Path": "%BASE_PATH%/symontoclay.github.io",
       "SourcePath": "%SLN_ROOT_PATH%/siteSource/"
     },
     {
       "Kind": "Unity",
+      "Href": "https://github.com/Symontoclay/SymOntoClayAsset",
       "Path": "%BASE_PATH%/SymOntoClayAsset",
       "License": "MIT",
       "SourcePath": "%SLN_ROOT_PATH%/Assets/SymOntoClay"

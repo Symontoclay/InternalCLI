@@ -306,11 +306,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            //FutureReleaseInfo.SaveExampleFile("future_release_1.json");
+            FutureReleaseInfo.SaveExampleFile("future_release_1.json");
 
             var futureReleaseInfo = FutureReleaseInfo.ReadFile("future_release.json");
 
-            _logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
+            //_logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
 
             _logger.Info("End");
         }
@@ -319,11 +319,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            //var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
 
-            _logger.Info($"settings = {settings}");
+            //_logger.Info($"settings = {settings}");
 
-            //ProjectsDataSource.SaveExampleFile("ProjectsDataSource_1.json");
+            ProjectsDataSource.SaveExampleFile("ProjectsDataSource_1.json");
 
             _logger.Info("End");
         }

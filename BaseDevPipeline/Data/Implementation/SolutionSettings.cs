@@ -10,6 +10,10 @@ namespace BaseDevPipeline.Data.Implementation
     public class SolutionSettings: ISolutionSettings
     {
         public KindOfProject Kind { get; set; }
+        public string Href { get; set; }
+        public string GitFileHref { get; set; }
+        public string RepositoryName { get; set; }
+        public string OwnerName { get; set; }
         public string Path { get; set; }
         public string SlnPath { get; set; }
         public string SourcePath { get; set; }
@@ -45,7 +49,17 @@ namespace BaseDevPipeline.Data.Implementation
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            sb.AppendLine($"{spaces}{nameof()} = {}");
+            sb.AppendLine($"{spaces}{nameof()} = {}");
+            sb.AppendLine($"{spaces}{nameof()} = {}");
+            sb.AppendLine($"{spaces}{nameof()} = {}");
             sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
+            /*
+                     public string Href { get; set; }
+        public string GitFileHref { get; set; }
+        public string RepositoryName { get; set; }
+        public string OwnerName { get; set; }
+             */
             sb.AppendLine($"{spaces}{nameof(SlnPath)} = {SlnPath}");
             sb.AppendLine($"{spaces}{nameof(SourcePath)} = {SourcePath}");
             sb.PrintObjListProp(n, nameof(Projects), Projects);
