@@ -33,8 +33,8 @@ namespace TestSandBox
             //TstGitHubAPIGet();
             //TstTempDirectory();
             //TstCoreToAssetTask();
-            TstFutureReleaseInfo();
-            //TstProjectsDataSource();
+            //TstFutureReleaseInfo();
+            TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();

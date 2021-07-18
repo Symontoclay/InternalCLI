@@ -3,6 +3,9 @@
     "%USERPROFILE%/Documents/GitHub",
     "%USERPROFILE%/source/repos"
   ],
+  "SecretsFilePaths": [
+    "%USERPROFILE%/example_s.json"
+  ],
   "UnityPaths": [
     "%ProgramFiles%/Unity/Editor/Unity.exe",
     "%ProgramFiles%/Unity/Hub/Editor/2020.2.3f1/Editor/Unity.exe"

@@ -95,6 +95,10 @@ namespace BaseDevPipeline
                     "%USERPROFILE%/Documents/GitHub",
                     "%USERPROFILE%/source/repos"
                 },
+                SecretsFilePaths = new List<string>()
+                {
+                    "%USERPROFILE%/SymOntoClay_secrets.json"
+                },
                 UnityPaths = new List<string>()
                 {
                     "%ProgramFiles%/Unity/Editor/Unity.exe",

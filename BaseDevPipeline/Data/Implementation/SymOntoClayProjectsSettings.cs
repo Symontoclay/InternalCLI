@@ -12,6 +12,8 @@ namespace BaseDevPipeline.Data.Implementation
         /// <inheritdoc/>
         public string BasePath { get; set; }
 
+        public string SecretFilePath { get; set; }
+
         public List<UtityExeInstance> UtityExeInstances { get; set; }
 
         /// <inheritdoc/>
@@ -136,6 +138,7 @@ namespace BaseDevPipeline.Data.Implementation
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(BasePath)} = {BasePath}");
+            sb.AppendLine($"{spaces}{nameof(SecretFilePath)} = {SecretFilePath}");
             sb.PrintObjListProp(n, nameof(UtityExeInstances), UtityExeInstances);
             sb.PrintObjListProp(n, nameof(Solutions), Solutions);
             sb.PrintObjListProp(n, nameof(Projects), Projects);

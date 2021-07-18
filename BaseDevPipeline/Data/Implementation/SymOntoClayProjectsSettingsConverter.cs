@@ -21,6 +21,8 @@ namespace BaseDevPipeline.Data.Implementation
 
             EVPath.RegVar("BASE_PATH", result.BasePath);
 
+            result.SecretFilePath = DetectSecretFilePath(source.SecretsFilePaths);
+
             result.UtityExeInstances = DetectUnities(source.UnityPaths);
 
             var licensesDict = new Dictionary<string, LicenseSettings>();
@@ -46,6 +48,23 @@ namespace BaseDevPipeline.Data.Implementation
             {
                 case 1:
                     return existingBasePaths.Single();
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private static string DetectSecretFilePath(List<string> secretsFilePaths)
+        {
+            var normalizedSecretsFilePaths = secretsFilePaths.Select(p => PathsHelper.Normalize(p));
+
+            var existingSecretsFilePaths = normalizedSecretsFilePaths.Where(p => File.Exists(p));
+
+            var count = existingSecretsFilePaths.Count();
+
+            switch (count)
+            {
+                case 1:
+                    return existingSecretsFilePaths.Single();
             }
 
             throw new NotImplementedException();

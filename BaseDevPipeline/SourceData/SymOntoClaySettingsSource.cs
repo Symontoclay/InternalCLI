@@ -10,6 +10,7 @@ namespace BaseDevPipeline.SourceData
     public class SymOntoClaySettingsSource : IObjectToString
     {
         public List<string> BasePaths { get; set; }
+        public List<string> SecretsFilePaths { get; set; }
         public List<string> UnityPaths { get; set; }
         public List<SolutionSource> Solutions { get; set; }
         public List<ArtifactDest> Artifacts { get; set; }
@@ -34,6 +35,7 @@ namespace BaseDevPipeline.SourceData
             var sb = new StringBuilder();
 
             sb.PrintPODList(n, nameof(BasePaths), BasePaths);
+            sb.PrintPODList(n, nameof(SecretsFilePaths), SecretsFilePaths);
             sb.PrintPODList(n, nameof(UnityPaths), UnityPaths);
             sb.PrintObjListProp(n, nameof(Solutions), Solutions);
             sb.PrintObjListProp(n, nameof(Artifacts), Artifacts);

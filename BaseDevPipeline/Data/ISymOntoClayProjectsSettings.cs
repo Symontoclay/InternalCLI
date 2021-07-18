@@ -10,6 +10,7 @@ namespace BaseDevPipeline.Data
     public interface ISymOntoClayProjectsSettings : IObjectToString
     {
         string BasePath { get; }
+        string SecretFilePath { get; }
         IReadOnlyList<IUtityExeInstance> UtityExeInstances { get; }
         IReadOnlyList<ISolutionSettings> Solutions { get; }
         IReadOnlyList<IProjectSettings> Projects { get; }
