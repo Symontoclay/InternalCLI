@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -50,7 +51,33 @@ namespace CommonUtils
                 }
             }
 
-            return Path.GetFullPath(sourcePath);
+            var fullPath = Path.GetFullPath(sourcePath);
+
+            var colonPos = fullPath.IndexOf(":", 5);
+
+            if(colonPos == -1)
+            {
+                return fullPath;
+            }
+
+            var backSlashPos = DetectBackSlachPos(fullPath, colonPos);
+
+            return fullPath.Substring(backSlashPos + 1);
+        }
+
+        private static int DetectBackSlachPos(string value, int colonPos)
+        {
+            for(var i = colonPos; i >= 0; i--)
+            {
+                var ch = value[i];
+
+                if(ch == '/' || ch == '\\')
+                {
+                    return i;
+                }
+            }
+
+            return 0;
         }
 
         public static void RegVar(string varName, string varValue)

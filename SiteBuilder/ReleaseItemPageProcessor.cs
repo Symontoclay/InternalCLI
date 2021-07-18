@@ -51,8 +51,8 @@ namespace SiteBuilder
             return result;
         }
 
-        public ReleaseItemPageProcessor(ReleaseItem releaseItem)
-            : base(ConvertReleaseItemToSiteElementInfo(releaseItem))
+        public ReleaseItemPageProcessor(ReleaseItem releaseItem, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+            : base(ConvertReleaseItemToSiteElementInfo(releaseItem), generalSiteBuilderSettings)
         {
             _releaseItem = releaseItem;
         }

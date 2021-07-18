@@ -1,4 +1,5 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
 using dotless.Core;
 using Newtonsoft.Json;
 using NLog;
@@ -18,6 +19,21 @@ namespace SiteBuilder
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
+        public SiteBuilder(SiteBuilderOptions options)
+        {
+            _generalSiteBuilderSettings = new GeneralSiteBuilderSettings(new GeneralSiteBuilderSettingsOptions
+            {
+                RootPath = options.RootPath,
+                KindOfTargetUrl = options.KindOfTargetUrl,
+                SiteName = options.SiteName,
+                SourcePath = options.SourcePath,
+                DestPath = options.DestPath,
+                TempPath = options.TempPath
+            });
+        }
+
+        private readonly GeneralSiteBuilderSettings _generalSiteBuilderSettings;
+
         public void Run()
         {
 #if DEBUG
@@ -35,7 +51,7 @@ namespace SiteBuilder
             ProcessReleaseNotesPages();
             ProcessCSharpUserApiXMLDocsList();
 
-            ProcessSiteElementsList(GeneralSettings.SiteElementsList);
+            ProcessSiteElementsList(_generalSiteBuilderSettings.SiteElementsList);
 
             GenerateSiteMap();
 
@@ -48,7 +64,7 @@ namespace SiteBuilder
 
         private void ProcessCSharpUserApiXMLDocsList()
         {
-            foreach (var packageCard in GeneralSettings.CSharpUserApiXMLDocsList)
+            foreach (var packageCard in _generalSiteBuilderSettings.CSharpUserApiXMLDocsList)
             {
 #if DEBUG
                 //_logger.Info($"packageCard = {packageCard.ToBriefString()}");
@@ -74,7 +90,7 @@ namespace SiteBuilder
                         fileInfo.Directory.Create();
                     }
 
-                    var pageProcessor = new InterfaceCSharpUserApiXMLDocPageProcessor(item);
+                    var pageProcessor = new InterfaceCSharpUserApiXMLDocPageProcessor(item, _generalSiteBuilderSettings);
                     pageProcessor.Run();
 
                     ProcessCSharpUserApiXMLDocsClassCardMembersList(item, pageProcessor.SiteElementInfo);
@@ -97,7 +113,7 @@ namespace SiteBuilder
                         fileInfo.Directory.Create();
                     }
 
-                    var pageProcessor = new ClassCSharpUserApiXMLDocPageProcessor(item);
+                    var pageProcessor = new ClassCSharpUserApiXMLDocPageProcessor(item, _generalSiteBuilderSettings);
                     pageProcessor.Run();
 
                     ProcessCSharpUserApiXMLDocsClassCardMembersList(item, pageProcessor.SiteElementInfo);
@@ -120,7 +136,7 @@ namespace SiteBuilder
                         fileInfo.Directory.Create();
                     }
 
-                    var pageProcessor = new EnumCSharpUserApiXMLDocPageProcessor(item);
+                    var pageProcessor = new EnumCSharpUserApiXMLDocPageProcessor(item, _generalSiteBuilderSettings);
                     pageProcessor.Run();
                 }
             }
@@ -139,7 +155,7 @@ namespace SiteBuilder
 
                 _hrefsList.Add(prop.Href);
 
-                var pageProcessor = new PropertyCSharpUserApiXMLDocPageProcessor(prop, parent);
+                var pageProcessor = new PropertyCSharpUserApiXMLDocPageProcessor(prop, parent, _generalSiteBuilderSettings);
                 pageProcessor.Run();
             }
 
@@ -155,14 +171,14 @@ namespace SiteBuilder
                 _hrefsList.Add(method.Href);
 
 
-                var pageProcessor = new MethodCSharpUserApiXMLDocPageProcessor(method, parent);
+                var pageProcessor = new MethodCSharpUserApiXMLDocPageProcessor(method, parent, _generalSiteBuilderSettings);
                 pageProcessor.Run();
             }
         }
 
         private void ProcessReleaseNotesPages()
         {
-            foreach(var releaseItem in GeneralSettings.ReleaseItemsList)
+            foreach(var releaseItem in _generalSiteBuilderSettings.ReleaseItemsList)
             {
 #if DEBUG
                 //_logger.Info($"releaseItem = {releaseItem}");
@@ -177,7 +193,7 @@ namespace SiteBuilder
 
                 _hrefsList.Add(releaseItem.Href);
 
-                var pageProcessor = new ReleaseItemPageProcessor(releaseItem);
+                var pageProcessor = new ReleaseItemPageProcessor(releaseItem, _generalSiteBuilderSettings);
                 pageProcessor.Run();
             }
         }
@@ -211,7 +227,7 @@ namespace SiteBuilder
             //NLog.LogManager.GetCurrentClassLogger().Info($"PredictionProcessingOfConcreteDir sb.ToString() = {sb.ToString()}");
 #endif
 
-            var newPath = Path.Combine(GeneralSettings.DestPath, "sitemap.xml");
+            var newPath = Path.Combine(_generalSiteBuilderSettings.DestPath, "sitemap.xml");
 
 #if DEBUG
             //NLog.LogManager.GetCurrentClassLogger().Info($"PredictionProcessingOfConcreteDir newPath = {newPath}");
@@ -243,7 +259,7 @@ namespace SiteBuilder
                 {
                     case KindOfSiteElement.Page:
                         {
-                            var pageProcessor = new PageProcessor(siteElement);
+                            var pageProcessor = new PageProcessor(siteElement, _generalSiteBuilderSettings);
                             pageProcessor.Run();
 
                             _hrefsList.Add(siteElement.Href);
@@ -284,23 +300,23 @@ namespace SiteBuilder
             //_logger.Info($"GeneralSettings.DestPath = {GeneralSettings.DestPath}");
 #endif
 
-            var dirs = Directory.GetDirectories(GeneralSettings.DestPath);
+            var dirs = Directory.GetDirectories(_generalSiteBuilderSettings.DestPath);
 
             foreach (var subDir in dirs)
             {
                 var tmpDirInfo = new DirectoryInfo(subDir);
 
-                if (tmpDirInfo.Name == GeneralSettings.IgnoreDestDir)
+                if (tmpDirInfo.Name == GeneralSiteBuilderSettings.IgnoreDestDir)
                 {
                     continue;
                 }
 
-                if (tmpDirInfo.Name == GeneralSettings.IgnoreGitDir)
+                if (tmpDirInfo.Name == GeneralSiteBuilderSettings.IgnoreGitDir)
                 {
                     continue;
                 }
 
-                if (tmpDirInfo.Name == GeneralSettings.VSDir)
+                if (tmpDirInfo.Name == GeneralSiteBuilderSettings.VSDir)
                 {
                     continue;
                 }
@@ -308,18 +324,18 @@ namespace SiteBuilder
                 tmpDirInfo.Delete(true);
             }
 
-            var files = Directory.GetFiles(GeneralSettings.DestPath);
+            var files = Directory.GetFiles(_generalSiteBuilderSettings.DestPath);
 
             foreach (var file in files)
             {
                 File.Delete(file);
             }
 
-            if (!string.IsNullOrWhiteSpace(GeneralSettings.TempPath))
+            if (!string.IsNullOrWhiteSpace(_generalSiteBuilderSettings.TempPath))
             {
-                if (Directory.Exists(GeneralSettings.TempPath))
+                if (Directory.Exists(_generalSiteBuilderSettings.TempPath))
                 {
-                    files = Directory.GetFiles(GeneralSettings.TempPath);
+                    files = Directory.GetFiles(_generalSiteBuilderSettings.TempPath);
 
                     foreach (var file in files)
                     {

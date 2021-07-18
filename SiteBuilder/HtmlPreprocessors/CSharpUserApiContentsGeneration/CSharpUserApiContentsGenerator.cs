@@ -13,7 +13,7 @@ namespace SiteBuilder.HtmlPreprocessors.CSharpUserApiContentsGeneration
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        public static string Run(string initialContent)
+        public static string Run(string initialContent, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //_logger.Info($"initialContent = {initialContent}");
@@ -22,12 +22,12 @@ namespace SiteBuilder.HtmlPreprocessors.CSharpUserApiContentsGeneration
             var doc = new HtmlDocument();
             doc.LoadHtml(initialContent);
 
-            ProcessNodes(doc.DocumentNode, doc);
+            ProcessNodes(doc.DocumentNode, doc, generalSiteBuilderSettings);
 
             return doc.ToHtmlString();
         }
 
-        private static void ProcessNodes(HtmlNode rootNode, HtmlDocument doc)
+        private static void ProcessNodes(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //if (rootNode.Name != "#document")
@@ -41,17 +41,17 @@ namespace SiteBuilder.HtmlPreprocessors.CSharpUserApiContentsGeneration
 
             if(rootNode.Name == "csharp_user_api_contents")
             {
-                ProcessCSharpUserApiContents(rootNode, doc);
+                ProcessCSharpUserApiContents(rootNode, doc, generalSiteBuilderSettings);
                 return;
             }
 
             foreach (var node in rootNode.ChildNodes.ToList())
             {
-                ProcessNodes(node, doc);
+                ProcessNodes(node, doc, generalSiteBuilderSettings);
             }
         }
 
-        private static void ProcessCSharpUserApiContents(HtmlNode rootNode, HtmlDocument doc)
+        private static void ProcessCSharpUserApiContents(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             var newRootNode = doc.CreateElement("div");
             var parentNode = rootNode.ParentNode;
@@ -59,7 +59,7 @@ namespace SiteBuilder.HtmlPreprocessors.CSharpUserApiContentsGeneration
 
             var sb = new StringBuilder();
 
-            foreach (var packageCard in GeneralSettings.CSharpUserApiXMLDocsList)
+            foreach (var packageCard in generalSiteBuilderSettings.CSharpUserApiXMLDocsList)
             {
 #if DEBUG
                 //_logger.Info($"packageCard = {packageCard.ToBriefString()}");

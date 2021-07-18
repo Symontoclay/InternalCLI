@@ -10,15 +10,15 @@ namespace SiteBuilder
 #if DEBUG
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
-        public static string PathToRelativeHref(string path)
+        public static string PathToRelativeHref(string path, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
-            var pos = path.IndexOf(GeneralSettings.SiteName);
-            return path.Substring(pos).Replace(GeneralSettings.SiteName, string.Empty).ToLower();
+            var pos = path.IndexOf(generalSiteBuilderSettings.SiteName);
+            return path.Substring(pos).Replace(generalSiteBuilderSettings.SiteName, string.Empty).ToLower();
         }
 
-        public static string RelativeHrefToAbsolute(string relativeHref)
+        public static string RelativeHrefToAbsolute(string relativeHref, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
-            var domainHref = GeneralSettings.SiteHref;
+            var domainHref = generalSiteBuilderSettings.SiteHref;
 
 #if DEBUG
             //_logger.Info($"RelativeHrefToAbsolute relativeHref = {relativeHref}");

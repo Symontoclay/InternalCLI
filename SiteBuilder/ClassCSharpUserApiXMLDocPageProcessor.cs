@@ -7,8 +7,8 @@ namespace SiteBuilder
 {
     public class ClassCSharpUserApiXMLDocPageProcessor : BaseClassCardCSharpUserApiXMLDocPageProcessor
     {
-        public ClassCSharpUserApiXMLDocPageProcessor(ClassCard classInfo)
-            : base(classInfo)
+        public ClassCSharpUserApiXMLDocPageProcessor(ClassCard classInfo, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+            : base(classInfo, generalSiteBuilderSettings)
         {
         }
 

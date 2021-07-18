@@ -23,7 +23,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             "h6"
         };
 
-        public static string Run(string initialContent)
+        public static string Run(string initialContent, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             var doc = new HtmlDocument();
             doc.LoadHtml(initialContent);
@@ -31,7 +31,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             var hrefsDict = new Dictionary<string, string>();
 
             DiscoverHrefNodes(doc.DocumentNode, hrefsDict);
-            DiscoverNodes(doc.DocumentNode, doc, hrefsDict);
+            DiscoverNodes(doc.DocumentNode, doc, hrefsDict, generalSiteBuilderSettings);
 
             return doc.ToHtmlString();
         }
@@ -74,7 +74,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             }
         }
 
-        private static void DiscoverNodes(HtmlNode rootNode, HtmlDocument doc, Dictionary<string, string> hrefsDict)
+        private static void DiscoverNodes(HtmlNode rootNode, HtmlDocument doc, Dictionary<string, string> hrefsDict, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.Name = '{rootNode.Name}'");
@@ -95,7 +95,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
                 if(href.StartsWith("T:") || href.StartsWith("P:") || href.StartsWith("F:") || href.StartsWith("M:") || href.StartsWith("E:"))
                 {
-                    ProcessTypeNameHref(rootNode, doc);
+                    ProcessTypeNameHref(rootNode, doc, generalSiteBuilderSettings);
                     return;
                 }
             }
@@ -316,11 +316,11 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             foreach (var node in rootNode.ChildNodes.ToList())
             {
-                DiscoverNodes(node, doc, hrefsDict);
+                DiscoverNodes(node, doc, hrefsDict, generalSiteBuilderSettings);
             }
         }
         
-        private static void ProcessTypeNameHref(HtmlNode rootNode, HtmlDocument doc)
+        private static void ProcessTypeNameHref(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             var href = rootNode.GetAttributeValue("href", string.Empty);
 
@@ -328,7 +328,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             //_logger.Info($"href = {href}");
 #endif
 
-            var codeDocument = GeneralSettings.CSharpUserApiXMLDocsCodeDocumentDict[href];
+            var codeDocument = generalSiteBuilderSettings.CSharpUserApiXMLDocsCodeDocumentDict[href];
 
 #if DEBUG
             //_logger.Info($"codeDocument = {codeDocument}");

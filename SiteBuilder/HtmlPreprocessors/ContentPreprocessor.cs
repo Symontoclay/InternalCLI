@@ -19,17 +19,17 @@ namespace SiteBuilder.HtmlPreprocessors
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        public static string Run(string initialContent, bool useMarkdown)
+        public static string Run(string initialContent, bool useMarkdown, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             if(useMarkdown)
             {
                 return CommonMarkConverter.Convert(initialContent);
             }
 
-            return PreprocessContent(initialContent);
+            return PreprocessContent(initialContent, generalSiteBuilderSettings);
         }
 
-        private static string PreprocessContent(string initialContent)
+        private static string PreprocessContent(string initialContent, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             var content = EBNFPreparation.Run(initialContent);
 
@@ -37,31 +37,31 @@ namespace SiteBuilder.HtmlPreprocessors
             //_logger.Info($"content (1) = {content}");
 #endif
 
-            content = ShortTagsPreparation.Run(content);
+            content = ShortTagsPreparation.Run(content, generalSiteBuilderSettings);
 
 #if DEBUG
             //_logger.Info($"content (2) = {content}");
 #endif
 
-            content = CodeHighlighter.Run(content);
+            content = CodeHighlighter.Run(content, generalSiteBuilderSettings);
 
 #if DEBUG
             //_logger.Info($"content (3) = {content}");
 #endif
 
-            content = RoadmapGenerator.Run(content);
+            content = RoadmapGenerator.Run(content, generalSiteBuilderSettings);
 
 #if DEBUG
             //_logger.Info($"content (4) = {content}");
 #endif
 
-            content = ReleaseInfoGenerator.Run(content);
+            content = ReleaseInfoGenerator.Run(content, generalSiteBuilderSettings);
 
 #if DEBUG
             //_logger.Info($"content (5) = {content}");
 #endif
 
-            content = CSharpUserApiContentsGenerator.Run(content);
+            content = CSharpUserApiContentsGenerator.Run(content, generalSiteBuilderSettings);
 
 #if DEBUG
             //_logger.Info($"content (6) = {content}");

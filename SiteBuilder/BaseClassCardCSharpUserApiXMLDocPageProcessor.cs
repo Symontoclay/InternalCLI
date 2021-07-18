@@ -16,7 +16,7 @@ namespace SiteBuilder
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        private static SiteElementInfo ConvertClassCardToSiteElementInfo(ClassCard classCard)
+        private static SiteElementInfo ConvertClassCardToSiteElementInfo(ClassCard classCard, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //_logger.Info($"classCard = {classCard}");
@@ -32,7 +32,7 @@ namespace SiteBuilder
 
             result.SitePageInfo = sitePageInfo;
             sitePageInfo.IsReady = true;
-    
+
             var title = $"{classCard.Name.Name} {(classCard.KindOfType == KindOfType.Class ? "Class" : "Interface")} ({classCard.Name.Path}) | C# user API reference | SymOntoClay Docs";
 
             result.BreadcrumbTitle = classCard.Name.Name;
@@ -45,8 +45,8 @@ namespace SiteBuilder
             microdata.Title = title;
             microdata.Description = classCard.Summary;
 
-            result.Parent = GeneralSettings.RootCSharpUserApiXMLDocSiteElement;
-            GeneralSettings.RootCSharpUserApiXMLDocSiteElement.SubItemsList.Add(result);
+            result.Parent = generalSiteBuilderSettings.RootCSharpUserApiXMLDocSiteElement;
+            generalSiteBuilderSettings.RootCSharpUserApiXMLDocSiteElement.SubItemsList.Add(result);
 
 #if DEBUG
             //_logger.Info($"result = {result}");
@@ -55,8 +55,8 @@ namespace SiteBuilder
             return result;
         }
 
-        protected BaseClassCardCSharpUserApiXMLDocPageProcessor(ClassCard classCard)
-            : base(ConvertClassCardToSiteElementInfo(classCard))
+        protected BaseClassCardCSharpUserApiXMLDocPageProcessor(ClassCard classCard, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+            : base(ConvertClassCardToSiteElementInfo(classCard, generalSiteBuilderSettings), generalSiteBuilderSettings)
         {
             _classCard = classCard;
 

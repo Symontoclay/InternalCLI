@@ -55,7 +55,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             SymOntoClay
         }
 
-        public static string Run(string initialContent)
+        public static string Run(string initialContent, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //_logger.Info($"initialContent = {initialContent}");
@@ -64,12 +64,12 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             var doc = new HtmlDocument();
             doc.LoadHtml(initialContent);
 
-            ProcessNodes(doc.DocumentNode, doc);
+            ProcessNodes(doc.DocumentNode, doc, generalSiteBuilderSettings);
 
             return doc.ToHtmlString();
         }
 
-        private static void ProcessNodes(HtmlNode rootNode, HtmlDocument doc)
+        private static void ProcessNodes(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //if (rootNode.Name != "#document")
@@ -106,13 +106,13 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     case "c#":
                     case "C#":
                     case "csharp":
-                        ProcessLng(rootNode, doc, KindOfLng.CSharp);
+                        ProcessLng(rootNode, doc, KindOfLng.CSharp, generalSiteBuilderSettings);
                         return;
 
                     case "soc":
                     case "SymOntoClay":
                     case "symontoclay":
-                        ProcessLng(rootNode, doc, KindOfLng.SymOntoClay);
+                        ProcessLng(rootNode, doc, KindOfLng.SymOntoClay, generalSiteBuilderSettings);
                         return;
 
                     default:
@@ -128,7 +128,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
             foreach (var node in rootNode.ChildNodes.ToList())
             {
-                ProcessNodes(node, doc);
+                ProcessNodes(node, doc, generalSiteBuilderSettings);
             }
         }
 
@@ -164,7 +164,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             }
         }
 
-        private static void ProcessLng(HtmlNode rootNode, HtmlDocument doc, KindOfLng kindOfLng)
+        private static void ProcessLng(HtmlNode rootNode, HtmlDocument doc, KindOfLng kindOfLng, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //_logger.Info($"kindOfLng = {kindOfLng}");
@@ -229,11 +229,11 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 {
                     if (exampleHref.StartsWith("/"))
                     {
-                        exampleHref = $"{GeneralSettings.SiteHref}{exampleHref}";
+                        exampleHref = $"{generalSiteBuilderSettings.SiteHref}{exampleHref}";
                     }
                     else
                     {
-                        exampleHref = $"{GeneralSettings.SiteHref}/{exampleHref}";
+                        exampleHref = $"{generalSiteBuilderSettings.SiteHref}/{exampleHref}";
                     }
                 }
 

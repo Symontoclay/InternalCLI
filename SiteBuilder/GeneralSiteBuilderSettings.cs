@@ -4,7 +4,6 @@ using NLog;
 using SiteBuilder.SiteData;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,15 +12,15 @@ using XMLDocReader.CSharpDoc;
 
 namespace SiteBuilder
 {
-    public static class GeneralSettings
+    public class GeneralSiteBuilderSettings
     {
 #if DEBUG
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        static GeneralSettings()
+        public GeneralSiteBuilderSettings(GeneralSiteBuilderSettingsOptions options)
         {
-            var rootPath = ConfigAppSettingsHelper.GetExistingDirectoryName("rootPath");
+            var rootPath = EVPath.Normalize(options.RootPath);
 
 #if DEBUG
             //_logger.Info($"GeneralSettings() rootPath = {rootPath}");
@@ -29,19 +28,13 @@ namespace SiteBuilder
 
             EVPath.RegVar("SITE_ROOT_PATH", rootPath);
 
-            var kindOfTargetUrlStr = ConfigurationManager.AppSettings["kindOfTargetUrl"];
-
-#if DEBUG
-            //_logger.Info($"GeneralSettings() kindOfTargetUrlStr = {kindOfTargetUrlStr}");
-#endif
-
-            KindOfTargetUrl = ParseKindOfTargetUrl(kindOfTargetUrlStr);
+            KindOfTargetUrl = options.KindOfTargetUrl;
 
 #if DEBUG
             //_logger.Info($"GeneralSettings() KindOfTargetUrl = {KindOfTargetUrl}");
 #endif
 
-            SiteName = ConfigurationManager.AppSettings["siteName"];
+            SiteName = options.SiteName;
 
 #if DEBUG
             //_logger.Info($"SiteName = {SiteName}");
@@ -69,7 +62,7 @@ namespace SiteBuilder
             //_logger.Info($"SiteHref = {SiteHref}");
 #endif
 
-            SourcePath = EVPath.Normalize(ConfigurationManager.AppSettings["sourcePath"]);
+            SourcePath = EVPath.Normalize(options.SourcePath);
 
 #if DEBUG
             //_logger.Info($"GeneralSettings() SourcePath = {SourcePath}");
@@ -77,16 +70,16 @@ namespace SiteBuilder
 
             EVPath.RegVar("SITE_SOURCE_PATH", SourcePath);
 
-            DestPath = EVPath.Normalize(ConfigurationManager.AppSettings["destPath"]);
+            DestPath = EVPath.Normalize(options.DestPath);
 
 #if DEBUG
             //_logger.Info($"GeneralSettings() DestPath = {DestPath}");
-            //_logger.Info($"ConfigurationManager.AppSettings['tempPath'] = {ConfigurationManager.AppSettings["tempPath"]}");
+            //_logger.Info($"options.TempPath = {options.TempPath}");
 #endif
 
             EVPath.RegVar("SITE_DEST_PATH", DestPath);
 
-            var initTempPath = ConfigurationManager.AppSettings["tempPath"];
+            var initTempPath = EVPath.Normalize(options.TempPath);
 
 #if DEBUG
             //_logger.Info($"initTempPath = {initTempPath}");
@@ -126,53 +119,32 @@ namespace SiteBuilder
         public const string IgnoreGitDir = ".git";
         public const string VSDir = ".vs";
 
-        public static string SiteName { get; private set; } = string.Empty;
-        public static string SiteHref { get; private set; } = string.Empty;
+        public string SiteName { get; private set; } = string.Empty;
+        public string SiteHref { get; private set; } = string.Empty;
 
-        public static string SourcePath { get; private set; } = string.Empty;
+        public string SourcePath { get; private set; } = string.Empty;
 
-        public static string DestPath { get; private set; } = string.Empty;
+        public string DestPath { get; private set; } = string.Empty;
 
-        public static string TempPath { get; private set; } = string.Empty;
+        public string TempPath { get; private set; } = string.Empty;
 
-        public static List<string> IgnoredDirsList { get; private set; } = new List<string>();
+        public List<string> IgnoredDirsList { get; private set; } = new List<string>();
 
-        public static SiteInfo SiteSettings { get; private set; }
+        public SiteInfo SiteSettings { get; private set; }
 
-        public static bool UseMinification { get; set; } = false;
+        public bool UseMinification { get; set; } = false;
 
-        public static KindOfTargetUrl KindOfTargetUrl { get; set; }
+        public KindOfTargetUrl KindOfTargetUrl { get; set; }
 
-        public static List<SiteElementInfo> SiteElementsList { get; private set; }
-        public static SiteElementInfo RootCSharpUserApiXMLDocSiteElement { get; private set; }
+        public List<SiteElementInfo> SiteElementsList { get; private set; }
+        public SiteElementInfo RootCSharpUserApiXMLDocSiteElement { get; private set; }
 
-        public static List<RoadMapItem> RoadMapItemsList { get; private set; } = new List<RoadMapItem>();
-        public static List<ReleaseItem> ReleaseItemsList { get; private set; } = new List<ReleaseItem>();
-        public static List<PackageCard> CSharpUserApiXMLDocsList { get; private set; } = new List<PackageCard>();
-        public static Dictionary<string, ICodeDocument> CSharpUserApiXMLDocsCodeDocumentDict = new Dictionary<string, ICodeDocument>();
+        public List<RoadMapItem> RoadMapItemsList { get; private set; } = new List<RoadMapItem>();
+        public List<ReleaseItem> ReleaseItemsList { get; private set; } = new List<ReleaseItem>();
+        public List<PackageCard> CSharpUserApiXMLDocsList { get; private set; } = new List<PackageCard>();
+        public Dictionary<string, ICodeDocument> CSharpUserApiXMLDocsCodeDocumentDict = new Dictionary<string, ICodeDocument>();
 
-        private static KindOfTargetUrl ParseKindOfTargetUrl(string value)
-        {
-#if DEBUG
-            //_logger.Info($"value = {value}");
-#endif
-
-            if(string.IsNullOrWhiteSpace(value))
-            {
-                return KindOfTargetUrl.Domain;
-            }
-
-            var firstChar = value[0];
-
-            if (char.IsLower(firstChar))
-            {
-                value = value.Remove(0, 1).Insert(0, char.ToUpper(firstChar).ToString());
-            }
-
-            return (KindOfTargetUrl)Enum.Parse(typeof(KindOfTargetUrl), value);
-        }
-
-        private static void ReadSiteSettings()
+        private void ReadSiteSettings()
         {
             var tmpSiteSettingsPath = Path.Combine(SourcePath, "site.site");
 
@@ -182,7 +154,7 @@ namespace SiteBuilder
             //_logger.Info($"SiteSettings = {SiteSettings}");
 #endif
 
-            var rootSiteElement = SiteElementInfoReader.Read(SourcePath, DestPath, SiteHref, IgnoredDirsList, new List<string>() { /*".gitignore",*/ "roadMap.json", "site.site" });
+            var rootSiteElement = SiteElementInfoReader.Read(SourcePath, DestPath, SiteHref, IgnoredDirsList, new List<string>() { /*".gitignore",*/ "roadMap.json", "site.site" }, this);
 
 #if DEBUG
             //_logger.Info($"rootSiteElement = {rootSiteElement}");
@@ -235,7 +207,7 @@ namespace SiteBuilder
             ReadCSharpUserApiXMLDocsList();
         }
 
-        private static List<SiteElementInfo> LinearizeSiteElementInfoTreeWithoutRoot(SiteElementInfo rootSiteElement)
+        private List<SiteElementInfo> LinearizeSiteElementInfoTreeWithoutRoot(SiteElementInfo rootSiteElement)
         {
             var result = new List<SiteElementInfo>();
 
@@ -244,7 +216,7 @@ namespace SiteBuilder
             return result;
         }
 
-        private static void LinearizeSiteElementInfoTreeWithoutRoot(SiteElementInfo siteElement, List<SiteElementInfo> result)
+        private void LinearizeSiteElementInfoTreeWithoutRoot(SiteElementInfo siteElement, List<SiteElementInfo> result)
         {
 #if DEBUG
             //_logger.Info($"siteElement = {siteElement}");
@@ -261,7 +233,7 @@ namespace SiteBuilder
             }
         }
 
-        private static void ReadCSharpUserApiXMLDocsList()
+        private void ReadCSharpUserApiXMLDocsList()
         {
             var csharpApiJsonPath = SiteSettings.CSharpUserApiJsonPath;
 

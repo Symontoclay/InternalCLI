@@ -53,8 +53,8 @@ namespace SiteBuilder
             return result;
         }
 
-        public MethodCSharpUserApiXMLDocPageProcessor(MethodCard methodCard, SiteElementInfo parent)
-            : base(ConvertMethodCardToSiteElementInfo(methodCard, parent))
+        public MethodCSharpUserApiXMLDocPageProcessor(MethodCard methodCard, SiteElementInfo parent, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+            : base(ConvertMethodCardToSiteElementInfo(methodCard, parent), generalSiteBuilderSettings)
         {
             _methodCard = methodCard;
         }

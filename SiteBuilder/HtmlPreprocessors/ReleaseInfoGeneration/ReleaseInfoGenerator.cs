@@ -18,7 +18,7 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
 
         private static readonly CultureInfo _targetCulture = new CultureInfo("en-GB");
 
-        public static string Run(string initialContent)
+        public static string Run(string initialContent, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //_logger.Info($"initialContent = {initialContent}");
@@ -27,12 +27,12 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
             var doc = new HtmlDocument();
             doc.LoadHtml(initialContent);
 
-            ProcessNodes(doc.DocumentNode, doc);
+            ProcessNodes(doc.DocumentNode, doc, generalSiteBuilderSettings);
 
             return doc.ToHtmlString();
         }
 
-        private static void ProcessNodes(HtmlNode rootNode, HtmlDocument doc)
+        private static void ProcessNodes(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //if (rootNode.Name != "#document")
@@ -46,29 +46,29 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
 
             if (rootNode.Name == "release")
             {
-                ProcessReleaseInfo(rootNode, doc);
+                ProcessReleaseInfo(rootNode, doc, generalSiteBuilderSettings);
                 return;
             }
 
             if (rootNode.Name == "prev_releases")
             {
-                ProcessPrevReleasesList(rootNode, doc);
+                ProcessPrevReleasesList(rootNode, doc, generalSiteBuilderSettings);
                 return;
             }
 
             foreach (var node in rootNode.ChildNodes.ToList())
             {
-                ProcessNodes(node, doc);
+                ProcessNodes(node, doc, generalSiteBuilderSettings);
             }
         }
 
-        private static void ProcessPrevReleasesList(HtmlNode rootNode, HtmlDocument doc)
+        private static void ProcessPrevReleasesList(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             var newRootNode = doc.CreateElement("div");
             var parentNode = rootNode.ParentNode;
             parentNode.ReplaceChild(newRootNode, rootNode);
 
-            var prevReleasesList = GeneralSettings.ReleaseItemsList.Where(p => !p.IsLatest).OrderByDescending(p => p.Date).ToList();
+            var prevReleasesList = generalSiteBuilderSettings.ReleaseItemsList.Where(p => !p.IsLatest).OrderByDescending(p => p.Date).ToList();
 
             if(!prevReleasesList.Any())
             {
@@ -87,7 +87,7 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
             newRootNode.InnerHtml = sb.ToString();
         }
 
-        private static void ProcessReleaseInfo(HtmlNode rootNode, HtmlDocument doc)
+        private static void ProcessReleaseInfo(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             var version = rootNode.GetAttributeValue("version", string.Empty);
 
@@ -100,7 +100,7 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
             //_logger.Info($"version = '{version}'");
 #endif
 
-            var targetItem = GetTargetReleaseItem(version);
+            var targetItem = GetTargetReleaseItem(version, generalSiteBuilderSettings);
 
 #if DEBUG
             //_logger.Info($"targetItem = {targetItem}");
@@ -140,7 +140,7 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
 
             sb.AppendLine($"<h2>Release notes</h2>");
 
-            sb.AppendLine($"<div>{ContentPreprocessor.Run(targetItem.Description, targetItem.IsMarkdown)}</div>");
+            sb.AppendLine($"<div>{ContentPreprocessor.Run(targetItem.Description, targetItem.IsMarkdown, generalSiteBuilderSettings)}</div>");
 
             newRootNode.InnerHtml = sb.ToString();
         }
@@ -209,14 +209,14 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
             }
         }
 
-        private static ReleaseItem GetTargetReleaseItem(string version)
+        private static ReleaseItem GetTargetReleaseItem(string version, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             if(version == "latest")
             {
-                return GeneralSettings.ReleaseItemsList.Single(p => p.IsLatest);
+                return generalSiteBuilderSettings.ReleaseItemsList.Single(p => p.IsLatest);
             }
 
-            return GeneralSettings.ReleaseItemsList.Single(p => p.Version == version);
+            return generalSiteBuilderSettings.ReleaseItemsList.Single(p => p.Version == version);
         }
     }
 }

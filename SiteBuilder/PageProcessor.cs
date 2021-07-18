@@ -54,12 +54,14 @@ namespace SiteBuilder
             _commonJsLinksList.Add("<script src='/assets/fontawesome_5.15.1/all.js'></script>");
         }
 
-        public PageProcessor(SiteElementInfo siteElement)
+        public PageProcessor(SiteElementInfo siteElement, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             _siteElement = siteElement;
+            _generalSiteBuilderSettings = generalSiteBuilderSettings;
         }
 
         private readonly SiteElementInfo _siteElement;
+        private readonly GeneralSiteBuilderSettings _generalSiteBuilderSettings;
 
         public SiteElementInfo SiteElementInfo => _siteElement;
 
@@ -156,7 +158,7 @@ namespace SiteBuilder
 
             if (!string.IsNullOrWhiteSpace(siteMictodata?.ImageUrl))
             {
-                AppendLine($"<meta property='og:image' content='{PagesPathsHelper.RelativeHrefToAbsolute(siteMictodata.ImageUrl)}' />");
+                AppendLine($"<meta property='og:image' content='{PagesPathsHelper.RelativeHrefToAbsolute(siteMictodata.ImageUrl, _generalSiteBuilderSettings)}' />");
                 //AppendLine($"<link rel='\"image_src\" href=\"{PagesPathsHelper.RelativeHrefToAbsolute(ImageUrl)}\" />");
                 //AppendLine("<meta property='og:image:type' content='image/png'>");
                 //AppendLine("<meta property='og:image:width' content='300'>");
@@ -185,7 +187,7 @@ namespace SiteBuilder
                 AppendLine("</title>");
             }
 
-            if (GeneralSettings.SiteSettings.EnableFavicon)
+            if (_generalSiteBuilderSettings.SiteSettings.EnableFavicon)
             {
                 //AppendLine("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
                 AppendLine("<link rel='icon' href='/favicon.png' type='image/png'>");
@@ -344,11 +346,11 @@ namespace SiteBuilder
         {
             Append("<p>");
 
-            if (!string.IsNullOrWhiteSpace(GeneralSettings.SiteSettings.Logo))
+            if (!string.IsNullOrWhiteSpace(_generalSiteBuilderSettings.SiteSettings.Logo))
             {
                 Append("<a href = '/'>");
                 Append("<img src='");
-                Append(GeneralSettings.SiteSettings.Logo);
+                Append(_generalSiteBuilderSettings.SiteSettings.Logo);
                 Append("' style='margin-top: -12px;'>");
                 Append("</a>");
                 Append("&nbsp;");
@@ -368,7 +370,7 @@ namespace SiteBuilder
         {
             var tmpItems = new List<string>();
 
-            foreach (var item in GeneralSettings.SiteSettings.Menu.Items)
+            foreach (var item in _generalSiteBuilderSettings.SiteSettings.Menu.Items)
             {
 #if DEBUG
                 //NLog.LogManager.GetCurrentClassLogger().Info($"item = {JsonConvert.SerializeObject(item, Formatting.Indented)}");
@@ -541,7 +543,7 @@ namespace SiteBuilder
 
         protected void Append(string val)
         {
-            if (GeneralSettings.UseMinification)
+            if (_generalSiteBuilderSettings.UseMinification)
             {
                 val = val.Trim();
             }
@@ -550,7 +552,7 @@ namespace SiteBuilder
 
         protected void AppendLine(string val)
         {
-            if (GeneralSettings.UseMinification)
+            if (_generalSiteBuilderSettings.UseMinification)
             {
                 Append(val);
                 return;
@@ -572,7 +574,7 @@ namespace SiteBuilder
             //_logger.Info($"content = {content}");
 #endif
 
-            return ContentPreprocessor.Run(content, _siteElement.SitePageInfo.UseMarkdown);
+            return ContentPreprocessor.Run(content, _siteElement.SitePageInfo.UseMarkdown, _generalSiteBuilderSettings);
         }
 
         private string GetTitle()
@@ -581,19 +583,19 @@ namespace SiteBuilder
 
             var sb = new StringBuilder();
 
-            if (!string.IsNullOrWhiteSpace(GeneralSettings.SiteSettings.MainTitle))
+            if (!string.IsNullOrWhiteSpace(_generalSiteBuilderSettings.SiteSettings.MainTitle))
             {
-                sb.Append(GeneralSettings.SiteSettings.MainTitle);
+                sb.Append(_generalSiteBuilderSettings.SiteSettings.MainTitle);
 
-                if (!string.IsNullOrWhiteSpace(GeneralSettings.SiteSettings.TitlesDelimiter))
+                if (!string.IsNullOrWhiteSpace(_generalSiteBuilderSettings.SiteSettings.TitlesDelimiter))
                 {
-                    sb.Append(GeneralSettings.SiteSettings.TitlesDelimiter);
+                    sb.Append(_generalSiteBuilderSettings.SiteSettings.TitlesDelimiter);
                 }
             }
 
             if (string.IsNullOrWhiteSpace(sitePageInfo.Title))
             {
-                sb.Append(GeneralSettings.SiteSettings.Title);
+                sb.Append(_generalSiteBuilderSettings.SiteSettings.Title);
             }
             else
             {
@@ -640,11 +642,11 @@ namespace SiteBuilder
                     {
                         if (href.StartsWith("/"))
                         {
-                            href = $"{GeneralSettings.SiteHref}{href}";
+                            href = $"{_generalSiteBuilderSettings.SiteHref}{href}";
                         }
                         else
                         {
-                            href = $"{GeneralSettings.SiteHref}/{href}";
+                            href = $"{_generalSiteBuilderSettings.SiteHref}/{href}";
                         }
                     }
 
@@ -674,11 +676,11 @@ namespace SiteBuilder
                     {
                         if (src.StartsWith("/"))
                         {
-                            src = $"{GeneralSettings.SiteHref}{src}";
+                            src = $"{_generalSiteBuilderSettings.SiteHref}{src}";
                         }
                         else
                         {
-                            src = $"{GeneralSettings.SiteHref}/{src}";
+                            src = $"{_generalSiteBuilderSettings.SiteHref}/{src}";
                         }
                     }
 

@@ -10,8 +10,8 @@ namespace SiteBuilder
 {
     public abstract class BaseCSharpUserApiXMLDocPageProcessor: PageProcessor
     {
-        protected BaseCSharpUserApiXMLDocPageProcessor(SiteElementInfo siteElement)
-            : base(siteElement)
+        protected BaseCSharpUserApiXMLDocPageProcessor(SiteElementInfo siteElement, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+            : base(siteElement, generalSiteBuilderSettings)
         {
         }
 

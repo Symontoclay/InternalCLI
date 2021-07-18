@@ -13,7 +13,7 @@ namespace SiteBuilder
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        private static SiteElementInfo ConvertEnumCardToSiteElementInfo(EnumCard enumCard)
+        private static SiteElementInfo ConvertEnumCardToSiteElementInfo(EnumCard enumCard, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //_logger.Info($"enumCard = {enumCard}");
@@ -42,8 +42,8 @@ namespace SiteBuilder
             microdata.Title = title;
             microdata.Description = enumCard.Summary;
 
-            result.Parent = GeneralSettings.RootCSharpUserApiXMLDocSiteElement;
-            GeneralSettings.RootCSharpUserApiXMLDocSiteElement.SubItemsList.Add(result);
+            result.Parent = generalSiteBuilderSettings.RootCSharpUserApiXMLDocSiteElement;
+            generalSiteBuilderSettings.RootCSharpUserApiXMLDocSiteElement.SubItemsList.Add(result);
 
 #if DEBUG
             //_logger.Info($"result = {result}");
@@ -52,8 +52,8 @@ namespace SiteBuilder
             return result;
         }
 
-        public EnumCSharpUserApiXMLDocPageProcessor(EnumCard enumCard)
-            : base(ConvertEnumCardToSiteElementInfo(enumCard))
+        public EnumCSharpUserApiXMLDocPageProcessor(EnumCard enumCard, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+            : base(ConvertEnumCardToSiteElementInfo(enumCard, generalSiteBuilderSettings), generalSiteBuilderSettings)
         {
             _enumCard = enumCard;
         }

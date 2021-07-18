@@ -34,14 +34,14 @@ namespace SiteBuilder.SiteData
             return sb.ToString();
         }
 
-        public static MenuInfo GetMenu(string menuName)
+        public static MenuInfo GetMenu(string menuName, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             if (mMenuDict.ContainsKey(menuName))
             {
                 return mMenuDict[menuName];
             }
 
-            var menu = LoadFromFile(Path.Combine(GeneralSettings.SourcePath, menuName));
+            var menu = LoadFromFile(Path.Combine(generalSiteBuilderSettings.SourcePath, menuName));
             mMenuDict[menuName] = menu;
             return menu;
         }

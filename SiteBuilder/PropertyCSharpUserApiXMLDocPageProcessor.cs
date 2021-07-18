@@ -52,8 +52,8 @@ namespace SiteBuilder
             return result;
         }
 
-        public PropertyCSharpUserApiXMLDocPageProcessor(PropertyCard propertyCard, SiteElementInfo parent)
-            : base(ConvertPropertyCardToSiteElementInfo(propertyCard, parent))
+        public PropertyCSharpUserApiXMLDocPageProcessor(PropertyCard propertyCard, SiteElementInfo parent, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+            : base(ConvertPropertyCardToSiteElementInfo(propertyCard, parent), generalSiteBuilderSettings)
         {
             _propertyCard = propertyCard;
         }

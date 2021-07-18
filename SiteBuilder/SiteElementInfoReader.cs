@@ -15,7 +15,7 @@ namespace SiteBuilder
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        public static SiteElementInfo Read(string sourceDir, string destDir, string siteHref, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList)
+        public static SiteElementInfo Read(string sourceDir, string destDir, string siteHref, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //_logger.Info($"sourceDir = {sourceDir}");
@@ -24,7 +24,7 @@ namespace SiteBuilder
 
             var result = new SiteElementInfo() { Kind = KindOfSiteElement.Root };
 
-            ProcessDirectory(sourceDir, result, sourceDir, destDir, siteHref, forbidenDirectoriesList, forbidenFileNamesList);
+            ProcessDirectory(sourceDir, result, sourceDir, destDir, siteHref, forbidenDirectoriesList, forbidenFileNamesList, generalSiteBuilderSettings);
 
 #if DEBUG
             //_logger.Info($" = {}");
@@ -33,7 +33,7 @@ namespace SiteBuilder
             return result;
         }
 
-        private static void ProcessDirectory(string directory, SiteElementInfo parent, string sourceDir, string destDir, string siteHref, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList)
+        private static void ProcessDirectory(string directory, SiteElementInfo parent, string sourceDir, string destDir, string siteHref, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //_logger.Info($"sourceDir = {sourceDir}");
@@ -109,7 +109,7 @@ namespace SiteBuilder
 
                 if (!string.IsNullOrWhiteSpace(sitePageInfo.AdditionalMenu))
                 {
-                    parent.AdditionalMenu = MenuInfo.GetMenu(sitePageInfo.AdditionalMenu);
+                    parent.AdditionalMenu = MenuInfo.GetMenu(sitePageInfo.AdditionalMenu, generalSiteBuilderSettings);
                 }
 
                 parent.BreadcrumbTitle = sitePageInfo.BreadcrumbTitle;
@@ -216,7 +216,7 @@ namespace SiteBuilder
 
                     if (!string.IsNullOrWhiteSpace(sitePageInfo.AdditionalMenu))
                     {
-                        item.AdditionalMenu = MenuInfo.GetMenu(sitePageInfo.AdditionalMenu);
+                        item.AdditionalMenu = MenuInfo.GetMenu(sitePageInfo.AdditionalMenu, generalSiteBuilderSettings);
                     }
 
                     item.BreadcrumbTitle = sitePageInfo.BreadcrumbTitle;
@@ -380,7 +380,7 @@ namespace SiteBuilder
 
             foreach(var subDir in subDirsList)
             {
-                ProcessDirectory(subDir, parent, sourceDir, destDir, siteHref, forbidenDirectoriesList, forbidenFileNamesList);
+                ProcessDirectory(subDir, parent, sourceDir, destDir, siteHref, forbidenDirectoriesList, forbidenFileNamesList, generalSiteBuilderSettings);
             }
         }
     }

@@ -17,7 +17,7 @@ namespace SiteBuilder.HtmlPreprocessors.RoadmapGeneration
 
         private static readonly CultureInfo _targetCulture = new CultureInfo("en-GB");
 
-        public static string Run(string initialContent)
+        public static string Run(string initialContent, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //_logger.Info($"initialContent = {initialContent}");
@@ -26,12 +26,12 @@ namespace SiteBuilder.HtmlPreprocessors.RoadmapGeneration
             var doc = new HtmlDocument();
             doc.LoadHtml(initialContent);
 
-            ProcessNodes(doc.DocumentNode, doc);
+            ProcessNodes(doc.DocumentNode, doc, generalSiteBuilderSettings);
 
             return doc.ToHtmlString();
         }
 
-        private static void ProcessNodes(HtmlNode rootNode, HtmlDocument doc)
+        private static void ProcessNodes(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
             //if (rootNode.Name != "#document")
@@ -45,17 +45,17 @@ namespace SiteBuilder.HtmlPreprocessors.RoadmapGeneration
 
             if (rootNode.Name == "roadmap")
             {
-                ProcessRoadMap(rootNode, doc);
+                ProcessRoadMap(rootNode, doc, generalSiteBuilderSettings);
                 return;
             }
 
             foreach (var node in rootNode.ChildNodes.ToList())
             {
-                ProcessNodes(node, doc);
+                ProcessNodes(node, doc, generalSiteBuilderSettings);
             }
         }
 
-        private static void ProcessRoadMap(HtmlNode rootNode, HtmlDocument doc)
+        private static void ProcessRoadMap(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             var newRoadMapNode = doc.CreateElement("div");
             var parentNode = rootNode.ParentNode;
@@ -65,7 +65,7 @@ namespace SiteBuilder.HtmlPreprocessors.RoadmapGeneration
             //_logger.Info($"GeneralSettings.RoadMapItemsList.Count = {GeneralSettings.RoadMapItemsList.Count}");
 #endif
 
-            foreach (var item in GeneralSettings.RoadMapItemsList)
+            foreach (var item in generalSiteBuilderSettings.RoadMapItemsList)
             {
 #if DEBUG
                 //_logger.Info($"item = {item}");
@@ -120,7 +120,7 @@ namespace SiteBuilder.HtmlPreprocessors.RoadmapGeneration
                     }
                 }
 
-                sb.AppendLine($"<div>{ContentPreprocessor.Run(item.Description, item.IsMarkdown)}</div>");
+                sb.AppendLine($"<div>{ContentPreprocessor.Run(item.Description, item.IsMarkdown, generalSiteBuilderSettings)}</div>");
 
                 itemNode.InnerHtml = sb.ToString();
             }
