@@ -33,12 +33,13 @@ namespace TestSandBox
             //TstGitHubAPIGet();
             //TstTempDirectory();
             //TstCoreToAssetTask();
+            TstFutureReleaseInfo();
             //TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
-            TstDeploymentTaskBasedBuildHandler();
+            //TstDeploymentTaskBasedBuildHandler();
             //TstBuild();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
@@ -297,6 +298,19 @@ namespace TestSandBox
 
             var coreToAssetTask = new CoreToAssetDevPipeline();
             coreToAssetTask.Run();
+
+            _logger.Info("End");
+        }
+
+        private static void TstFutureReleaseInfo()
+        {
+            _logger.Info("Begin");
+
+            //FutureReleaseInfo.SaveExampleFile("future_release_1.json");
+
+            var futureReleaseInfo = FutureReleaseInfo.ReadFile("future_release.json");
+
+            _logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
 
             _logger.Info("End");
         }
