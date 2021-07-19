@@ -103,6 +103,10 @@ namespace BaseDevPipeline
                 {
                     "%ProgramFiles%/Unity/Editor/Unity.exe",
                     "%ProgramFiles%/Unity/Hub/Editor/2020.2.3f1/Editor/Unity.exe"
+                },
+                ArtifactsForDeployment = new List<string>()
+                {
+                    "CLIArch"
                 }
             };
 
@@ -199,7 +203,12 @@ namespace BaseDevPipeline
                 Kind = KindOfProject.ProjectSite.ToString(),
                 Href = "https://github.com/Symontoclay/symontoclay.github.io",
                 Path = "%BASE_PATH%/symontoclay.github.io",
-                SourcePath = "%SLN_ROOT_PATH%/siteSource/"
+                SourcePath = "%SLN_ROOT_PATH%/siteSource/",
+                ArtifactsForDeployment = new List<string>()
+                {
+                    "inherited",
+                    "UnityPackage"
+                }
             };
 
             settingsSource.Solutions.Add(siteSolution);
@@ -210,7 +219,12 @@ namespace BaseDevPipeline
                 Href = "https://github.com/Symontoclay/SymOntoClayAsset",
                 Path = "%BASE_PATH%/SymOntoClayAsset",
                 SourcePath = "%SLN_ROOT_PATH%/Assets/SymOntoClay",
-                License = "MIT"
+                License = "MIT",
+                ArtifactsForDeployment = new List<string>()
+                {
+                    "inherited",
+                    "UnityPackage"
+                }
             };
 
             settingsSource.Solutions.Add(unitySolution);

@@ -30,6 +30,11 @@ namespace BaseDevPipeline.Data.Implementation
         /// <inheritdoc/>
         ILicenseSettings ISolutionSettings.License => License;
 
+        public List<KindOfArtifact> ArtifactsForDeployment { get; set; }
+
+        /// <inheritdoc/>
+        IReadOnlyList<KindOfArtifact> ISolutionSettings.ArtifactsForDeployment => ArtifactsForDeployment;
+
         /// <inheritdoc/>
         public override string ToString()
         {
@@ -49,22 +54,17 @@ namespace BaseDevPipeline.Data.Implementation
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
-            sb.AppendLine($"{spaces}{nameof()} = {}");
-            sb.AppendLine($"{spaces}{nameof()} = {}");
-            sb.AppendLine($"{spaces}{nameof()} = {}");
-            sb.AppendLine($"{spaces}{nameof()} = {}");
+            sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
+            sb.AppendLine($"{spaces}{nameof(GitFileHref)} = {GitFileHref}");
+            sb.AppendLine($"{spaces}{nameof(RepositoryName)} = {RepositoryName}");
+            sb.AppendLine($"{spaces}{nameof(OwnerName)} = {OwnerName}");
             sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
-            /*
-                     public string Href { get; set; }
-        public string GitFileHref { get; set; }
-        public string RepositoryName { get; set; }
-        public string OwnerName { get; set; }
-             */
             sb.AppendLine($"{spaces}{nameof(SlnPath)} = {SlnPath}");
             sb.AppendLine($"{spaces}{nameof(SourcePath)} = {SourcePath}");
             sb.PrintObjListProp(n, nameof(Projects), Projects);
             sb.AppendLine($"{spaces}{nameof(LicenseName)} = {LicenseName}");
             sb.PrintObjProp(n, nameof(License), License);
+            sb.PrintPODList(n, nameof(ArtifactsForDeployment), ArtifactsForDeployment);
 
             return sb.ToString();
         }

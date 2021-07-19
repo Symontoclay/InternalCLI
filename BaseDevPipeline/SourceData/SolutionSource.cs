@@ -19,6 +19,7 @@ namespace BaseDevPipeline.SourceData
         public string License { get; set; }
         public string SourcePath { get; set; }
         public List<ProjectSource> Projects { get; set; }
+        public List<string> ArtifactsForDeployment { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -45,6 +46,7 @@ namespace BaseDevPipeline.SourceData
             sb.AppendLine($"{spaces}{nameof(License)} = {License}");
             sb.AppendLine($"{spaces}{nameof(SourcePath)} = {SourcePath}");
             sb.PrintObjListProp(n, nameof(Projects), Projects);
+            sb.PrintPODList(n, nameof(ArtifactsForDeployment), ArtifactsForDeployment);
 
             return sb.ToString();
         }

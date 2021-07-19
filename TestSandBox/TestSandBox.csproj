@@ -27,7 +27,13 @@
     <None Update="cleanedNPCPackage.unitypackage">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="future_release.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ReleaseNotes.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="roadmap.json">

@@ -1,4 +1,5 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using BaseDevPipeline;
+using CommonUtils.DebugHelpers;
 using Deployment;
 using Deployment.Tasks;
 using Deployment.Tasks.ArchTasks.Zip;
@@ -9,6 +10,7 @@ using Deployment.Tasks.BuildTasks.Publish;
 using Deployment.Tasks.BuildTasks.Test;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
+using Deployment.Tasks.SiteTasks.UpdateReleaseNotes;
 using Deployment.Tasks.UnityTasks.ExportPackage;
 using NLog;
 using System;
@@ -28,7 +30,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case4();
+            Case5();
+            //Case4();
             //Case3();
             //Case2();
             //Case1();
@@ -36,6 +39,26 @@ namespace TestSandBox
             //_logger.Info($" = {}");
 
             _logger.Info("End");
+        }
+
+        private void Case5()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new UpdateReleaseNotesTask(new UpdateReleaseNotesTaskOptions() { 
+                FutureReleaseFilePath = Path.Combine(Directory.GetCurrentDirectory(), "future_release.json"),
+                ArtifactsForDeployment = new List<KindOfArtifact>() 
+                {
+                    KindOfArtifact.SourceArch,
+                    KindOfArtifact.CLIArch,
+                    KindOfArtifact.UnityPackage
+                },
+                ReleaseNotesFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ReleaseNotes.json")
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case4()

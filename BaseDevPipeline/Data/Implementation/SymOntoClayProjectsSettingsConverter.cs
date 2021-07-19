@@ -14,6 +14,9 @@ namespace BaseDevPipeline.Data.Implementation
 {
     public static class SymOntoClayProjectsSettingsConverter
     {
+#if DEBUG
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
         public static ISymOntoClayProjectsSettings Convert(SymOntoClaySettingsSource source)
         {
             var result = new SymOntoClayProjectsSettings();
@@ -24,6 +27,17 @@ namespace BaseDevPipeline.Data.Implementation
             result.SecretFilePath = DetectSecretFilePath(source.SecretsFilePaths);
 
             result.UtityExeInstances = DetectUnities(source.UnityPaths);
+
+            var artifactsForDeployment = source.ArtifactsForDeployment;
+
+            if(artifactsForDeployment.IsNullOrEmpty())
+            {
+                result.ArtifactsForDeployment = new List<KindOfArtifact>();
+            }
+            else
+            {
+                result.ArtifactsForDeployment = artifactsForDeployment.Select(p => Enum.Parse<KindOfArtifact>(p)).Distinct().ToList();
+            }
 
             var licensesDict = new Dictionary<string, LicenseSettings>();
 
@@ -63,6 +77,9 @@ namespace BaseDevPipeline.Data.Implementation
 
             switch (count)
             {
+                case 0:
+                    return string.Empty;
+
                 case 1:
                     return existingSecretsFilePaths.Single();
             }
@@ -120,38 +137,81 @@ namespace BaseDevPipeline.Data.Implementation
             var soulutions = new List<SolutionSettings>();
             result.Solutions = soulutions;
 
-            foreach(var soutionSource in source.Solutions)
+            foreach(var solutionSource in source.Solutions)
             {
                 var item = new SolutionSettings();
-                item.Kind = Enum.Parse<KindOfProject>(soutionSource.Kind);
-                item.Path = PathsHelper.Normalize(soutionSource.Path);
+                item.Kind = Enum.Parse<KindOfProject>(solutionSource.Kind);
+
+                var href = solutionSource.Href;
+
+                item.Href = href;
+
+                if(!string.IsNullOrWhiteSpace(href))
+                {
+                    item.GitFileHref = $"{href}.git";
+
+                    var uri = new Uri(href);
+
+                    var hrefPath = uri.PathAndQuery.Substring(1);
+
+                    var slashPos = hrefPath.IndexOf("/");
+
+                    item.OwnerName = hrefPath.Substring(0, slashPos);
+
+                    item.RepositoryName = hrefPath.Substring(slashPos + 1);
+                }
+
+                item.Path = PathsHelper.Normalize(solutionSource.Path);
 
                 EVPath.RegVar("SLN_ROOT_PATH", item.Path);
 
-                item.SlnPath = DetectSlnPath(soutionSource.SlnPath, item.Path);
+                item.SlnPath = DetectSlnPath(solutionSource.SlnPath, item.Path);
 
-                item.SourcePath = PathsHelper.Normalize(soutionSource.SourcePath);
+                item.SourcePath = PathsHelper.Normalize(solutionSource.SourcePath);
 
-                if(string.IsNullOrWhiteSpace(soutionSource.License))
+                if(string.IsNullOrWhiteSpace(solutionSource.License))
                 {
                     item.LicenseName = string.Empty;
                 }
                 else
                 {
-                    if(licensesDict.ContainsKey(soutionSource.License))
+                    if(licensesDict.ContainsKey(solutionSource.License))
                     {
-                        item.LicenseName = soutionSource.License;
-                        item.License = licensesDict[soutionSource.License];
+                        item.LicenseName = solutionSource.License;
+                        item.License = licensesDict[solutionSource.License];
                     }
                     else
                     {
-                        throw new Exception($"The license '{soutionSource.License}' hasn't been described.");
+                        throw new Exception($"The license '{solutionSource.License}' hasn't been described.");
                     }                    
                 }
 
-                if (!soutionSource.Projects.IsNullOrEmpty())
+                if (!solutionSource.Projects.IsNullOrEmpty())
                 {
-                    FillUpProjects(item, soutionSource, result);
+                    FillUpProjects(item, solutionSource, result);
+                }
+
+                var artifactsForDeployment = solutionSource.ArtifactsForDeployment;
+
+                if(artifactsForDeployment.IsNullOrEmpty())
+                {
+                    item.ArtifactsForDeployment = result.ArtifactsForDeployment.ToList();
+                }
+                else
+                {
+                    if(!artifactsForDeployment.Any(p => p == "no artifacts"))
+                    {
+                        var solutionsArtifactsForDeployment = artifactsForDeployment.Where(p => p != "inherited").Select(p => Enum.Parse<KindOfArtifact>(p)).Distinct().ToList();
+
+                        if(artifactsForDeployment.Any(p => p == "inherited"))
+                        {
+                            item.ArtifactsForDeployment = result.ArtifactsForDeployment.Concat(solutionsArtifactsForDeployment).Distinct().ToList();
+                        }
+                        else
+                        {
+                            item.ArtifactsForDeployment = solutionsArtifactsForDeployment;
+                        }
+                    }
                 }
 
                 soulutions.Add(item);

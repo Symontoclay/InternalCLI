@@ -39,6 +39,8 @@ namespace BaseDevPipeline.Data.Implementation
         /// <inheritdoc/>
         IReadOnlyList<ILicenseSettings> ISymOntoClayProjectsSettings.Licenses => Licenses;
 
+        public List<KindOfArtifact> ArtifactsForDeployment { get; set; }
+
         /// <inheritdoc/>
         public ISolutionSettings GetSolution(KindOfProject kind)
         {

@@ -20,5 +20,6 @@ namespace BaseDevPipeline.Data
         IReadOnlyList<IProjectSettings> Projects { get; }
         string LicenseName { get; }
         ILicenseSettings License { get; }
+        IReadOnlyList<KindOfArtifact> ArtifactsForDeployment { get; }
     }
 }
