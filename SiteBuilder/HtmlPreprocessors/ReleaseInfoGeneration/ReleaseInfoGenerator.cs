@@ -170,7 +170,7 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
                     return "Engine (folder)";
 
                 case KindOfReleaseAssetItem.CLIArch:
-                    return "CLI (.zip)";
+                    return "Portable CLI (.zip)";
 
                 case KindOfReleaseAssetItem.CLIFolder:
                     return "CLI (folder)";

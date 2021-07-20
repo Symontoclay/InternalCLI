@@ -511,6 +511,28 @@ namespace CommonUtils.DebugHelpers
             return sb.ToString();
         }
 
+        public static string WritePODList<T>(this IEnumerable<T> items)
+        {
+            if (items == null)
+            {
+                return "NULL";
+            }
+
+            var spaces = Spaces(4);
+
+            var sb = new StringBuilder();
+            sb.AppendLine("Begin List");
+            if (!items.IsNullOrEmpty())
+            {
+                foreach (var item in items)
+                {
+                    sb.AppendLine($"{spaces}{item}");
+                }
+            }
+            sb.AppendLine("End List");
+            return sb.ToString();
+        }
+
         public static string WriteDict_1_ToString<K, V>(this IDictionary<K, V> items) 
             where K: IObjectToString
             where V: IObjectToString

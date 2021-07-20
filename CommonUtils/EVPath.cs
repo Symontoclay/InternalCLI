@@ -21,6 +21,11 @@ namespace CommonUtils
 
         public static string Normalize(string sourcePath)
         {
+            if(string.IsNullOrWhiteSpace(sourcePath))
+            {
+                return string.Empty;
+            }
+
             var match = _normalizeMatch.Match(sourcePath);
 
             if (match.Success)

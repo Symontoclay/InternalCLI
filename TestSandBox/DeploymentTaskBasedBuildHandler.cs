@@ -53,7 +53,8 @@ namespace TestSandBox
                     KindOfArtifact.CLIArch,
                     KindOfArtifact.UnityPackage
                 },
-                ReleaseNotesFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ReleaseNotes.json")
+                ReleaseNotesFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ReleaseNotes.json"),
+                BaseHref = "https://github.com/Symontoclay/SymOntoClay/"
             }));
 
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");

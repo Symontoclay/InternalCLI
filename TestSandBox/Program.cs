@@ -10,6 +10,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Xml.Linq;
@@ -27,6 +28,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            //TstAddReleaseNote();
+            //TstReadAndReSaveReleaseNotes();
             //TstOctokit();
             //TstSecrets();
             //TstGitHubAPICreateRelease();
@@ -45,6 +48,76 @@ namespace TestSandBox
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
         }
+
+        private static void TstAddReleaseNote()
+        {
+            _logger.Info("Begin");
+
+            var releaseNotesFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ReleaseNotes.json");
+
+            _logger.Info($"releaseNotesFilePath = {releaseNotesFilePath}");
+
+            var txt = File.ReadAllText(releaseNotesFilePath);
+
+            _logger.Info($"txt = {txt}");
+
+            var releaseNotesList = JsonConvert.DeserializeObject<List<ReleaseItem>>(txt);
+
+            _logger.Info($"releaseNotesList = {JsonConvert.SerializeObject(releaseNotesList, Formatting.Indented)}");
+
+            var version = "0.3.2";
+
+            var newReleaseNote = new ReleaseItem()
+            {
+                Date = DateTime.Now.Date,
+                Version = version,
+                Description = @"* Example of Description
+* Hello World!",
+                IsMarkdown = true
+            };
+
+            //https://github.com/Symontoclay/SymOntoClay/archive/refs/tags/0.3.1.tar.gz
+            //https://github.com/metatypeman/a1/releases/download/3.6.4/MyPackage-3.6.4.unitypackage
+
+            _logger.Info($"newReleaseNote = {newReleaseNote}");
+
+            _logger.Info($"newReleaseNote = {JsonConvert.SerializeObject(newReleaseNote, Formatting.Indented)}");
+
+            releaseNotesList.Add(newReleaseNote);
+
+            releaseNotesList = releaseNotesList.OrderByDescending(p => p.Date).ToList();
+
+            _logger.Info($"releaseNotesList (2) = {JsonConvert.SerializeObject(releaseNotesList, Formatting.Indented)}");
+
+            var newTxt = JsonConvert.SerializeObject(releaseNotesList, Formatting.Indented);
+
+            _logger.Info($"newTxt = {newTxt}");
+
+            File.WriteAllText("ReleaseNotes_2.json", newTxt);
+
+            _logger.Info("End");
+        }
+
+        private static void TstReadAndReSaveReleaseNotes()
+        {
+            _logger.Info("Begin");
+
+            var releaseNotesFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ReleaseNotes.json");
+
+            var txt = File.ReadAllText(releaseNotesFilePath);
+
+            _logger.Info($"txt = {txt}");
+
+            var releaseNotesList = JsonConvert.DeserializeObject<List<ReleaseItem>>(txt);
+
+            var newTxt = JsonConvert.SerializeObject(releaseNotesList, Formatting.Indented);
+
+            _logger.Info($"newTxt = {newTxt}");
+
+            File.WriteAllText("ReleaseNotes_1.json", newTxt);
+
+            _logger.Info("End");
+        }        
 
         private static void TstOctokit()
         {

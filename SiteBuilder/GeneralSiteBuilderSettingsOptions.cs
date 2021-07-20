@@ -9,7 +9,6 @@ namespace SiteBuilder
 {
     public class GeneralSiteBuilderSettingsOptions : IObjectToString
     {
-        public string RootPath { get; set; }
         public KindOfTargetUrl KindOfTargetUrl { get; set; }
         public string SiteName { get; set; }
         public string SourcePath { get; set; }
@@ -34,7 +33,6 @@ namespace SiteBuilder
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(RootPath)} = {RootPath}");
             sb.AppendLine($"{spaces}{nameof(KindOfTargetUrl)} = {KindOfTargetUrl}");
             sb.AppendLine($"{spaces}{nameof(SiteName)} = {SiteName}");
             sb.AppendLine($"{spaces}{nameof(SourcePath)} = {SourcePath}");

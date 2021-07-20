@@ -20,13 +20,11 @@ namespace SiteBuilder
 
         public GeneralSiteBuilderSettings(GeneralSiteBuilderSettingsOptions options)
         {
-            var rootPath = EVPath.Normalize(options.RootPath);
+            var destPath = EVPath.Normalize(options.DestPath);
 
 #if DEBUG
-            //_logger.Info($"GeneralSettings() rootPath = {rootPath}");
+            //_logger.Info($"destPath = {destPath}");
 #endif
-
-            EVPath.RegVar("SITE_ROOT_PATH", rootPath);
 
             KindOfTargetUrl = options.KindOfTargetUrl;
 
@@ -51,7 +49,7 @@ namespace SiteBuilder
                     break;
 
                 case KindOfTargetUrl.Path:
-                    SiteHref = rootPath;
+                    SiteHref = destPath;
                     break;
 
                 default:
@@ -70,7 +68,7 @@ namespace SiteBuilder
 
             EVPath.RegVar("SITE_SOURCE_PATH", SourcePath);
 
-            DestPath = EVPath.Normalize(options.DestPath);
+            DestPath = destPath;
 
 #if DEBUG
             //_logger.Info($"GeneralSettings() DestPath = {DestPath}");

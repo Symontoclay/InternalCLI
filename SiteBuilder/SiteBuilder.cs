@@ -23,7 +23,6 @@ namespace SiteBuilder
         {
             _generalSiteBuilderSettings = new GeneralSiteBuilderSettings(new GeneralSiteBuilderSettingsOptions
             {
-                RootPath = options.RootPath,
                 KindOfTargetUrl = options.KindOfTargetUrl,
                 SiteName = options.SiteName,
                 SourcePath = options.SourcePath,

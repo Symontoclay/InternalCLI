@@ -20,10 +20,6 @@ namespace SiteBuilder
 
             var options = new SiteBuilderOptions();
 
-            var rootPath = ConfigAppSettingsHelper.GetExistingDirectoryName("rootPath");
-
-            options.RootPath = rootPath;
-
             var kindOfTargetUrlStr = ConfigurationManager.AppSettings["kindOfTargetUrl"];
 
 #if DEBUG
@@ -36,7 +32,7 @@ namespace SiteBuilder
 
             options.SourcePath = EVPath.Normalize(ConfigurationManager.AppSettings["sourcePath"]);
 
-            options.DestPath = ConfigurationManager.AppSettings["destPath"];
+            options.DestPath = EVPath.Normalize(ConfigurationManager.AppSettings["destPath"]);
 
             options.TempPath = ConfigurationManager.AppSettings["tempPath"];
 
