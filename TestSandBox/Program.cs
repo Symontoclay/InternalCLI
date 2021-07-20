@@ -1,7 +1,9 @@
 ﻿using BaseDevPipeline;
 using CommonUtils;
+using CommonUtils.DebugHelpers;
 using Deployment;
 using Deployment.DevPipelines.CoreToAsset;
+using Deployment.Helpers;
 using Newtonsoft.Json;
 using NLog;
 using Octokit;
@@ -28,6 +30,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstDeployedItemsFactory();
             //TstAddReleaseNote();
             //TstReadAndReSaveReleaseNotes();
             //TstOctokit();
@@ -42,10 +45,26 @@ namespace TestSandBox
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
-            TstDeploymentTaskBasedBuildHandler();
+            //TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstDeployedItemsFactory()
+        {
+            _logger.Info("Begin");
+
+            var deployedItemsList = DeployedItemsFactory.Create("0.3.2", new List<KindOfArtifact>()
+                {
+                    KindOfArtifact.SourceArch,
+                    KindOfArtifact.CLIArch,
+                    KindOfArtifact.UnityPackage
+                }, "https://github.com/Symontoclay/SymOntoClay/", Directory.GetCurrentDirectory());
+
+            _logger.Info($"deployedItemsList = {deployedItemsList.WriteListToString()}");
+
+            _logger.Info("End");
         }
 
         private static void TstAddReleaseNote()
