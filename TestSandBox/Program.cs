@@ -43,7 +43,6 @@ namespace TestSandBox
             //TstLessHandler();
             //TstRoadMap();
             TstDeploymentTaskBasedBuildHandler();
-            //TstBuild();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
@@ -452,16 +451,6 @@ namespace TestSandBox
             _logger.Info("Begin");
 
             var handler = new DeploymentTaskBasedBuildHandler();
-            handler.Run();
-
-            _logger.Info("End");
-        }
-
-        private static void TstBuild()
-        {
-            _logger.Info("Begin");
-
-            var handler = new BuildHandler();
             handler.Run();
 
             _logger.Info("End");
