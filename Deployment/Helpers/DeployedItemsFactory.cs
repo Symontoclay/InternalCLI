@@ -13,7 +13,7 @@ namespace Deployment.Helpers
     public static class DeployedItemsFactory
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static List<DeployedItem> Create(string version, List<KindOfArtifact> artifactsForDeployment, string baseHref, string basePath)
@@ -21,7 +21,7 @@ namespace Deployment.Helpers
             var targetAtrifactsList = KindOfArtifactHelper.GetOrderedListForDeployment().Intersect(artifactsForDeployment);
 
 #if DEBUG
-            _logger.Info($"targetAtrifactsList = {targetAtrifactsList.WritePODList()}");
+            //_logger.Info($"targetAtrifactsList = {targetAtrifactsList.WritePODList()}");
 #endif
 
             var result = new List<DeployedItem>();
@@ -29,7 +29,7 @@ namespace Deployment.Helpers
             foreach (var targetArtifact in targetAtrifactsList)
             {
 #if DEBUG
-                _logger.Info($"targetArtifact = {targetArtifact}");
+                //_logger.Info($"targetArtifact = {targetArtifact}");
 #endif
 
                 switch (targetArtifact)
@@ -54,7 +54,76 @@ namespace Deployment.Helpers
                             }
 
 #if DEBUG
-                            _logger.Info($"item = {item}");
+                            //_logger.Info($"item = {item}");
+#endif
+
+                            result.Add(item);
+                        }
+                        break;
+
+                    case KindOfArtifact.CLIArch:
+                        {
+                            var item = new DeployedItem()
+                            {
+                                Kind = targetArtifact
+                            };
+
+                            item.FileName = $"SymOntoClay-CLI-{version}-x64.zip";
+
+                            if (!string.IsNullOrWhiteSpace(baseHref))
+                            {
+                                item.Href = $"{baseHref}releases/download/{version}/{item.FileName}";
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(basePath))
+                            {
+                                item.FullFileName = Path.Combine(basePath, item.FileName);
+                            }
+
+#if DEBUG
+                            //_logger.Info($"item = {item}");
+#endif
+
+                            result.Add(item);
+                        }
+                        break;
+
+                    case KindOfArtifact.SourceArch:
+                        {
+                            var item = new DeployedItem()
+                            {
+                                Kind = targetArtifact,
+                                IsAutomatic = true
+                            };
+
+                            item.FileName = $"{version}.zip";
+
+                            if (!string.IsNullOrWhiteSpace(baseHref))
+                            {
+                                item.Href = $"{baseHref}archive/refs/tags/{item.FileName}";
+                            }
+
+#if DEBUG
+                            //_logger.Info($"item = {item}");
+#endif
+
+                            result.Add(item);
+
+                            item = new DeployedItem()
+                            {
+                                Kind = targetArtifact,
+                                IsAutomatic = true
+                            };
+
+                            item.FileName = $"{version}.tar.gz";
+
+                            if (!string.IsNullOrWhiteSpace(baseHref))
+                            {
+                                item.Href = $"{baseHref}archive/refs/tags/{item.FileName}";
+                            }
+
+#if DEBUG
+                            //_logger.Info($"item = {item}");
 #endif
 
                             result.Add(item);

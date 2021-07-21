@@ -87,7 +87,7 @@ namespace Updater
             _logger.Info($"licenceText (after) = '{licenceText}'");
 #endif
 
-            var fileNamesList = SolutionHelper.GetSCharpFileNames(_solutionPath);
+            var fileNamesList = SolutionHelper.GetCSharpFileNames(_solutionPath);
 
 #if DEBUG
             _logger.Info($"fileNamesList.Count = {fileNamesList.Count}");

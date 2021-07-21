@@ -5,13 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
+namespace Deployment.Helpers
 {
-    public class CopyAllFromDirectoryTaskOptions : IObjectToString
+    public class FileNamesGetterOptions : IObjectToString
     {
         public string SourceDir { get; set; }
-        public string DestDir { get; set; }
-        public bool SaveSubDirs { get; set; } = true;
         public List<string> OnlySubDirs { get; set; }
         public List<string> ExceptSubDirs { get; set; }
         public List<string> OnlyFileExts { get; set; }
@@ -38,8 +36,6 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(SourceDir)} = {SourceDir}");
-            sb.AppendLine($"{spaces}{nameof(DestDir)} = {DestDir}");
-            sb.AppendLine($"{spaces}{nameof(SaveSubDirs)} = {SaveSubDirs}");
             sb.PrintPODList(n, nameof(OnlySubDirs), OnlySubDirs);
             sb.PrintPODList(n, nameof(ExceptSubDirs), ExceptSubDirs);
             sb.PrintPODList(n, nameof(OnlyFileExts), OnlyFileExts);

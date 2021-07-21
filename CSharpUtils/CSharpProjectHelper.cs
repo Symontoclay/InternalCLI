@@ -10,7 +10,16 @@ namespace CSharpUtils
 {
     public static class CSharpProjectHelper
     {
+#if DEBUG
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
+
+        public static List<string> GetCSharpFileNames(string projectFileName)
+        {
+            var projFileInfo = new FileInfo(projectFileName);
+
+            return BaseSolutionFilesHelper.GetFileNames(projFileInfo.DirectoryName, ".cs");
+        }
 
         public static string GetTargetFramework(string projectFileName)
         {

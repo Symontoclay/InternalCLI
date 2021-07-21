@@ -49,7 +49,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
 
             if (string.IsNullOrWhiteSpace(baseSourceDir))
             {
-                baseSourceDir = CalculateBbaseSourceDir();
+                baseSourceDir = CalculateBaseSourceDir();
             }
 
             foreach (var fileName in _targetFiles)
@@ -74,7 +74,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
             }
         }
 
-        private string CalculateBbaseSourceDir()
+        private string CalculateBaseSourceDir()
         {
             var firstItem = _targetFiles.First();
 

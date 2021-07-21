@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using Deployment.Helpers;
 using Newtonsoft.Json;
 using NLog;
 using SiteBuilder.SiteData;
@@ -15,7 +16,7 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
     public class UpdateReleaseNotesTask : BaseDeploymentTask
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public UpdateReleaseNotesTask(UpdateReleaseNotesTaskOptions options)
@@ -37,13 +38,13 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
         protected override void OnRun()
         {
 #if DEBUG
-            _logger.Info($"_options = {_options}");
+            //_logger.Info($"_options = {_options}");
 #endif
 
             var futureReleaseInfo = FutureReleaseInfo.ReadFile(_options.FutureReleaseFilePath);
 
 #if DEBUG
-            _logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
+            //_logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
 #endif
 
             var version = futureReleaseInfo.Version;
@@ -51,7 +52,7 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
             var releaseNotesList = ReadReleaseItems();
 
 #if DEBUG
-            _logger.Info($"releaseNotesList = {JsonConvert.SerializeObject(releaseNotesList, Formatting.Indented)}");
+            //_logger.Info($"releaseNotesList = {JsonConvert.SerializeObject(releaseNotesList, Formatting.Indented)}");
 #endif
 
             var targetReleaseNote = releaseNotesList.SingleOrDefault(p => p.Version == version);
@@ -67,7 +68,7 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
             }
 
 #if DEBUG
-            _logger.Info($"targetReleaseNote = {JsonConvert.SerializeObject(targetReleaseNote, Formatting.Indented)}");
+            //_logger.Info($"targetReleaseNote = {JsonConvert.SerializeObject(targetReleaseNote, Formatting.Indented)}");
 #endif
 
             targetReleaseNote.Date = DateTime.Now.Date;
@@ -76,95 +77,44 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
             targetReleaseNote.AssetsList = new List<ReleaseAssetItem>();
 
 #if DEBUG
-            _logger.Info($"targetReleaseNote (2) = {JsonConvert.SerializeObject(targetReleaseNote, Formatting.Indented)}");
+            //_logger.Info($"targetReleaseNote (2) = {JsonConvert.SerializeObject(targetReleaseNote, Formatting.Indented)}");
 #endif
 
-            var targetAtrifactsList = KindOfArtifactHelper.GetOrderedListForDeployment().Intersect(_options.ArtifactsForDeployment);
+            var deployedItemsList = DeployedItemsFactory.Create(version, _options.ArtifactsForDeployment, _options.BaseHref, string.Empty);
 
-#if DEBUG
-            _logger.Info($"targetAtrifactsList = {targetAtrifactsList.WritePODList()}");
-#endif
+            //_logger.Info($"deployedItemsList = {deployedItemsList.WriteListToString()}");
 
-            foreach(var targetArtifact in targetAtrifactsList)
+            foreach(var deployedItem in deployedItemsList)
             {
 #if DEBUG
-                _logger.Info($"targetArtifact = {targetArtifact}");
+                //_logger.Info($"deployedItem = {deployedItem}");
 #endif
 
-                switch (targetArtifact)
-                {
-                    case KindOfArtifact.UnityPackage:
-                        {
-                            var assetItem = new ReleaseAssetItem();
-
-                            assetItem.Kind = KindOfReleaseAssetItem.Unity3DAsset;
-                            assetItem.Title = "Unity package";
-                            assetItem.Href = $"{_options.BaseHref}releases/download/{version}/SymOntoClay-{version}.unitypackage";
+                var kindOfReleaseAssetItem = KindOfArtifactHelper.ConvertToKindOfReleaseAssetItem(deployedItem.Kind);
 
 #if DEBUG
-                            _logger.Info($"assetItem = {assetItem}");
+                //_logger.Info($"kindOfReleaseAssetItem = {kindOfReleaseAssetItem}");
 #endif
 
-                            targetReleaseNote.AssetsList.Add(assetItem);
-                        }
-                        break;
-
-                    case KindOfArtifact.CLIArch:
-                        {
-                            var assetItem = new ReleaseAssetItem();
-
-                            assetItem.Kind = KindOfReleaseAssetItem.CLIArch;
-                            assetItem.Title = "Portable CLI (.zip)";
-                            assetItem.Href = $"{_options.BaseHref}releases/download/{version}/SymOntoClay-CLI-{version}-x64.zip";
+                var assetItem = new ReleaseAssetItem();
+                assetItem.Kind = kindOfReleaseAssetItem;
+                assetItem.Href = deployedItem.Href;
+                assetItem.Title = KindOfReleaseAssetItemHelper.GetAssetTitle(kindOfReleaseAssetItem, deployedItem.Href);
 
 #if DEBUG
-                            _logger.Info($"assetItem = {assetItem}");
+                //_logger.Info($"assetItem = {assetItem}");
 #endif
 
-                            targetReleaseNote.AssetsList.Add(assetItem);
-                        }
-                        break;
-
-                    case KindOfArtifact.SourceArch:
-                        {
-                            var assetItem = new ReleaseAssetItem();
-
-                            assetItem.Kind = KindOfReleaseAssetItem.SourceCodeZip;
-                            assetItem.Title = "Source code (.zip)";
-                            assetItem.Href = $"{_options.BaseHref}archive/refs/tags/{version}.zip";
-
-#if DEBUG
-                            _logger.Info($"assetItem = {assetItem}");
-#endif
-
-                            targetReleaseNote.AssetsList.Add(assetItem);
-
-                            assetItem = new ReleaseAssetItem();
-
-                            assetItem.Kind = KindOfReleaseAssetItem.SourceCodeZip;
-                            assetItem.Title = "Source code (.tar.gz)";
-                            assetItem.Href = $"{_options.BaseHref}archive/refs/tags/{version}.tar.gz";
-
-#if DEBUG
-                            _logger.Info($"assetItem = {assetItem}");
-#endif
-
-                            targetReleaseNote.AssetsList.Add(assetItem);
-                        }
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(targetArtifact), targetArtifact, null);
-                }
+                targetReleaseNote.AssetsList.Add(assetItem);
             }
 
 #if DEBUG
-            _logger.Info($"targetReleaseNote (3) = {JsonConvert.SerializeObject(targetReleaseNote, Formatting.Indented)}");
+            //_logger.Info($"targetReleaseNote (3) = {JsonConvert.SerializeObject(targetReleaseNote, Formatting.Indented)}");
 #endif
 
             releaseNotesList = releaseNotesList.OrderByDescending(p => p.Date).ToList();
 
-            _logger.Info($"releaseNotesList (2) = {JsonConvert.SerializeObject(releaseNotesList, Formatting.Indented)}");
+            //_logger.Info($"releaseNotesList (2) = {JsonConvert.SerializeObject(releaseNotesList, Formatting.Indented)}");
 
             SaveReleaseItems(releaseNotesList);
         }
@@ -183,10 +133,17 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
+            var next_N = n + 4;
+            var nextSpaces = DisplayHelper.Spaces(next_N);
             var sb = new StringBuilder();
 
-            //sb.AppendLine($"{spaces}Exports directory '{_options.SourceDir}' of '{_options.RootDir}' to Unity package '{_options.OutputPackageName}'");
-            //sb.AppendLine($"{spaces}'{_options.UnityExeFilePath}' will be used as exe.");
+            sb.AppendLine($"{spaces}Adds or updates future release note from file '{_options.FutureReleaseFilePath}' using base url '{_options.BaseHref}'.");
+            sb.AppendLine($"{spaces}Updated release notes are at '{_options.ReleaseNotesFilePath}'.");
+            sb.AppendLine($"{spaces}The artefactes for deployment:");
+            foreach (var item in _options.ArtifactsForDeployment)
+            {
+                sb.AppendLine($"{nextSpaces}{item}");
+            }
             sb.Append(PrintValidation(n));
 
             return sb.ToString();

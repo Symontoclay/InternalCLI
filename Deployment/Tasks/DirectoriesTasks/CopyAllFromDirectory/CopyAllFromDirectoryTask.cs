@@ -1,5 +1,6 @@
 ﻿using CollectionsHelpers.CollectionsHelpers;
 using CommonUtils.DebugHelpers;
+using Deployment.Helpers;
 using Deployment.Tasks.DirectoriesTasks.CopyTargetFiles;
 using Newtonsoft.Json;
 using NLog;
@@ -20,13 +21,6 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
         }
 
         private readonly CopyAllFromDirectoryTaskOptions _options;
-        private string _sourceDir;
-        private List<string> _onlySubDirs;
-        private List<string> _exceptSubDirs;
-        private List<string> _onlyFileExts;
-        private List<string> _exceptFileExts;
-        private List<string> _fileNameShouldContain;
-        private List<string> _fileNameShouldNotContain;
 
         /// <inheritdoc/>
         protected override void OnValidateOptions()
@@ -39,20 +33,21 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            _sourceDir = _options.SourceDir.Replace("\\", "/");
+            var fileNamesGetterOptions = new FileNamesGetterOptions();
 
-            _onlySubDirs = _options.OnlySubDirs?.Select(p => p.Replace("\\", "/").ToLower().Trim()).ToList();
-            _exceptSubDirs = _options.ExceptSubDirs?.Select(p => p.Replace("\\", "/").ToLower().Trim()).ToList();
-            _onlyFileExts = _options.OnlyFileExts?.Select(p => p.Replace("\\", "/").ToLower().Trim()).ToList();
-            _exceptFileExts = _options.ExceptFileExts?.Select(p => p.Replace("\\", "/").ToLower().Trim()).ToList();
-            _fileNameShouldContain = _options.FileNameShouldContain?.Select(p => p.Replace("\\", "/").ToLower().Trim()).ToList();
-            _fileNameShouldNotContain = _options.FileNameShouldNotContain?.Select(p => p.Replace("\\", "/").ToLower().Trim()).ToList();
+            fileNamesGetterOptions.SourceDir = _options.SourceDir;
+            fileNamesGetterOptions.OnlySubDirs = _options.OnlySubDirs;
+            fileNamesGetterOptions.ExceptSubDirs = _options.ExceptSubDirs;
+            fileNamesGetterOptions.OnlyFileExts = _options.OnlyFileExts;
+            fileNamesGetterOptions.ExceptFileExts = _options.ExceptFileExts;
+            fileNamesGetterOptions.FileNameShouldContain = _options.FileNameShouldContain;
+            fileNamesGetterOptions.FileNameShouldNotContain = _options.FileNameShouldNotContain;
 
-            var sourceFullFileNamesList = new List<string>();
+            var fileNamesGetter = new FileNamesGetter(fileNamesGetterOptions);
 
-            EnumerateFileNames(_sourceDir, sourceFullFileNamesList);
-            
-            if(!sourceFullFileNamesList.Any())
+            var sourceFullFileNamesList = fileNamesGetter.GetFileNames();
+
+            if (!sourceFullFileNamesList.Any())
             {
                 return;
             }
@@ -63,81 +58,6 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
                 SaveSubDirs = _options.SaveSubDirs,
                 TargetFiles = sourceFullFileNamesList
             }));
-        }
-
-        private void EnumerateFileNames(string directoryName, List<string> sourceFullFileNamesList)
-        {
-            foreach (var subDirectoryName in Directory.GetDirectories(directoryName))
-            {
-                if(!_onlySubDirs.IsNullOrEmpty() || !_exceptSubDirs.IsNullOrEmpty())
-                {
-                    var pureDir = subDirectoryName.Replace("\\", "/").Replace(_sourceDir, string.Empty).ToLower();
-
-                    if (!_onlySubDirs.IsNullOrEmpty())
-                    {
-                        if(!_onlySubDirs.Any(p => pureDir.Contains(p)))
-                        {
-                            continue;
-                        }
-                    }
-                    if (!_exceptSubDirs.IsNullOrEmpty())
-                    {
-                        if (_exceptSubDirs.Any(p => pureDir.Contains(p)))
-                        {
-                            continue;
-                        }
-                    }
-                }
-
-                EnumerateFileNames(subDirectoryName, sourceFullFileNamesList);
-            }
-
-            foreach(var fileName in Directory.GetFiles(directoryName))
-            {
-                if(!_onlyFileExts.IsNullOrEmpty() || !_exceptFileExts.IsNullOrEmpty() || !_fileNameShouldContain.IsNullOrEmpty() || !_fileNameShouldNotContain.IsNullOrEmpty())
-                {
-                    var fileInfo = new FileInfo(fileName);
-
-                    var fileInfoName = fileInfo.Name;
-
-                    var pureFileName = Path.Combine(fileInfo.DirectoryName, fileInfoName.Substring(0, fileInfoName.Length - fileInfo.Extension.Length)).Replace("\\", "/").Replace(_sourceDir, string.Empty).ToLower();
-
-                    var ext = fileInfo.Extension.Substring(1);
-
-                    if (!_onlyFileExts.IsNullOrEmpty())
-                    {
-                        if (!_onlyFileExts.Any(p => p == ext))
-                        {
-                            continue;
-                        }
-                    }
-                    if (!_exceptFileExts.IsNullOrEmpty())
-                    {
-                        if (_exceptFileExts.Any(p => p == ext))
-                        {
-                            continue;
-                        }
-                    }
-
-                    if (!_fileNameShouldContain.IsNullOrEmpty())
-                    {
-                        if(!_fileNameShouldContain.Any(p => pureFileName.Contains(p)))
-                        {
-                            continue;
-                        }
-                    }
-
-                    if (!_fileNameShouldNotContain.IsNullOrEmpty())
-                    {
-                        if(_fileNameShouldNotContain.Any(p => pureFileName.Contains(p)))
-                        {
-                            continue;
-                        }
-                    }
-                }
-
-                sourceFullFileNamesList.Add(fileName.Replace("\\", "/"));
-            }
         }
 
         /// <inheritdoc/>

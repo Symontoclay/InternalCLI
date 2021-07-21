@@ -128,10 +128,10 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
             {
                 sb.AppendLine("<tr style='border-bottom: solid 1px #e2e2e2;'>");
                 sb.AppendLine("<td style='width: 180px;'>");
-                sb.AppendLine(GetAssetTitle(asset.Kind, asset.Href));
+                sb.AppendLine(KindOfReleaseAssetItemHelper.GetAssetTitle(asset.Kind, asset.Href));
                 sb.AppendLine("</td>");
                 sb.AppendLine("<td>");
-                sb.AppendLine($"<a href='{asset.Href}'>{GetAssetTitle(asset.Kind, asset.Href)}</a>");
+                sb.AppendLine($"<a href='{asset.Href}'>{KindOfReleaseAssetItemHelper.GetAssetTitle(asset.Kind, asset.Href)}</a>");
                 sb.AppendLine("</td>");
                 sb.AppendLine("</tr>");
             }
@@ -143,70 +143,6 @@ namespace SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration
             sb.AppendLine($"<div>{ContentPreprocessor.Run(targetItem.Description, targetItem.IsMarkdown, generalSiteBuilderSettings)}</div>");
 
             newRootNode.InnerHtml = sb.ToString();
-        }
-
-        private static string GetAssetTitle(KindOfReleaseAssetItem kind, string href)
-        {
-#if DEBUG
-            //_logger.Info($"href = {href}");
-#endif
-
-            var extension = GetFileExtension(href);
-#if DEBUG
-            //_logger.Info($"extension = {extension}");
-#endif
-            switch (kind)
-            {
-                case KindOfReleaseAssetItem.SourceCodeZip:
-                    return $"Source code ({extension})";
-
-                case KindOfReleaseAssetItem.NuGet:
-                    return "Nuget package";
-
-                case KindOfReleaseAssetItem.LibraryArch:
-                    return "Engine (.zip)";
-
-                case KindOfReleaseAssetItem.LibraryFolder:
-                    return "Engine (folder)";
-
-                case KindOfReleaseAssetItem.CLIArch:
-                    return "Portable CLI (.zip)";
-
-                case KindOfReleaseAssetItem.CLIFolder:
-                    return "CLI (folder)";
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
-            }
-        }
-
-        private static string GetFileExtension(string href)
-        {
-            var fileInfo = new FileInfo(href);
-
-            var extension = fileInfo.Extension;
-
-#if DEBUG
-            //_logger.Info($"href = {href}");
-
-            //_logger.Info($"extension = {extension}");
-#endif
-
-            switch (extension)
-            {
-                case ".zip":
-                    return extension;
-
-                case ".gz":
-                    if(href.EndsWith(".tar.gz"))
-                    {
-                        return ".tar.gz";
-                    }
-                    throw new ArgumentOutOfRangeException(nameof(extension), extension, null);
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(extension), extension, null);
-            }
         }
 
         private static ReleaseItem GetTargetReleaseItem(string version, GeneralSiteBuilderSettings generalSiteBuilderSettings)

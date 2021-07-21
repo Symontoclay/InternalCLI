@@ -30,7 +30,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstDeployedItemsFactory();
+            //TstDeployedItemsFactory();
             //TstAddReleaseNote();
             //TstReadAndReSaveReleaseNotes();
             //TstOctokit();
@@ -45,7 +45,7 @@ namespace TestSandBox
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
-            //TstDeploymentTaskBasedBuildHandler();
+            TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
