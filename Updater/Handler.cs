@@ -9,6 +9,7 @@ using System.Text;
 
 namespace Updater
 {
+    [Obsolete("Use VersionTasks")]
     public class Handler
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -26,6 +27,7 @@ namespace Updater
         private readonly string _copyright;
         private readonly string _smallLicenceFile;
 
+        [Obsolete("Use VersionTasks")]
         public void Run()
         {
 #if DEBUG

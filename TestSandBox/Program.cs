@@ -45,7 +45,8 @@ namespace TestSandBox
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
-            TstDeploymentTaskBasedBuildHandler();
+            TstGitTasksHandler();
+            //TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
@@ -460,6 +461,16 @@ namespace TestSandBox
             _logger.Info("Begin");
 
             var handler = new RoadMapHandler();
+            handler.Run();
+
+            _logger.Info("End");
+        }
+
+        private static void TstGitTasksHandler()
+        {
+            _logger.Info("Begin");
+
+            var handler = new GitTasksHandler();
             handler.Run();
 
             _logger.Info("End");

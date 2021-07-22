@@ -17,6 +17,8 @@ using Deployment.Tasks.UnityTasks.ExportPackage;
 using Deployment.Tasks.VersionTasks.UpdateCopyrightInFileHeaders;
 using Deployment.Tasks.VersionTasks.UpdateCopyrightInFileHeadersInCSProjectOrSolution;
 using Deployment.Tasks.VersionTasks.UpdateCopyrightInFileHeadersInFolder;
+using Deployment.Tasks.VersionTasks.UpdateSolutionCopyright;
+using Deployment.Tasks.VersionTasks.UpdateSolutionVersion;
 using NLog;
 using SiteBuilder;
 using System;
@@ -36,7 +38,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case9();
+            Case10();
+            //Case9();
             //Case8();
             //Case7();
             //Case6();
@@ -49,6 +52,29 @@ namespace TestSandBox
             //_logger.Info($" = {}");
 
             _logger.Info("End");
+        }
+
+        private void Case10()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            var coreSolution = ProjectsDataSource.GetSolution(KindOfProject.GeneralSolution);
+
+            _logger.Info($"coreSolution.SlnPath = {coreSolution.SlnPath}");
+
+            deploymentPipeline.Add(new UpdateSolutionVersionTask(new UpdateSolutionVersionTaskOptions() { 
+                SolutionFilePath = coreSolution.SlnPath,
+                Version = "0.3.2"
+            }));
+
+            deploymentPipeline.Add(new UpdateSolutionCopyrightTask(new UpdateSolutionCopyrightTaskOptions() {
+                SolutionFilePath = coreSolution.SlnPath,
+                Copyright = "tst"
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case9()
