@@ -1,4 +1,5 @@
 ﻿using CommonUtils;
+using Deployment.Helpers;
 using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.CreateBranch;
 using NLog;
@@ -35,16 +36,23 @@ namespace TestSandBox
 
         private void Case1()
         {
+            if(GitRepositoryHelper.IsBranchExists(_reposPath, "tst_branch"))
+            {
+                _logger.Info("'tst_branch' exists!");
+
+                return;
+            }
+
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new CreateBranchTask(new CreateBranchTaskOptions() { 
-                RepositoryPath = _reposPath,
-                BranchName = "tst_branch"
-            }));
+            //deploymentPipeline.Add(new CreateBranchTask(new CreateBranchTaskOptions() { 
+            //    RepositoryPath = _reposPath,
+            //    BranchName = "tst_branch"
+            //}));
 
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");
 
-            deploymentPipeline.Run();
+            //deploymentPipeline.Run();
         }
     }
 }
