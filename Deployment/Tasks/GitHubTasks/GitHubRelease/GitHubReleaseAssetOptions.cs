@@ -5,15 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaseDevPipeline.SourceData
+namespace Deployment.Tasks.GitHubTasks.GitHubRelease
 {
-    public class LicenseSource : IObjectToString
+    public class GitHubReleaseAssetOptions : IObjectToString
     {
-        public string Name { get; set; }
-        public string HeaderFileName { get; set; }
-        public string HeaderContent { get; set; }
-        public string FileName { get; set; }
-        public string Content { get; set; }
+        public string DisplayedName { get; set; }
+        public string UploadedFilePath { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -33,11 +30,8 @@ namespace BaseDevPipeline.SourceData
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
-            sb.AppendLine($"{spaces}{nameof(HeaderFileName)} = {HeaderFileName}");
-            sb.PrintPODProp(n, nameof(HeaderContent), HeaderContent);
-            sb.AppendLine($"{spaces}{nameof(FileName)} = {FileName}");
-            sb.PrintPODProp(n, nameof(Content), Content);
+            sb.AppendLine($"{spaces}{nameof(DisplayedName)} = {DisplayedName}");
+            sb.AppendLine($"{spaces}{nameof(UploadedFilePath)} = {UploadedFilePath}");
 
             return sb.ToString();
         }

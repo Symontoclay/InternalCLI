@@ -33,7 +33,7 @@ namespace BaseDevPipeline
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
-            sb.AppendLine($"{spaces}{nameof(Description)} = {Description}");
+            sb.PrintPODProp(n, nameof(Description), Description);
 
             return sb.ToString();
         }

@@ -33,7 +33,7 @@ namespace Deployment.Tasks.GitTasks.Commit
 
             Directory.SetCurrentDirectory(_options.RepositoryPath);
 
-            var gitProcess = new GitProcessSyncWrapper($"commit -a -m '{_options.Message}'");
+            var gitProcess = new GitProcessSyncWrapper($"commit -a -m \"{_options.Message}\"");
             var exitCode = gitProcess.Run();
 
             Directory.SetCurrentDirectory(prevDir);

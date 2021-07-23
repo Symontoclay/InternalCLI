@@ -1,4 +1,5 @@
 using CollectionsHelpers.CollectionsHelpers;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,10 @@ namespace CommonUtils.DebugHelpers
 {
     public static class DisplayHelper
     {
+#if DEBUG
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
+
         public static string Spaces(uint n)
         {
             if (n == 0)
@@ -110,6 +115,49 @@ namespace CommonUtils.DebugHelpers
                 sb.Append(obj.ToBriefString(nextN));
                 sb.AppendLine($"{spaces}End {propName}");
             }
+        }
+
+        public static void PrintPODValue(this StringBuilder sb, uint n, string value)
+        {
+            var spaces = Spaces(n);
+
+            var linesList = value.Replace('\r', ' ').Split('\n');
+
+            foreach (var line in linesList)
+            {
+                sb.AppendLine($"{spaces}{line}");
+            }
+        }
+
+        public static void PrintPODProp(this StringBuilder sb, uint n, string propName, string value)
+        {
+            var spaces = Spaces(n);
+
+            if(string.IsNullOrWhiteSpace(value))
+            {
+                sb.AppendLine($"{spaces}{propName} = ");
+                return;
+            }
+
+            var linesList = value.Replace('\r', ' ').Split('\n');
+
+            if(linesList.Length == 1)
+            {
+                sb.AppendLine($"{spaces}{propName} = {value}");
+                return;
+            }
+
+            var nextN = n + 4;
+            var nextNSpaces = Spaces(nextN);
+
+            sb.AppendLine($"{spaces}Begin {propName}");
+
+            foreach(var line in linesList)
+            {
+                sb.AppendLine($"{nextNSpaces}{line}");
+            }
+
+            sb.AppendLine($"{spaces}End {propName}");
         }
 
         public static void PrintPODList<T>(this StringBuilder sb, uint n, string propName, IList<T> items)
@@ -438,6 +486,13 @@ namespace CommonUtils.DebugHelpers
         {
             var spaces = Spaces(n);
             var mark = value == null ? "No" : "Yes";
+            sb.AppendLine($"{spaces}{propName} = {mark}");
+        }
+
+        public static void PrintExistingStr(this StringBuilder sb, uint n, string propName, string value)
+        {
+            var spaces = Spaces(n);
+            var mark = string.IsNullOrWhiteSpace(value) ? "No" : "Yes";
             sb.AppendLine($"{spaces}{propName} = {mark}");
         }
 

@@ -35,9 +35,9 @@ namespace BaseDevPipeline.Data.Implementation
 
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(HeaderFileName)} = {HeaderFileName}");
-            sb.AppendLine($"{spaces}{nameof(HeaderContent)} = {HeaderContent}");
+            sb.PrintPODProp(n, nameof(HeaderContent), HeaderContent);
             sb.AppendLine($"{spaces}{nameof(FileName)} = {FileName}");
-            sb.AppendLine($"{spaces}{nameof(Content)} = {Content}");
+            sb.PrintPODProp(n, nameof(Content), Content);
 
             return sb.ToString();
         }

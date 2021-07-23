@@ -33,14 +33,14 @@ namespace Deployment.Tasks.GitTasks.UndoChanges
 
             Directory.SetCurrentDirectory(_options.RepositoryPath);
 
-            var gitProcess = new GitProcessSyncWrapper($"restore '{_options.RelativeTargetFilePath}'");
+            var gitProcess = new GitProcessSyncWrapper($"restore \"{_options.RelativeTargetFilePath}\"");
             var exitCode = gitProcess.Run();
 
             Directory.SetCurrentDirectory(prevDir);
 
             if (exitCode != 0)
             {
-                throw new Exception($"Undo changes of current branch for file '{_options.RepositoryPath}' in repository at path '{_options.RepositoryPath}' has been failed! The exit code is {exitCode}.");
+                throw new Exception($"Undo changes of current branch for file '{_options.RelativeTargetFilePath}' in repository at path '{_options.RepositoryPath}' has been failed! The exit code is {exitCode}.");
             }
         }
 
@@ -51,7 +51,7 @@ namespace Deployment.Tasks.GitTasks.UndoChanges
 
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Undoes changes of current branch for file '{_options.RepositoryPath}' in repository at path '{_options.RepositoryPath}'.");
+            sb.AppendLine($"{spaces}Undoes changes of current branch for file '{_options.RelativeTargetFilePath}' in repository at path '{_options.RepositoryPath}'.");
             sb.Append(PrintValidation(n));
 
             return sb.ToString();
