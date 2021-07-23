@@ -12,17 +12,9 @@ namespace Deployment.Tasks.GitHubTasks.GitHubRelease
 {
     public class GitHubReleaseTask : BaseDeploymentTask
     {
-#if DEBUG
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
-
         public GitHubReleaseTask(GitHubReleaseTaskOptions options)
         {
             _options = options;
-
-#if DEBUG
-            _logger.Info($"_options = {_options}");
-#endif
         }
 
         private readonly GitHubReleaseTaskOptions _options;
@@ -79,10 +71,6 @@ namespace Deployment.Tasks.GitHubTasks.GitHubRelease
             resultTask.Wait();
 
             var result = resultTask.Result;
-
-#if DEBUG
-            _logger.Info($"result.Id = {result.Id}");
-#endif
 
             var releaseTask = client.Repository.Release.Get(_options.RepositoryOwner, _options.RepositoryName, result.Id);
 
