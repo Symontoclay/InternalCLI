@@ -45,8 +45,8 @@ namespace TestSandBox
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
-            TstGitTasksHandler();
-            //TstDeploymentTaskBasedBuildHandler();
+            //TstGitTasksHandler();
+            TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();

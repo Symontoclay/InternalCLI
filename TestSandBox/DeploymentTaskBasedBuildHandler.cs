@@ -2,6 +2,7 @@
 using CommonUtils;
 using CommonUtils.DebugHelpers;
 using Deployment;
+using Deployment.DevTasks.CoreToSiteSource;
 using Deployment.Tasks;
 using Deployment.Tasks.ArchTasks.Zip;
 using Deployment.Tasks.BuildTasks;
@@ -38,11 +39,12 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case10();
+            Case11();
+            //Case10();
             //Case9();
             //Case8();
             //Case7();
-            //Case6();
+            //Case6();//SiteBuildTask
             //Case5();
             //Case4();
             //Case3();
@@ -52,6 +54,28 @@ namespace TestSandBox
             //_logger.Info($" = {}");
 
             _logger.Info("End");
+        }
+
+        private void Case11()
+        {
+            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+
+            _logger.Info($"siteSolution = {siteSolution}");
+
+            var coreAssetLibProject = ProjectsDataSource.GetProject(KindOfProject.CoreAssetLib);
+
+            _logger.Info($"coreAssetLibProject = {coreAssetLibProject}");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new CoreToSiteSourceTask(new CoreToSiteSourceTaskOptions() { 
+                CoreCProjPath = coreAssetLibProject.CsProjPath,
+                SiteSourceDir = siteSolution.SourcePath
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case10()

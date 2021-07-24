@@ -236,7 +236,7 @@ namespace SiteBuilder
             var csharpApiJsonPath = SiteSettings.CSharpUserApiJsonPath;
 
 #if DEBUG
-            //_logger.Info($"csharpApiJsonPath = {csharpApiJsonPath}");
+            _logger.Info($"csharpApiJsonPath = {csharpApiJsonPath}");
 #endif
 
             if (string.IsNullOrWhiteSpace(csharpApiJsonPath))
