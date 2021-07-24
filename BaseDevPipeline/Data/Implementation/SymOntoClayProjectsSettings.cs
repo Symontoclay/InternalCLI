@@ -14,6 +14,18 @@ namespace BaseDevPipeline.Data.Implementation
 
         public string SecretFilePath { get; set; }
 
+        /// <inheritdoc/>
+        public string GetSecret(string key)
+        {
+            return GetSecrets()[key];
+        }
+
+        /// <inheritdoc/>
+        public Dictionary<string, string> GetSecrets()
+        {
+            return SecretFile.ReadSecrets(SecretFilePath);
+        }
+
         public List<UtityExeInstance> UtityExeInstances { get; set; }
 
         /// <inheritdoc/>

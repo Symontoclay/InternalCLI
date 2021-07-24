@@ -56,18 +56,23 @@ namespace TestSandBox
 
         private void Case10()
         {
-            var secretsFileName = EVPath.Normalize("%USERPROFILE%/example_s.json");
+            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
 
-            _logger.Info($"secretsFileName = {secretsFileName}");
+            _logger.Info($"settings = {settings}");
+
+            //var secretsFileName = EVPath.Normalize("%USERPROFILE%/example_s.json");
+
+            //_logger.Info($"secretsFileName = {secretsFileName}");
 
             //var secrets = SecretFile.ReadSecrets(secretsFileName);
             //var token = secrets["GitHub"];
-            var token = "example_token!!!!!";
+            //var token = "example_token!!!!!";
+            var token = settings.GetSecret("GitHub");
 
             var owner = "metatypeman";
             var repo = "a1";
 
-            var version = "3.6.4";
+            var version = "3.6.6";
 
             //var notesText = "**This** is some *Markdown*";
             var notesText = "* Function\r\n* Method\r\n* Calling function with position parameters\r\n* Improving calling function with named parameters\r\n* Fixing issues";
@@ -98,7 +103,7 @@ namespace TestSandBox
 
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");
 
-            //deploymentPipeline.Run();
+            deploymentPipeline.Run();
         }
 
         private void Case9()

@@ -41,7 +41,7 @@ namespace Deployment.Tasks.GitHubTasks.GitHubRelease
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var notExistingAssetsFiles = _options.Assets.Where(p => File.Exists(p.UploadedFilePath));
+            var notExistingAssetsFiles = _options.Assets.Where(p => !File.Exists(p.UploadedFilePath));
 
             if (notExistingAssetsFiles.Any())
             {
