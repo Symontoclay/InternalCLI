@@ -10,7 +10,7 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
 {
     public class UpdateReleaseNotesTaskOptions : IObjectToString
     {
-        public string FutureReleaseFilePath { get; set; }
+        public FutureReleaseInfo FutureReleaseInfo { get; set; }
         public List<KindOfArtifact> ArtifactsForDeployment { get; set; }
         public string ReleaseNotesFilePath { get; set; }
         public string BaseHref { get; set; }
@@ -33,7 +33,7 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(FutureReleaseFilePath)} = {FutureReleaseFilePath}");
+            sb.PrintObjProp(n, nameof(FutureReleaseInfo), FutureReleaseInfo);
             sb.PrintPODList(n, nameof(ArtifactsForDeployment), ArtifactsForDeployment);
             sb.AppendLine($"{spaces}{nameof(ReleaseNotesFilePath)} = {ReleaseNotesFilePath}");
             sb.AppendLine($"{spaces}{nameof(BaseHref)} = {BaseHref}");

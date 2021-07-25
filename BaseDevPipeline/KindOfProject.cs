@@ -10,7 +10,7 @@ namespace BaseDevPipeline
     {
         Unknown,
         ProjectSite,
-        GeneralSolution,
+        CoreSolution,
         Unity,
         CLI,
         CoreLib,
@@ -19,6 +19,7 @@ namespace BaseDevPipeline
         Library,
         UnitTest,
         IntegrationTest,
-        AdditionalApp
+        AdditionalApp,
+        ReleaseMngrSolution
     }
 }

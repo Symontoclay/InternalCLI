@@ -58,6 +58,14 @@ namespace Deployment.Tasks
             }
         }
 
+        protected void ValidateValueAsNonNull(string optionName, object optionValue)
+        {
+            if (optionValue == null)
+            {
+                AddValidationMessage($"The {optionName} can not be null!");
+            }
+        }
+
         protected void ValidateDirectory(string optionName, string optionValue)
         {
             if (string.IsNullOrWhiteSpace(optionValue))

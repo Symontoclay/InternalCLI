@@ -1,4 +1,5 @@
 ﻿using BaseDevPipeline;
+using BaseDevPipeline.SourceData;
 using CommonUtils;
 using CommonUtils.DebugHelpers;
 using Deployment;
@@ -39,14 +40,15 @@ namespace TestSandBox
             //TstGitHubAPIGet();
             //TstTempDirectory();
             //TstCoreToAssetTask();
-            //TstFutureReleaseInfo();
+            TstFutureReleaseInfo();
+            //TstFutureReleaseInfoSource();
             //TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
             //TstGitTasksHandler();
-            TstDeploymentTaskBasedBuildHandler();
+            //TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
@@ -398,11 +400,17 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            //FutureReleaseInfo.SaveExampleFile("future_release_1.json");
+            var futureReleaseInfoReader = new FutureReleaseInfoReader();
 
-            var futureReleaseInfo = FutureReleaseInfo.ReadFile("future_release.json");
 
-            _logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
+            _logger.Info("End");
+        }
+
+        private static void TstFutureReleaseInfoSource()
+        {
+            _logger.Info("Begin");
+
+            FutureReleaseInfoSource.SaveExampleFile("future_release_1.json");
 
             _logger.Info("End");
         }

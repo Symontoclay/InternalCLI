@@ -30,7 +30,7 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
         protected override void OnValidateOptions()
         {
             ValidateOptionsAsNonNull(_options);
-            ValidateFileName(nameof(_options.FutureReleaseFilePath), _options.FutureReleaseFilePath);
+            ValidateValueAsNonNull(nameof(_options.FutureReleaseInfo), _options.FutureReleaseInfo);
             ValidateFileName(nameof(_options.ReleaseNotesFilePath), _options.ReleaseNotesFilePath);
         }
 
@@ -41,7 +41,7 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
             //_logger.Info($"_options = {_options}");
 #endif
 
-            var futureReleaseInfo = FutureReleaseInfo.ReadFile(_options.FutureReleaseFilePath);
+            var futureReleaseInfo = _options.FutureReleaseInfo;
 
 #if DEBUG
             //_logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
@@ -137,7 +137,8 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
             var nextSpaces = DisplayHelper.Spaces(next_N);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Adds or updates future release note from file '{_options.FutureReleaseFilePath}' using base url '{_options.BaseHref}'.");
+            sb.AppendLine($"{spaces}Adds or updates future release note using base url '{_options.BaseHref}'.");
+            sb.PrintObjProp(n, nameof(_options.FutureReleaseInfo), _options.FutureReleaseInfo);
             sb.AppendLine($"{spaces}Updated release notes are at '{_options.ReleaseNotesFilePath}'.");
             sb.AppendLine($"{spaces}The artefactes for deployment:");
             foreach (var item in _options.ArtifactsForDeployment)

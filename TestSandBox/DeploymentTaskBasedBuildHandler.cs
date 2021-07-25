@@ -82,7 +82,7 @@ namespace TestSandBox
         {
             var deploymentPipeline = new DeploymentPipeline();
 
-            var coreSolution = ProjectsDataSource.GetSolution(KindOfProject.GeneralSolution);
+            var coreSolution = ProjectsDataSource.GetSolution(KindOfProject.CoreSolution);
 
             _logger.Info($"coreSolution.SlnPath = {coreSolution.SlnPath}");
 
@@ -204,7 +204,7 @@ namespace TestSandBox
             var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new UpdateReleaseNotesTask(new UpdateReleaseNotesTaskOptions() { 
-                FutureReleaseFilePath = Path.Combine(Directory.GetCurrentDirectory(), "future_release.json"),
+                //FutureReleaseFilePath = Path.Combine(Directory.GetCurrentDirectory(), "future_release.json"),
                 ArtifactsForDeployment = new List<KindOfArtifact>() 
                 {
                     KindOfArtifact.SourceArch,

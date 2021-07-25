@@ -15,7 +15,7 @@
   ],
   "Solutions": [
     {
-      "Kind": "GeneralSolution",
+      "Kind": "CoreSolution",
       "Href": "https://github.com/Symontoclay/SymOntoClay",
       "Path": "%BASE_PATH%/SymOntoClay",
       "License": "MIT",
@@ -74,6 +74,16 @@
       "Path": "%BASE_PATH%/SymOntoClayAsset",
       "License": "MIT",
       "SourcePath": "%SLN_ROOT_PATH%/Assets/SymOntoClay",
+      "ArtifactsForDeployment": [
+        "inherited",
+        "UnityPackage"
+      ]
+    },
+    {
+      "Kind": "ReleaseMngrSolution",
+      "Href": "https://github.com/Symontoclay/ReleaseMngr",
+      "Path": "%BASE_PATH%/ReleaseMngr",
+      "License": "MIT",
       "ArtifactsForDeployment": [
         "inherited",
         "UnityPackage"

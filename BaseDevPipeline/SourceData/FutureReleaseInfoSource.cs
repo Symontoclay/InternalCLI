@@ -7,13 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaseDevPipeline
+namespace BaseDevPipeline.SourceData
 {
-    public class FutureReleaseInfo : IObjectToString
+    public class FutureReleaseInfoSource : IObjectToString
     {
         public string Version { get; set; }
-        public string Description { get; set; }
-        public FutureReleaseStatus Status { get; set; }
+        public string Status { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? FinishDate { get; set; }
 
@@ -36,12 +35,30 @@ namespace BaseDevPipeline
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
-            sb.PrintPODProp(n, nameof(Description), Description);
             sb.AppendLine($"{spaces}{nameof(Status)} = {Status}");
             sb.AppendLine($"{spaces}{nameof(StartDate)} = {StartDate}");
             sb.AppendLine($"{spaces}{nameof(FinishDate)} = {FinishDate}");
 
             return sb.ToString();
+        }
+
+        public static FutureReleaseInfoSource ReadFile(string fileName)
+        {
+            return JsonConvert.DeserializeObject<FutureReleaseInfoSource>(File.ReadAllText(fileName));
+        }
+
+        public static void SaveExampleFile(string fileName)
+        {
+            var futureReleaseInfo = new FutureReleaseInfoSource()
+            {
+                Version = "0.0.0",
+                Status = "Started",
+                StartDate = DateTime.Now
+            };
+
+            var jsonStr = JsonConvert.SerializeObject(futureReleaseInfo, Formatting.Indented);
+
+            File.WriteAllText(fileName, jsonStr);
         }
     }
 }

@@ -116,7 +116,7 @@ namespace BaseDevPipeline
 
             var symOntoClaySolution = new SolutionSource()
             {
-                Kind = KindOfProject.GeneralSolution.ToString(),
+                Kind = KindOfProject.CoreSolution.ToString(),
                 Href = "https://github.com/Symontoclay/SymOntoClay",
                 Path = "%BASE_PATH%/SymOntoClay",
                 License = "MIT"
