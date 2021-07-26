@@ -11,7 +11,8 @@
     "%ProgramFiles%/Unity/Hub/Editor/2020.2.3f1/Editor/Unity.exe"
   ],
   "ArtifactsForDeployment": [
-    "CLIArch"
+    "CLIArch",
+    "UnityPackage"
   ],
   "Solutions": [
     {
@@ -62,32 +63,20 @@
       "Kind": "ProjectSite",
       "Href": "https://github.com/Symontoclay/symontoclay.github.io",
       "Path": "%BASE_PATH%/symontoclay.github.io",
-      "SourcePath": "%SLN_ROOT_PATH%/siteSource/",
-      "ArtifactsForDeployment": [
-        "inherited",
-        "UnityPackage"
-      ]
+      "SourcePath": "%SLN_ROOT_PATH%/siteSource/"
     },
     {
       "Kind": "Unity",
       "Href": "https://github.com/Symontoclay/SymOntoClayAsset",
       "Path": "%BASE_PATH%/SymOntoClayAsset",
       "License": "MIT",
-      "SourcePath": "%SLN_ROOT_PATH%/Assets/SymOntoClay",
-      "ArtifactsForDeployment": [
-        "inherited",
-        "UnityPackage"
-      ]
+      "SourcePath": "%SLN_ROOT_PATH%/Assets/SymOntoClay"
     },
     {
       "Kind": "ReleaseMngrSolution",
       "Href": "https://github.com/Symontoclay/ReleaseMngr",
       "Path": "%BASE_PATH%/ReleaseMngr",
-      "License": "MIT",
-      "ArtifactsForDeployment": [
-        "inherited",
-        "UnityPackage"
-      ]
+      "License": "MIT"
     }
   ],
   "Artifacts": [

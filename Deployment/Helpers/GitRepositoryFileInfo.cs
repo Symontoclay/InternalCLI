@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.DevTasks.CoreToSiteSource
+namespace Deployment.Helpers
 {
-    public class CoreToSiteSourceTaskOptions : IObjectToString
+    public class GitRepositoryFileInfo : IObjectToString
     {
-        public string CoreCProjPath { get; set; }
-        public string SiteSourceDir { get; set; }
+        public string AbsolutePath { get; set; }
+        public string RelativePath { get; set; }
+        public GitRepositoryFileStatus Status { get; set; }
+        public bool IsNew => Status == GitRepositoryFileStatus.Added || Status == GitRepositoryFileStatus.Untracked;
 
         /// <inheritdoc/>
         public override string ToString()
@@ -30,9 +32,11 @@ namespace Deployment.DevTasks.CoreToSiteSource
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(CoreCProjPath)} = {CoreCProjPath}");
-            sb.AppendLine($"{spaces}{nameof(SiteSourceDir)} = {SiteSourceDir}");
-            
+            sb.AppendLine($"{spaces}{nameof(AbsolutePath)} = {AbsolutePath}");
+            sb.AppendLine($"{spaces}{nameof(RelativePath)} = {RelativePath}");
+            sb.AppendLine($"{spaces}{nameof(Status)} = {Status}");
+            sb.AppendLine($"{spaces}{nameof(IsNew)} = {IsNew}");
+
             return sb.ToString();
         }
     }

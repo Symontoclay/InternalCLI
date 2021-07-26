@@ -3,6 +3,7 @@ using CommonUtils;
 using CommonUtils.DebugHelpers;
 using Deployment;
 using Deployment.DevTasks.CoreToSiteSource;
+using Deployment.Helpers;
 using Deployment.Tasks;
 using Deployment.Tasks.ArchTasks.Zip;
 using Deployment.Tasks.BuildTasks;
@@ -68,7 +69,7 @@ namespace TestSandBox
 
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new CoreToSiteSourceTask(new CoreToSiteSourceTaskOptions() { 
+            deploymentPipeline.Add(new CoreToSiteSourceDevTask(new CoreToSiteSourceDevTaskOptions() { 
                 CoreCProjPath = coreAssetLibProject.CsProjPath,
                 SiteSourceDir = siteSolution.SourcePath
             }));
@@ -201,10 +202,14 @@ namespace TestSandBox
 
         private void Case5()
         {
+            var futureReleaseInfo = FutureReleaseInfoReader.Read();
+
+            _logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
+
             var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new UpdateReleaseNotesTask(new UpdateReleaseNotesTaskOptions() { 
-                //FutureReleaseFilePath = Path.Combine(Directory.GetCurrentDirectory(), "future_release.json"),
+                FutureReleaseInfo = futureReleaseInfo,
                 ArtifactsForDeployment = new List<KindOfArtifact>() 
                 {
                     KindOfArtifact.SourceArch,

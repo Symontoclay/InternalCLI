@@ -40,14 +40,15 @@ namespace TestSandBox
             //TstGitHubAPIGet();
             //TstTempDirectory();
             //TstCoreToAssetTask();
-            TstFutureReleaseInfo();
+            //TstReadRepositoryFiles();
+            //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
             //TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
-            //TstGitTasksHandler();
+            TstGitTasksHandler();
             //TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
@@ -396,12 +397,28 @@ namespace TestSandBox
             _logger.Info("End");
         }
 
+        private static void TstReadRepositoryFiles()
+        {
+            _logger.Info("Begin");
+
+            var repositoryPath = EVPath.Normalize("%USERPROFILE%/source/repos/InternalCLI");
+
+            _logger.Info($"repositoryPath = {repositoryPath}");
+
+            var result = GitRepositoryHelper.GetRepositoryFileInfoList(repositoryPath);
+
+            _logger.Info($"result = {result.WriteListToString()}");
+
+            _logger.Info("End");
+        }
+
         private static void TstFutureReleaseInfo()
         {
             _logger.Info("Begin");
 
-            var futureReleaseInfoReader = new FutureReleaseInfoReader();
+            var futureReleaseInfo = FutureReleaseInfoReader.Read();
 
+            _logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
 
             _logger.Info("End");
         }

@@ -15,15 +15,7 @@ namespace Deployment.DevPipelines.CoreToAsset
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var sourceProject = ProjectsDataSource.GetProject(KindOfProject.CoreAssetLib);
-
-            var unitySolution = ProjectsDataSource.GetSolution(KindOfProject.Unity);
-
-            var options = new CoreToAssetTaskOptions();
-            options.CoreCProjPath = sourceProject.CsProjPath;
-            options.DestDir = unitySolution.SourcePath;
-
-            Exec(new CoreToAssetTask(options));
+            Exec(new CoreToAssetDevTask());
         }
 
         /// <inheritdoc/>

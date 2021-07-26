@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using CommonUtils;
+using Deployment.DevTasks.UpdateReleaseNotes;
 using Deployment.Helpers;
 using Deployment.Tasks;
 using Deployment.Tasks.GitHubTasks.GitHubRelease;
@@ -38,7 +39,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case10();
+            Case11();
+            //Case10();
             //Case9();
             //Case8();
             //Case7();
@@ -52,6 +54,21 @@ namespace TestSandBox
             //_logger.Info($" = {}");
 
             _logger.Info("End");
+        }
+
+        private void Case11()
+        {
+            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+
+            _logger.Info($"siteSolution = {siteSolution}");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new UpdateReleaseNotesDevTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case10()

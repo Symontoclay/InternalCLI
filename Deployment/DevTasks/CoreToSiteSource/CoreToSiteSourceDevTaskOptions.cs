@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.DevTasks.CoreToAsset
+namespace Deployment.DevTasks.CoreToSiteSource
 {
-    public class CoreToAssetTaskOptions : IObjectToString
+    public class CoreToSiteSourceDevTaskOptions : IObjectToString
     {
         public string CoreCProjPath { get; set; }
-        public string DestDir { get; set; }
+        public string SiteSourceDir { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -31,8 +31,8 @@ namespace Deployment.DevTasks.CoreToAsset
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(CoreCProjPath)} = {CoreCProjPath}");
-            sb.AppendLine($"{spaces}{nameof(DestDir)} = {DestDir}");
-
+            sb.AppendLine($"{spaces}{nameof(SiteSourceDir)} = {SiteSourceDir}");
+            
             return sb.ToString();
         }
     }

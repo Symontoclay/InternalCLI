@@ -1,4 +1,5 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using BaseDevPipeline;
+using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Build;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
@@ -13,18 +14,27 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CoreToSiteSource
 {
-    public class CoreToSiteSourceTask : BaseDeploymentTask
+    public class CoreToSiteSourceDevTask : BaseDeploymentTask
     {
 #if DEBUG
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        public CoreToSiteSourceTask(CoreToSiteSourceTaskOptions options)
+        public CoreToSiteSourceDevTask()
+            : this(new CoreToSiteSourceDevTaskOptions() 
+            {
+                CoreCProjPath = ProjectsDataSource.GetProject(KindOfProject.CoreAssetLib).CsProjPath,
+                SiteSourceDir = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).SourcePath
+            })
+        {
+        }
+
+        public CoreToSiteSourceDevTask(CoreToSiteSourceDevTaskOptions options)
         {
             _options = options;
         }
 
-        private readonly CoreToSiteSourceTaskOptions _options;
+        private readonly CoreToSiteSourceDevTaskOptions _options;
 
         /// <inheritdoc/>
         protected override void OnValidateOptions()

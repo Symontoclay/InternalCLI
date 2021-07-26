@@ -1,31 +1,47 @@
 ﻿using BaseDevPipeline;
+using BaseDevPipeline.SourceData;
+using Deployment.Tasks;
+using Deployment.Tasks.GitTasks.Pull;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Deployment.Helpers
 {
-    public class FutureReleaseInfoReader
+    public static class FutureReleaseInfoReader
     {
-#if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
-
-        public FutureReleaseInfoReader()
-            : this(new FutureReleaseInfoReaderOptions() {
-                RepositoryPath = ProjectsDataSource.GetSolution( KindOfProject.ReleaseMngrSolution).Path
-            })
+        public static FutureReleaseInfo Read()
         {
+            return Read(ProjectsDataSource.GetSolution(KindOfProject.ReleaseMngrSolution).Path);
         }
 
-        public FutureReleaseInfoReader(FutureReleaseInfoReaderOptions options)
+        public static FutureReleaseInfo Read(string baseRepositoryPath)
         {
-#if DEBUG
-            _logger.Info($"options = {options}");
-#endif
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new PullTask(new PullTaskOptions()
+            {
+                RepositoryPath = baseRepositoryPath
+            }));
+
+            deploymentPipeline.Run();
+
+            var relaseNotes = File.ReadAllText(Path.Combine(baseRepositoryPath, "FutureReleaseNotes.md"));
+
+            var futureReleaseInfoSource = FutureReleaseInfoSource.ReadFile(Path.Combine(baseRepositoryPath, "FutureReleaseInfo.json"));
+
+            var result = new FutureReleaseInfo();
+            result.Version = futureReleaseInfoSource.Version;
+            result.Description = relaseNotes;
+            result.Status = Enum.Parse<FutureReleaseStatus>(futureReleaseInfoSource.Status);
+            result.StartDate = futureReleaseInfoSource.StartDate;
+            result.FinishDate = futureReleaseInfoSource.FinishDate;
+
+            return result;
         }
     }
 }

@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Helpers
+namespace Deployment.DevTasks.CoreToAsset
 {
-    public class FutureReleaseInfoReaderOptions : IObjectToString
+    public class CoreToAssetDevTaskOptions : IObjectToString
     {
-        public string RepositoryPath { get; set; }
+        public string CoreCProjPath { get; set; }
+        public string DestDir { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -29,7 +30,8 @@ namespace Deployment.Helpers
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(RepositoryPath)} = {RepositoryPath}");
+            sb.AppendLine($"{spaces}{nameof(CoreCProjPath)} = {CoreCProjPath}");
+            sb.AppendLine($"{spaces}{nameof(DestDir)} = {DestDir}");
 
             return sb.ToString();
         }

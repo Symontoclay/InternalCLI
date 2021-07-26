@@ -31,7 +31,9 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
         {
             ValidateOptionsAsNonNull(_options);
             ValidateValueAsNonNull(nameof(_options.FutureReleaseInfo), _options.FutureReleaseInfo);
+            ValidateList(nameof(_options.ArtifactsForDeployment), _options.ArtifactsForDeployment);
             ValidateFileName(nameof(_options.ReleaseNotesFilePath), _options.ReleaseNotesFilePath);
+            ValidateValueAsNonNull(nameof(_options.BaseHref), _options.BaseHref);
         }
 
         /// <inheritdoc/>

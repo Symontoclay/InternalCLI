@@ -1,4 +1,5 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using BaseDevPipeline;
+using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Build;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
@@ -13,14 +14,23 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CoreToAsset
 {
-    public class CoreToAssetTask : BaseDeploymentTask
+    public class CoreToAssetDevTask : BaseDeploymentTask
     {
-        public CoreToAssetTask(CoreToAssetTaskOptions options)
+        public CoreToAssetDevTask()
+            : this(new CoreToAssetDevTaskOptions() 
+            {
+                CoreCProjPath = ProjectsDataSource.GetProject(KindOfProject.CoreAssetLib).CsProjPath,
+                DestDir = ProjectsDataSource.GetSolution(KindOfProject.Unity).SourcePath
+            })
+        {
+        }
+
+        public CoreToAssetDevTask(CoreToAssetDevTaskOptions options)
         {
             _options = options;
         }
 
-        private readonly CoreToAssetTaskOptions _options;
+        private readonly CoreToAssetDevTaskOptions _options;
 
         /// <inheritdoc/>
         protected override void OnValidateOptions()
