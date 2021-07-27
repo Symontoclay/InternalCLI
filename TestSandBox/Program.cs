@@ -3,11 +3,12 @@ using BaseDevPipeline.SourceData;
 using CommonUtils;
 using CommonUtils.DebugHelpers;
 using Deployment;
-using Deployment.DevPipelines.CoreToAsset;
+using Deployment.DevTasks.CoreToAsset;
 using Deployment.Helpers;
 using Newtonsoft.Json;
 using NLog;
 using Octokit;
+using SiteBuilder;
 using SiteBuilder.SiteData;
 using System;
 using System.Collections;
@@ -16,9 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Xml.Linq;
 using TestSandBox.XMLDoc;
-using XMLDocReader;
 using XMLDocReader.CSharpDoc;
 
 namespace TestSandBox
@@ -41,6 +40,7 @@ namespace TestSandBox
             //TstTempDirectory();
             //TstCoreToAssetTask();
             //TstReadRepositoryFiles();
+            //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
             //TstProjectsDataSource();
@@ -48,10 +48,10 @@ namespace TestSandBox
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
-            TstGitTasksHandler();
+            //TstGitTasksHandler();
             //TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
-            //TstCreateCSharpApiOptionsFile();
+            TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
         }
 
@@ -391,7 +391,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var coreToAssetTask = new CoreToAssetDevPipeline();
+            var coreToAssetTask = new CoreToAssetDevTask();
             coreToAssetTask.Run();
 
             _logger.Info("End");
@@ -408,6 +408,22 @@ namespace TestSandBox
             var result = GitRepositoryHelper.GetRepositoryFileInfoList(repositoryPath);
 
             _logger.Info($"result = {result.WriteListToString()}");
+
+            _logger.Info("End");
+        }
+
+        private static void TstSiteSettings()
+        {
+            _logger.Info("Begin");
+
+            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+
+            _logger.Info($"siteSolution = {siteSolution}");
+
+            var siteSettings = new GeneralSiteBuilderSettings(new GeneralSiteBuilderSettingsOptions() { 
+                SourcePath = siteSolution.SourcePath,
+                SiteName = siteSolution.RepositoryName
+            });
 
             _logger.Info("End");
         }
@@ -540,13 +556,13 @@ namespace TestSandBox
 
             var options = new CSharpApiOptions()
             {
-                SolutionDir = "%USERPROFILE%/Documents/GitHub/SymOntoClay",
-                AlternativeSolutionDir = "%USERPROFILE%/source/repos/SymOntoClay",
+                //SolutionDir = "%USERPROFILE%/Documents/GitHub/SymOntoClay",
+                //AlternativeSolutionDir = "%USERPROFILE%/source/repos/SymOntoClay",
                 XmlDocFiles = new List<string>()
                 {
-                    "SymOntoClayCoreHelper/SymOntoClay.CoreHelper.xml",
-                    "SymOntoClayCore/SymOntoClay.Core.xml",
-                    "SymOntoClayUnityAssetCore/SymOntoClay.UnityAsset.Core.xml"
+                    "%SITE_SOURCE_PATH%/CSharpApiFiles/SymOntoClay.CoreHelper.xml",
+                    "%SITE_SOURCE_PATH%/CSharpApiFiles/SymOntoClay.Core.xml",
+                    "%SITE_SOURCE_PATH%/CSharpApiFiles/SymOntoClay.UnityAsset.Core.xml"
                 },
                 UnityAssetCoreRootTypes = new List<string>()
                 {
@@ -561,6 +577,8 @@ namespace TestSandBox
             var jsonStr = JsonConvert.SerializeObject(options, Formatting.Indented);
 
             _logger.Info($"jsonStr = {jsonStr}");
+
+            File.WriteAllText("CSharpApiOptions.json", jsonStr);
 
             _logger.Info("End");
         }

@@ -14,7 +14,7 @@ namespace BaseDevPipeline.SourceData
         public List<string> UnityPaths { get; set; }
         public List<string> ArtifactsForDeployment { get; set; }
         public List<SolutionSource> Solutions { get; set; }
-        public List<ArtifactDest> Artifacts { get; set; }
+        public List<ArtifactDest> DevArtifacts { get; set; }
         public List<LicenseSource> Licenses { get; set; }
 
         /// <inheritdoc/>
@@ -40,7 +40,7 @@ namespace BaseDevPipeline.SourceData
             sb.PrintPODList(n, nameof(UnityPaths), UnityPaths);
             sb.PrintPODList(n, nameof(ArtifactsForDeployment), ArtifactsForDeployment);
             sb.PrintObjListProp(n, nameof(Solutions), Solutions);
-            sb.PrintObjListProp(n, nameof(Artifacts), Artifacts);
+            sb.PrintObjListProp(n, nameof(DevArtifacts), DevArtifacts);
             sb.PrintObjListProp(n, nameof(Licenses), Licenses);
 
             return sb.ToString();

@@ -79,7 +79,7 @@
       "License": "MIT"
     }
   ],
-  "Artifacts": [
+  "DevArtifacts": [
     {
       "Kind": "ProjectSite",
       "Path": "%BASE_PATH%/symontoclay.github.io"

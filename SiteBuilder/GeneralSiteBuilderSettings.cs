@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using Newtonsoft.Json;
 using NLog;
 using SiteBuilder.SiteData;
 using System;
@@ -247,44 +248,19 @@ namespace SiteBuilder
             var csharpApiOptions = CSharpApiOptions.LoadFromFile(csharpApiJsonPath);
 
 #if DEBUG
-            //_logger.Info($"csharpApiOptions = {csharpApiOptions}");
+            _logger.Info($"csharpApiOptions = {csharpApiOptions}");
 #endif
 
-            var targetSolutionDir = EVPath.Normalize(csharpApiOptions.SolutionDir);
-
-            //_logger.Info($"targetSolutionDir = {targetSolutionDir}");
-
-            if(string.IsNullOrWhiteSpace(targetSolutionDir) || !Directory.Exists(targetSolutionDir))
-            {
-                targetSolutionDir = EVPath.Normalize(csharpApiOptions.AlternativeSolutionDir);
-
-                if(string.IsNullOrWhiteSpace(targetSolutionDir) || !Directory.Exists(targetSolutionDir))
-                {
-                    throw new Exception($"Both '{csharpApiOptions.SolutionDir}' and '{csharpApiOptions.AlternativeSolutionDir}' paths are invalid.");
-                }                
-            }
-
-#if DEBUG
-            //_logger.Info($"targetSolutionDir (after) = {targetSolutionDir}");
-#endif
-
-            IgnoredDirsList.Add(targetSolutionDir);
+            //IgnoredDirsList.Add(targetSolutionDir);
 
             if (!csharpApiOptions.XmlDocFiles.Any())
             {
                 throw new Exception("There are not any xml documentation files.");
             }
 
-            var fileNamesList = new List<string>();
-
-            foreach (var xmlDocFile in csharpApiOptions.XmlDocFiles)
-            {
-                fileNamesList.Add(Path.Combine(targetSolutionDir, xmlDocFile));
-            }
-
             var options = new CSharpXMLDocLoaderOptions()
             {
-                XmlFileNamesList = fileNamesList,
+                XmlFileNamesList = csharpApiOptions.XmlDocFiles.Select(p => EVPath.Normalize(p)).ToList(),
                 TargetRootTypeNamesList = csharpApiOptions.UnityAssetCoreRootTypes,
                 PublicMembersOnly = csharpApiOptions.PublicMembersOnly,
                 IgnoreErrors = csharpApiOptions.IgnoreErrors,
@@ -295,12 +271,12 @@ namespace SiteBuilder
             };
 
 #if DEBUG
-            //_logger.Info($"options = {options}");
+            _logger.Info($"options = {options}");
 #endif
             CSharpUserApiXMLDocsList = CSharpXMLDocLoader.Load(options);
 
 #if DEBUG
-            //_logger.Info($"CSharpApiXMLDocsList.Count = {CSharpUserApiXMLDocsList.Count}");
+            _logger.Info($"CSharpApiXMLDocsList.Count = {CSharpUserApiXMLDocsList.Count}");
 #endif
 
             foreach (var packageCard in CSharpUserApiXMLDocsList)
@@ -322,6 +298,10 @@ namespace SiteBuilder
 
                 foreach (var item in packageCard.ClassesList)
                 {
+#if DEBUG
+                    _logger.Info($"item = {item}");
+#endif
+
                     CSharpUserApiXMLDocsCodeDocumentDict[item.InitialName] = item;
 
                     foreach (var prop in item.PropertiesList)

@@ -42,7 +42,7 @@ namespace BaseDevPipeline.Data.Implementation
             var licensesDict = new Dictionary<string, LicenseSettings>();
 
             FillUpLicenses(source, result, licensesDict);
-            FillUpArtifacts(source, result);
+            FillUpDevArtifacts(source, result);
             FillUpSolutions(source, result, licensesDict);
 
             result.Prepare();
@@ -299,13 +299,13 @@ namespace BaseDevPipeline.Data.Implementation
             return PathsHelper.Normalize(sourceCsProjPath);
         }
 
-        private static void FillUpArtifacts(SymOntoClaySettingsSource source, SymOntoClayProjectsSettings result)
+        private static void FillUpDevArtifacts(SymOntoClaySettingsSource source, SymOntoClayProjectsSettings result)
         {
             var artifacts = new List<ArtifactSettings>();
 
-            result.Artifacts = artifacts;
+            result.DevArtifacts = artifacts;
 
-            foreach(var artifactDest in source.Artifacts)
+            foreach(var artifactDest in source.DevArtifacts)
             {
                 var item = new ArtifactSettings();
 

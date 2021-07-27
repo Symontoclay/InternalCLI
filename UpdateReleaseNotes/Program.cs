@@ -1,8 +1,8 @@
-﻿using Deployment.DevTasks.CoreToAsset;
+﻿using Deployment.DevTasks.UpdateReleaseNotes;
 using NLog;
 using System;
 
-namespace CoreToAsset
+namespace UpdateReleaseNotes
 {
     class Program
     {
@@ -12,8 +12,8 @@ namespace CoreToAsset
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var coreToAssetTask = new CoreToAssetDevTask();
-            coreToAssetTask.Run();
+            var updateReleaseNotesDevTask = new UpdateReleaseNotesDevTask();
+            updateReleaseNotesDevTask.Run();
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

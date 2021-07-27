@@ -16,7 +16,7 @@ namespace BaseDevPipeline.Data
         IReadOnlyList<IUtityExeInstance> UtityExeInstances { get; }
         IReadOnlyList<ISolutionSettings> Solutions { get; }
         IReadOnlyList<IProjectSettings> Projects { get; }
-        IReadOnlyList<IArtifactSettings> Artifacts { get; }
+        IReadOnlyList<IArtifactSettings> DevArtifacts { get; }
         IReadOnlyList<ILicenseSettings> Licenses { get; }
 
         ISolutionSettings GetSolution(KindOfProject kind);
@@ -25,8 +25,8 @@ namespace BaseDevPipeline.Data
         IProjectSettings GetProject(KindOfProject kind);
         IReadOnlyList<IProjectSettings> GetProjects(KindOfProject kind);
 
-        IArtifactSettings GetArtifact(KindOfArtifact kind);
-        IReadOnlyList<IArtifactSettings> GetArtifacts(KindOfArtifact kind);
+        IArtifactSettings GetDevArtifact(KindOfArtifact kind);
+        IReadOnlyList<IArtifactSettings> GetDevArtifacts(KindOfArtifact kind);
 
         ILicenseSettings GetLicense(string name);
     }

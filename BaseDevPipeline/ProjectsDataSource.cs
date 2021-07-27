@@ -59,16 +59,16 @@ namespace BaseDevPipeline
             return settings.GetProjects(kind);
         }
 
-        public static IArtifactSettings GetArtifact(KindOfArtifact kind)
+        public static IArtifactSettings GetDevArtifact(KindOfArtifact kind)
         {
             var settings = GetSymOntoClayProjectsSettings();
-            return settings.GetArtifact(kind);
+            return settings.GetDevArtifact(kind);
         }
 
-        public static IReadOnlyList<IArtifactSettings> GetArtifacts(KindOfArtifact kind)
+        public static IReadOnlyList<IArtifactSettings> GetDevArtifacts(KindOfArtifact kind)
         {
             var settings = GetSymOntoClayProjectsSettings();
-            return settings.GetArtifacts(kind);
+            return settings.GetDevArtifacts(kind);
         }
 
         public static ILicenseSettings GetLicense(string name)
@@ -111,7 +111,7 @@ namespace BaseDevPipeline
             };
 
             settingsSource.Solutions = new List<SolutionSource>();
-            settingsSource.Artifacts = new List<ArtifactDest>();
+            settingsSource.DevArtifacts = new List<ArtifactDest>();
             settingsSource.Licenses = new List<LicenseSource>();
 
             var symOntoClaySolution = new SolutionSource()
@@ -235,7 +235,7 @@ namespace BaseDevPipeline
                 Path = "%BASE_PATH%/symontoclay.github.io"
             };
 
-            settingsSource.Artifacts.Add(siteArtifact);
+            settingsSource.DevArtifacts.Add(siteArtifact);
 
             var unityArtifact = new ArtifactDest()
             {
@@ -243,7 +243,7 @@ namespace BaseDevPipeline
                 Path = "%USERPROFILE%/Documents/MyFirstSymOntoClayAsset_2.unitypackage"
             };
 
-            settingsSource.Artifacts.Add(unityArtifact);
+            settingsSource.DevArtifacts.Add(unityArtifact);
 
             var mitLicense = new LicenseSource()
             {

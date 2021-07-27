@@ -41,10 +41,10 @@ namespace BaseDevPipeline.Data.Implementation
         /// <inheritdoc/>
         IReadOnlyList<IProjectSettings> ISymOntoClayProjectsSettings.Projects => Projects;
 
-        public List<ArtifactSettings> Artifacts { get; set; }
+        public List<ArtifactSettings> DevArtifacts { get; set; }
 
         /// <inheritdoc/>
-        IReadOnlyList<IArtifactSettings> ISymOntoClayProjectsSettings.Artifacts => Artifacts;
+        IReadOnlyList<IArtifactSettings> ISymOntoClayProjectsSettings.DevArtifacts => DevArtifacts;
 
         public List<LicenseSettings> Licenses { get; set; }
 
@@ -88,17 +88,17 @@ namespace BaseDevPipeline.Data.Implementation
         }
 
         /// <inheritdoc/>
-        public IArtifactSettings GetArtifact(KindOfArtifact kind)
+        public IArtifactSettings GetDevArtifact(KindOfArtifact kind)
         {
-            return GetArtifacts(kind).SingleOrDefault();
+            return GetDevArtifacts(kind).SingleOrDefault();
         }
 
         /// <inheritdoc/>
-        public IReadOnlyList<IArtifactSettings> GetArtifacts(KindOfArtifact kind)
+        public IReadOnlyList<IArtifactSettings> GetDevArtifacts(KindOfArtifact kind)
         {
-            if (_artifactsDict.ContainsKey(kind))
+            if (_devArtifactsDict.ContainsKey(kind))
             {
-                return _artifactsDict[kind];
+                return _devArtifactsDict[kind];
             }
 
             return _emptyArtifacts;
@@ -119,14 +119,14 @@ namespace BaseDevPipeline.Data.Implementation
         {
             _solutionsDict = Solutions.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<ISolutionSettings>().ToList());
             _projectsDict = Projects.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<IProjectSettings>().ToList());
-            _artifactsDict = Artifacts.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<IArtifactSettings>().ToList());
+            _devArtifactsDict = DevArtifacts.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<IArtifactSettings>().ToList());
 
             _licesnsesDict = Licenses.Cast<ILicenseSettings>().ToDictionary(p => p.Name, p => p);
         }
 
         private Dictionary<KindOfProject, List<ISolutionSettings>> _solutionsDict;
         private Dictionary<KindOfProject, List<IProjectSettings>> _projectsDict;
-        private Dictionary<KindOfArtifact, List<IArtifactSettings>> _artifactsDict;
+        private Dictionary<KindOfArtifact, List<IArtifactSettings>> _devArtifactsDict;
         private Dictionary<string, ILicenseSettings> _licesnsesDict;
 
         private IReadOnlyList<ISolutionSettings> _emptySolutions = new List<ISolutionSettings>();
@@ -156,7 +156,7 @@ namespace BaseDevPipeline.Data.Implementation
             sb.PrintObjListProp(n, nameof(UtityExeInstances), UtityExeInstances);
             sb.PrintObjListProp(n, nameof(Solutions), Solutions);
             sb.PrintObjListProp(n, nameof(Projects), Projects);
-            sb.PrintObjListProp(n, nameof(Artifacts), Artifacts);
+            sb.PrintObjListProp(n, nameof(DevArtifacts), DevArtifacts);
             sb.PrintObjListProp(n, nameof(Licenses), Licenses);
 
             return sb.ToString();
