@@ -12,7 +12,6 @@ namespace XMLDocReader.CSharpDoc
         public bool PublicMembersOnly { get; set; }
         public bool IgnoreErrors { get; set; }
         public string BaseHref { get; set; }
-        public string BasePath { get; set; }
         public string SourceDir { get; set; }
         public string DestDir { get; set; }
 
@@ -39,7 +38,6 @@ namespace XMLDocReader.CSharpDoc
             sb.AppendLine($"{spaces}{nameof(PublicMembersOnly)} = {PublicMembersOnly}");
             sb.AppendLine($"{spaces}{nameof(IgnoreErrors)} = {IgnoreErrors}");
             sb.AppendLine($"{spaces}{nameof(BaseHref)} = {BaseHref}");
-            sb.AppendLine($"{spaces}{nameof(BasePath)} = {BasePath}");
             sb.AppendLine($"{spaces}{nameof(SourceDir)} = {SourceDir}");
             sb.AppendLine($"{spaces}{nameof(DestDir)} = {DestDir}");
 

@@ -11,7 +11,7 @@ namespace XMLDocReader.CSharpDoc
 {
     public static class PackageCardResolver
     {
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public static void FillUpTypeCardsPropetties(List<PackageCard> packageCardsList, bool ignoreErrors)
         {
@@ -185,6 +185,61 @@ namespace XMLDocReader.CSharpDoc
                 }
             }
 
+            //_logger.Info($"classCard.ConstructorsList.Count = {classCard.ConstructorsList.Count}");
+
+            if(classCard.ConstructorsList.Any())
+            {
+                foreach(var constructor in classCard.ConstructorsList)
+                {
+                    //_logger.Info($"constructor = {constructor}");
+
+                    if (constructor.ParamsList.Any())
+                    {
+                        foreach (var param in constructor.ParamsList)
+                        {
+                            //_logger.Info($"param = {param}");
+
+                            var parameterType = param.ParameterInfo.ParameterType;
+
+                            if (parameterType != null)
+                            {
+                                //_logger.Info($"parameterType.FullName = {parameterType.FullName}");
+
+                                var typesTuple = GetTargetTypesForMember(parameterType, namedElemsCardInitialNamesDict, ignoreErrors);
+
+                                //_logger.Info($"typesTuple.Item1 = {typesTuple.Item1}");
+                                //_logger.Info($"typesTuple.Item2 = {typesTuple.Item2}");
+                                //_logger.Info($"typesTuple.Item3 = {typesTuple.Item3.WriteListToString()}");
+
+                                param.ParameterTypeCard = typesTuple.Item1;
+                                param.ParameterTypeName = typesTuple.Item2;
+                                param.UsedTypesList = typesTuple.Item3;
+                                param.ErrorsList = typesTuple.Item4;
+
+                                //_logger.Info($"param (after) = {param}");
+
+                                if(typesTuple.Item1 != null && !constructor.UsedTypesList.Contains(typesTuple.Item1))
+                                {
+                                    constructor.UsedTypesList.Add(typesTuple.Item1);
+                                }
+                                
+                                if(typesTuple.Item3 != null && typesTuple.Item3.Any())
+                                {
+                                    constructor.UsedTypesList.AddRange(typesTuple.Item3);
+                                }
+                            }
+                        }
+
+                        constructor.UsedTypesList = constructor.UsedTypesList.Distinct().ToList();
+
+                        //_logger.Info($"constructor.UsedTypesList = {constructor.UsedTypesList.Select(p => p.Name.FullName).WritePODList()}");
+                        //_logger.Info($"constructor (after) = {constructor}");
+                    }                    
+                }
+
+                //throw new NotImplementedException();
+            }
+
             //_logger.Info($"classCard.MethodsList.Count = {classCard.MethodsList.Count}");
 
             if (classCard.MethodsList.Any())
@@ -236,19 +291,39 @@ namespace XMLDocReader.CSharpDoc
                                 param.UsedTypesList = typesTuple.Item3;
                                 param.ErrorsList = typesTuple.Item4;
 
+                                if (typesTuple.Item1 != null && !method.UsedTypesList.Contains(typesTuple.Item1))
+                                {
+                                    method.UsedTypesList.Add(typesTuple.Item1);
+                                }
+
+                                if (typesTuple.Item3 != null && typesTuple.Item3.Any())
+                                {
+                                    method.UsedTypesList.AddRange(typesTuple.Item3);
+                                }
+
+                                method.UsedTypesList = method.UsedTypesList.Distinct().ToList();
+
                                 //_logger.Info($"param (after) = {param}");
                             }                            
                         }
 
                         //_logger.Info($"method (after) = {method}");
-                    }                    
+                    }
                 }
             }
         }
 
         private static (NamedElementCard, MemberName, List<NamedElementCard>, List<string>) GetTargetTypesForMember(Type type, Dictionary<string, NamedElementCard> namedElemsCardInitialNamesDict, bool ignoreErrors)
         {
+            //_logger.Info($"type = {type}");
             //_logger.Info($"type.FullName = {type.FullName}");
+
+            if(string.IsNullOrWhiteSpace(type.FullName))
+            {
+                //_logger.Info("return 0");
+
+                return (null, null, null, null);
+            }
 
             var normalizedFullName = $"T:{NamesHelper.SimplifyFullNameOfType(type.FullName)}";
 
@@ -256,9 +331,9 @@ namespace XMLDocReader.CSharpDoc
 
             var name = MemberNameParser.Parse(normalizedFullName);
 
-            //_logger.Info($"name = {name}");
+            //_logger.Info($"name = '{name}'");
 
-            if(TypesHelper.IsSystemOrThirdPartyType(type.FullName))
+            if (TypesHelper.IsSystemOrThirdPartyType(type.FullName))
             {
                 if(name.TypeParametersList.Any())
                 {
@@ -268,21 +343,33 @@ namespace XMLDocReader.CSharpDoc
 
                     foreach (var typeParametr in name.TypeParametersList)
                     {
+                        //_logger.Info($"typeParametr = '{typeParametr}'");
+
                         FillUpUsedReturnsTypesList(typeParametr, usedReturnsTypesList, errorsList, processedTypeNames, namedElemsCardInitialNamesDict, ignoreErrors);
                     }
+
+                    //_logger.Info("return 1");
 
                     return (null, name, usedReturnsTypesList, errorsList);
                 }
                 else
                 {
+                    //_logger.Info("return 2");
+
                     return (null, name, new List<NamedElementCard>(), new List<string>());
-                }                
+                }
             }
             else
             {
+                normalizedFullName = $"T:{name.FullName}";
+
                 if (namedElemsCardInitialNamesDict.ContainsKey(normalizedFullName))
                 {
                     var targetCard = namedElemsCardInitialNamesDict[normalizedFullName];
+
+                    //_logger.Info($"targetCard = {targetCard}");
+
+                    //_logger.Info("return 3");
 
                     return (targetCard, name, new List<NamedElementCard>() { targetCard }, new List<string>());
                 }
@@ -292,6 +379,8 @@ namespace XMLDocReader.CSharpDoc
 
                     if (ignoreErrors)
                     {
+                        //_logger.Info("return 4");
+
                         return (null, name, new List<NamedElementCard>(), new List<string>() { errorStr });
                     }
                     else
@@ -636,9 +725,9 @@ namespace XMLDocReader.CSharpDoc
                 return true;
             }
 
-            _logger.Info($"methodCard.ParamsList.Count = {methodCard.ParamsList.Count}");
+            //_logger.Info($"methodCard.ParamsList.Count = {methodCard.ParamsList.Count}");
 
-            var isFit = true;
+            //var isFit = true;
 
             var methodCardParamsListEnumerator = methodCard.ParamsList.GetEnumerator();
 
@@ -648,13 +737,13 @@ namespace XMLDocReader.CSharpDoc
 
                 var currentMmethodCardParam = methodCardParamsListEnumerator.Current;
 
-                _logger.Info($"targetParam.Name = {targetParam.Name}");
-                _logger.Info($"currentMmethodCardParam.Name = {currentMmethodCardParam.Name}");
+                //_logger.Info($"targetParam.Name = {targetParam.Name}");
+                //_logger.Info($"currentMmethodCardParam.Name = {currentMmethodCardParam.Name}");
 
                 throw new NotImplementedException();
             }
 
-            _logger.Info($"isFit = {isFit}");
+            //_logger.Info($"isFit = {isFit}");
 
             throw new NotImplementedException();
         }
@@ -743,7 +832,7 @@ namespace XMLDocReader.CSharpDoc
 
             var methodCardParamsListEnumerator = methodCard.ParamsList.GetEnumerator();
 
-            var isFit = true;
+            //var isFit = true;
 
             foreach (var param in methodInfoParametersList)
             {
@@ -751,13 +840,13 @@ namespace XMLDocReader.CSharpDoc
 
                 var currentMethodCardParam = methodCardParamsListEnumerator.Current;
 
-                _logger.Info($"param.Name = {param.Name}");
-                _logger.Info($"currentMethodCardParam.Name = {currentMethodCardParam.Name}");
+                //_logger.Info($"param.Name = {param.Name}");
+                //_logger.Info($"currentMethodCardParam.Name = {currentMethodCardParam.Name}");
 
                 throw new NotImplementedException();
             }
 
-            _logger.Info($"isFit = {isFit}");
+            //_logger.Info($"isFit = {isFit}");
 
             throw new NotImplementedException();
         }

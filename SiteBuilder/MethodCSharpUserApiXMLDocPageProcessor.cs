@@ -70,28 +70,8 @@ namespace SiteBuilder
             PrintMetadata(sb, _methodCard.Name, _methodCard.Parent.Package.AssemblyName);
 
             PrintSummary(sb, _methodCard.Summary);
-            
 
-            if (_methodCard.ParamsList.Any())
-            {
-                sb.AppendLine("<h2>Parameters</h2>");
-
-                sb.AppendLine("<div>");
-                sb.AppendLine("<dl>");
-                
-                foreach(var param in _methodCard.ParamsList)
-                {
-#if DEBUG
-                    //_logger.Info($"param = {param}");
-#endif
-
-                    sb.AppendLine($"<dt>{param.Name}</dt>");
-                    sb.AppendLine($"<dd>{GetContent(param.Summary)}</dd>");
-                }
-
-                sb.AppendLine("</dl>");
-                sb.AppendLine("</div>");
-            }
+            PrintParameters(sb, _methodCard.ParamsList);
 
             if(!string.IsNullOrWhiteSpace(_methodCard.Returns))
             {

@@ -35,204 +35,101 @@ namespace XMLDocReader.CSharpDoc
                 PackageCardCleaner.Clean(packageCardsList, options.TargetRootTypeNamesList, repackingTypeCardOptions);
             }
 
-            FillUpHrefAndTargetFullFileName(packageCardsList, options.BaseHref, options.BasePath, options.SourceDir, options.DestDir);
+            FillUpHrefAndTargetFullFileName(packageCardsList, options.BaseHref, options.SourceDir, options.DestDir);
 
             return packageCardsList;
         }
 
-        private static void FillUpHrefAndTargetFullFileName(List<PackageCard> packageCardsList, string baseHref, string basePath, string sourceDir, string destDir)
+        private static void FillUpHrefAndTargetFullFileName(List<PackageCard> packageCardsList, string baseHref, string sourceDir, string destDir)
         {
-            var relativePath = basePath.Replace(sourceDir, string.Empty);
-
 #if DEBUG
-            //_logger.Info($"relativePath = {relativePath}");
+            //_logger.Info($"baseHref = '{baseHref}'");
+            //_logger.Info($"sourceDir = '{sourceDir}'");
+            //_logger.Info($"destDir = '{destDir}'");
 #endif
 
             foreach (var packageCard in packageCardsList)
             {
-#if DEBUG
-                //_logger.Info($"packageCard = {packageCard.ToBriefString()}");
-                //_logger.Info($"packageCard.InterfacesList.Count = {packageCard.InterfacesList.Count}");
-                //_logger.Info($"packageCard.InterfacesList.Count = {packageCard.ClassesList.Count}");
-                //_logger.Info($"packageCard.InterfacesList.Count = {packageCard.EnumsList.Count}");
-#endif
-
                 foreach (var item in packageCard.InterfacesList)
                 {
-#if DEBUG
-                    //_logger.Info($"item.Name.FullName = {item.Name.FullName}");
-                    //_logger.Info($"item.Href = {item.Href}");
-                    //_logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
-#endif
-
-                    var relativeItemName = Path.Combine(relativePath, $"{item.Name.FullName.ToLower()}.html");
-
-#if DEBUG
-                    //_logger.Info($"relativeItemName = {relativeItemName}");
-#endif
-
-                    item.Href = Path.Combine(baseHref, relativeItemName).Replace("\\", "/");
-                    item.TargetFullFileName = Path.Combine(destDir, relativeItemName).Replace("\\", "/");
-
-#if DEBUG
-                    //_logger.Info($"item.Href (after) = {item.Href}");
-                    //_logger.Info($"item.TargetFullFileName (after) = {item.TargetFullFileName}");
-#endif
+                    FillUpPathsOfTypeCard(item, baseHref, destDir);
 
                     foreach(var prop in item.PropertiesList)
                     {
-#if DEBUG
-                        //_logger.Info($"prop.Name.InitialName = {prop.Name.InitialName}");
-                        //_logger.Info($"prop.Name.FullName = {prop.Name.FullName}");
-                        //_logger.Info($"prop.Href = {prop.Href}");
-                        //_logger.Info($"prop.TargetFullFileName = {prop.TargetFullFileName}");
-#endif
-
-                        var relativeName = GetRelativeName(relativePath, prop.Name.InitialName);
-
-#if DEBUG
-                        //_logger.Info($"relativeName = {relativeName}");
-#endif
-
-                        prop.Href = Path.Combine(baseHref, relativeName).Replace("\\", "/");
-                        prop.TargetFullFileName = Path.Combine(destDir, relativeName).Replace("\\", "/");
-
-#if DEBUG
-                        //_logger.Info($"prop.Href (after) = {prop.Href}");
-                        //_logger.Info($"prop.TargetFullFileName (after) = {prop.TargetFullFileName}");
-#endif
+                        FillUpPathsOfMemberCard(prop, baseHref, destDir);
                     }
 
                     foreach (var method in item.MethodsList)
                     {
-#if DEBUG
-                        //_logger.Info($"method.Name.InitialName = {method.Name.InitialName}");
-                        //_logger.Info($"method.Name.FullName = {method.Name.FullName}");
-                        //_logger.Info($"method.Href = {method.Href}");
-                        //_logger.Info($"method.TargetFullFileName = {method.TargetFullFileName}");
-#endif
-
-                        var relativeName = GetRelativeName(relativePath, method.Name.InitialName);
-
-#if DEBUG
-                        //_logger.Info($"relativeName = {relativeName}");
-#endif
-
-                        method.Href = Path.Combine(baseHref, relativeName).Replace("\\", "/");
-                        method.TargetFullFileName = Path.Combine(destDir, relativeName).Replace("\\", "/");
-
-#if DEBUG
-                        //_logger.Info($"method.Href (after) = {method.Href}");
-                        //_logger.Info($"method.TargetFullFileName (after) = {method.TargetFullFileName}");
-#endif
+                        FillUpPathsOfMemberCard(method, baseHref, destDir);
                     }
                 }
 
                 foreach (var item in packageCard.ClassesList)
                 {
-#if DEBUG
-                    //_logger.Info($"item.Name.FullName = {item.Name.FullName}");
-                    //_logger.Info($"item.Href = {item.Href}");
-                    //_logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
-#endif
+                    FillUpPathsOfTypeCard(item, baseHref, destDir);
 
-                    var relativeItemName = Path.Combine(relativePath, $"{item.Name.FullName.ToLower()}.html");
-
-#if DEBUG
-                    //_logger.Info($"relativeItemName = {relativeItemName}");
-#endif
-
-                    item.Href = Path.Combine(baseHref, relativeItemName).Replace("\\", "/");
-                    item.TargetFullFileName = Path.Combine(destDir, relativeItemName).Replace("\\", "/");
-
-#if DEBUG
-                    //_logger.Info($"item.Href (after) = {item.Href}");
-                    //_logger.Info($"item.TargetFullFileName (after) = {item.TargetFullFileName}");
-#endif
+                    foreach(var constructor in item.ConstructorsList)
+                    {
+                        FillUpPathsOfMemberCard(constructor, baseHref, destDir);
+                    }
 
                     foreach (var prop in item.PropertiesList)
                     {
-#if DEBUG
-                        //_logger.Info($"prop.Name.InitialName = {prop.Name.InitialName}");
-                        //_logger.Info($"prop.Name.FullName = {prop.Name.FullName}");
-                        //_logger.Info($"prop.Href = {prop.Href}");
-                        //_logger.Info($"prop.TargetFullFileName = {prop.TargetFullFileName}");
-#endif
-
-                        var relativeName = GetRelativeName(relativePath, prop.Name.InitialName);
-
-#if DEBUG
-                        //_logger.Info($"relativeName = {relativeName}");
-#endif
-
-                        prop.Href = Path.Combine(baseHref, relativeName).Replace("\\", "/");
-                        prop.TargetFullFileName = Path.Combine(destDir, relativeName).Replace("\\", "/");
-
-#if DEBUG
-                        //_logger.Info($"prop.Href (after) = {prop.Href}");
-                        //_logger.Info($"prop.TargetFullFileName (after) = {prop.TargetFullFileName}");
-#endif
+                        FillUpPathsOfMemberCard(prop, baseHref, destDir);
                     }
 
                     foreach (var method in item.MethodsList)
                     {
-#if DEBUG
-                        //_logger.Info($"method.Name.InitialName = {method.Name.InitialName}");
-                        //_logger.Info($"method.Name.FullName = {method.Name.FullName}");
-                        //_logger.Info($"method.Href = {method.Href}");
-                        //_logger.Info($"method.TargetFullFileName = {method.TargetFullFileName}");
-#endif
-
-                        var relativeName = GetRelativeName(relativePath, method.Name.InitialName);
-
-#if DEBUG
-                        //_logger.Info($"relativeName = {relativeName}");
-#endif
-
-                        method.Href = Path.Combine(baseHref, relativeName).Replace("\\", "/");
-                        method.TargetFullFileName = Path.Combine(destDir, relativeName).Replace("\\", "/");
-
-#if DEBUG
-                        //_logger.Info($"method.Href (after) = {method.Href}");
-                        //_logger.Info($"method.TargetFullFileName (after) = {method.TargetFullFileName}");
-#endif
+                        FillUpPathsOfMemberCard(method, baseHref, destDir);
                     }
                 }
 
                 foreach (var item in packageCard.EnumsList)
                 {
-#if DEBUG
-                    //_logger.Info($"item.Name.FullName = {item.Name.FullName}");
-                    //_logger.Info($"item.Href = {item.Href}");
-                    //_logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
-#endif
-
-                    var relativeItemName = Path.Combine(relativePath, $"{item.Name.FullName.ToLower()}.html");
-
-#if DEBUG
-                    //_logger.Info($"relativeItemName = {relativeItemName}");
-#endif
-
-                    item.Href = Path.Combine(baseHref, relativeItemName).Replace("\\", "/");
-                    item.TargetFullFileName = Path.Combine(destDir, relativeItemName).Replace("\\", "/");
-
-#if DEBUG
-                    //_logger.Info($"item.Href (after) = {item.Href}");
-                    //_logger.Info($"item.TargetFullFileName (after) = {item.TargetFullFileName}");
-#endif
+                    FillUpPathsOfTypeCard(item, baseHref, destDir);
                 }
             }
+
+            //throw new NotImplementedException();
         }
 
-        private static string GetRelativeName(string relativePath, string initialName)
+        private static void FillUpPathsOfTypeCard(IDocFileEditeblePaths item, string baseHref, string destDir)
         {
-            var preparedInitialName = initialName.Substring(2).Replace("(", "_").Replace(")", "_").Replace("{", "_").Replace("}", "_").Replace(",", "_").ToLower();
-
 #if DEBUG
-            //_logger.Info($"preparedInitialName = {preparedInitialName}");
+            //_logger.Info($"item.Name.FullName = {item.Name.FullName}");
+            //_logger.Info($"item.Href = {item.Href}");
+            //_logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
 #endif
 
-            return Path.Combine(relativePath, $"{preparedInitialName}.html");
+            var preparedItemName = $"{item.Name.FullName.ToLower()}.html";
+
+#if DEBUG
+            //_logger.Info($"preparedItemName = {preparedItemName}");
+#endif
+
+            item.Href = Path.Combine(baseHref, preparedItemName).Replace("\\", "/");
+            item.TargetFullFileName = Path.Combine(destDir, preparedItemName).Replace("\\", "/");
+
+#if DEBUG
+            //_logger.Info($"item.Href (after) = {item.Href}");
+            //_logger.Info($"item.TargetFullFileName (after) = {item.TargetFullFileName}");
+#endif
+        }
+
+        private static void FillUpPathsOfMemberCard(IDocFileEditeblePaths item, string baseHref, string destDir)
+        {
+            var preparedName = PrepareName(item.Name.InitialName);
+
+            item.Href = Path.Combine(baseHref, preparedName).Replace("\\", "/");
+            item.TargetFullFileName = Path.Combine(destDir, preparedName).Replace("\\", "/");
+        }
+
+        private static string PrepareName(string initialName)
+        {
+            var preparedInitialName = initialName.Substring(2).Replace("#", "_").Replace("[", "_").Replace("]", "_").Replace("(", "_").Replace(")", "_").Replace("{", "_").Replace("}", "_").Replace(",", "_").ToLower();
+
+            return $"{preparedInitialName}.html";
         }
     }
 }

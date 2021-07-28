@@ -5,7 +5,7 @@ using System.Text;
 
 namespace XMLDocReader.CSharpDoc
 {
-    public class MemberCard : NamedElementCard, ICodeDocument
+    public class MemberCard : NamedElementCard, ICodeDocument, IDocFileEditeblePaths
     {
         public ClassCard Parent { get; set; }
         public KindOfMemberAccess KindOfMemberAccess { get; set; } = KindOfMemberAccess.Unknown;

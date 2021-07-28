@@ -33,7 +33,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            if(_options.SaveSubDirs)
+            if (_options.SaveSubDirs)
             {
                 CopyWithSaveSubDirs();
             }
@@ -69,7 +69,8 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
             foreach (var fileName in _targetFiles)
             {
                 var fileInfo = new FileInfo(fileName);
-                var targetFileName = fileName.Replace(fileInfo.DirectoryName.Replace("\\", "/"), _options.DestDir);
+                var targetFileName = Path.Combine(_options.DestDir, fileInfo.Name);
+
                 File.Copy(fileName, targetFileName, true);
             }
         }

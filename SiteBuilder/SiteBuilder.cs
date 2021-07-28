@@ -66,18 +66,18 @@ namespace SiteBuilder
             foreach (var packageCard in _generalSiteBuilderSettings.CSharpUserApiXMLDocsList)
             {
 #if DEBUG
-                //_logger.Info($"packageCard = {packageCard.ToBriefString()}");
-                //_logger.Info($"packageCard.InterfacesList.Count = {packageCard.InterfacesList.Count}");
-                //_logger.Info($"packageCard.InterfacesList.Count = {packageCard.ClassesList.Count}");
-                //_logger.Info($"packageCard.InterfacesList.Count = {packageCard.EnumsList.Count}");
+                _logger.Info($"packageCard = {packageCard.ToBriefString()}");
+                _logger.Info($"packageCard.InterfacesList.Count = {packageCard.InterfacesList.Count}");
+                _logger.Info($"packageCard.InterfacesList.Count = {packageCard.ClassesList.Count}");
+                _logger.Info($"packageCard.InterfacesList.Count = {packageCard.EnumsList.Count}");
 #endif
 
                 foreach(var item in packageCard.InterfacesList)
                 {
 #if DEBUG
-                    //_logger.Info($"item.Name.FullName = {item.Name.FullName}");
-                    //_logger.Info($"item.Href = {item.Href}");
-                    //_logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
+                    _logger.Info($"item.Name.FullName = {item.Name.FullName}");
+                    _logger.Info($"item.Href = {item.Href}");
+                    _logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
 #endif
 
                     _hrefsList.Add(item.Href);
@@ -98,9 +98,9 @@ namespace SiteBuilder
                 foreach(var item in packageCard.ClassesList)
                 {
 #if DEBUG
-                    //_logger.Info($"item.Name.FullName = {item.Name.FullName}");
-                    //_logger.Info($"item.Href = {item.Href}");
-                    //_logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
+                    _logger.Info($"item.Name.FullName = {item.Name.FullName}");
+                    _logger.Info($"item.Href = {item.Href}");
+                    _logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
 #endif
 
                     _hrefsList.Add(item.Href);
@@ -121,9 +121,9 @@ namespace SiteBuilder
                 foreach (var item in packageCard.EnumsList)
                 {
 #if DEBUG
-                    //_logger.Info($"item.Name.FullName = {item.Name.FullName}");
-                    //_logger.Info($"item.Href = {item.Href}");
-                    //_logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
+                    _logger.Info($"item.Name.FullName = {item.Name.FullName}");
+                    _logger.Info($"item.Href = {item.Href}");
+                    _logger.Info($"item.TargetFullFileName = {item.TargetFullFileName}");
 #endif
 
                     _hrefsList.Add(item.Href);
@@ -155,6 +155,21 @@ namespace SiteBuilder
                 _hrefsList.Add(prop.Href);
 
                 var pageProcessor = new PropertyCSharpUserApiXMLDocPageProcessor(prop, parent, _generalSiteBuilderSettings);
+                pageProcessor.Run();
+            }
+
+            foreach (var constructor in classCard.ConstructorsList)
+            {
+#if DEBUG
+                _logger.Info($"constructor.Name.InitialName = {constructor.Name.InitialName}");
+                _logger.Info($"constructor.Name.FullName = {constructor.Name.FullName}");
+                _logger.Info($"constructor.Href = {constructor.Href}");
+                _logger.Info($"constructor.TargetFullFileName = {constructor.TargetFullFileName}");
+#endif
+
+                _hrefsList.Add(constructor.Href);
+
+                var pageProcessor = new ConstructorCSharpUserApiXMLDocPageProcessor(constructor, parent, _generalSiteBuilderSettings);
                 pageProcessor.Run();
             }
 
@@ -206,6 +221,10 @@ namespace SiteBuilder
             sb.AppendLine("<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>");
             foreach (var href in _hrefsList)
             {
+#if DEBUG
+                _logger.Info($"href = '{href}'");
+#endif
+
                 //var uriBuilder = new UriBuilder();
                 //uriBuilder.Scheme = "https";
                 //uriBuilder.Host = GeneralSettings.SiteName;

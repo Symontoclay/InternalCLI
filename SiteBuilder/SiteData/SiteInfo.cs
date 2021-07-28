@@ -20,7 +20,7 @@ namespace SiteBuilder.SiteData
         public string ReleaseNotesJsonPath { get; set; } = string.Empty;
         public string BaseReleaseNotesPath { get; set; } = string.Empty;
         public string CSharpUserApiJsonPath { get; set; } = string.Empty;
-        public string BaseCSharpUserApiPath { get; set; } = string.Empty;
+        public string DestCSharpUserApiPath { get; set; } = string.Empty;
 
         private void Init()
         {
@@ -44,10 +44,10 @@ namespace SiteBuilder.SiteData
                 CSharpUserApiJsonPath = EVPath.Normalize(CSharpUserApiJsonPath);
             }
 
-            if(!string.IsNullOrWhiteSpace(BaseCSharpUserApiPath))
-            {
-                BaseCSharpUserApiPath = EVPath.Normalize(BaseCSharpUserApiPath);
-            }
+            //if(!string.IsNullOrWhiteSpace(DestCSharpUserApiPath))
+            //{
+            //    DestCSharpUserApiPath = DestCSharpUserApiPath;
+            //}
         }
 
         /// <inheritdoc/>
@@ -78,7 +78,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(ReleaseNotesJsonPath)} = {ReleaseNotesJsonPath}");
             sb.AppendLine($"{spaces}{nameof(BaseReleaseNotesPath)} = {BaseReleaseNotesPath}");
             sb.AppendLine($"{spaces}{nameof(CSharpUserApiJsonPath)} = {CSharpUserApiJsonPath}");
-            sb.AppendLine($"{spaces}{nameof(BaseCSharpUserApiPath)} = {BaseCSharpUserApiPath}");
+            sb.AppendLine($"{spaces}{nameof(DestCSharpUserApiPath)} = {DestCSharpUserApiPath}");
 
             return sb.ToString();
         }

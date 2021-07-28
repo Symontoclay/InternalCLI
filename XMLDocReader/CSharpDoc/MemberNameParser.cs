@@ -9,11 +9,15 @@ namespace XMLDocReader.CSharpDoc
 {
     public static class MemberNameParser
     {
-        private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
+#if DEBUG
+        //private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
 
         public static MemberName Parse(string initialName)
         {
+#if DEBUG
             //_logger.Info($"initialName = {initialName}");
+#endif
 
             var memberName = new MemberName();
 
@@ -36,7 +40,14 @@ namespace XMLDocReader.CSharpDoc
                     break;
 
                 case 'M':
-                    memberName.Kind = KindOfMember.Method;
+                    if(initialName.Contains("#ctor"))
+                    {
+                        memberName.Kind = KindOfMember.Constructor;
+                    }
+                    else
+                    {
+                        memberName.Kind = KindOfMember.Method;
+                    }                    
                     break;
 
                 case 'E':
@@ -49,6 +60,16 @@ namespace XMLDocReader.CSharpDoc
 
             var initialNameWithoutType = initialName.Substring(2);
 
+#if DEBUG
+            //_logger.Info($"initialNameWithoutType = {initialNameWithoutType}");
+#endif
+
+            if(initialNameWithoutType == "``0")
+            {
+                memberName.IsStub = true;
+                return memberName;
+            }
+
             if (initialNameWithoutType.Contains("{") && memberName.Kind == KindOfMember.Type)
             {
                 ReadAsGenericMemberName(initialNameWithoutType, memberName);
@@ -58,7 +79,20 @@ namespace XMLDocReader.CSharpDoc
 
             if (initialNameWithoutType.Contains("[") && !initialNameWithoutType.Contains("("))
             {
-                throw new NotImplementedException();
+                if(initialNameWithoutType.EndsWith("[]") && memberName.Kind == KindOfMember.Type)
+                {
+                    memberName.IsArray = true;
+
+                    initialNameWithoutType = initialNameWithoutType.Substring(0, initialNameWithoutType.Length - 2);
+
+#if DEBUG
+                    //_logger.Info($"initialNameWithoutType (after) = {initialNameWithoutType}");
+#endif
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }                
             }
 
             var lastDotPos = LastDotPos(initialNameWithoutType);
@@ -115,6 +149,25 @@ namespace XMLDocReader.CSharpDoc
                 memberName.ParametersList = parametersList;
             }
 
+            if (rawName.Contains("``"))
+            {
+                //_logger.Info($"rawName (!!) = '{rawName}'");
+
+                var gravisesPos = rawName.IndexOf("``");
+
+                //_logger.Info($"gravisesPos = {gravisesPos}");
+
+                memberName.IsGenericDecl = true;
+
+                //_logger.Info($"rawName.Substring(gravisesPos + 2) = {rawName.Substring(gravisesPos + 2)}");
+
+                memberName.GenericDeclParametersCount = int.Parse(rawName.Substring(gravisesPos + 2));
+
+                rawName = rawName.Substring(0, gravisesPos);
+
+                //_logger.Info($"rawName (!! after) = '{rawName}'");
+            }
+
             if (rawName.Contains("{"))
             {
                 throw new NotImplementedException();
@@ -136,6 +189,10 @@ namespace XMLDocReader.CSharpDoc
 
         private static void FillUpDisplayedName(MemberName memberName)
         {
+#if DEBUG
+            //_logger.Info($"memberName = '{memberName}'");
+#endif
+
             switch (memberName.Kind)
             {
                 case KindOfMember.Type:
@@ -146,6 +203,11 @@ namespace XMLDocReader.CSharpDoc
                 case KindOfMember.Field:
                 case KindOfMember.Event:
                     memberName.DisplayedName = memberName.Name;
+                    break;
+
+                case KindOfMember.Constructor:
+                    var typeName = ExtractTypeNameFromNameOfConstructor(memberName.FullName);
+                    memberName.DisplayedName = GetDisplayedNameForMethod(typeName, memberName.TypeParametersList, memberName.ParametersList);
                     break;
 
                 case KindOfMember.Method:
@@ -159,6 +221,15 @@ namespace XMLDocReader.CSharpDoc
 #if DEBUG
             //_logger.Info($"memberName.DisplayedName = '{memberName.DisplayedName}'");
 #endif
+        }
+
+        private static string ExtractTypeNameFromNameOfConstructor(string fullName)
+        {
+            fullName = fullName.Replace(".ctor", string.Empty).Trim();
+
+            var lastDotPos = LastDotPos(fullName);
+
+            return fullName.Substring(lastDotPos + 1);
         }
 
         private static string GetDisplayedNameForType(string name, List<string> typeParametersList)

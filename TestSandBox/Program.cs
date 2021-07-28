@@ -40,7 +40,7 @@ namespace TestSandBox
             //TstTempDirectory();
             //TstCoreToAssetTask();
             //TstReadRepositoryFiles();
-            //TstSiteSettings();
+            TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
             //TstProjectsDataSource();
@@ -51,7 +51,7 @@ namespace TestSandBox
             //TstGitTasksHandler();
             //TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
-            TstCreateCSharpApiOptionsFile();
+            //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
         }
 
@@ -422,7 +422,8 @@ namespace TestSandBox
 
             var siteSettings = new GeneralSiteBuilderSettings(new GeneralSiteBuilderSettingsOptions() { 
                 SourcePath = siteSolution.SourcePath,
-                SiteName = siteSolution.RepositoryName
+                DestPath = siteSolution.Path,
+                SiteName = siteSolution.RepositoryName,
             });
 
             _logger.Info("End");

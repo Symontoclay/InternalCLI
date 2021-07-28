@@ -59,20 +59,20 @@ namespace TestSandBox
 
         private void Case11()
         {
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            //var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
 
-            _logger.Info($"siteSolution = {siteSolution}");
+            //_logger.Info($"siteSolution = {siteSolution}");
 
-            var coreAssetLibProject = ProjectsDataSource.GetProject(KindOfProject.CoreAssetLib);
+            //var coreAssetLibProject = ProjectsDataSource.GetProject(KindOfProject.CoreAssetLib);
 
-            _logger.Info($"coreAssetLibProject = {coreAssetLibProject}");
+            //_logger.Info($"coreAssetLibProject = {coreAssetLibProject}");
 
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new CoreToSiteSourceDevTask(new CoreToSiteSourceDevTaskOptions() { 
+            deploymentPipeline.Add(new CoreToSiteSourceDevTask(/*new CoreToSiteSourceDevTaskOptions() { 
                 CoreCProjPath = coreAssetLibProject.CsProjPath,
                 SiteSourceDir = siteSolution.SourcePath
-            }));
+            }*/));
 
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");
 

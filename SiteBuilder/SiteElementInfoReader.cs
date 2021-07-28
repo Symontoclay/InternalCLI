@@ -137,7 +137,14 @@ namespace SiteBuilder
 
                 parent.DirectoryName = fileTargetInfo.DirectoryName;
 
-                parent.Href = $"{siteHref}/{relativePath}".Replace("\\", "/");
+                if(siteHref.EndsWith("/") || siteHref.EndsWith("\\"))
+                {
+                    parent.Href = $"{siteHref}{relativePath}".Replace("\\", "/");
+                }
+                else
+                {
+                    parent.Href = $"{siteHref}/{relativePath}".Replace("\\", "/");
+                }                
 
                 if(!string.IsNullOrWhiteSpace(cssFileName) || !string.IsNullOrWhiteSpace(lessFileName))
                 {
@@ -149,7 +156,15 @@ namespace SiteBuilder
                         var cssRelativePath = cssFileName.Replace(sourceDir, string.Empty).Trim();
 
                         parent.TargetCssFullFileName = Path.Combine(destDir, cssRelativePath);
-                        parent.CssHrefForPage = $"{siteHref}/{cssRelativePath}".Replace("\\", "/");
+
+                        if(siteHref.EndsWith("/") || siteHref.EndsWith("\\"))
+                        {
+                            parent.CssHrefForPage = $"{siteHref}{cssRelativePath}".Replace("\\", "/");
+                        }
+                        else
+                        {
+                            parent.CssHrefForPage = $"{siteHref}/{cssRelativePath}".Replace("\\", "/");
+                        }                        
                     }
 
                     if(!string.IsNullOrWhiteSpace(lessFileName))
@@ -161,7 +176,15 @@ namespace SiteBuilder
                         var cssRelativePath = lessFileName.Replace(sourceDir, string.Empty).Replace(".less", ".css").Trim();
 
                         parent.TargetCssFullFileName = Path.Combine(destDir, cssRelativePath);
-                        parent.CssHrefForPage = $"{siteHref}/{cssRelativePath}".Replace("\\", "/");
+
+                        if (siteHref.EndsWith("/") || siteHref.EndsWith("\\"))
+                        {
+                            parent.CssHrefForPage = $"{siteHref}{cssRelativePath}".Replace("\\", "/");
+                        }
+                        else
+                        {
+                            parent.CssHrefForPage = $"{siteHref}/{cssRelativePath}".Replace("\\", "/");
+                        }                        
                     }
                 }
 
@@ -244,7 +267,14 @@ namespace SiteBuilder
 
                     item.DirectoryName = fileTargetInfo.DirectoryName;
 
-                    item.Href = $"{siteHref}/{relativePath}".Replace("\\", "/");
+                    if (siteHref.EndsWith("/") || siteHref.EndsWith("\\"))
+                    {
+                        item.Href = $"{siteHref}{relativePath}".Replace("\\", "/");
+                    }
+                    else
+                    {
+                        item.Href = $"{siteHref}/{relativePath}".Replace("\\", "/");
+                    }                        
 
                     var cssFileName = spFileName.Replace(fileInfo.Name, fileInfo.Name.Replace(".sp", ".css"));
 
@@ -283,7 +313,15 @@ namespace SiteBuilder
                             var cssRelativePath = cssFileName.Replace(sourceDir, string.Empty).Trim();
 
                             item.TargetCssFullFileName = Path.Combine(destDir, cssRelativePath);
-                            item.CssHrefForPage = $"{siteHref}/{cssRelativePath}".Replace("\\", "/");
+
+                            if(siteHref.EndsWith("/") || siteHref.EndsWith("\\"))
+                            {
+                                item.CssHrefForPage = $"{siteHref}{cssRelativePath}".Replace("\\", "/");
+                            }
+                            else
+                            {
+                                item.CssHrefForPage = $"{siteHref}/{cssRelativePath}".Replace("\\", "/");
+                            }                            
                         }
 
                         if (!string.IsNullOrWhiteSpace(lessFileName))
@@ -295,7 +333,15 @@ namespace SiteBuilder
                             var cssRelativePath = lessFileName.Replace(sourceDir, string.Empty).Replace(".less", ".css").Trim();
 
                             item.TargetCssFullFileName = Path.Combine(destDir, cssRelativePath);
-                            item.CssHrefForPage = $"{siteHref}/{cssRelativePath}".Replace("\\", "/");
+
+                            if (siteHref.EndsWith("/") || siteHref.EndsWith("\\"))
+                            {
+                                item.CssHrefForPage = $"{siteHref}{cssRelativePath}".Replace("\\", "/");
+                            }
+                            else
+                            {
+                                item.CssHrefForPage = $"{siteHref}/{cssRelativePath}".Replace("\\", "/");
+                            }                            
                         }
                     }
 
@@ -369,7 +415,14 @@ namespace SiteBuilder
 
                 item.DirectoryName = fileInfo.DirectoryName;
 
-                item.Href = $"{siteHref}/{relativePath}".Replace("\\", "/");
+                if (siteHref.EndsWith("/") || siteHref.EndsWith("\\"))
+                {
+                    item.Href = $"{siteHref}/{relativePath}".Replace("\\", "/");
+                }
+                else
+                {
+                    item.Href = $"{siteHref}{relativePath}".Replace("\\", "/");
+                }
 
 #if DEBUG
                 //_logger.Info($"item = {item}");

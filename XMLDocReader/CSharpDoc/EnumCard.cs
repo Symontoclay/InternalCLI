@@ -6,7 +6,7 @@ using System.Text;
 
 namespace XMLDocReader.CSharpDoc
 {
-    public class EnumCard: ParentElementCard, ITypeCard, ICodeDocument
+    public class EnumCard: ParentElementCard, ITypeCard, ICodeDocument, IDocFileEditeblePaths
     {
         /// <inheritdoc/>
         public KindOfType KindOfType => KindOfType.Enum;

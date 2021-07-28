@@ -156,7 +156,7 @@ namespace SiteBuilder
             var rootSiteElement = SiteElementInfoReader.Read(SourcePath, DestPath, SiteHref, IgnoredDirsList, new List<string>() { /*".gitignore",*/ "roadMap.json", "site.site" }, this);
 
 #if DEBUG
-            //_logger.Info($"rootSiteElement = {rootSiteElement}");
+            _logger.Info($"rootSiteElement = {rootSiteElement}");
 #endif
 
             SiteElementsList = LinearizeSiteElementInfoTreeWithoutRoot(rootSiteElement);
@@ -166,18 +166,19 @@ namespace SiteBuilder
             //_logger.Info($"SiteElementsList = {SiteElementsList.WriteListToString()}");
 #endif
 
-            if(!string.IsNullOrWhiteSpace(SiteSettings.BaseCSharpUserApiPath))
+            if(!string.IsNullOrWhiteSpace(SiteSettings.DestCSharpUserApiPath))
             {
-                var rootCSharpUserApiXMLDocSiteElementFullName = Path.Combine(SiteSettings.BaseCSharpUserApiPath, "index.sp");
+                var rootCSharpUserApiXMLDocSiteElementFullName = PathsHelper.Normalize(Path.Combine(SourcePath, SiteSettings.DestCSharpUserApiPath, "index.sp"));
 
 #if DEBUG
-                //_logger.Info($"rootCSharpUserApiXMLDocSiteElementFullName = {rootCSharpUserApiXMLDocSiteElementFullName}");
+                _logger.Info($"rootCSharpUserApiXMLDocSiteElementFullName = {rootCSharpUserApiXMLDocSiteElementFullName}");
+                _logger.Info($"SiteElementsList.Select(p => p.InitialFullFileName) = {JsonConvert.SerializeObject(SiteElementsList.Select(p => PathsHelper.Normalize(p.InitialFullFileName)), Formatting.Indented)}");
 #endif
 
-                RootCSharpUserApiXMLDocSiteElement = SiteElementsList.SingleOrDefault(p => p.InitialFullFileName == rootCSharpUserApiXMLDocSiteElementFullName);
+                RootCSharpUserApiXMLDocSiteElement = SiteElementsList.SingleOrDefault(p => PathsHelper.Normalize(p.InitialFullFileName) == rootCSharpUserApiXMLDocSiteElementFullName);
 
 #if DEBUG
-                //_logger.Info($"RootCSharpUserApiXMLDocSiteElement = {RootCSharpUserApiXMLDocSiteElement}");
+                _logger.Info($"RootCSharpUserApiXMLDocSiteElement = {RootCSharpUserApiXMLDocSiteElement}");
 #endif
             }
 
@@ -237,7 +238,7 @@ namespace SiteBuilder
             var csharpApiJsonPath = SiteSettings.CSharpUserApiJsonPath;
 
 #if DEBUG
-            _logger.Info($"csharpApiJsonPath = {csharpApiJsonPath}");
+            //_logger.Info($"csharpApiJsonPath = {csharpApiJsonPath}");
 #endif
 
             if (string.IsNullOrWhiteSpace(csharpApiJsonPath))
@@ -248,7 +249,7 @@ namespace SiteBuilder
             var csharpApiOptions = CSharpApiOptions.LoadFromFile(csharpApiJsonPath);
 
 #if DEBUG
-            _logger.Info($"csharpApiOptions = {csharpApiOptions}");
+            //_logger.Info($"csharpApiOptions = {csharpApiOptions}");
 #endif
 
             //IgnoredDirsList.Add(targetSolutionDir);
@@ -264,19 +265,18 @@ namespace SiteBuilder
                 TargetRootTypeNamesList = csharpApiOptions.UnityAssetCoreRootTypes,
                 PublicMembersOnly = csharpApiOptions.PublicMembersOnly,
                 IgnoreErrors = csharpApiOptions.IgnoreErrors,
-                BaseHref = SiteHref,
-                BasePath = SiteSettings.BaseCSharpUserApiPath,
+                BaseHref = Path.Combine(SiteHref, SiteSettings.DestCSharpUserApiPath),
                 SourceDir = SourcePath,
-                DestDir = DestPath
+                DestDir = Path.Combine(DestPath, SiteSettings.DestCSharpUserApiPath)
             };
 
 #if DEBUG
-            _logger.Info($"options = {options}");
+            //_logger.Info($"options = {options}");
 #endif
             CSharpUserApiXMLDocsList = CSharpXMLDocLoader.Load(options);
 
 #if DEBUG
-            _logger.Info($"CSharpApiXMLDocsList.Count = {CSharpUserApiXMLDocsList.Count}");
+            //_logger.Info($"CSharpApiXMLDocsList.Count = {CSharpUserApiXMLDocsList.Count}");
 #endif
 
             foreach (var packageCard in CSharpUserApiXMLDocsList)
@@ -299,7 +299,7 @@ namespace SiteBuilder
                 foreach (var item in packageCard.ClassesList)
                 {
 #if DEBUG
-                    _logger.Info($"item = {item}");
+                    //_logger.Info($"item = {item}");
 #endif
 
                     CSharpUserApiXMLDocsCodeDocumentDict[item.InitialName] = item;

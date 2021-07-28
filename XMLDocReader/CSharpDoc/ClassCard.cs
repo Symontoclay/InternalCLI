@@ -6,7 +6,7 @@ using System.Text;
 
 namespace XMLDocReader.CSharpDoc
 {
-    public class ClassCard: ParentElementCard, ITypeCard, ICodeDocument
+    public class ClassCard: ParentElementCard, ITypeCard, ICodeDocument, IDocFileEditeblePaths
     {
         /// <inheritdoc/>
         public KindOfType KindOfType { get; set; } = KindOfType.Unknown;
@@ -18,6 +18,7 @@ namespace XMLDocReader.CSharpDoc
         public List<ClassCard> BaseInterfacesList { get; set; } = new List<ClassCard>();
 
         public List<PropertyCard> PropertiesList { get; set; } = new List<PropertyCard>();
+        public List<ConstructorCard> ConstructorsList { get; set; } = new List<ConstructorCard>();
         public List<MethodCard> MethodsList { get; set; } = new List<MethodCard>();
 
         public bool HasIsInheritdoc
@@ -89,6 +90,7 @@ namespace XMLDocReader.CSharpDoc
             sb.PrintBriefObjListProp(n, nameof(DirectBaseInterfacesList), DirectBaseInterfacesList);
             sb.PrintBriefObjListProp(n, nameof(BaseInterfacesList), BaseInterfacesList);
 
+            sb.PrintObjListProp(n, nameof(ConstructorsList), ConstructorsList);            
             sb.PrintObjListProp(n, nameof(PropertiesList), PropertiesList);
             sb.PrintObjListProp(n, nameof(MethodsList), MethodsList);
 

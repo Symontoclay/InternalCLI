@@ -19,7 +19,8 @@ namespace SiteBuilder
             PrintHeader(sb);
             PrintMetadata(sb);
             PrintSummary(sb);
-            
+
+            PrintConstructors(sb);
             PrintProperties(sb);
             PrintMethods(sb);
 

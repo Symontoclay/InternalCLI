@@ -2,6 +2,7 @@
 using SiteBuilder.SiteData;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using XMLDocReader.CSharpDoc;
@@ -26,6 +27,30 @@ namespace SiteBuilder
         protected void PrintSummary(StringBuilder sb, string summary)
         {
             sb.AppendLine($"<div>{GetContent(summary)}</div>");
+        }
+
+        protected void PrintParameters(StringBuilder sb, List<MethodParamCard> paramsList)
+        {
+            if (paramsList.Any())
+            {
+                sb.AppendLine("<h2>Parameters</h2>");
+
+                sb.AppendLine("<div>");
+                sb.AppendLine("<dl>");
+
+                foreach (var param in paramsList)
+                {
+#if DEBUG
+                    //_logger.Info($"param = {param}");
+#endif
+
+                    sb.AppendLine($"<dt>{param.Name}</dt>");
+                    sb.AppendLine($"<dd>{GetContent(param.Summary)}</dd>");
+                }
+
+                sb.AppendLine("</dl>");
+                sb.AppendLine("</div>");
+            }
         }
 
         protected void PrintRemarks(StringBuilder sb, string remarks)

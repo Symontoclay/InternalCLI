@@ -10,7 +10,9 @@ namespace XMLDocReader.CSharpDoc
 {
     public static class PackageCardReader
     {
+#if DEBUG
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
 
         public static List<PackageCard> Read(List<PackageCardReaderSettings> settingsList)
         {
@@ -246,7 +248,15 @@ namespace XMLDocReader.CSharpDoc
             string path;
             var needNextProcess = false;
 
+#if DEBUG
+            //_logger.Info($"fullName = '{fullName}'");
+#endif
+
             var dotPos = GetDotPos(fullName, n);
+
+#if DEBUG
+            //_logger.Info($"dotPos = {dotPos}");
+#endif
 
             if (dotPos == -1)
             {
@@ -396,6 +406,10 @@ namespace XMLDocReader.CSharpDoc
 
             foreach (var memberCard in membersList)
             {
+#if DEBUG
+                //_logger.Info($"memberCard = {memberCard}");
+#endif
+
                 switch (memberCard.Name.Kind)
                 {
                     case KindOfMember.Property:
@@ -403,6 +417,19 @@ namespace XMLDocReader.CSharpDoc
                             var property = ProcessProperty(memberCard, type);
                             property.Parent = result;
                             result.PropertiesList.Add(property);
+                        }
+                        break;
+
+                    case KindOfMember.Constructor:
+                        {
+                            var constructor = ProcessConstructor(memberCard, type);
+                            constructor.Parent = result;
+
+#if DEBUG
+                            //_logger.Info($"constructor = {constructor}");
+#endif
+
+                            result.ConstructorsList.Add(constructor);
                         }
                         break;
 
@@ -422,8 +449,83 @@ namespace XMLDocReader.CSharpDoc
             return result;
         }
 
+        private static ConstructorCard ProcessConstructor(XMLMemberCard memberCard, Type parentType)
+        {
+#if DEBUG
+            //_logger.Info($"memberCard = {memberCard}");
+#endif
+
+            var result = new ConstructorCard();
+
+            FillUpNamedElementCard(memberCard, result);
+
+            var constructorsList = parentType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static).ToList();
+
+            var constructorsCount = constructorsList.Count;
+
+#if DEBUG
+            //_logger.Info($"constructorsCount = {constructorsCount}");
+#endif
+
+            switch(constructorsCount)
+            {
+                case 0:
+                    throw new NotImplementedException();
+
+                case 1:
+                    result.ConstructorInfo = constructorsList.Single();
+                    break;
+
+                default:
+                    result.ConstructorInfo = (ConstructorInfo)GetMethodInfo(constructorsList.Cast<MethodBase>().ToList(), memberCard);
+                    break;
+            }
+
+            result.KindOfMemberAccess = GetKindOfMemberAccess(result.ConstructorInfo);
+
+            if (memberCard.ParamsList.Any())
+            {
+                var methodReflectionParamsList = result.ConstructorInfo.GetParameters();
+
+                var i = 0;
+
+                foreach (var methodParamCard in memberCard.ParamsList)
+                {
+                    var parameter = new MethodParamCard();
+                    parameter.Name = methodParamCard.Name;
+                    parameter.ParameterInfo = methodReflectionParamsList[i];
+                    parameter.Summary = methodParamCard.Value;
+                    parameter.XMLParamCard = methodParamCard;
+
+                    result.ParamsList.Add(parameter);
+
+                    i++;
+                }
+            }
+
+            if (memberCard.TypeParamsList.Any())
+            {
+                throw new NotImplementedException();
+            }
+
+            if (memberCard.ExceptionsList.Any())
+            {
+                throw new NotImplementedException();
+            }
+
+#if DEBUG
+            //_logger.Info($"result = {result}");
+#endif
+
+            return result;
+        }
+
         private static MethodCard ProcessMethod(XMLMemberCard memberCard, Type parentType)
         {
+#if DEBUG
+            //_logger.Info($"memberCard = {memberCard}");
+#endif
+
             var result = new MethodCard();
 
             FillUpNamedElementCard(memberCard, result);
@@ -435,7 +537,16 @@ namespace XMLDocReader.CSharpDoc
                 name = $"{memberCard.Name.ImplInterfaceName}.{name}";
             }
 
+#if DEBUG
+            //_logger.Info($"name = '{name}'");
+#endif
+
             var methodsList = parentType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static).Where(p => p.Name == name).ToList();
+
+            if(memberCard.Name.IsGenericDecl)
+            {
+                methodsList = methodsList.Where(p => p.IsGenericMethodDefinition).ToList();
+            }
 
             var methodsCount = methodsList.Count;
 
@@ -449,13 +560,20 @@ namespace XMLDocReader.CSharpDoc
                     break;
 
                 default:
-                    if (memberCard.IsInclude || memberCard.IsInheritdoc)
+                    if(memberCard.Name.IsGenericDecl)
                     {
-                        result.MethodInfo = GetMethodInfoByTypeNames(methodsList, memberCard);
+                        throw new NotImplementedException();
                     }
                     else
                     {
-                        result.MethodInfo = GetMethodInfo(methodsList, memberCard);
+                        if (memberCard.IsInclude || memberCard.IsInheritdoc)
+                        {
+                            result.MethodInfo = GetMethodInfoByTypeNames(methodsList, memberCard);
+                        }
+                        else
+                        {
+                            result.MethodInfo = (MethodInfo)GetMethodInfo(methodsList.Cast<MethodBase>().ToList(), memberCard);
+                        }
                     }
                     break;
             }
@@ -505,6 +623,11 @@ namespace XMLDocReader.CSharpDoc
 
             foreach (var method in methodsList)
             {
+#if DEBUG
+                //_logger.Info($"method.IsGenericMethod = {method.IsGenericMethod}");
+                //_logger.Info($"method.IsGenericMethodDefinition = {method.IsGenericMethodDefinition}");
+#endif
+
                 var paramsList = method.GetParameters();
 
                 if (paramsList.Length != xmlParamsCount)
@@ -522,6 +645,10 @@ namespace XMLDocReader.CSharpDoc
 
                     var currentXMLParam = xmlParamEnumerator.Current;
 
+#if DEBUG
+                    //_logger.Info($"param.ParameterType.FullName = '{param.ParameterType.FullName}'");
+#endif
+
                     if (NamesHelper.SimplifyFullNameOfType(param.ParameterType.FullName) != currentXMLParam)
                     {
                         isFit = false;
@@ -538,7 +665,7 @@ namespace XMLDocReader.CSharpDoc
             throw new NotImplementedException();
         }
 
-        private static MethodInfo GetMethodInfo(List<MethodInfo> methodsList, XMLMemberCard memberCard)
+        private static MethodBase GetMethodInfo(List<MethodBase> methodsList, XMLMemberCard memberCard)
         {
             var xmlParamsList = memberCard.ParamsList;
 
@@ -594,7 +721,7 @@ namespace XMLDocReader.CSharpDoc
             return KindOfMemberAccess.Private;
         }
 
-        private static KindOfMemberAccess GetKindOfMemberAccess(MethodInfo methodInfo)
+        private static KindOfMemberAccess GetKindOfMemberAccess(MethodBase methodInfo)
         {
             if (methodInfo.IsPublic)
             {

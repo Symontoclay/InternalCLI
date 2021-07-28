@@ -10,6 +10,7 @@ namespace XMLDocReader
         Type,
         Property,
         Field,
+        Constructor,
         Method,
         Event,
         Namespace

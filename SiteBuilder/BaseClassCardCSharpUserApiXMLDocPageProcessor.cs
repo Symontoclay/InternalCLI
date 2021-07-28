@@ -13,13 +13,13 @@ namespace SiteBuilder
     public abstract class BaseClassCardCSharpUserApiXMLDocPageProcessor : BaseCSharpUserApiXMLDocPageProcessor
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static SiteElementInfo ConvertClassCardToSiteElementInfo(ClassCard classCard, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
-            //_logger.Info($"classCard = {classCard}");
+            _logger.Info($"classCard = {classCard}");
 #endif
 
             var result = new SiteElementInfo();
@@ -90,6 +90,18 @@ namespace SiteBuilder
             PrintRemarks(sb, _classCard.Remarks);
         }
 
+        protected void PrintConstructors(StringBuilder sb)
+        {
+            if(!_classCard.ConstructorsList.Any())
+            {
+                return;
+            }
+
+            sb.AppendLine("<h2>Constructors</h2>");
+
+            PrintMembersList(sb, _classCard.ConstructorsList);
+        }
+
         protected void PrintProperties(StringBuilder sb)
         {
             if (!_classCard.PropertiesList.Any())
@@ -122,8 +134,9 @@ namespace SiteBuilder
 #if DEBUG
                 //_logger.Info($"item.Name.InitialName = {item.Name.InitialName}");
                 //_logger.Info($"item.Name.Name = {item.Name.Name}");
-                //_logger.Info($"item.Name.FullName = {item.Name.FullName}");
-                //_logger.Info($"item.Name.DisplayedName = {item.Name.DisplayedName}");
+                _logger.Info($"item.Name.FullName = {item.Name.FullName}");
+                _logger.Info($"item.Href = '{item.Href}'");
+                _logger.Info($"item.Name.DisplayedName = {item.Name.DisplayedName}");
 #endif
 
                 sb.AppendLine("<tr style='border-bottom: solid 1px #e2e2e2;'>");

@@ -9,7 +9,7 @@ namespace XMLDocReader.CSharpDoc
 {
     public static class PackageCardCleaner
     {
-        private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
+        //private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public static void Clean(List<PackageCard> packageCardsList, string targetRootTypeName, RepackingTypeCardOptions repackingTypeCardOptions)
         {
@@ -189,6 +189,22 @@ namespace XMLDocReader.CSharpDoc
                         }
 
                         classCard.PropertiesList.Remove(property);
+                    }
+                }
+            }
+
+            if(classCard.ConstructorsList.Any())
+            {
+                foreach(var constructor in classCard.ConstructorsList.ToList())
+                {
+                    if (repackingTypeCardOptions.PublicMembersOnly)
+                    {
+                        if (constructor.KindOfMemberAccess == KindOfMemberAccess.Public)
+                        {
+                            continue;
+                        }
+
+                        classCard.ConstructorsList.Remove(constructor);
                     }
                 }
             }
@@ -403,6 +419,51 @@ namespace XMLDocReader.CSharpDoc
                             //_logger.Info($"targetInitialName = '{targetInitialName}'");
 
                             SearchTargetNamesForRepackingTypeCard(targetInitialName, repackingTypeCardOptions, result, classesInitialNamesDict, interfacesInitialNamesDict, enumsInitialNamesDict);
+                        }
+                    }
+                }
+            }
+
+            if(targetCard.ConstructorsList.Any())
+            {
+                foreach(var constructor in targetCard.ConstructorsList)
+                {
+                    //_logger.Info($"constructor = {constructor}");
+
+                    if (constructor.KindOfMemberAccess != KindOfMemberAccess.Public && repackingTypeCardOptions.PublicMembersOnly)
+                    {
+                        continue;
+                    }
+
+                    if (constructor.UsedTypesList.Any())
+                    {
+                        foreach (var usedType in constructor.UsedTypesList)
+                        {
+                            var targetInitialName = usedType.Name.InitialName;
+
+                            //_logger.Info($"targetInitialName = '{targetInitialName}'");
+
+                            SearchTargetNamesForRepackingTypeCard(targetInitialName, repackingTypeCardOptions, result, classesInitialNamesDict, interfacesInitialNamesDict, enumsInitialNamesDict);
+                        }
+                    }
+
+                    if (constructor.ParamsList.Any())
+                    {
+                        foreach (var param in constructor.ParamsList)
+                        {
+                            //_logger.Info($"param = {param}");
+
+                            if (param.UsedTypesList.Any())
+                            {
+                                foreach (var usedType in param.UsedTypesList)
+                                {
+                                    var targetInitialName = usedType.Name.InitialName;
+
+                                    //_logger.Info($"targetInitialName = '{targetInitialName}'");
+
+                                    SearchTargetNamesForRepackingTypeCard(targetInitialName, repackingTypeCardOptions, result, classesInitialNamesDict, interfacesInitialNamesDict, enumsInitialNamesDict);
+                                }
+                            }
                         }
                     }
                 }

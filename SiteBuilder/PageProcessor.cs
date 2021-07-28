@@ -68,7 +68,7 @@ namespace SiteBuilder
         public void Run()
         {
 #if DEBUG
-            //_logger.Info("Begin");
+            _logger.Info("Begin");
 #endif
 
             var sitePageInfo = _siteElement.SitePageInfo;
@@ -84,6 +84,7 @@ namespace SiteBuilder
 
 #if DEBUG
             //_logger.Info($" = {}");
+            _logger.Info("End");
 #endif
         }
 
@@ -133,7 +134,7 @@ namespace SiteBuilder
             }
 
 #if DEBUG
-            //_logger.Info($"_siteElement.TargetFullFileName = {_siteElement.TargetFullFileName}");
+            _logger.Info($"_siteElement.TargetFullFileName = {_siteElement.TargetFullFileName}");
 #endif
         }
 

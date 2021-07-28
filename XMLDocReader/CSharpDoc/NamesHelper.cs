@@ -12,6 +12,8 @@ namespace XMLDocReader.CSharpDoc
 
         public static string SimplifyFullNameOfType(string inputName)
         {
+            //_logger.Info($"inputName = {inputName}");
+
             var gravisPos = inputName.IndexOf("`");
 
             //_logger.Info($"gravisPos = {gravisPos}");
