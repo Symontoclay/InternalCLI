@@ -30,6 +30,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            //TstGetCurrrentBranch();
             //TstDeployedItemsFactory();
             //TstAddReleaseNote();
             //TstReadAndReSaveReleaseNotes();
@@ -40,7 +41,7 @@ namespace TestSandBox
             //TstTempDirectory();
             //TstCoreToAssetTask();
             //TstReadRepositoryFiles();
-            TstSiteSettings();
+            //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
             //TstProjectsDataSource();
@@ -49,10 +50,27 @@ namespace TestSandBox
             //TstLessHandler();
             //TstRoadMap();
             //TstGitTasksHandler();
-            //TstDeploymentTaskBasedBuildHandler();
+            TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstGetCurrrentBranch()
+        {
+            _logger.Info("Begin");
+
+            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+
+            var currentBranchName = GitRepositoryHelper.GetCurrentBranchName(siteSolution.Path);
+
+            _logger.Info($"currentBranchName = {currentBranchName}");
+
+            _logger.Info($"GitRepositoryHelper.IsCurrentBranchMasterByBranchName(currentBranchName) = {GitRepositoryHelper.IsCurrentBranchMasterByBranchName(currentBranchName)}");
+
+            _logger.Info($"GitRepositoryHelper.IsCurrentBranchMaster(siteSolution.Path) = {GitRepositoryHelper.IsCurrentBranchMaster(siteSolution.Path)}");
+
+            _logger.Info("End");
         }
 
         private static void TstDeployedItemsFactory()

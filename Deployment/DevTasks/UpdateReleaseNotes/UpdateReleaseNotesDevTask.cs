@@ -20,7 +20,7 @@ namespace Deployment.DevTasks.UpdateReleaseNotes
             {
                 ReleaseMngrRepositoryPath = ProjectsDataSource.GetSolution(KindOfProject.ReleaseMngrSolution).Path,
                 ArtifactsForDeployment = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).ArtifactsForDeployment.ToList(),
-                ReleaseNotesFilePath = Path.Combine(ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).SourcePath, "ReleaseNotes.json"),
+                ReleaseNotesFilePath = BuildReleaseNotesPath(ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).SourcePath),
                 BaseHref = ProjectsDataSource.GetSolution(KindOfProject.CoreSolution).Href
             })
         {
@@ -29,6 +29,11 @@ namespace Deployment.DevTasks.UpdateReleaseNotes
         public UpdateReleaseNotesDevTask(UpdateReleaseNotesDevTaskOptions options)
         {
             _options = options;
+        }
+
+        private static string BuildReleaseNotesPath(string basePath)
+        {
+            return Path.Combine(basePath, "ReleaseNotes.json");
         }
 
         private readonly UpdateReleaseNotesDevTaskOptions _options;

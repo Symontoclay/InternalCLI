@@ -16,7 +16,7 @@ namespace SiteBuilder
     public class GeneralSiteBuilderSettings
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public GeneralSiteBuilderSettings(GeneralSiteBuilderSettingsOptions options)
@@ -50,7 +50,7 @@ namespace SiteBuilder
                     break;
 
                 case KindOfTargetUrl.Path:
-                    SiteHref = destPath;
+                    SiteHref = $"file:///{destPath}";
                     break;
 
                 default:
@@ -156,7 +156,7 @@ namespace SiteBuilder
             var rootSiteElement = SiteElementInfoReader.Read(SourcePath, DestPath, SiteHref, IgnoredDirsList, new List<string>() { /*".gitignore",*/ "roadMap.json", "site.site" }, this);
 
 #if DEBUG
-            _logger.Info($"rootSiteElement = {rootSiteElement}");
+            //_logger.Info($"rootSiteElement = {rootSiteElement}");
 #endif
 
             SiteElementsList = LinearizeSiteElementInfoTreeWithoutRoot(rootSiteElement);
@@ -171,14 +171,14 @@ namespace SiteBuilder
                 var rootCSharpUserApiXMLDocSiteElementFullName = PathsHelper.Normalize(Path.Combine(SourcePath, SiteSettings.DestCSharpUserApiPath, "index.sp"));
 
 #if DEBUG
-                _logger.Info($"rootCSharpUserApiXMLDocSiteElementFullName = {rootCSharpUserApiXMLDocSiteElementFullName}");
-                _logger.Info($"SiteElementsList.Select(p => p.InitialFullFileName) = {JsonConvert.SerializeObject(SiteElementsList.Select(p => PathsHelper.Normalize(p.InitialFullFileName)), Formatting.Indented)}");
+                //_logger.Info($"rootCSharpUserApiXMLDocSiteElementFullName = {rootCSharpUserApiXMLDocSiteElementFullName}");
+                //_logger.Info($"SiteElementsList.Select(p => p.InitialFullFileName) = {JsonConvert.SerializeObject(SiteElementsList.Select(p => PathsHelper.Normalize(p.InitialFullFileName)), Formatting.Indented)}");
 #endif
 
                 RootCSharpUserApiXMLDocSiteElement = SiteElementsList.SingleOrDefault(p => PathsHelper.Normalize(p.InitialFullFileName) == rootCSharpUserApiXMLDocSiteElementFullName);
 
 #if DEBUG
-                _logger.Info($"RootCSharpUserApiXMLDocSiteElement = {RootCSharpUserApiXMLDocSiteElement}");
+                //_logger.Info($"RootCSharpUserApiXMLDocSiteElement = {RootCSharpUserApiXMLDocSiteElement}");
 #endif
             }
 

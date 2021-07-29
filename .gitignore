@@ -29,3 +29,7 @@ PageCreator/obj
 /UpdateReleaseNotes/obj
 /CoreToSiteSource/obj
 /CoreToSiteSource/bin
+/DevSiteBuild/bin
+/DevSiteBuild/obj
+/DevSiteFullBuild/bin
+/DevSiteFullBuild/obj

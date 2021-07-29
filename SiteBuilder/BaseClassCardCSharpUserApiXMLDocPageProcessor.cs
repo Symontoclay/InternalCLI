@@ -19,7 +19,7 @@ namespace SiteBuilder
         private static SiteElementInfo ConvertClassCardToSiteElementInfo(ClassCard classCard, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
-            _logger.Info($"classCard = {classCard}");
+            //_logger.Info($"classCard = {classCard}");
 #endif
 
             var result = new SiteElementInfo();
@@ -128,15 +128,15 @@ namespace SiteBuilder
 
         protected void PrintMembersList(StringBuilder sb, IEnumerable<MemberCard> membersList)
         {
-            sb.AppendLine("<table style='font-size: 14px; margin-bottom: 20px;'>");
+            sb.AppendLine("<table style='font-size: 14px; margin-bottom: 20px; width=100%;'>");
             foreach (var item in membersList)
             {
 #if DEBUG
                 //_logger.Info($"item.Name.InitialName = {item.Name.InitialName}");
                 //_logger.Info($"item.Name.Name = {item.Name.Name}");
-                _logger.Info($"item.Name.FullName = {item.Name.FullName}");
-                _logger.Info($"item.Href = '{item.Href}'");
-                _logger.Info($"item.Name.DisplayedName = {item.Name.DisplayedName}");
+                //_logger.Info($"item.Name.FullName = {item.Name.FullName}");
+                //_logger.Info($"item.Href = '{item.Href}'");
+                //_logger.Info($"item.Name.DisplayedName = {item.Name.DisplayedName}");
 #endif
 
                 sb.AppendLine("<tr style='border-bottom: solid 1px #e2e2e2;'>");

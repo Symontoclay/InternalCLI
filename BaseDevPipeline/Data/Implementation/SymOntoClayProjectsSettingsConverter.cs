@@ -15,7 +15,7 @@ namespace BaseDevPipeline.Data.Implementation
     public static class SymOntoClayProjectsSettingsConverter
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
         public static ISymOntoClayProjectsSettings Convert(SymOntoClaySettingsSource source)
         {

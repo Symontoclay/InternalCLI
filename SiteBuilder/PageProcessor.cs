@@ -68,7 +68,7 @@ namespace SiteBuilder
         public void Run()
         {
 #if DEBUG
-            _logger.Info("Begin");
+            //_logger.Info("Begin");
 #endif
 
             var sitePageInfo = _siteElement.SitePageInfo;
@@ -84,7 +84,7 @@ namespace SiteBuilder
 
 #if DEBUG
             //_logger.Info($" = {}");
-            _logger.Info("End");
+            //_logger.Info("End");
 #endif
         }
 
@@ -134,7 +134,7 @@ namespace SiteBuilder
             }
 
 #if DEBUG
-            _logger.Info($"_siteElement.TargetFullFileName = {_siteElement.TargetFullFileName}");
+            //_logger.Info($"_siteElement.TargetFullFileName = {_siteElement.TargetFullFileName}");
 #endif
         }
 
@@ -629,7 +629,7 @@ namespace SiteBuilder
 
             if(!string.IsNullOrWhiteSpace(href))
             {
-                if (!href.StartsWith("https://") && !href.StartsWith("http://"))
+                if (!href.StartsWith("https://") && !href.StartsWith("http://") && !href.StartsWith("file://"))
                 {
 #if DEBUG
                     //_logger.Info($"href = {href}");
@@ -663,7 +663,7 @@ namespace SiteBuilder
 
             if (!string.IsNullOrWhiteSpace(src))
             {
-                if(!src.StartsWith("https://") && !src.StartsWith("http://"))
+                if(!src.StartsWith("https://") && !src.StartsWith("http://") && !src.StartsWith("file://"))
                 {
 #if DEBUG
                     //_logger.Info($"src = {src}");

@@ -132,5 +132,20 @@ namespace Deployment.Helpers
 
             return gitProcess.Output.ToList();
         }
+
+        public static string GetCurrentBranchName(string repositoryPath)
+        {
+            return GetRawLocalBranchNames(repositoryPath).Where(p => p.Contains("*")).Select(p => p.Replace("*", string.Empty).Trim()).SingleOrDefault();
+        }
+
+        public static bool IsCurrentBranchMaster(string repositoryPath)
+        {
+            return IsCurrentBranchMasterByBranchName(GetCurrentBranchName(repositoryPath));
+        }
+
+        public static bool IsCurrentBranchMasterByBranchName(string name)
+        {
+            return name == "master";
+        }
     }
 }

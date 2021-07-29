@@ -3,6 +3,8 @@ using CommonUtils;
 using CommonUtils.DebugHelpers;
 using Deployment;
 using Deployment.DevTasks.CoreToSiteSource;
+using Deployment.DevTasks.DevSiteBuild;
+using Deployment.DevTasks.DevSiteFullBuild;
 using Deployment.Helpers;
 using Deployment.Tasks;
 using Deployment.Tasks.ArchTasks.Zip;
@@ -40,7 +42,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case11();
+            Case13();
+            //Case12();
+            //Case11();
             //Case10();
             //Case9();
             //Case8();
@@ -55,6 +59,23 @@ namespace TestSandBox
             //_logger.Info($" = {}");
 
             _logger.Info("End");
+        }
+
+        private void Case13()
+        {
+            var task = new DevSiteFullBuildTask();
+            task.Run();
+        }
+
+        private void Case12()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new DevSiteBuildTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case11()

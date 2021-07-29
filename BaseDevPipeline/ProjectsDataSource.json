@@ -82,7 +82,7 @@
   "DevArtifacts": [
     {
       "Kind": "ProjectSite",
-      "Path": "%BASE_PATH%/symontoclay.github.io"
+      "Path": "%USERPROFILE%/Documents/SiteDist"
     },
     {
       "Kind": "UnityPackage",
