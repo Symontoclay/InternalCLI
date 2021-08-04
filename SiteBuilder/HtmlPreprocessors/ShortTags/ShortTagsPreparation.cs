@@ -267,6 +267,18 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                         }
                         break;
 
+                    case "Unity":
+                    case "unity":
+                    case "U":
+                    case "u":
+                        {
+                            var wikiNode = doc.CreateElement("i");
+                            parentNode.ReplaceChild(wikiNode, rootNode);
+                            wikiNode.AddClass("fab fa-unity");
+                            wikiNode.SetAttributeValue("title", "Unity");
+                        }
+                        break;
+
                     default:
                         rootNode.Remove();
                         break;
