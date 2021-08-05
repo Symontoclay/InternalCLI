@@ -70,7 +70,7 @@ namespace BaseDevPipeline
             var settings = GetSymOntoClayProjectsSettings();
             return settings.GetDevArtifacts(kind);
         }
-
+        
         public static ILicenseSettings GetLicense(string name)
         {
             var settings = GetSymOntoClayProjectsSettings();

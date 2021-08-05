@@ -48,6 +48,9 @@ namespace Deployment.Helpers
             sb.AppendLine($"{spaces}{nameof(documentationUrl)} = {documentationUrl}");
             sb.AppendLine($"{spaces}{nameof(changelogUrl)} = {changelogUrl}");
             sb.AppendLine($"{spaces}{nameof(licensesUrl)} = {licensesUrl}");
+            sb.PrintPODDictProp(n, nameof(dependencies), dependencies);
+            sb.PrintPODList(n, nameof(keywords), keywords);
+            sb.PrintObjProp(n, nameof(author), author);
 
             return sb.ToString();
         }

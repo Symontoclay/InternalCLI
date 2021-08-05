@@ -30,7 +30,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstUnityPackageManifestModel();
+            TstChangeVersionInUnityPackageManifestModel();
+            //TstUnityPackageManifestModel();
             //TstGetCurrrentBranch();
             //TstDeployedItemsFactory();
             //TstAddReleaseNote();
@@ -57,38 +58,17 @@ namespace TestSandBox
             //TstReadXMLDoc();
         }
 
+        private static void TstChangeVersionInUnityPackageManifestModel()
+        {
+
+        }
+
         private static void TstUnityPackageManifestModel()
         {
             _logger.Info("Begin");
 
-            var settings = new JsonSerializerSettings();
-
-            settings.NullValueHandling = NullValueHandling.Ignore;
-            settings.DefaultValueHandling = DefaultValueHandling.Ignore;
-
-            var manifest = new UnityPackageManifestModel
-            {
-                name = "com.unity.example",
-                version = "1.2.3",
-                displayName = "Package Example",
-                description = "This is an example package",
-                unity = "2019.1",
-                documentationUrl = "https://example.com/",
-                changelogUrl = "https://example.com/changelog.html",
-                licensesUrl = "https://example.com/licensing.html",
-                dependencies = new Dictionary<string, string>() { { "com.unity.some-package", "1.0.0" }, { "com.unity.other-package", "2.0.0" } },
-                keywords = new List<string>() { "keyword1", "keyword2", "keyword3" },
-                author = new AuthorOfUnityPackageManifestModel()
-                {
-                    name = "Unity",
-                    email = "unity@example.com",
-                    url = "https://www.unity3d.com"
-                }
-            };
-
-            _logger.Info($"manifest = {JsonConvert.SerializeObject(manifest, Formatting.Indented, settings)}");
-
-            _logger.Info($"manifest = {manifest}");
+            UnityPackageManifestModelHelper.SaveExampleFile("package_full_example.json");
+            UnityPackageManifestModelHelper.SaveExampleFileOnlyWithRequiredAndMandatoryProperties("package_OnlyWithRequiredAndMandatoryProperties.json");
 
             _logger.Info("End");
         }
