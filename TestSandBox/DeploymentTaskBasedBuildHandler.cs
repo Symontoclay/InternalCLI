@@ -23,6 +23,7 @@ using Deployment.Tasks.VersionTasks.UpdateCopyrightInFileHeadersInCSProjectOrSol
 using Deployment.Tasks.VersionTasks.UpdateCopyrightInFileHeadersInFolder;
 using Deployment.Tasks.VersionTasks.UpdateSolutionCopyright;
 using Deployment.Tasks.VersionTasks.UpdateSolutionVersion;
+using Deployment.Tasks.VersionTasks.UpdateUnityPackageVersion;
 using NLog;
 using SiteBuilder;
 using System;
@@ -42,7 +43,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case13();
+            Case14();
+            //Case13();
             //Case12();
             //Case11();
             //Case10();
@@ -59,6 +61,23 @@ namespace TestSandBox
             //_logger.Info($" = {}");
 
             _logger.Info("End");
+        }
+
+        private void Case14()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            var version = "0.3.2";
+
+            deploymentPipeline.Add(new UpdateUnityPackageVersionTask(new UpdateUnityPackageVersionTaskOptions() 
+            { 
+                PackageSourcePath = Directory.GetCurrentDirectory(),
+                Version = version
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case13()

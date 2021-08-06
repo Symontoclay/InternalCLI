@@ -30,7 +30,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstChangeVersionInUnityPackageManifestModel();
+            TstCreateMyUnityPackageManifest();
+            //TstChangeVersionInUnityPackageManifestModel();
             //TstUnityPackageManifestModel();
             //TstGetCurrrentBranch();
             //TstDeployedItemsFactory();
@@ -58,9 +59,63 @@ namespace TestSandBox
             //TstReadXMLDoc();
         }
 
+        private static void TstCreateMyUnityPackageManifest()
+        {
+            _logger.Info("Begin");
+
+            var manifest = new UnityPackageManifestModel
+            {
+                name = "symontoclay",
+                version = "0.3.2",
+                displayName = "SymOntoClay",
+                description = "SymOntoClay is a hybrid language with logic programming and fuzzy logic for defining game characters behavior",
+                unity = "2020.2",
+                unityRelease = "3f1",
+                documentationUrl = "https://symontoclay.github.io/docs/index.html",
+                changelogUrl = "https://symontoclay.github.io/downloads/index.html",
+                licensesUrl = "https://github.com/Symontoclay/SymOntoClayAsset/blob/master/LICENSE",
+                keywords = new List<string>() { "AI" },
+                author = new AuthorOfUnityPackageManifestModel()
+                {
+                    name = "Sergiy Tolkachov AKA metatypeman",
+                    url = "https://symontoclay.github.io"
+                }
+            };
+
+            var jsonSerializerSettings = new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            };
+
+            _logger.Info($"releaseNotesList = {JsonConvert.SerializeObject(manifest, Formatting.Indented, jsonSerializerSettings)}");
+
+            UnityPackageManifestModelHelper.SaveCompactFile("package.json", manifest);
+
+            _logger.Info("End");
+        }
+
         private static void TstChangeVersionInUnityPackageManifestModel()
         {
+            _logger.Info("Begin");
 
+            var manifest = UnityPackageManifestModelHelper.Read("package_OnlyWithRequiredAndMandatoryProperties.json");
+
+            _logger.Info($"manifest = {manifest}");
+
+            var oldVersion = manifest.version;
+
+            _logger.Info($"oldVersion = {oldVersion}");
+
+            manifest.version = "3.1.0";
+
+            UnityPackageManifestModelHelper.SaveCompactFile("package_OnlyWithRequiredAndMandatoryProperties_1.json", manifest);
+
+            var newManifets = UnityPackageManifestModelHelper.Read("package_OnlyWithRequiredAndMandatoryProperties_1.json");
+
+            _logger.Info($"newManifets = {newManifets}");
+
+            _logger.Info("End");
         }
 
         private static void TstUnityPackageManifestModel()

@@ -15,6 +15,7 @@ namespace Deployment.Helpers
         public string displayName { get; set; }
         public string description { get; set; }
         public string unity { get; set; }
+        public string unityRelease { get; set; }
         public string documentationUrl { get; set; }
         public string changelogUrl { get; set; }
         public string licensesUrl { get; set; }
@@ -45,6 +46,7 @@ namespace Deployment.Helpers
             sb.AppendLine($"{spaces}{nameof(displayName)} = {displayName}");
             sb.AppendLine($"{spaces}{nameof(description)} = {description}");
             sb.AppendLine($"{spaces}{nameof(unity)} = {unity}");
+            sb.AppendLine($"{spaces}{nameof(unityRelease)} = {unityRelease}");
             sb.AppendLine($"{spaces}{nameof(documentationUrl)} = {documentationUrl}");
             sb.AppendLine($"{spaces}{nameof(changelogUrl)} = {changelogUrl}");
             sb.AppendLine($"{spaces}{nameof(licensesUrl)} = {licensesUrl}");

@@ -24,6 +24,7 @@ namespace Deployment.Tasks.VersionTasks.UpdateSolutionVersion
         {
             ValidateOptionsAsNonNull(_options);
             ValidateFileName(nameof(_options.SolutionFilePath), _options.SolutionFilePath);
+            ValidateStringValueAsNonNullOrEmpty(nameof(_options.Version), _options.Version);
         }
 
         /// <inheritdoc/>
@@ -50,8 +51,7 @@ namespace Deployment.Tasks.VersionTasks.UpdateSolutionVersion
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}Updates version in solution '{_options.SolutionFilePath}'.");
-            sb.AppendLine($"{spaces}The version:");
-            sb.AppendLine(_options.Version);
+            sb.AppendLine($"{spaces}The version: {_options.Version}");
             sb.Append(PrintValidation(n));
 
             return sb.ToString();
