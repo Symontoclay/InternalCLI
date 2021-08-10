@@ -1,9 +1,11 @@
-﻿using CommonUtils;
+﻿using CollectionsHelpers.CollectionsHelpers;
+using CommonUtils;
 using CommonUtils.DebugHelpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace SiteBuilder.SiteData
@@ -21,6 +23,7 @@ namespace SiteBuilder.SiteData
         public string BaseReleaseNotesPath { get; set; } = string.Empty;
         public string CSharpUserApiJsonPath { get; set; } = string.Empty;
         public string DestCSharpUserApiPath { get; set; } = string.Empty;
+        public List<string> IgnoredDirs { get; set; }
 
         private void Init()
         {
@@ -42,6 +45,11 @@ namespace SiteBuilder.SiteData
             if (!string.IsNullOrWhiteSpace(CSharpUserApiJsonPath))
             {
                 CSharpUserApiJsonPath = EVPath.Normalize(CSharpUserApiJsonPath);
+            }
+
+            if(!IgnoredDirs.IsNullOrEmpty())
+            {
+                IgnoredDirs = IgnoredDirs.Select(p => EVPath.Normalize(p)).ToList();
             }
 
             //if(!string.IsNullOrWhiteSpace(DestCSharpUserApiPath))
@@ -79,6 +87,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(BaseReleaseNotesPath)} = {BaseReleaseNotesPath}");
             sb.AppendLine($"{spaces}{nameof(CSharpUserApiJsonPath)} = {CSharpUserApiJsonPath}");
             sb.AppendLine($"{spaces}{nameof(DestCSharpUserApiPath)} = {DestCSharpUserApiPath}");
+            sb.PrintPODList(n, nameof(IgnoredDirs), IgnoredDirs);
 
             return sb.ToString();
         }

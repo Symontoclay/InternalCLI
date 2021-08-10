@@ -324,7 +324,7 @@ namespace SiteBuilder
             {
                 var tmpDirInfo = new DirectoryInfo(subDir);
 
-                if (tmpDirInfo.Name == GeneralSiteBuilderSettings.IgnoreDestDir)
+                if (tmpDirInfo.Name == GeneralSiteBuilderSettings.IgnoreSourceDir)
                 {
                     continue;
                 }

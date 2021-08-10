@@ -1,4 +1,5 @@
-﻿using CommonUtils;
+﻿using CollectionsHelpers.CollectionsHelpers;
+using CommonUtils;
 using CommonUtils.DebugHelpers;
 using Newtonsoft.Json;
 using NLog;
@@ -113,7 +114,7 @@ namespace SiteBuilder
 #endif
         }
 
-        public const string IgnoreDestDir = "siteSource";
+        public const string IgnoreSourceDir = "siteSource";
 
         public const string IgnoreGitDir = ".git";
         public const string VSDir = ".vs";
@@ -152,6 +153,11 @@ namespace SiteBuilder
 #if DEBUG
             //_logger.Info($"SiteSettings = {SiteSettings}");
 #endif
+
+            if(!SiteSettings.IgnoredDirs.IsNullOrEmpty())
+            {
+                IgnoredDirsList.AddRange(SiteSettings.IgnoredDirs);
+            }
 
             var rootSiteElement = SiteElementInfoReader.Read(SourcePath, DestPath, SiteHref, IgnoredDirsList, new List<string>() { /*".gitignore",*/ "roadMap.json", "site.site" }, this);
 

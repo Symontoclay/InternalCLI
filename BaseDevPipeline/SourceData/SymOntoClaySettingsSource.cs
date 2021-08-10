@@ -13,6 +13,8 @@ namespace BaseDevPipeline.SourceData
         public List<string> SecretsFilePaths { get; set; }
         public List<string> UnityPaths { get; set; }
         public List<string> ArtifactsForDeployment { get; set; }
+        public string RepositoryReadmeSource { get; set; }
+        public string RepositoryBadgesSource { get; set; }
         public List<SolutionSource> Solutions { get; set; }
         public List<ArtifactDest> DevArtifacts { get; set; }
         public List<LicenseSource> Licenses { get; set; }
@@ -39,6 +41,8 @@ namespace BaseDevPipeline.SourceData
             sb.PrintPODList(n, nameof(SecretsFilePaths), SecretsFilePaths);
             sb.PrintPODList(n, nameof(UnityPaths), UnityPaths);
             sb.PrintPODList(n, nameof(ArtifactsForDeployment), ArtifactsForDeployment);
+            sb.AppendLine($"{spaces}{nameof(RepositoryReadmeSource)} = {RepositoryReadmeSource}");
+            sb.AppendLine($"{spaces}{nameof(RepositoryBadgesSource)} = {RepositoryBadgesSource}");
             sb.PrintObjListProp(n, nameof(Solutions), Solutions);
             sb.PrintObjListProp(n, nameof(DevArtifacts), DevArtifacts);
             sb.PrintObjListProp(n, nameof(Licenses), Licenses);
