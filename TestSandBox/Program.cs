@@ -30,7 +30,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstCreateMyUnityPackageManifest();
+            //TstCreateMyUnityPackageManifest();
             //TstChangeVersionInUnityPackageManifestModel();
             //TstUnityPackageManifestModel();
             //TstGetCurrrentBranch();
@@ -47,7 +47,7 @@ namespace TestSandBox
             //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
-            //TstProjectsDataSource();
+            TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
@@ -543,11 +543,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            //var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
 
-            _logger.Info($"settings = {settings}");
+            //_logger.Info($"settings = {settings}");
 
-            //ProjectsDataSource.SaveExampleFile("ProjectsDataSource_1.json");
+            ProjectsDataSource.SaveExampleFile("ProjectsDataSource_1.json");
 
             _logger.Info("End");
         }
