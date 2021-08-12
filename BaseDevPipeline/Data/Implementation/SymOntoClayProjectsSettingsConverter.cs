@@ -39,6 +39,9 @@ namespace BaseDevPipeline.Data.Implementation
                 result.ArtifactsForDeployment = artifactsForDeployment.Select(p => Enum.Parse<KindOfArtifact>(p)).Distinct().ToList();
             }
 
+            result.RepositoryReadmeSource = source.RepositoryReadmeSource;
+            result.RepositoryBadgesSource = source.RepositoryBadgesSource;
+
             var licensesDict = new Dictionary<string, LicenseSettings>();
 
             FillUpLicenses(source, result, licensesDict);
@@ -213,6 +216,30 @@ namespace BaseDevPipeline.Data.Implementation
                         }
                     }
                 }
+
+                item.EnableGenerateReadme = solutionSource.EnableGenerateReadme;
+
+                if (string.IsNullOrWhiteSpace(solutionSource.BadgesSource))
+                {
+                    item.BadgesSource = PathsHelper.Normalize(result.RepositoryBadgesSource);
+                }
+                else
+                {
+                    item.BadgesSource = PathsHelper.Normalize(solutionSource.BadgesSource);
+                }
+
+                if(string.IsNullOrWhiteSpace(solutionSource.ReadmeSource))
+                {
+                    item.ReadmeSource = PathsHelper.Normalize(result.RepositoryReadmeSource);
+                }
+                else
+                {
+                    item.ReadmeSource = PathsHelper.Normalize(solutionSource.ReadmeSource);
+                }
+
+                item.IsCommonReadmeSource = solutionSource.IsCommonReadmeSource;
+                item.CommonReadmeSource = PathsHelper.Normalize(solutionSource.CommonReadmeSource);
+                item.CommonBadgesSource = PathsHelper.Normalize(solutionSource.CommonBadgesSource);
 
                 soulutions.Add(item);
             }

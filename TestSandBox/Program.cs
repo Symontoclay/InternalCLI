@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using BaseDevPipeline.SourceData;
+using CommonMark;
 using CommonUtils;
 using CommonUtils.DebugHelpers;
 using Deployment;
@@ -9,6 +10,7 @@ using Newtonsoft.Json;
 using NLog;
 using Octokit;
 using SiteBuilder;
+using SiteBuilder.HtmlPreprocessors;
 using SiteBuilder.SiteData;
 using System;
 using System.Collections;
@@ -17,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using TestSandBox.XMLDoc;
 using XMLDocReader.CSharpDoc;
 
@@ -30,6 +33,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstCreateReadme();
             //TstCreateMyUnityPackageManifest();
             //TstChangeVersionInUnityPackageManifestModel();
             //TstUnityPackageManifestModel();
@@ -47,16 +51,142 @@ namespace TestSandBox
             //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
-            TstProjectsDataSource();
+            //TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
             //TstGitTasksHandler();
-            //TstDeploymentTaskBasedBuildHandler();
+            TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstCreateReadme()
+        {
+            _logger.Info("Begin");
+
+            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+
+            _logger.Info($"siteSolution = {siteSolution}");
+
+            var siteSettings = new GeneralSiteBuilderSettings(new GeneralSiteBuilderSettingsOptions()
+            {
+                SourcePath = siteSolution.SourcePath,
+                DestPath = siteSolution.Path,
+                SiteName = siteSolution.RepositoryName,
+            });
+
+            var commonBadgesFileName = Path.Combine(Directory.GetCurrentDirectory(), "__common_BADGES.md");
+
+            _logger.Info($"commonBadgesFileName = {commonBadgesFileName}");
+
+            var commonReadmeFileName = Path.Combine(Directory.GetCurrentDirectory(), "__common_README.md");
+
+            _logger.Info($"commonReadmeFileName = {commonReadmeFileName}");
+
+            var repositorySpecificBadgesFileName = string.Empty;
+
+            _logger.Info($"repositorySpecificBadgesFileName = {repositorySpecificBadgesFileName}");
+
+            var repositorySpecificReadmeFileName = Path.Combine(Directory.GetCurrentDirectory(), "__ReadmeSource.md");
+
+            _logger.Info($"repositorySpecificReadmeFileName = {repositorySpecificReadmeFileName}");
+
+            var targetReadmeFileName = Path.Combine(Directory.GetCurrentDirectory(), "TargetReadme.md");
+
+            _logger.Info($"targetReadmeFileName = {targetReadmeFileName}");
+
+            var sb = new StringBuilder();
+
+            var wasBadges = false;
+
+            if(!string.IsNullOrWhiteSpace(commonBadgesFileName))
+            {
+                var content = File.ReadAllText(commonBadgesFileName);
+
+                _logger.Info($"content = '{content}'");
+
+                content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
+
+                _logger.Info($"content (after) = '{content}'");
+
+                if (!string.IsNullOrWhiteSpace(content))
+                {
+                    sb.Append(content);
+
+                    wasBadges = true;
+                }
+            }
+
+            if(!string.IsNullOrWhiteSpace(repositorySpecificBadgesFileName))
+            {
+                var content = File.ReadAllText(repositorySpecificBadgesFileName);
+
+                _logger.Info($"content = '{content}'");
+
+                content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
+
+                _logger.Info($"content (after) = '{content}'");
+
+                if (!string.IsNullOrWhiteSpace(content))
+                {
+                    sb.Append(content);
+
+                    wasBadges = true;
+                }
+            }
+
+            if(wasBadges)
+            {
+                sb.AppendLine();
+                sb.AppendLine();
+            }
+
+            if(!string.IsNullOrWhiteSpace(repositorySpecificReadmeFileName))
+            {
+                var content = File.ReadAllText(repositorySpecificReadmeFileName);
+
+                _logger.Info($"content = '{content}'");
+
+                content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
+
+                _logger.Info($"content (after) = '{content}'");
+
+                if (!string.IsNullOrWhiteSpace(content))
+                {
+                    sb.AppendLine(content);
+                    sb.AppendLine();
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(commonReadmeFileName))
+            {
+                var content = File.ReadAllText(commonReadmeFileName);
+
+                _logger.Info($"content = '{content}'");
+
+                content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
+
+                _logger.Info($"content (after) = '{content}'");
+
+                if (!string.IsNullOrWhiteSpace(content))
+                {
+                    sb.AppendLine(content);
+                    sb.AppendLine();
+                }
+            }
+
+            File.WriteAllText(targetReadmeFileName, sb.ToString());
+
+            _logger.Info($"sb.ToString() = '{sb}'");
+
+            var htmlContent = CommonMarkConverter.Convert(sb.ToString());
+
+            _logger.Info($"htmlContent = '{htmlContent}'");
+
+            _logger.Info("End");
         }
 
         private static void TstCreateMyUnityPackageManifest()
@@ -543,11 +673,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            //var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
 
-            //_logger.Info($"settings = {settings}");
+            _logger.Info($"settings = {settings}");
 
-            ProjectsDataSource.SaveExampleFile("ProjectsDataSource_1.json");
+            //ProjectsDataSource.SaveExampleFile("ProjectsDataSource_1.json");
 
             _logger.Info("End");
         }

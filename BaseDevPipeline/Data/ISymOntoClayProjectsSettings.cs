@@ -11,6 +11,8 @@ namespace BaseDevPipeline.Data
     {
         string BasePath { get; }
         string SecretFilePath { get; }
+        string CommonReadmeSource { get; }
+        string CommonBadgesSource { get; }
         string GetSecret(string key);
         Dictionary<string, string> GetSecrets();
         IReadOnlyList<IUtityExeInstance> UtityExeInstances { get; }

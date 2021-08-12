@@ -21,9 +21,14 @@ namespace SiteBuilder.HtmlPreprocessors
 
         public static string Run(string initialContent, bool useMarkdown, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
-            if(useMarkdown)
+            return Run(initialContent, useMarkdown? MarkdownStrategy.ConvertMarkdownToHtml : MarkdownStrategy.None, generalSiteBuilderSettings);
+        }
+
+        public static string Run(string initialContent, MarkdownStrategy markdownStrategy, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+        {
+            if (markdownStrategy == MarkdownStrategy.ConvertMarkdownToHtml)
             {
-                return CommonMarkConverter.Convert(initialContent);
+                initialContent = CommonMarkConverter.Convert(initialContent);
             }
 
             return PreprocessContent(initialContent, generalSiteBuilderSettings);

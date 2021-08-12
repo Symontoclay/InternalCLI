@@ -21,5 +21,8 @@ namespace BaseDevPipeline.Data
         string LicenseName { get; }
         ILicenseSettings License { get; }
         IReadOnlyList<KindOfArtifact> ArtifactsForDeployment { get; }
+        bool EnableGenerateReadme { get; }
+        string ReadmeSource { get; }
+        string BadgesSource { get; }
     }
 }

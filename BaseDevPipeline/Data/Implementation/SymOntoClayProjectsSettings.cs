@@ -1,4 +1,5 @@
 ﻿using CommonUtils.DebugHelpers;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,12 @@ namespace BaseDevPipeline.Data.Implementation
 {
     public class SymOntoClayProjectsSettings: ISymOntoClayProjectsSettings
     {
-        /// <inheritdoc/>
         public string BasePath { get; set; }
 
         public string SecretFilePath { get; set; }
+
+        public string CommonReadmeSource { get; set; }
+        public string CommonBadgesSource { get; set; }
 
         /// <inheritdoc/>
         public string GetSecret(string key)
@@ -52,6 +55,9 @@ namespace BaseDevPipeline.Data.Implementation
         IReadOnlyList<ILicenseSettings> ISymOntoClayProjectsSettings.Licenses => Licenses;
 
         public List<KindOfArtifact> ArtifactsForDeployment { get; set; }
+
+        public string RepositoryReadmeSource { get; set; }
+        public string RepositoryBadgesSource { get; set; }
 
         /// <inheritdoc/>
         public ISolutionSettings GetSolution(KindOfProject kind)
@@ -122,6 +128,14 @@ namespace BaseDevPipeline.Data.Implementation
             _devArtifactsDict = DevArtifacts.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<IArtifactSettings>().ToList());
 
             _licesnsesDict = Licenses.Cast<ILicenseSettings>().ToDictionary(p => p.Name, p => p);
+
+            var solutionForCommonReadme = Solutions.SingleOrDefault(p => p.IsCommonReadmeSource);
+
+            if(solutionForCommonReadme != null)
+            {
+                CommonReadmeSource = solutionForCommonReadme.CommonReadmeSource;
+                CommonBadgesSource = solutionForCommonReadme.CommonBadgesSource;
+            }
         }
 
         private Dictionary<KindOfProject, List<ISolutionSettings>> _solutionsDict;
@@ -152,6 +166,8 @@ namespace BaseDevPipeline.Data.Implementation
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(BasePath)} = {BasePath}");
+            sb.AppendLine($"{spaces}{nameof(CommonReadmeSource)} = {CommonReadmeSource}");
+            sb.AppendLine($"{spaces}{nameof(CommonBadgesSource)} = {CommonBadgesSource}");
             sb.AppendLine($"{spaces}{nameof(SecretFilePath)} = {SecretFilePath}");
             sb.PrintObjListProp(n, nameof(UtityExeInstances), UtityExeInstances);
             sb.PrintObjListProp(n, nameof(Solutions), Solutions);

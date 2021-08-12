@@ -19,8 +19,8 @@ namespace BaseDevPipeline.SourceData
         public string License { get; set; }
         public string SourcePath { get; set; }
         public bool EnableGenerateReadme { get; set; }
-        public string RepositoryReadmeSource { get; set; }
-        public string RepositoryBadgesSource { get; set; }
+        public string ReadmeSource { get; set; }
+        public string BadgesSource { get; set; }
         public bool IsCommonReadmeSource { get; set; }
         public string CommonReadmeSource { get; set; }
         public string CommonBadgesSource { get; set; }
@@ -52,8 +52,8 @@ namespace BaseDevPipeline.SourceData
             sb.AppendLine($"{spaces}{nameof(License)} = {License}");
             sb.AppendLine($"{spaces}{nameof(SourcePath)} = {SourcePath}");
             sb.AppendLine($"{spaces}{nameof(EnableGenerateReadme)} = {EnableGenerateReadme}");
-            sb.AppendLine($"{spaces}{nameof(RepositoryReadmeSource)} = {RepositoryReadmeSource}");
-            sb.AppendLine($"{spaces}{nameof(RepositoryBadgesSource)} = {RepositoryBadgesSource}");
+            sb.AppendLine($"{spaces}{nameof(ReadmeSource)} = {ReadmeSource}");
+            sb.AppendLine($"{spaces}{nameof(BadgesSource)} = {BadgesSource}");
             sb.AppendLine($"{spaces}{nameof(IsCommonReadmeSource)} = { IsCommonReadmeSource}");
             sb.AppendLine($"{spaces}{nameof(CommonReadmeSource)} = {CommonReadmeSource}");
             sb.AppendLine($"{spaces}{nameof(CommonBadgesSource)} = {CommonBadgesSource}");

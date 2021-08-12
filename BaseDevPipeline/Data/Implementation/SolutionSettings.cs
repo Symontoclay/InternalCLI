@@ -35,6 +35,13 @@ namespace BaseDevPipeline.Data.Implementation
         /// <inheritdoc/>
         IReadOnlyList<KindOfArtifact> ISolutionSettings.ArtifactsForDeployment => ArtifactsForDeployment;
 
+        public bool EnableGenerateReadme { get; set; }
+        public string ReadmeSource { get; set; }
+        public string BadgesSource { get; set; }
+        public bool IsCommonReadmeSource { get; set; }
+        public string CommonReadmeSource { get; set; }
+        public string CommonBadgesSource { get; set; }
+
         /// <inheritdoc/>
         public override string ToString()
         {
@@ -65,6 +72,9 @@ namespace BaseDevPipeline.Data.Implementation
             sb.AppendLine($"{spaces}{nameof(LicenseName)} = {LicenseName}");
             sb.PrintObjProp(n, nameof(License), License);
             sb.PrintPODList(n, nameof(ArtifactsForDeployment), ArtifactsForDeployment);
+            sb.AppendLine($"{spaces}{nameof(EnableGenerateReadme)} = {EnableGenerateReadme}");
+            sb.AppendLine($"{spaces}{nameof(ReadmeSource)} = {ReadmeSource}");
+            sb.AppendLine($"{spaces}{nameof(BadgesSource)} = {BadgesSource}");
 
             return sb.ToString();
         }

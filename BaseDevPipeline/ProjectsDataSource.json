@@ -14,7 +14,7 @@
     "CLIArch",
     "UnityPackage"
   ],
-  "RepositoryReadmeSource": "__ReadmeSource.md",
+  "RepositoryReadmeSource": "%SLN_ROOT_PATH%/__ReadmeSource.md",
   "Solutions": [
     {
       "Kind": "CoreSolution",
@@ -74,7 +74,8 @@
       "Href": "https://github.com/Symontoclay/SymOntoClayAsset",
       "Path": "%BASE_PATH%/SymOntoClayAsset",
       "License": "MIT",
-      "SourcePath": "%SLN_ROOT_PATH%/Assets/SymOntoClay"
+      "SourcePath": "%SLN_ROOT_PATH%/Assets/SymOntoClay",
+      "EnableGenerateReadme": true
     },
     {
       "Kind": "ReleaseMngrSolution",
