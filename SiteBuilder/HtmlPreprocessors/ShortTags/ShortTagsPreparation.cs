@@ -23,7 +23,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             "h6"
         };
 
-        public static string Run(string initialContent, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+        public static string Run(string initialContent, MarkdownStrategy markdownStrategy, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             var doc = new HtmlDocument();
             doc.LoadHtml(initialContent);
@@ -31,7 +31,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             var hrefsDict = new Dictionary<string, string>();
 
             DiscoverHrefNodes(doc.DocumentNode, hrefsDict);
-            DiscoverNodes(doc.DocumentNode, doc, hrefsDict, generalSiteBuilderSettings);
+            DiscoverNodes(doc.DocumentNode, doc, hrefsDict, generalSiteBuilderSettings, markdownStrategy);
 
             return doc.ToHtmlString();
         }
@@ -41,10 +41,10 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 #if DEBUG
             //if(rootNode.Name != "#document")
             //{
-            //    NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.Name = '{rootNode.Name}'");
-            //    NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
-            //    NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
-            //    NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerText = {rootNode.InnerText}");
+            //    _logger.Info($"rootNode.Name = '{rootNode.Name}'");
+            //    _logger.Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
+            //    _logger.Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
+            //    _logger.Info($"rootNode.InnerText = {rootNode.InnerText}");
             //}
 #endif
 
@@ -53,7 +53,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 var dataHref = rootNode.GetAttributeValue("data-href", string.Empty);
 
 #if DEBUG
-                //NLog.LogManager.GetCurrentClassLogger().Info($"dataHref = '{dataHref}'");
+                //_logger.Info($"dataHref = '{dataHref}'");
 #endif
 
                 if (!string.IsNullOrWhiteSpace(dataHref))
@@ -61,7 +61,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                     var title = rootNode.InnerText.Trim();
 
 #if DEBUG
-                    //NLog.LogManager.GetCurrentClassLogger().Info($"title = '{title}'");
+                    //_logger.Info($"title = '{title}'");
 #endif
 
                     hrefsDict[dataHref] = title;
@@ -74,16 +74,16 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             }
         }
 
-        private static void DiscoverNodes(HtmlNode rootNode, HtmlDocument doc, Dictionary<string, string> hrefsDict, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+        private static void DiscoverNodes(HtmlNode rootNode, HtmlDocument doc, Dictionary<string, string> hrefsDict, GeneralSiteBuilderSettings generalSiteBuilderSettings, MarkdownStrategy markdownStrategy)
         {
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.Name = '{rootNode.Name}'");
-            //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
-            //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
-            //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerText = {rootNode.InnerText}");
+            //_logger.Info($"rootNode.Name = '{rootNode.Name}'");
+            //_logger.Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
+            //_logger.Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
+            //_logger.Info($"rootNode.InnerText = {rootNode.InnerText}");
 #endif
 
-            if(rootNode.Name == "items")
+            if (rootNode.Name == "items")
             {
                 ProcessItems(rootNode, doc);
                 return;
@@ -139,6 +139,30 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 return;
             }
 
+            if(rootNode.Name == "key_features_content")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                ProcessKeyFeaturesContent(newNode, doc);
+
+                return;
+            }
+
+            if(rootNode.Name == "key_features_preview")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                ProcessKeyFeaturesPreview(newNode, doc, generalSiteBuilderSettings);
+
+                return;
+            }
+
             if (rootNode.Name == "see")
             {
                 var parentNode = rootNode.ParentNode;
@@ -146,7 +170,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 var dataHref = rootNode.GetAttributeValue("data-href", string.Empty);
 
 #if DEBUG
-                //NLog.LogManager.GetCurrentClassLogger().Info($"dataHref = '{dataHref}'");
+                //_logger.Info($"dataHref = '{dataHref}'");
 #endif
 
                 if (dataHref.Contains(".html"))
@@ -158,7 +182,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                     var title = hrefsDict[dataHref];
 
 #if DEBUG
-                    //NLog.LogManager.GetCurrentClassLogger().Info($"title = '{title}'");
+                    //_logger.Info($"title = '{title}'");
 #endif
 
                     if (!dataHref.StartsWith("#"))
@@ -212,7 +236,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                     targetValue = rootNode.GetAttributeValue("t", string.Empty);
                 }
 #if DEBUG
-                //NLog.LogManager.GetCurrentClassLogger().Info($"targetValue = '{targetValue}'");
+                //_logger.Info($"targetValue = '{targetValue}'");
 #endif
                 switch (targetValue)
                 {
@@ -287,12 +311,28 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 return;
             }
 
+            if(rootNode.Name == "gist")
+            {
+#if DEBUG
+                //_logger.Info($"rootNode.InnerHtml = '{rootNode.InnerHtml}'");
+#endif
+
+                var parentNode = rootNode.ParentNode;
+
+                var node = doc.CreateElement("b");
+                parentNode.ReplaceChild(node, rootNode);
+
+                node.InnerHtml = rootNode.InnerHtml;
+
+                return;
+            }
+
             if (mTargetTags.Contains(rootNode.Name))
             {
                 var dataHrefValue = rootNode.GetAttributeValue("data-href", string.Empty);
 
 #if DEBUG
-                //NLog.LogManager.GetCurrentClassLogger().Info($"dataHrefValue = '{dataHrefValue}'");
+                //_logger.Info($"dataHrefValue = '{dataHrefValue}'");
 #endif
                 if (!string.IsNullOrWhiteSpace(dataHrefValue))
                 {
@@ -311,8 +351,8 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                     }
 
 #if DEBUG
-                    //NLog.LogManager.GetCurrentClassLogger().Info($"href = '{href}'");
-                    //NLog.LogManager.GetCurrentClassLogger().Info($"name = '{name}'");
+                    //_logger.Info($"href = '{href}'");
+                    //_logger.Info($"name = '{name}'");
 #endif
                     var hrefNode = doc.CreateElement("a");
                     rootNode.ChildNodes.Add(hrefNode);
@@ -328,7 +368,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             foreach (var node in rootNode.ChildNodes.ToList())
             {
-                DiscoverNodes(node, doc, hrefsDict, generalSiteBuilderSettings);
+                DiscoverNodes(node, doc, hrefsDict, generalSiteBuilderSettings, markdownStrategy);
             }
         }
         
@@ -356,27 +396,27 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             var targetColsCount = rootNode.GetAttributeValue("cols", 0);
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"targetColsCount = '{targetColsCount}'");
+            //_logger.Info($"targetColsCount = '{targetColsCount}'");
 #endif
 
             var tdWidth = 100 / targetColsCount;
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"tdWidth = {tdWidth}");
+            //_logger.Info($"tdWidth = {tdWidth}");
 #endif
 
             var list = rootNode.ChildNodes.Where(p => p.Name == "item").Select(p => p.GetAttributeValue("value", string.Empty)).Where(p => !string.IsNullOrWhiteSpace(p)).Distinct().OrderBy(p => p).ToList();
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"list = {JsonConvert.SerializeObject(list, Formatting.Indented)}");
+            //_logger.Info($"list = {JsonConvert.SerializeObject(list, Formatting.Indented)}");
 #endif
 
             var countInCol = list.Count / targetColsCount;
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"list.Count = {list.Count}");
-            //NLog.LogManager.GetCurrentClassLogger().Info($"countInCol = {countInCol}");
-            //NLog.LogManager.GetCurrentClassLogger().Info($"list.Count % targetColsCount = {list.Count % targetColsCount}");
+            //_logger.Info($"list.Count = {list.Count}");
+            //_logger.Info($"countInCol = {countInCol}");
+            //_logger.Info($"list.Count % targetColsCount = {list.Count % targetColsCount}");
 #endif
             if ((list.Count % targetColsCount) > 0)
             {
@@ -384,14 +424,14 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             }
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"countInCol (2) = {countInCol}");
+            //_logger.Info($"countInCol (2) = {countInCol}");
 #endif
             var counter = countInCol;
 
             var groupedDict = list.GroupBy(p => counter++ / countInCol).ToDictionary(p => p.Key, p => p.ToList());
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"groupedDict = {JsonConvert.SerializeObject(groupedDict, Newtonsoft.Json.Formatting.Indented)}");
+            //_logger.Info($"groupedDict = {JsonConvert.SerializeObject(groupedDict, Newtonsoft.Json.Formatting.Indented)}");
 #endif
             var parentNode = rootNode.ParentNode;
             var tableNode = doc.CreateElement("table");
@@ -405,7 +445,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             for (var i = 0; i < countInCol; i++)
             {
 #if DEBUG
-                //NLog.LogManager.GetCurrentClassLogger().Info($"i = {i}");
+                //_logger.Info($"i = {i}");
 #endif
 
                 var trNode = doc.CreateElement("tr");
@@ -418,13 +458,13 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                     tdNode.SetAttributeValue("style", $"width: {tdWidth}%;");
 
 #if DEBUG
-                    //NLog.LogManager.GetCurrentClassLogger().Info($"groupedItem.Value.Count = {groupedItem.Value.Count}");
+                    //_logger.Info($"groupedItem.Value.Count = {groupedItem.Value.Count}");
 #endif
                     if (groupedItem.Value.Count > i)
                     {
                         var val = groupedItem.Value[i];
 #if DEBUG
-                        //NLog.LogManager.GetCurrentClassLogger().Info($"val = {val}");
+                        //_logger.Info($"val = {val}");
 #endif
 
                         var spanNode = doc.CreateElement("span");
@@ -448,6 +488,102 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             sb.AppendLine("</p>");
 
             rootNode.InnerHtml = sb.ToString();
+        }
+
+        private static void ProcessKeyFeaturesContent(HtmlNode rootNode, HtmlDocument doc)
+        {
+            rootNode.InnerHtml = GetKeyFeaturesContent();
+        }
+
+        private static void ProcessKeyFeaturesPreview(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("<ul>");
+
+            var keyFeatureNames = GetKeyFeatureNames();
+
+            foreach(var featureName in keyFeatureNames)
+            {
+                sb.AppendLine("<li>");
+                sb.AppendLine($"<b>{featureName}</b>");
+                sb.AppendLine("</li>");
+            }
+
+
+            sb.AppendLine("</ul>");
+
+            sb.AppendLine("<p>");
+            sb.AppendLine($"Learn key features in details <a href='{generalSiteBuilderSettings.SiteSettings.DestKeyFeaturesPath}'>here</a>.");
+            sb.AppendLine("</p>");
+
+            rootNode.InnerHtml = sb.ToString();
+        }
+
+        private static List<string> GetKeyFeatureNames()
+        {
+            return ExtractGistsContent(GetKeyFeaturesContent());
+        }
+
+        private static string GetKeyFeaturesContent()
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("<ul>");
+
+            sb.AppendLine("<li>");
+            sb.AppendLine("<gist>Feature 1</gist>");
+            sb.AppendLine("<p>");
+            sb.AppendLine("Explanation of feature 1");
+            sb.AppendLine("</p>");
+            sb.AppendLine("</li>");
+
+            sb.AppendLine("<li>");
+            sb.AppendLine("<gist>Feature 2</gist>");
+            sb.AppendLine("<p>");
+            sb.AppendLine("Explanation of feature 2");
+            sb.AppendLine("</p>");
+            sb.AppendLine("</li>");
+
+            sb.AppendLine("</ul>");
+
+            return sb.ToString();
+        }
+
+        private static List<string> ExtractGistsContent(string html)
+        {
+            var doc = new HtmlDocument();
+            doc.LoadHtml(html);
+
+            var result = new List<string>();
+
+            DiscoverGistNodes(doc.DocumentNode, result);
+
+            return result;
+        }
+
+        private static void DiscoverGistNodes(HtmlNode rootNode, List<string> result)
+        {
+#if DEBUG
+            //if (rootNode.Name != "#document")
+            //{
+            //    _logger.Info($"rootNode.Name = '{rootNode.Name}'");
+            //    _logger.Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
+            //    _logger.Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
+            //    _logger.Info($"rootNode.InnerText = {rootNode.InnerText}");
+            //}
+#endif
+            
+            if(rootNode.Name == "gist")
+            {
+                result.Add(rootNode.InnerHtml);
+                return;
+            }
+
+            foreach (var node in rootNode.ChildNodes.ToList())
+            {
+                DiscoverGistNodes(node, result);
+            }
         }
     }
 }

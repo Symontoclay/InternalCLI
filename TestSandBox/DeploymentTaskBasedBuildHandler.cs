@@ -8,6 +8,7 @@ using Deployment.DevTasks.DevSiteFullBuild;
 using Deployment.Helpers;
 using Deployment.Tasks;
 using Deployment.Tasks.ArchTasks.Zip;
+using Deployment.Tasks.BuildReadme;
 using Deployment.Tasks.BuildTasks;
 using Deployment.Tasks.BuildTasks.Build;
 using Deployment.Tasks.BuildTasks.NuGetPack;
@@ -66,7 +67,46 @@ namespace TestSandBox
 
         private void Case15()
         {
+            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
 
+            _logger.Info($"siteSolution = {siteSolution}");
+
+            var commonBadgesFileName = Path.Combine(Directory.GetCurrentDirectory(), "__common_BADGES.md");
+
+            _logger.Info($"commonBadgesFileName = {commonBadgesFileName}");
+
+            var commonReadmeFileName = Path.Combine(Directory.GetCurrentDirectory(), "__common_README.md");
+
+            _logger.Info($"commonReadmeFileName = {commonReadmeFileName}");
+
+            var repositorySpecificBadgesFileName = string.Empty;
+
+            _logger.Info($"repositorySpecificBadgesFileName = {repositorySpecificBadgesFileName}");
+
+            var repositorySpecificReadmeFileName = Path.Combine(Directory.GetCurrentDirectory(), "__ReadmeSource.md");
+
+            _logger.Info($"repositorySpecificReadmeFileName = {repositorySpecificReadmeFileName}");
+
+            var targetReadmeFileName = Path.Combine(Directory.GetCurrentDirectory(), "TargetReadme.md");
+
+            _logger.Info($"targetReadmeFileName = {targetReadmeFileName}");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new BuildReadmeTask(new BuildReadmeTaskOptions() {
+                SiteSourcePath = siteSolution.SourcePath,
+                SiteDestPath = siteSolution.Path,
+                SiteName = siteSolution.RepositoryName,
+                CommonBadgesFileName = commonBadgesFileName,
+                CommonReadmeFileName = commonReadmeFileName,
+                RepositorySpecificBadgesFileName = repositorySpecificBadgesFileName,
+                RepositorySpecificReadmeFileName = repositorySpecificReadmeFileName,
+                TargetReadmeFileName = targetReadmeFileName
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case14()

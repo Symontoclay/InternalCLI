@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.Readme
+namespace Deployment.Tasks.BuildReadme
 {
-    public class ReadmeTaskOptions : IObjectToString
+    public class BuildReadmeTaskOptions : IObjectToString
     {
         public string SiteSourcePath { get; set; }
         public string SiteDestPath { get; set; }
@@ -16,7 +16,7 @@ namespace Deployment.Tasks.Readme
         public string CommonReadmeFileName { get; set; }
         public string RepositorySpecificBadgesFileName { get; set; }
         public string RepositorySpecificReadmeFileName { get; set; }
-        public string RargetReadmeFileName { get; set; }
+        public string TargetReadmeFileName { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -43,7 +43,7 @@ namespace Deployment.Tasks.Readme
             sb.AppendLine($"{spaces}{nameof(CommonReadmeFileName)} = {CommonReadmeFileName}");
             sb.AppendLine($"{spaces}{nameof(RepositorySpecificBadgesFileName)} = {RepositorySpecificBadgesFileName}");
             sb.AppendLine($"{spaces}{nameof(RepositorySpecificReadmeFileName)} = {RepositorySpecificReadmeFileName}");
-            sb.AppendLine($"{spaces}{nameof(RargetReadmeFileName)} = {RargetReadmeFileName}");
+            sb.AppendLine($"{spaces}{nameof(TargetReadmeFileName)} = {TargetReadmeFileName}");
 
             return sb.ToString();
         }

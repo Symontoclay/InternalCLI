@@ -23,6 +23,7 @@ namespace SiteBuilder.SiteData
         public string BaseReleaseNotesPath { get; set; } = string.Empty;
         public string CSharpUserApiJsonPath { get; set; } = string.Empty;
         public string DestCSharpUserApiPath { get; set; } = string.Empty;
+        public string DestKeyFeaturesPath { get; set; } = string.Empty;
         public List<string> IgnoredDirs { get; set; }
 
         private void Init()
@@ -69,7 +70,7 @@ namespace SiteBuilder.SiteData
         {
             return this.GetDefaultToStringInformation(n);
         }
-
+        
         /// <inheritdoc/>
         string IObjectToString.PropertiesToString(uint n)
         {
@@ -87,6 +88,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(BaseReleaseNotesPath)} = {BaseReleaseNotesPath}");
             sb.AppendLine($"{spaces}{nameof(CSharpUserApiJsonPath)} = {CSharpUserApiJsonPath}");
             sb.AppendLine($"{spaces}{nameof(DestCSharpUserApiPath)} = {DestCSharpUserApiPath}");
+            sb.AppendLine($"{spaces}{nameof(DestKeyFeaturesPath)} = {DestKeyFeaturesPath}");
             sb.PrintPODList(n, nameof(IgnoredDirs), IgnoredDirs);
 
             return sb.ToString();

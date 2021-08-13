@@ -31,10 +31,31 @@ namespace SiteBuilder.HtmlPreprocessors
                 initialContent = CommonMarkConverter.Convert(initialContent);
             }
 
-            return PreprocessContent(initialContent, generalSiteBuilderSettings);
+            var newContent = string.Empty;
+            var oldContent = initialContent;
+
+            var n = 0;
+
+            while ((newContent = PreprocessContent(oldContent, markdownStrategy, generalSiteBuilderSettings)) != oldContent)
+            {
+#if DEBUG
+                //_logger.Info($"oldContent = '{oldContent}'");
+                //_logger.Info($"newContent = '{newContent}'");
+                //_logger.Info($"oldContent == newContent = {oldContent == newContent}");
+#endif
+
+                oldContent = newContent;
+
+                if (n > 100)
+                {
+                    throw new NotSupportedException($"Too much iterations!!!");
+                }
+            }
+
+            return newContent;
         }
 
-        private static string PreprocessContent(string initialContent, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+        private static string PreprocessContent(string initialContent, MarkdownStrategy markdownStrategy, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             var content = EBNFPreparation.Run(initialContent);
 
@@ -42,7 +63,7 @@ namespace SiteBuilder.HtmlPreprocessors
             //_logger.Info($"content (1) = {content}");
 #endif
 
-            content = ShortTagsPreparation.Run(content, generalSiteBuilderSettings);
+            content = ShortTagsPreparation.Run(content, markdownStrategy, generalSiteBuilderSettings);
 
 #if DEBUG
             //_logger.Info($"content (2) = {content}");

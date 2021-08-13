@@ -154,6 +154,15 @@ namespace SiteBuilder
             //_logger.Info($"SiteSettings = {SiteSettings}");
 #endif
 
+            if(SiteSettings.DestKeyFeaturesPath.StartsWith("/"))
+            {
+                SiteSettings.DestKeyFeaturesPath = $"{SiteHref}{SiteSettings.DestKeyFeaturesPath}";
+            }
+            else
+            {
+                SiteSettings.DestKeyFeaturesPath = $"{SiteHref}/{SiteSettings.DestKeyFeaturesPath}";
+            }
+
             if(!SiteSettings.IgnoredDirs.IsNullOrEmpty())
             {
                 IgnoredDirsList.AddRange(SiteSettings.IgnoredDirs);
