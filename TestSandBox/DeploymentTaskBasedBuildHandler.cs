@@ -3,6 +3,8 @@ using CommonUtils;
 using CommonUtils.DebugHelpers;
 using Deployment;
 using Deployment.DevTasks.CoreToSiteSource;
+using Deployment.DevTasks.CreateAndCommitReadmes;
+using Deployment.DevTasks.CreateReadmes;
 using Deployment.DevTasks.DevSiteBuild;
 using Deployment.DevTasks.DevSiteFullBuild;
 using Deployment.Helpers;
@@ -44,7 +46,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case15();
+            Case17();
+            //Case16();
+            //Case15();
             //Case14();
             //Case13();
             //Case12();
@@ -63,6 +67,28 @@ namespace TestSandBox
             //_logger.Info($" = {}");
 
             _logger.Info("End");
+        }
+
+        private void Case17()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new CreateAndCommitReadmesDevTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+        }
+
+        private void Case16()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new CreateReadmesDevTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case15()

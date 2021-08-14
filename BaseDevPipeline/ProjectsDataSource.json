@@ -66,8 +66,9 @@
       "Path": "%BASE_PATH%/symontoclay.github.io",
       "SourcePath": "%SLN_ROOT_PATH%/siteSource/",
       "IsCommonReadmeSource": true,
-      "CommonReadmeSource": "%SLN_ROOT_PATH%/siteSource/__common_README.md",
-      "CommonBadgesSource": "%SLN_ROOT_PATH%/siteSource/__common_BADGES.md"
+      "CommonReadmeSource": "%SLN_ROOT_PATH%/siteSource/CommonReadmes/__common_README.md",
+      "CommonBadgesSource": "%SLN_ROOT_PATH%/siteSource/CommonReadmes/__common_BADGES.md",
+      "ReadmeSource": "%SLN_ROOT_PATH%/siteSource/__ReadmeSource.md"
     },
     {
       "Kind": "Unity",

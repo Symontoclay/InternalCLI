@@ -33,7 +33,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstCreateReadme();
+            //TstCreateReadme();
             //TstCreateMyUnityPackageManifest();
             //TstChangeVersionInUnityPackageManifestModel();
             //TstUnityPackageManifestModel();
@@ -57,7 +57,7 @@ namespace TestSandBox
             //TstLessHandler();
             //TstRoadMap();
             //TstGitTasksHandler();
-            //TstDeploymentTaskBasedBuildHandler();
+            TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
