@@ -3,6 +3,7 @@ using CommonUtils.DebugHelpers;
 using Deployment.DevTasks.CreateReadmes;
 using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.Commit;
+using Deployment.Tasks.GitTasks.CommitAllAndPush;
 using Deployment.Tasks.GitTasks.Push;
 using System;
 using System.Collections.Generic;
@@ -42,22 +43,10 @@ namespace Deployment.DevTasks.CreateAndCommitReadmes
 
             var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
 
-            foreach (var targetSolution in targetSolutions)
-            {
-                Exec(new CommitTask(new CommitTaskOptions()
-                {
-                    RepositoryPath = targetSolution.Path,
-                    Message = _options.Message
-                }));
-            }
-
-            foreach (var targetSolution in targetSolutions)
-            {
-                Exec(new PushTask(new PushTaskOptions()
-                {
-                    RepositoryPath = targetSolution.Path
-                }));
-            }
+            Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions() { 
+                Message = _options.Message,
+                RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
+            }));
         }
 
         /// <inheritdoc/>
