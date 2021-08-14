@@ -329,6 +329,17 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if (mTargetTags.Contains(rootNode.Name))
             {
+                var isProcessedStr = rootNode.GetAttributeValue("is-processed", string.Empty);
+
+                if(string.IsNullOrWhiteSpace(isProcessedStr))
+                {
+                    rootNode.SetAttributeValue("is-processed", "true");
+                }
+                else
+                {
+                    return;
+                }
+
                 var dataHrefValue = rootNode.GetAttributeValue("data-href", string.Empty);
 
 #if DEBUG

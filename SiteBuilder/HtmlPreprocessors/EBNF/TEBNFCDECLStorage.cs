@@ -16,7 +16,9 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
             public Dictionary<string, string> Params { get; set; }
         }
 
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#if DEBUG
+        //private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
         private readonly Dictionary<string, TEBNFCDECLStorageItem> _dic = new Dictionary<string, TEBNFCDECLStorageItem>();
 
         public void RegNode(HtmlNode node)
@@ -55,12 +57,14 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
 
         public void ProcessNode(HtmlNode node, HtmlDocument doc)
         {
+#if DEBUG
             //_logger.Info($"ProcessNode node.OuterHtml = '{node.OuterHtml}'");
-
+#endif
             var name = node.GetAttributeValue("name", string.Empty);
 
+#if DEBUG
             //_logger.Info($"ProcessNode name = '{name}'");
-
+#endif
             if (!_dic.ContainsKey(name))
             {
                 throw new NotSupportedException($"Template `{name}` is not supported.");

@@ -23,6 +23,7 @@ namespace BaseDevPipeline.Data
 
         ISolutionSettings GetSolution(KindOfProject kind);
         IReadOnlyList<ISolutionSettings> GetSolutions(KindOfProject kind);
+        //IReadOnlyList<ISolutionSettings> GetSolutionsWithMaintainedReleases(KindOfProject kind);
 
         IProjectSettings GetProject(KindOfProject kind);
         IReadOnlyList<IProjectSettings> GetProjects(KindOfProject kind);

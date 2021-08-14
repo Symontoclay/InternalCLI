@@ -16,7 +16,7 @@ namespace SiteBuilder.HtmlPreprocessors
     public static class ContentPreprocessor
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static string Run(string initialContent, bool useMarkdown, GeneralSiteBuilderSettings generalSiteBuilderSettings)
@@ -41,10 +41,15 @@ namespace SiteBuilder.HtmlPreprocessors
 #if DEBUG
                 //_logger.Info($"oldContent = '{oldContent}'");
                 //_logger.Info($"newContent = '{newContent}'");
+                //_logger.Info($"n = {n}");
+                //_logger.Info($"oldContent.Length = {oldContent.Length}");
+                //_logger.Info($"newContent.Length = {newContent.Length}");
                 //_logger.Info($"oldContent == newContent = {oldContent == newContent}");
 #endif
 
                 oldContent = newContent;
+
+                n++;
 
                 if (n > 100)
                 {
