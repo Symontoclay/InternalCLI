@@ -15,10 +15,12 @@ using SiteBuilder.SiteData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Text;
 using TestSandBox.XMLDoc;
 using XMLDocReader.CSharpDoc;
@@ -33,6 +35,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstParallelTesting();
             //TstCreateReadme();
             //TstCreateMyUnityPackageManifest();
             //TstChangeVersionInUnityPackageManifestModel();
@@ -57,10 +60,51 @@ namespace TestSandBox
             //TstLessHandler();
             //TstRoadMap();
             //TstGitTasksHandler();
-            TstDeploymentTaskBasedBuildHandler();
+            //TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        [DebuggerHidden]
+        private static void TstParallelTesting()
+        {
+            _logger.Info("Begin");
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            var testAssemblyFileName = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClay\TestSandbox\bin\Debug\net5.0\SymOntoClay.UnityAsset.Core.Tests.dll");
+
+            _logger.Info($"testAssemblyFileName = {testAssemblyFileName}");
+
+            var targetAssembly = Assembly.LoadFrom(testAssemblyFileName);
+
+            foreach (var type in targetAssembly.GetTypes().Where(p => p.GetMethods().Any(p => p.CustomAttributes.Any(x => x.AttributeType.FullName == "NUnit.Framework.TestAttribute"))))
+            {
+                _logger.Info($"type.FullName = {type.FullName}");
+
+                foreach(var method in type.GetMethods().Where(p => p.CustomAttributes.Any(x => x.AttributeType.FullName == "NUnit.Framework.TestAttribute")))
+                {
+                    _logger.Info($"method.Name = {method.Name}");
+
+                    try
+                    {
+                        var obj = targetAssembly.CreateInstance(type.FullName);
+
+                        method.Invoke(obj, new List<object>().ToArray());
+                    }catch(Exception e)
+                    {
+                        _logger.Info($"e = {e}");
+                    }
+                }
+            }
+
+            stopWatch.Stop();
+
+            _logger.Info($"stopWatch.Elapsed = {stopWatch.Elapsed}");
+
+            _logger.Info("End");
         }
 
         private static void TstCreateReadme()
