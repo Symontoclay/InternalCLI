@@ -24,6 +24,7 @@ namespace BaseDevPipeline.Data
         ISolutionSettings GetSolution(KindOfProject kind);
         IReadOnlyList<ISolutionSettings> GetSolutions(KindOfProject kind);
         IReadOnlyList<ISolutionSettings> GetSolutionsWithMaintainedReleases();
+        IReadOnlyList<ISolutionSettings> GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
         IProjectSettings GetProject(KindOfProject kind);
         IReadOnlyList<IProjectSettings> GetProjects(KindOfProject kind);
