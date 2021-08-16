@@ -13,6 +13,7 @@ namespace BaseDevPipeline.Data
         string SecretFilePath { get; }
         string CommonReadmeSource { get; }
         string CommonBadgesSource { get; }
+        string Copyright { get; }
         string GetSecret(string key);
         Dictionary<string, string> GetSecrets();
         IReadOnlyList<IUtityExeInstance> UtityExeInstances { get; }

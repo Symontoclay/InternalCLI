@@ -100,5 +100,6 @@
       "Name": "MIT",
       "FileName": "%APPDIR%/MITLicense.txt"
     }
-  ]
+  ],
+  "Copyright": "Copyright (c) 2020 - 2021 Sergiy Tolkachov aka metatypeman"
 }

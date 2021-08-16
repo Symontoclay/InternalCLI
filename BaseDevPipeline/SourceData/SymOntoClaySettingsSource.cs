@@ -18,6 +18,7 @@ namespace BaseDevPipeline.SourceData
         public List<SolutionSource> Solutions { get; set; }
         public List<ArtifactDest> DevArtifacts { get; set; }
         public List<LicenseSource> Licenses { get; set; }
+        public string Copyright { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -46,6 +47,7 @@ namespace BaseDevPipeline.SourceData
             sb.PrintObjListProp(n, nameof(Solutions), Solutions);
             sb.PrintObjListProp(n, nameof(DevArtifacts), DevArtifacts);
             sb.PrintObjListProp(n, nameof(Licenses), Licenses);
+            sb.AppendLine($"{spaces}{nameof(Copyright)} = {Copyright}");
 
             return sb.ToString();
         }

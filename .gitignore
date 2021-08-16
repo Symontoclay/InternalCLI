@@ -37,3 +37,9 @@ PageCreator/obj
 /CreateAndCommitReadmes/obj
 /CreateReadmes/bin
 /CreateReadmes/obj
+/UpdateProjectsVersion/bin
+/UpdateProjectsVersion/obj
+/UpdateAndCommitProjectsVersion/bin
+/UpdateAndCommitProjectsVersion/obj
+/UpdateTestAndCommitProjectsVersion/bin
+/UpdateTestAndCommitProjectsVersion/obj

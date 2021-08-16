@@ -17,6 +17,8 @@ namespace BaseDevPipeline.Data.Implementation
         public string CommonReadmeSource { get; set; }
         public string CommonBadgesSource { get; set; }
 
+        public string Copyright { get; set; }
+
         /// <inheritdoc/>
         public string GetSecret(string key)
         {
@@ -190,6 +192,7 @@ namespace BaseDevPipeline.Data.Implementation
             sb.PrintObjListProp(n, nameof(Projects), Projects);
             sb.PrintObjListProp(n, nameof(DevArtifacts), DevArtifacts);
             sb.PrintObjListProp(n, nameof(Licenses), Licenses);
+            sb.AppendLine($"{spaces}{nameof(Copyright)} = {Copyright}");
 
             return sb.ToString();
         }

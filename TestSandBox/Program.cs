@@ -35,7 +35,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstParallelTesting();
+            //TstTesting();
             //TstCreateReadme();
             //TstCreateMyUnityPackageManifest();
             //TstChangeVersionInUnityPackageManifestModel();
@@ -54,7 +54,7 @@ namespace TestSandBox
             //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
-            //TstProjectsDataSource();
+            TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
@@ -67,7 +67,7 @@ namespace TestSandBox
         }
 
         [DebuggerHidden]
-        private static void TstParallelTesting()
+        private static void TstTesting()
         {
             _logger.Info("Begin");
 
@@ -84,7 +84,9 @@ namespace TestSandBox
             {
                 _logger.Info($"type.FullName = {type.FullName}");
 
-                foreach(var method in type.GetMethods().Where(p => p.CustomAttributes.Any(x => x.AttributeType.FullName == "NUnit.Framework.TestAttribute")))
+                var setUpMethod = type.GetMethods().SingleOrDefault(p => p.CustomAttributes.Any(x => x.AttributeType.FullName == "NUnit.Framework.SetUpAttribute"));
+
+                foreach (var method in type.GetMethods().Where(p => p.CustomAttributes.Any(x => x.AttributeType.FullName == "NUnit.Framework.TestAttribute")))
                 {
                     _logger.Info($"method.Name = {method.Name}");
 
@@ -92,6 +94,11 @@ namespace TestSandBox
                     {
                         var obj = targetAssembly.CreateInstance(type.FullName);
 
+                        if(setUpMethod != null)
+                        {
+                            setUpMethod.Invoke(obj, new List<object>().ToArray());
+                        }
+                        
                         method.Invoke(obj, new List<object>().ToArray());
                     }catch(Exception e)
                     {
