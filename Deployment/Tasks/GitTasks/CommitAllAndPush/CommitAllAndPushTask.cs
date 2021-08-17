@@ -31,9 +31,20 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
         /// <inheritdoc/>
         protected override void OnRun()
         {
+            var reposForCommit = new List<string>();
+
             foreach(var repositoryPath in _options.RepositoryPaths)
             {
-                var untrackedFilesList = GitRepositoryHelper.GetRepositoryFileInfoList(repositoryPath).Where(p => p.Status == GitRepositoryFileStatus.Untracked);
+                var filesList = GitRepositoryHelper.GetRepositoryFileInfoList(repositoryPath);
+
+                if(!filesList.Any())
+                {
+                    continue;
+                }
+
+                reposForCommit.Add(repositoryPath);
+
+                var untrackedFilesList = filesList.Where(p => p.Status == GitRepositoryFileStatus.Untracked);
 
                 foreach(var untrackedFile in untrackedFilesList)
                 {
@@ -44,7 +55,7 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
                 }
             }
 
-            foreach (var repositoryPath in _options.RepositoryPaths)
+            foreach (var repositoryPath in reposForCommit)
             {
                 Exec(new CommitTask(new CommitTaskOptions()
                 {

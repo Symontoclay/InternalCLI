@@ -39,7 +39,7 @@ namespace Deployment.Tasks.GitTasks.Push
 
             if (exitCode != 0)
             {
-                throw new Exception($"Push current branch to origin in repository at path '{_options.RepositoryPath}' has been failed! The exit code is {exitCode}.");
+                throw new Exception($"Push current branch to origin in repository at path '{_options.RepositoryPath}' has been failed! The exit code is {exitCode}. | {string.Join(' ', gitProcess.Output)} | {string.Join(' ', gitProcess.Errors)}");
             }
         }
 

@@ -38,9 +38,9 @@ namespace Deployment.Tasks.GitTasks.Commit
 
             Directory.SetCurrentDirectory(prevDir);
 
-            if (exitCode != 0)
+            if (exitCode != 0 && !gitProcess.Output.Contains("nothing to commit"))
             {
-                throw new Exception($"Commit changes to local branch in repository at path '{_options.RepositoryPath}' has been failed! The exit code is {exitCode}.");
+                throw new Exception($"Commit changes to local branch in repository at path '{_options.RepositoryPath}' has been failed! The exit code is {exitCode}. | {string.Join(' ', gitProcess.Output)} | {string.Join(' ', gitProcess.Errors)}");
             }
         }
 
