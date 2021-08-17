@@ -724,9 +724,13 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            //var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
 
-            _logger.Info($"settings = {settings}");
+            //_logger.Info($"settings = {settings}");
+
+            var unitySolution = ProjectsDataSource.GetSolution(KindOfProject.Unity);
+
+            _logger.Info($"unitySolution = {unitySolution}");
 
             //ProjectsDataSource.SaveExampleFile("ProjectsDataSource_1.json");
 
