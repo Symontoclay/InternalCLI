@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BaseDevPipeline\BaseDevPipeline.csproj" />
+    <ProjectReference Include="..\CommonUtils\CommonUtils.csproj" />
+    <ProjectReference Include="..\Deployment\Deployment.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

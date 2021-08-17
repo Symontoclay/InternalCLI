@@ -4,6 +4,7 @@ using SiteBuilder.SiteData;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace PageCreator
 {
@@ -51,7 +52,15 @@ namespace PageCreator
 
             _logger.Info($"thtmlFullFileName = {thtmlFullFileName}");
 
-            File.WriteAllText(thtmlFullFileName, string.Empty);
+            var defaultHtmlContent = new StringBuilder();
+
+            defaultHtmlContent.AppendLine("<h1 class='center-h'></h1>");
+            defaultHtmlContent.AppendLine("");
+            defaultHtmlContent.AppendLine("<ContentsPlace/>");
+            defaultHtmlContent.AppendLine("");
+            defaultHtmlContent.AppendLine("<complete_me/>");
+
+            File.WriteAllText(thtmlFullFileName, defaultHtmlContent.ToString());
 
             var lessFullFileName = Path.Combine(targetDir, $"{pageName}.less");
 
