@@ -2,6 +2,7 @@
 using CommonUtils.DebugHelpers;
 using Deployment.DevTasks.CoreToSiteSource;
 using Deployment.DevTasks.DevSiteBuild;
+using Deployment.DevTasks.UnityToSiteSource;
 using Deployment.DevTasks.UpdateReleaseNotes;
 using Deployment.Helpers;
 using Deployment.Tasks;
@@ -24,6 +25,7 @@ namespace Deployment.DevTasks.DevSiteFullBuild
 
             Exec(new UpdateReleaseNotesDevTask());
             Exec(new CoreToSiteSourceDevTask());
+            Exec(new UnityToSiteSourceDevTask());
             Exec(new DevSiteBuildTask());
         }
 

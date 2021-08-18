@@ -134,12 +134,84 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
                 parentNode.ReplaceChild(newNode, rootNode);
 
-                ProcessLicenseInfo(newNode, doc);
+                newNode.InnerHtml = "<include path='CommonFragments/license.thtml'/>";
 
                 return;
             }
 
-            if(rootNode.Name == "key_features_content")
+            if(rootNode.Name == "general_description_content")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                newNode.InnerHtml = "<include path='CommonFragments/general_description_content.thtml'/>";
+
+                return;
+            }
+
+            if (rootNode.Name == "name_meaning_and_pronunciation_content")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                newNode.InnerHtml = "<include path='CommonFragments/name_meaning_and_pronunciation_content.thtml'/>";
+
+                return;
+            }
+
+            if (rootNode.Name == "aim_content")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                newNode.InnerHtml = "<include path='CommonFragments/aim_content.thtml'/>";
+
+                return;
+            }
+
+            if (rootNode.Name == "dsl_preview_content")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                newNode.InnerHtml = "<include path='CommonFragments/dsl_preview_content.thtml'/>";
+
+                return;
+            }
+
+            if (rootNode.Name == "project_status_content")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                newNode.InnerHtml = "<include path='CommonFragments/project_status_content.thtml'/>";
+
+                return;
+            }
+
+            //if(rootNode.Name == "")
+            //{
+            //    var newNode = doc.CreateElement("div");
+            //    var parentNode = rootNode.ParentNode;
+
+            //    parentNode.ReplaceChild(newNode, rootNode);
+
+            //    newNode.InnerHtml = "<include path='CommonFragments/.thtml'/>";
+
+            //    return;
+            //}
+
+            if (rootNode.Name == "key_features_content")
             {
                 var newNode = doc.CreateElement("div");
                 var parentNode = rootNode.ParentNode;
@@ -158,7 +230,43 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
                 parentNode.ReplaceChild(newNode, rootNode);
 
-                ProcessKeyFeaturesPreview(newNode, doc, generalSiteBuilderSettings);
+                ProcessKeyFeaturesPreview(newNode, doc, markdownStrategy, generalSiteBuilderSettings);
+
+                return;
+            }
+
+            if (rootNode.Name == "include")
+            {
+                var path = rootNode.GetAttributeValue("path", string.Empty);
+
+#if DEBUG
+                //_logger.Info($"path = '{path}'");
+#endif
+
+                if(string.IsNullOrWhiteSpace(path))
+                {
+                    throw new NullReferenceException("Attribute 'path' of <include/> can not be null ore empty.");
+                }
+
+                if(path.StartsWith("/") || path.StartsWith("\\") || generalSiteBuilderSettings.SourcePath.StartsWith("/") || generalSiteBuilderSettings.SourcePath.StartsWith("\\"))
+                {
+                    path = $"{generalSiteBuilderSettings.SourcePath}{path}";
+                }
+                else
+                {
+                    path = $"{generalSiteBuilderSettings.SourcePath}/{path}";
+                }
+
+#if DEBUG
+                //_logger.Info($"path (after) = '{path}'");
+#endif
+
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                newNode.InnerHtml = File.ReadAllText(path);
 
                 return;
             }
@@ -321,6 +429,8 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
                 var node = doc.CreateElement("b");
                 parentNode.ReplaceChild(node, rootNode);
+
+                node.SetAttributeValue("orig", "gist");
 
                 node.InnerHtml = rootNode.InnerHtml;
 
@@ -487,32 +597,18 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             }
         }
 
-        private static void ProcessLicenseInfo(HtmlNode rootNode, HtmlDocument doc)
-        {
-            var sb = new StringBuilder();
-
-            sb.AppendLine("<p>");
-            sb.AppendLine("SymOntoClay is released under <a href='https://github.com/Symontoclay/SymOntoClay/blob/master/LICENSE'>MIT License</a>.");
-            sb.AppendLine("</p>");
-            sb.AppendLine("<p>");
-            sb.AppendLine("Please read the license before downloading and using!");
-            sb.AppendLine("</p>");
-
-            rootNode.InnerHtml = sb.ToString();
-        }
-
         private static void ProcessKeyFeaturesContent(HtmlNode rootNode, HtmlDocument doc)
         {
             rootNode.InnerHtml = GetKeyFeaturesContent();
         }
 
-        private static void ProcessKeyFeaturesPreview(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+        private static void ProcessKeyFeaturesPreview(HtmlNode rootNode, HtmlDocument doc, MarkdownStrategy markdownStrategy, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             var sb = new StringBuilder();
 
             sb.AppendLine("<ul>");
 
-            var keyFeatureNames = GetKeyFeatureNames();
+            var keyFeatureNames = GetKeyFeatureNames(markdownStrategy, generalSiteBuilderSettings);
 
             foreach(var featureName in keyFeatureNames)
             {
@@ -520,7 +616,6 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 sb.AppendLine($"<b>{featureName}</b>");
                 sb.AppendLine("</li>");
             }
-
 
             sb.AppendLine("</ul>");
 
@@ -531,38 +626,28 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             rootNode.InnerHtml = sb.ToString();
         }
 
-        private static List<string> GetKeyFeatureNames()
+        private static List<string> GetKeyFeatureNames(MarkdownStrategy markdownStrategy, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
-            return ExtractGistsContent(GetKeyFeaturesContent());
+            return ExtractGistsContent(GetKeyFeaturesContent(), markdownStrategy, generalSiteBuilderSettings);
         }
 
         private static string GetKeyFeaturesContent()
         {
-            var sb = new StringBuilder();
-
-            sb.AppendLine("<ul>");
-
-            sb.AppendLine("<li>");
-            sb.AppendLine("<gist>Feature 1</gist>");
-            sb.AppendLine("<p>");
-            sb.AppendLine("Explanation of feature 1");
-            sb.AppendLine("</p>");
-            sb.AppendLine("</li>");
-
-            sb.AppendLine("<li>");
-            sb.AppendLine("<gist>Feature 2</gist>");
-            sb.AppendLine("<p>");
-            sb.AppendLine("Explanation of feature 2");
-            sb.AppendLine("</p>");
-            sb.AppendLine("</li>");
-
-            sb.AppendLine("</ul>");
-
-            return sb.ToString();
+            return "<include path='CommonFragments/key-features.thtml'/>";
         }
 
-        private static List<string> ExtractGistsContent(string html)
+        private static List<string> ExtractGistsContent(string html, MarkdownStrategy markdownStrategy, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
+#if DEBUG
+            //_logger.Info($"html = '{html}'");
+#endif
+
+            html = ContentPreprocessor.Run(html, markdownStrategy, generalSiteBuilderSettings);
+
+#if DEBUG
+            //_logger.Info($"html (after) = '{html}'");
+#endif
+
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
 
@@ -586,6 +671,12 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 #endif
             
             if(rootNode.Name == "gist")
+            {
+                result.Add(rootNode.InnerHtml);
+                return;
+            }
+
+            if(rootNode.Name == "b" && rootNode.GetAttributeValue("orig", string.Empty) == "gist")
             {
                 result.Add(rootNode.InnerHtml);
                 return;
