@@ -45,3 +45,5 @@ PageCreator/obj
 /UpdateTestAndCommitProjectsVersion/obj
 /UnityToSiteSource/obj
 /UnityToSiteSource/bin
+/PullSolutionsWithMaintainedReleases/bin
+/PullSolutionsWithMaintainedReleases/obj

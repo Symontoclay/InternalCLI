@@ -1,4 +1,6 @@
 ﻿using CommonUtils.DebugHelpers;
+using Deployment.Helpers;
+using NLog;
 using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
 using System;
@@ -12,6 +14,10 @@ namespace Deployment.Tasks.BuildReadme
 {
     public class BuildReadmeTask : BaseDeploymentTask
     {
+#if DEBUG
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
+
         public BuildReadmeTask(BuildReadmeTaskOptions options)
         {
             _options = options;
@@ -26,6 +32,7 @@ namespace Deployment.Tasks.BuildReadme
             ValidateDirectory(nameof(_options.SiteSourcePath), _options.SiteSourcePath);
             ValidateDirectory(nameof(_options.SiteDestPath), _options.SiteDestPath);
             ValidateStringValueAsNonNullOrEmpty(nameof(_options.SiteName), _options.SiteName);
+            ValidateFileName(nameof(_options.CommonReadmeFileName),_options.CommonReadmeFileName);
             ValidateFileName(nameof(_options.TargetReadmeFileName), _options.TargetReadmeFileName);
         }
 
@@ -39,71 +46,79 @@ namespace Deployment.Tasks.BuildReadme
                 SiteName = _options.SiteName,
             });
 
-            var sb = new StringBuilder();
+            var content = File.ReadAllText(_options.CommonReadmeFileName);
 
-            var wasBadges = false;
+            content = GeneralReadmeContentPreprocessor.Run(content, _options.CommonBadgesFileName, _options.RepositorySpecificBadgesFileName, _options.RepositorySpecificReadmeFileName);
 
-            if (!string.IsNullOrWhiteSpace(_options.CommonBadgesFileName))
-            {
-                var content = File.ReadAllText(_options.CommonBadgesFileName);
+            content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
 
-                content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
+            File.WriteAllText(_options.TargetReadmeFileName, content);
 
-                if (!string.IsNullOrWhiteSpace(content))
-                {
-                    sb.Append(content);
+            //var sb = new StringBuilder();
 
-                    wasBadges = true;
-                }
-            }
+            //var wasBadges = false;
 
-            if (!string.IsNullOrWhiteSpace(_options.RepositorySpecificBadgesFileName))
-            {
-                var content = File.ReadAllText(_options.RepositorySpecificBadgesFileName);
+            //if (!string.IsNullOrWhiteSpace(_options.CommonBadgesFileName))
+            //{
+            //    var content = File.ReadAllText(_options.CommonBadgesFileName);
 
-                content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
+            //    content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
 
-                if (!string.IsNullOrWhiteSpace(content))
-                {
-                    sb.Append(content);
+            //    if (!string.IsNullOrWhiteSpace(content))
+            //    {
+            //        sb.Append(content);
 
-                    wasBadges = true;
-                }
-            }
+            //        wasBadges = true;
+            //    }
+            //}
 
-            if (wasBadges)
-            {
-                sb.AppendLine();
-                sb.AppendLine();
-            }
+            //if (!string.IsNullOrWhiteSpace(_options.RepositorySpecificBadgesFileName))
+            //{
+            //    var content = File.ReadAllText(_options.RepositorySpecificBadgesFileName);
 
-            if (!string.IsNullOrWhiteSpace(_options.RepositorySpecificReadmeFileName))
-            {
-                var content = File.ReadAllText(_options.RepositorySpecificReadmeFileName);
+            //    content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
 
-                content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
+            //    if (!string.IsNullOrWhiteSpace(content))
+            //    {
+            //        sb.Append(content);
 
-                if (!string.IsNullOrWhiteSpace(content))
-                {
-                    sb.AppendLine(content);
-                    sb.AppendLine();
-                }
-            }
+            //        wasBadges = true;
+            //    }
+            //}
 
-            if (!string.IsNullOrWhiteSpace(_options.CommonReadmeFileName))
-            {
-                var content = File.ReadAllText(_options.CommonReadmeFileName);
+            //if (wasBadges)
+            //{
+            //    sb.AppendLine();
+            //    sb.AppendLine();
+            //}
 
-                content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
+            //if (!string.IsNullOrWhiteSpace(_options.RepositorySpecificReadmeFileName))
+            //{
+            //    var content = File.ReadAllText(_options.RepositorySpecificReadmeFileName);
 
-                if (!string.IsNullOrWhiteSpace(content))
-                {
-                    sb.AppendLine(content);
-                    sb.AppendLine();
-                }
-            }
+            //    content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
 
-            File.WriteAllText(_options.TargetReadmeFileName, sb.ToString());
+            //    if (!string.IsNullOrWhiteSpace(content))
+            //    {
+            //        sb.AppendLine(content);
+            //        sb.AppendLine();
+            //    }
+            //}
+
+            //if (!string.IsNullOrWhiteSpace(_options.CommonReadmeFileName))
+            //{
+            //    var content = File.ReadAllText(_options.CommonReadmeFileName);
+
+            //    content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
+
+            //    if (!string.IsNullOrWhiteSpace(content))
+            //    {
+            //        sb.AppendLine(content);
+            //        sb.AppendLine();
+            //    }
+            //}
+
+            //File.WriteAllText(_options.TargetReadmeFileName, sb.ToString());
         }
 
         /// <inheritdoc/>

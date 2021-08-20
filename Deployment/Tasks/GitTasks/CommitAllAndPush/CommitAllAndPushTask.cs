@@ -2,6 +2,7 @@
 using Deployment.Helpers;
 using Deployment.Tasks.GitTasks.Add;
 using Deployment.Tasks.GitTasks.Commit;
+using Deployment.Tasks.GitTasks.Pull;
 using Deployment.Tasks.GitTasks.Push;
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,14 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
                 {
                     RepositoryPath = repositoryPath,
                     Message = _options.Message
+                }));
+            }
+
+            foreach (var repositoryPath in _options.RepositoryPaths)
+            {
+                Exec(new PullTask(new PullTaskOptions()
+                {
+                    RepositoryPath = repositoryPath
                 }));
             }
 

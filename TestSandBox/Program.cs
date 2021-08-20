@@ -5,7 +5,9 @@ using CommonUtils;
 using CommonUtils.DebugHelpers;
 using Deployment;
 using Deployment.DevTasks.CoreToAsset;
+using Deployment.DevTasks.CreateReadmes;
 using Deployment.Helpers;
+using Deployment.Tasks;
 using Newtonsoft.Json;
 using NLog;
 using Octokit;
@@ -36,7 +38,8 @@ namespace TestSandBox
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             //TstTesting();
-            //TstCreateReadme();
+            TstCreateReadme();//<==
+            //TstInitCreateReadme();
             //TstCreateMyUnityPackageManifest();
             //TstChangeVersionInUnityPackageManifestModel();
             //TstUnityPackageManifestModel();
@@ -54,7 +57,7 @@ namespace TestSandBox
             //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
-            TstProjectsDataSource();
+            //TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
@@ -115,6 +118,43 @@ namespace TestSandBox
         }
 
         private static void TstCreateReadme()
+        {
+            _logger.Info("Begin");
+
+            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+
+            var targetSolution = targetSolutions.FirstOrDefault();
+
+            //_logger.Info($"targetSolution = {targetSolution}");
+
+            var sourceReadmePath = Path.Combine(targetSolution.Path, "README.md");
+
+            //_logger.Info($"sourceReadmePath = {sourceReadmePath}");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new CreateReadmesDevTask());
+
+            //_logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+
+            var readmeContent = File.ReadAllText(sourceReadmePath);
+
+            //_logger.Info($"readmeContent = {readmeContent}");
+
+            var htmlContent = CommonMarkConverter.Convert(readmeContent);
+
+            //_logger.Info($"htmlContent = '{htmlContent}'");
+
+            var htmlPath = Path.Combine(Directory.GetCurrentDirectory(), "README.html");
+
+            File.WriteAllText(htmlPath, htmlContent);
+
+            _logger.Info("End");
+        }
+
+        private static void TstInitCreateReadme()
         {
             _logger.Info("Begin");
 
