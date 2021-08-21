@@ -68,8 +68,8 @@ namespace Deployment.DevTasks.UnityToSiteSource
                 SourceDir = tempDir.FullName,
                 DestDir = destDir,
                 SaveSubDirs = false,
-                OnlyFileExts = new List<string>() { "dll", "xml" },
-                FileNameShouldContain = new List<string>() { "Assembly-CSharp." }
+                OnlyFileExts = new List<string>() { "dll", "xml" }//,
+                //FileNameShouldContain = new List<string>() { "Assembly-CSharp" }
             }));
 
             deploymentPipeline.Run();
