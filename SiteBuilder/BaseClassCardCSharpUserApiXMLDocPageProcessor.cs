@@ -128,7 +128,7 @@ namespace SiteBuilder
 
         protected void PrintMembersList(StringBuilder sb, IEnumerable<MemberCard> membersList)
         {
-            sb.AppendLine("<table style='font-size: 14px; margin-bottom: 20px; width=100%;'>");
+            sb.AppendLine("<table style='font-size: 14px; margin-bottom: 20px; width=100%;' class='table'>");
             foreach (var item in membersList)
             {
 #if DEBUG
