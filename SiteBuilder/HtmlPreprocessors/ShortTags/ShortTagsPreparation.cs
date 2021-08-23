@@ -437,6 +437,39 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 return;
             }
 
+            if(rootNode.Name == "cli_requirements")
+            {
+                var parentNode = rootNode.ParentNode;
+
+                var node = doc.CreateElement("ul");
+                parentNode.ReplaceChild(node, rootNode);
+
+                var sb = new StringBuilder();
+
+                sb.AppendLine($"<li>{_netVersion}</li>");
+
+                node.InnerHtml = sb.ToString();
+
+                return;
+            }
+
+            if (rootNode.Name == "unity_requirements")
+            {
+                var parentNode = rootNode.ParentNode;
+
+                var node = doc.CreateElement("ul");
+                parentNode.ReplaceChild(node, rootNode);
+
+                var sb = new StringBuilder();
+
+                sb.AppendLine($"<li>Unity {_unityVersion}</li>");
+                sb.AppendLine($"<li>{_netVersion}</li>");
+
+                node.InnerHtml = sb.ToString();
+
+                return;
+            }
+
             if (mTargetTags.Contains(rootNode.Name))
             {
                 var isProcessedStr = rootNode.GetAttributeValue("is-processed", string.Empty);
@@ -492,7 +525,10 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 DiscoverNodes(node, doc, hrefsDict, generalSiteBuilderSettings, markdownStrategy);
             }
         }
-        
+
+        private const string _netVersion = "NET 5.0";
+        private const string _unityVersion = "2020.2.3f1";
+
         private static void ProcessTypeNameHref(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             var href = rootNode.GetAttributeValue("href", string.Empty);
