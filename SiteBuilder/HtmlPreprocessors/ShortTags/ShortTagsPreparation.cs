@@ -470,6 +470,42 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 return;
             }
 
+            if (rootNode.Name == "cli_requirements_content")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                newNode.InnerHtml = "<include path='CommonFragments/cli_requirements_content.thtml'/>";
+
+                return;
+            }
+
+            if (rootNode.Name == "unity_requirements_content")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                newNode.InnerHtml = "<include path='CommonFragments/unity_requirements_content.thtml'/>";
+
+                return;
+            }
+
+            if (rootNode.Name == "requirements_content")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                newNode.InnerHtml = "<include path='CommonFragments/requirements_content.thtml'/>";
+
+                return;
+            }
+
             if (mTargetTags.Contains(rootNode.Name))
             {
                 var isProcessedStr = rootNode.GetAttributeValue("is-processed", string.Empty);
