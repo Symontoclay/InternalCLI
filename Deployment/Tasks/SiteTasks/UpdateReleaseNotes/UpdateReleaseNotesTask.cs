@@ -35,7 +35,7 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
             ValidateFileName(nameof(_options.ReleaseNotesFilePath), _options.ReleaseNotesFilePath);
             ValidateValueAsNonNull(nameof(_options.BaseHref), _options.BaseHref);
         }
-
+        
         /// <inheritdoc/>
         protected override void OnRun()
         {

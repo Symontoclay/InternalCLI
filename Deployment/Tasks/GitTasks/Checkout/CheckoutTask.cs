@@ -40,7 +40,7 @@ namespace Deployment.Tasks.GitTasks.Checkout
 
             if (exitCode != 0)
             {
-                throw new Exception($"Checkout to branch '{_options.BranchName}' in repository at path '{_options.RepositoryPath}' has been failed! The exit code is {exitCode}.");
+                throw new Exception($"Checkout to branch '{_options.BranchName}' in repository at path '{_options.RepositoryPath}' has been failed! The exit code is {exitCode}. | {string.Join(' ', gitProcess.Output)} | {string.Join(' ', gitProcess.Errors)}");
             }
         }
 

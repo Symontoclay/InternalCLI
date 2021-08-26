@@ -35,7 +35,7 @@ namespace Deployment.Helpers
 
             if (exitCode != 0)
             {
-                throw new Exception($"Getting local branch names in repository at path '{repositoryPath}' has been failed! The exit code is {exitCode}.");
+                throw new Exception($"Getting local branch names in repository at path '{repositoryPath}' has been failed! The exit code is {exitCode}. | {string.Join(' ', gitProcess.Output)} | {string.Join(' ', gitProcess.Errors)}");
             }
 
             return gitProcess.Output.ToList();

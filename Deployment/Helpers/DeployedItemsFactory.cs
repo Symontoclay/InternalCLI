@@ -15,6 +15,11 @@ namespace Deployment.Helpers
 #if DEBUG
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
+        
+        public static string GetUnityAssetName(string version)
+        {
+            return $"SymOntoClay-{version}.unitypackage";
+        }
 
         public static List<DeployedItem> Create(string version, List<KindOfArtifact> artifactsForDeployment, string baseHref, string basePath)
         {
@@ -41,7 +46,7 @@ namespace Deployment.Helpers
                                 Kind = targetArtifact
                             };
 
-                            item.FileName = $"SymOntoClay-{version}.unitypackage";
+                            item.FileName = DeployedItemsFactory.GetUnityAssetName(version);
 
                             if(!string.IsNullOrWhiteSpace(baseHref))
                             {

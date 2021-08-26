@@ -1,4 +1,6 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -33,11 +35,13 @@ namespace Deployment.Tasks.UnityTasks.ExportPackage
 
             var execPath = $"\"{_options.UnityExeFilePath.Replace("\\", "/")}\"";
 
-            var exitCode = RunProcess(execPath, commandLine);
+            var processWrapper = new ProcessSyncWrapper(execPath, commandLine);
+
+            var exitCode = processWrapper.Run();
 
             if (exitCode != 0)
             {
-                throw new Exception($"Export of {_options.SourceDir} has been failed.");
+                throw new Exception($"Export of {_options.SourceDir} has been failed. | {string.Join(' ', processWrapper.Output)} | {string.Join(' ', processWrapper.Errors)}");
             }
         }
 
