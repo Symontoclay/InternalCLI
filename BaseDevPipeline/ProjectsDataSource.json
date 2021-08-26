@@ -92,7 +92,7 @@
     },
     {
       "Kind": "UnityPackage",
-      "Path": "%USERPROFILE%/Documents/MyFirstSymOntoClayAsset_2.unitypackage"
+      "Path": "%USERPROFILE%/Documents/SymOntoClayPakageDist"
     }
   ],
   "Licenses": [

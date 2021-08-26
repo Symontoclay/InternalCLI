@@ -85,6 +85,8 @@ namespace SiteBuilder.HtmlPreprocessors.CSharpUserApiContentsGeneration
 
                         sb.AppendLine($"<div><a href='{item.Href}'>{item.Name.DisplayedName}</a></div>");
                     }
+
+                    sb.AppendLine("<div>&nbsp;</div>");
                 }
 
                 if (packageCard.ClassesList.Any())
@@ -101,6 +103,8 @@ namespace SiteBuilder.HtmlPreprocessors.CSharpUserApiContentsGeneration
 
                         sb.AppendLine($"<div><a href='{item.Href}'>{item.Name.DisplayedName}</a></div>");
                     }
+
+                    sb.AppendLine("<div>&nbsp;</div>");
                 }
 
                 if (packageCard.EnumsList.Any())
@@ -117,6 +121,8 @@ namespace SiteBuilder.HtmlPreprocessors.CSharpUserApiContentsGeneration
 
                         sb.AppendLine($"<div><a href='{item.Href}'>{item.Name.DisplayedName}</a></div>");
                     }
+
+                    sb.AppendLine("<div>&nbsp;</div>");
                 }
             }
 
