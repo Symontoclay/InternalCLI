@@ -93,6 +93,10 @@
     {
       "Kind": "UnityPackage",
       "Path": "%USERPROFILE%/Documents/SymOntoClayPakageDist"
+    },
+    {
+      "Kind": "CLIFolder",
+      "Path": "%USERPROFILE%/Documents/SymOntoClayCLIDist"
     }
   ],
   "Licenses": [
