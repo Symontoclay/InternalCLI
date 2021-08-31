@@ -411,6 +411,16 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                         }
                         break;
 
+                    case "YouTube":
+                    case "youtube":
+                        {
+                            var wikiNode = doc.CreateElement("i");
+                            parentNode.ReplaceChild(wikiNode, rootNode);
+                            wikiNode.AddClass("fab fa-youtube");
+                            wikiNode.SetAttributeValue("title", "YouTube");
+                        }
+                        break;
+
                     default:
                         rootNode.Remove();
                         break;

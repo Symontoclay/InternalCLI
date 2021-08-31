@@ -280,13 +280,16 @@ namespace SiteBuilder
 
             AppendLine("<footer class='container' role='contentinfo'>");
             AppendLine("<div class='row justify-content-center'>");
-            AppendLine("<div class='col col-md-10'>");
+            AppendLine("<div class='col col-md-10'>");//
+            AppendLine("<span style='font-size: 16px;'><a href='https://www.youtube.com/channel/UCgw9QmyKGZQXQyugbzCstZA'><i class='fab fa-youtube' title='SymOntoClay on Youtube'></i></a></span></br>");
+            AppendLine("</br>");
             AppendLine($"This page was last modified on {_siteElement.LastUpdateDate.ToString("dd MMMM yyyy", _targetCulture)}</br>");
             //Append(", at ");
             //Append(LastUpdateDate.ToString("HH:mm", tmpFormat));
 
             AppendLine($"&copy;&nbsp; <a href='https://github.com/metatypeman'>Sergiy Tolkachov AKA metatypeman</a> {GetCopyRightDate()}</br>");
             AppendLine("The text is available under the <a href='https://creativecommons.org/licenses/by-sa/3.0/'>Creative Commons Attribution-ShareAlike 3.0 Unported License By Sa</a>&nbsp;<i class='fab fa-creative-commons-by'></i><i class='fab fa-creative-commons-sa'></i>");
+            AppendLine("</br>&nbsp;");
             AppendLine("</div>");
             AppendLine("</div>");
             AppendLine("</footer>");
