@@ -30,10 +30,6 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
 
             var futureReleaseInfo = FutureReleaseInfoReader.Read();
 
-#if DEBUG
-            _logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
-#endif
-
             options.Version = futureReleaseInfo.Version;
 
             var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
@@ -50,10 +46,6 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
             }
 
             options.Repositories = repositories;
-
-#if DEBUG
-            _logger.Info($"options = {options}");
-#endif
 
             return options;
         }
