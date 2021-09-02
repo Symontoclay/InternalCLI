@@ -18,8 +18,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case2();
-            //Case1();
+            //Case2();
+            Case1();
 
             _logger.Info("End");
         }
@@ -28,7 +28,7 @@ namespace TestSandBox
         {
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new MergeReleaseBranchToMasterReleaseTask());
+            //deploymentPipeline.Add(new MergeReleaseBranchToMasterReleaseTask());
 
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");
 

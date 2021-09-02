@@ -20,10 +20,6 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
 {
     public class MergeReleaseBranchToMasterReleaseTask : BaseDeploymentTask
     {
-#if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
-
         private static MergeReleaseBranchToMasterReleaseTaskOptions CreateOptions()
         {
             var options = new MergeReleaseBranchToMasterReleaseTaskOptions();
@@ -76,25 +72,9 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
         /// <inheritdoc/>
         protected override void OnRun()
         {
-#if DEBUG
-            _logger.Info($"_options = {_options}");
-#endif
-
-#if DEBUG
-            return;//tmp
-#endif
-
             var versionBranchName = _options.Version;
 
-#if DEBUG
-            _logger.Info($"versionBranchName = {versionBranchName}");
-#endif
-
             var projectsForTesting = _options.Repositories.Where(p => !string.IsNullOrWhiteSpace(p.TestedProjPath)).Select(p => p.TestedProjPath).ToList();
-
-#if DEBUG
-            _logger.Info($"projectsForTesting = {JsonConvert.SerializeObject(projectsForTesting, Formatting.Indented)}");
-#endif
 
             if(projectsForTesting.Any())
             {
@@ -113,17 +93,9 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
 
             var masterBackupBranchName = $"master_backup_before_{_options.Version}_{DateTime.Now:yyyy_MM_dd_HH_mm}";
 
-#if DEBUG
-            _logger.Info($"masterBackupBranchName = {masterBackupBranchName}");
-#endif
-
             CreateBranch(masterBackupBranchName);
 
             var releaseBranchName = $"release_{_options.Version}_{DateTime.Now:yyyy_MM_dd_HH_mm}";
-
-#if DEBUG
-            _logger.Info($"releaseBranchName = {releaseBranchName}");
-#endif
 
             CreateBranch(releaseBranchName);
 
