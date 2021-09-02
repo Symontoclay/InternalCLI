@@ -1,0 +1,46 @@
+﻿using CommonUtils;
+using Deployment.ReleaseTasks.MergeReleaseBranchToMaster;
+using Deployment.Tasks;
+using NLog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TestSandBox
+{
+    public class ReleaseTaskHandler
+    {
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        public void Run()
+        {
+            _logger.Info("Begin");
+
+            Case1();
+
+            _logger.Info("End");
+        }
+
+        private void Case1()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new MergeReleaseBranchToMasterReleaseTask(new MergeReleaseBranchToMasterReleaseTaskOptions() { 
+                Version = "0.3.2",
+                Repositories = new List<RepositoryItem>()
+                {
+                    new RepositoryItem()
+                    {
+                        RepositoryPath = PathsHelper.Normalize("%USERPROFILE%/source/repos/b1")
+                    }
+                }
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+        }//
+    }
+}

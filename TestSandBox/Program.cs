@@ -38,7 +38,7 @@ namespace TestSandBox
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             //TstTesting();
-            TstCreateReadme();//<==
+            //TstCreateReadme();//<==
             //TstInitCreateReadme();
             //TstCreateMyUnityPackageManifest();
             //TstChangeVersionInUnityPackageManifestModel();
@@ -62,6 +62,7 @@ namespace TestSandBox
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
+            TstReleaseTaskHandler();
             //TstGitTasksHandler();
             //TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
@@ -818,6 +819,16 @@ namespace TestSandBox
             _logger.Info("Begin");
 
             var handler = new RoadMapHandler();
+            handler.Run();
+
+            _logger.Info("End");
+        }
+
+        private static void TstReleaseTaskHandler()
+        {
+            _logger.Info("Begin");
+
+            var handler = new ReleaseTaskHandler();
             handler.Run();
 
             _logger.Info("End");
