@@ -1,4 +1,6 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using BaseDevPipeline;
+using CommonUtils.DebugHelpers;
+using Deployment.Helpers;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Test;
 using Deployment.Tasks.GitTasks.Checkout;
@@ -21,6 +23,45 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
 #if DEBUG
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
+
+        private static MergeReleaseBranchToMasterReleaseTaskOptions CreateOptions()
+        {
+            var options = new MergeReleaseBranchToMasterReleaseTaskOptions();
+
+            var futureReleaseInfo = FutureReleaseInfoReader.Read();
+
+#if DEBUG
+            _logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
+#endif
+
+            options.Version = futureReleaseInfo.Version;
+
+            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+
+            var repositories = new List<RepositoryItem>();
+
+            foreach(var targetSolution in targetSolutions)
+            {
+                repositories.Add(new RepositoryItem() 
+                { 
+                    RepositoryPath = targetSolution.Path,
+                    TestedProjPath = targetSolution.Projects?.FirstOrDefault(p => p.Kind == KindOfProject.IntegrationTest)?.CsProjPath
+                });
+            }
+
+            options.Repositories = repositories;
+
+#if DEBUG
+            _logger.Info($"options = {options}");
+#endif
+
+            return options;
+        }
+
+        public MergeReleaseBranchToMasterReleaseTask()
+            : this(CreateOptions())
+        {
+        }
 
         public MergeReleaseBranchToMasterReleaseTask(MergeReleaseBranchToMasterReleaseTaskOptions options)
         {
@@ -45,6 +86,10 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
         {
 #if DEBUG
             _logger.Info($"_options = {_options}");
+#endif
+
+#if DEBUG
+            return;//tmp
 #endif
 
             var versionBranchName = _options.Version;
