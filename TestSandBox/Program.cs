@@ -37,6 +37,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            //TstRestoreSlnInUnityProject();
             //TstTesting();
             //TstCreateReadme();//<==
             //TstInitCreateReadme();
@@ -62,12 +63,50 @@ namespace TestSandBox
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
-            TstReleaseTaskHandler();
+            TstReleaseTaskHandler();//<==
             //TstGitTasksHandler();
             //TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstRestoreSlnInUnityProject()//:(
+        {
+            _logger.Info("Begin");
+
+            var unityExeInstances = ProjectsDataSource.GetSymOntoClayProjectsSettings().UtityExeInstances;
+
+            _logger.Info($"unityExeInstances = {JsonConvert.SerializeObject(unityExeInstances, Formatting.Indented)}");
+
+            var unityExeFilePath = unityExeInstances.SingleOrDefault().Path;
+
+            _logger.Info($"unityExeFilePath = {unityExeFilePath}");
+
+            var unitySolution = ProjectsDataSource.GetSolution(KindOfProject.Unity);
+
+            //_logger.Info($"unitySolution = {unitySolution}");
+
+            var unitySolutionPath = unitySolution.Path;
+
+            _logger.Info($"unitySolutionPath = {unitySolutionPath}");
+
+            var commandLine = $"-quit -projectPath \"{unitySolutionPath.Replace("\\", "/")}\"";
+            //-batchmode
+            var execPath = $"\"{unityExeFilePath.Replace("\\", "/")}\"";
+
+            _logger.Info($"commandLine = {commandLine}");
+            _logger.Info($"execPath = {execPath}");
+
+            var processWrapper = new ProcessSyncWrapper(execPath, commandLine);
+
+            var exitCode = processWrapper.Run();
+
+            _logger.Info($"processWrapper.Output = {processWrapper.Output}");
+            _logger.Info($"processWrapper.Errors = {processWrapper.Errors}");
+            _logger.Info($"exitCode = {exitCode}");
+
+            _logger.Info("End");
         }
 
         [DebuggerHidden]

@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using Deployment.DevTasks.DevFullMaintaining;
+using Deployment.DevTasks.UpdateAndCommitCopyrightInFileHeaders;
 using Deployment.ReleaseTasks.MergeReleaseBranchToMaster;
 using Deployment.Tasks;
 using NLog;
@@ -19,11 +20,23 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case3();
+            //Case4();
+            Case3();//<==
             //Case2();
             //Case1();
 
             _logger.Info("End");
+        }
+
+        private void Case4()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new UpdateAndCommitCopyrightInFileHeadersDevTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case3()

@@ -1,4 +1,5 @@
 ﻿using CollectionsHelpers.CollectionsHelpers;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -79,10 +80,15 @@ namespace Deployment.Helpers
 
                     var pureFileName = Path.Combine(fileInfo.DirectoryName, fileInfoName.Substring(0, fileInfoName.Length - fileInfo.Extension.Length)).Replace("\\", "/").Replace(_sourceDir, string.Empty).ToLower();
 
-                    var ext = fileInfo.Extension.Substring(1);
+                    var ext = string.IsNullOrWhiteSpace(fileInfo.Extension) ? string.Empty : fileInfo.Extension.Substring(1);
 
                     if (!_onlyFileExts.IsNullOrEmpty())
                     {
+                        if(string.IsNullOrWhiteSpace(ext))
+                        {
+                            continue;
+                        }
+
                         if (!_onlyFileExts.Any(p => p == ext))
                         {
                             continue;
@@ -90,7 +96,7 @@ namespace Deployment.Helpers
                     }
                     if (!_exceptFileExts.IsNullOrEmpty())
                     {
-                        if (_exceptFileExts.Any(p => p == ext))
+                        if (!string.IsNullOrWhiteSpace(ext) && _exceptFileExts.Any(p => p == ext))
                         {
                             continue;
                         }
