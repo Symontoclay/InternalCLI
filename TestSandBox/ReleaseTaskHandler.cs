@@ -1,4 +1,5 @@
 ﻿using CommonUtils;
+using Deployment.DevTasks.DevFullMaintaining;
 using Deployment.ReleaseTasks.MergeReleaseBranchToMaster;
 using Deployment.Tasks;
 using NLog;
@@ -18,10 +19,22 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            Case3();
             //Case2();
-            Case1();
+            //Case1();
 
             _logger.Info("End");
+        }
+
+        private void Case3()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new DevFullMaintainingDevTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case2()
