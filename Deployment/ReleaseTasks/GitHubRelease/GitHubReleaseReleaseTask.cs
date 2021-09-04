@@ -5,6 +5,7 @@ using Deployment.Helpers;
 using Deployment.Tasks;
 using Deployment.Tasks.ArchTasks.Zip;
 using Deployment.Tasks.BuildTasks.Publish;
+using Deployment.Tasks.GitHubTasks.GitHubRelease;
 using Deployment.Tasks.UnityTasks.ExportPackage;
 using NLog;
 using System;
@@ -17,15 +18,31 @@ using System.Threading.Tasks;
 namespace Deployment.ReleaseTasks.GitHubRelease
 {
     public class GitHubReleaseReleaseTask : BaseDeploymentTask
-    {//GitHubReleaseTask
-#if DEBUG
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
+    {
+        private static GitHubReleaseReleaseTaskOptions CreateOptions()
+        {
+            var options = new GitHubReleaseReleaseTaskOptions();
+
+            var repositories = new List<GitHubRepositoryInfo>();
+            options.Repositories = repositories;
+
+            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+
+            foreach(var targetSolution in targetSolutions)
+            {
+                var item = new GitHubRepositoryInfo();
+
+                repositories.Add(item);
+
+                item.RepositoryName = targetSolution.RepositoryName;
+                item.RepositoryOwner = targetSolution.OwnerName;
+            }
+
+            return options;
+        }
 
         public GitHubReleaseReleaseTask()
-            : this(new GitHubReleaseReleaseTaskOptions() { 
-                Repositories = ProjectsDataSource.GetSolutionsWithMaintainedReleases().Select(p => p.Path).ToList()
-            })
+            : this(CreateOptions())
         {
         }
 
@@ -42,15 +59,16 @@ namespace Deployment.ReleaseTasks.GitHubRelease
             ValidateOptionsAsNonNull(_options);
 
             ValidateList(nameof(_options.Repositories), _options.Repositories);
-            _options.Repositories.ForEach(item => ValidateFileName(nameof(item), item));
+            _options.Repositories.ForEach(item => 
+            { 
+                ValidateStringValueAsNonNullOrEmpty(nameof(item.RepositoryName), item.RepositoryName);
+                ValidateStringValueAsNonNullOrEmpty(nameof(item.RepositoryOwner), item.RepositoryOwner);
+            });
         }
 
         /// <inheritdoc/>
         protected override void OnRun()
         {
-#if DEBUG
-            _logger.Info($"_options = {_options}");
-#endif
             using var unityTempDir = new TempDirectory();
             using var cliTempDir = new TempDirectory();
             using var cliArchTempDir = new TempDirectory();
@@ -65,11 +83,9 @@ namespace Deployment.ReleaseTasks.GitHubRelease
 
             var futureReleaseInfo = FutureReleaseInfoReader.Read();
 
-#if DEBUG
-            _logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
-#endif
-
             var version = futureReleaseInfo.Version;
+
+            var notesText = futureReleaseInfo.Description;
 
             var sourceDir = unitySolution.SourcePath.Replace(unitySolution.Path, string.Empty).Trim();
 
@@ -80,15 +96,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
 
             var unityPackageName = DeployedItemsFactory.GetUnityAssetName(version);
 
-#if DEBUG
-            _logger.Info($"unityPackageName = {unityPackageName}");
-#endif
-
             var unityPackageFullPath = Path.Combine(unityTempDir.FullName, unityPackageName);
-
-#if DEBUG
-            _logger.Info($"unityPackageFullPath = {unityPackageFullPath}");
-#endif
 
             Exec(new ExportPackageTask(new ExportPackageTaskOptions()
             {
@@ -109,15 +117,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
 
             var cliArchName = DeployedItemsFactory.GetCLIArchName(version);
 
-#if DEBUG
-            _logger.Info($"cliArchName = {cliArchName}");
-#endif
-
             var cliArchFullPath = Path.Combine(cliArchTempDir.FullName, cliArchName);
-
-#if DEBUG
-            _logger.Info($"cliArchFullPath = {cliArchFullPath}");
-#endif
 
             Exec(new ZipTask(new ZipTaskOptions()
             {
@@ -125,9 +125,33 @@ namespace Deployment.ReleaseTasks.GitHubRelease
                 OutputFilePath = cliArchFullPath
             }));
 
+            var token = settings.GetSecret("GitHub");
 
-
-            throw new NotImplementedException();
+            foreach(var repository in _options.Repositories)
+            {
+                Exec(new GitHubReleaseTask(new GitHubReleaseTaskOptions() {
+                    Token = token,
+                    RepositoryOwner = repository.RepositoryOwner,
+                    RepositoryName = repository.RepositoryName,
+                    Version = version,
+                    NotesText = notesText,
+                    //Prerelease = true,
+                    //Draft = true,
+                    Assets = new List<GitHubReleaseAssetOptions>()
+                    {
+                        new GitHubReleaseAssetOptions()
+                        {
+                            DisplayedName = unityPackageName,
+                            UploadedFilePath = unityPackageFullPath
+                        },
+                        new GitHubReleaseAssetOptions()
+                        {
+                            DisplayedName = cliArchName,
+                            UploadedFilePath = cliArchFullPath
+                        }
+                    }
+                }));
+            }
         }
 
         /// <inheritdoc/>

@@ -41,7 +41,14 @@ namespace TestSandBox
             var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new GitHubReleaseReleaseTask(new GitHubReleaseReleaseTaskOptions() { 
-                 Repositories = new List<string>() { PathsHelper.Normalize(@"%USERPROFILE%/source/repos/a1") }
+                 Repositories = new List<GitHubRepositoryInfo>()
+                 {
+                     new GitHubRepositoryInfo()
+                     {
+                         RepositoryName = "a1",
+                         RepositoryOwner = "metatypeman"
+                     }
+                 }
             }));
 
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");
