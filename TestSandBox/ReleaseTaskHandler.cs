@@ -2,6 +2,7 @@
 using Deployment.DevTasks.DevFullMaintaining;
 using Deployment.DevTasks.UpdateAndCommitCopyrightInFileHeaders;
 using Deployment.Helpers;
+using Deployment.ReleaseTasks.GitHubRelease;
 using Deployment.ReleaseTasks.MarkAsCompleted;
 using Deployment.ReleaseTasks.MergeReleaseBranchToMaster;
 using Deployment.ReleaseTasks.ProdSiteBuild;
@@ -23,6 +24,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            Case8();
             //Case7();
             //Case6();
             //Case5();
@@ -32,6 +34,19 @@ namespace TestSandBox
             //Case1();
 
             _logger.Info("End");
+        }
+
+        private void Case8()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new GitHubReleaseReleaseTask(new GitHubReleaseReleaseTaskOptions() { 
+                 Repositories = new List<string>() { PathsHelper.Normalize(@"%USERPROFILE%/source/repos/a1") }
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private void Case7()

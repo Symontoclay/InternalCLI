@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace Deployment.ReleaseTasks.GitHubRelease
 {
-    public class GitHubReleaseReleaseTaskOptions : IObjectToString
+    public class GitHubRepositoryInfo : IObjectToString
     {
-        public List<GitHubRepositoryInfo> Repositories { get; set; }
+        public string RepositoryOwner { get; set; }
+        public string RepositoryName { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -29,7 +30,8 @@ namespace Deployment.ReleaseTasks.GitHubRelease
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.PrintObjListProp(n, nameof(Repositories), Repositories);
+            sb.AppendLine($"{spaces}{nameof(RepositoryOwner)} = {RepositoryOwner}");
+            sb.AppendLine($"{spaces}{nameof(RepositoryName)} = {RepositoryName}");
 
             return sb.ToString();
         }

@@ -21,6 +21,11 @@ namespace Deployment.Helpers
             return $"SymOntoClay-{version}.unitypackage";
         }
 
+        public static string GetCLIArchName(string version)
+        {
+            return $"SymOntoClay-CLI-{version}-x64.zip";
+        }
+
         public static List<DeployedItem> Create(string version, List<KindOfArtifact> artifactsForDeployment, string baseHref, string basePath)
         {
             var targetAtrifactsList = KindOfArtifactHelper.GetOrderedListForDeployment().Intersect(artifactsForDeployment);
@@ -73,7 +78,7 @@ namespace Deployment.Helpers
                                 Kind = targetArtifact
                             };
 
-                            item.FileName = $"SymOntoClay-CLI-{version}-x64.zip";
+                            item.FileName = GetCLIArchName(version);
 
                             if (!string.IsNullOrWhiteSpace(baseHref))
                             {
