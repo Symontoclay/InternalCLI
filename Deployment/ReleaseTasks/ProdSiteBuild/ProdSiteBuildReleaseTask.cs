@@ -1,5 +1,9 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using BaseDevPipeline;
+using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
+using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
+using Deployment.Tasks.SiteTasks.SiteBuild;
+using SiteBuilder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +17,18 @@ namespace Deployment.ReleaseTasks.ProdSiteBuild
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            throw new NotImplementedException();
+            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+
+            using var tempDir = new TempDirectory();
+
+            Exec(new SiteBuildTask(new SiteBuildTaskOptions()
+            {
+                KindOfTargetUrl = KindOfTargetUrl.Domain,
+                SiteName = siteSolution.RepositoryName,
+                SourcePath = siteSolution.SourcePath,
+                DestPath = siteSolution.Path,
+                TempPath = tempDir.FullName
+            }));
         }
 
         /// <inheritdoc/>

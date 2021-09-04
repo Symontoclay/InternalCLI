@@ -17,7 +17,6 @@ namespace Deployment.ReleaseTasks.DeploymentToProd
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            return;
             //Core
             Exec(new CoreToAssetDevTask());
 

@@ -1,8 +1,11 @@
 ﻿using CommonUtils.DebugHelpers;
 using Deployment.DevTasks.DevFullMaintaining;
+using Deployment.Helpers;
 using Deployment.ReleaseTasks.DeploymentToProd;
+using Deployment.ReleaseTasks.MarkAsCompleted;
 using Deployment.ReleaseTasks.MergeReleaseBranchToMaster;
 using Deployment.Tasks;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +20,17 @@ namespace Deployment.ReleaseTasks.MakeRelease
     /// </summary>
     public class MakeReleaseReleaseTask : BaseDeploymentTask
     {
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            return;
+            if(!FutureReleaseGuard.MayIMakeRelease())
+            {
+                _logger.Info("Making release is forbiden! There is not started release!");
+
+                return;
+            }
 
             Exec(new DevFullMaintainingDevTask());
 
@@ -28,14 +38,7 @@ namespace Deployment.ReleaseTasks.MakeRelease
 
             Exec(new DeploymentToProdReleaseTask());
 
-            MarkAsReleased();
-        }
-
-        private void MarkAsReleased()
-        {
-
-
-            throw new NotImplementedException();
+            Exec(new MarkAsCompletedReleaseTask());
         }
 
         /// <inheritdoc/>

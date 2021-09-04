@@ -56,6 +56,11 @@ namespace BaseDevPipeline.SourceData
                 StartDate = DateTime.Now
             };
 
+            SaveFile(fileName, futureReleaseInfo);
+        }
+
+        public static void SaveFile(string fileName, FutureReleaseInfoSource futureReleaseInfo)
+        {
             var jsonStr = JsonConvert.SerializeObject(futureReleaseInfo, Formatting.Indented);
 
             File.WriteAllText(fileName, jsonStr);

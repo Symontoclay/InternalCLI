@@ -43,5 +43,24 @@ namespace Deployment.Helpers
 
             return result;
         }
+
+        public static FutureReleaseInfoSource ReadSource()
+        {
+            return ReadSource(ProjectsDataSource.GetSolution(KindOfProject.ReleaseMngrSolution).Path);
+        }
+
+        public static FutureReleaseInfoSource ReadSource(string baseRepositoryPath)
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new PullTask(new PullTaskOptions()
+            {
+                RepositoryPath = baseRepositoryPath
+            }));
+
+            deploymentPipeline.Run();
+
+            return FutureReleaseInfoSource.ReadFile(Path.Combine(baseRepositoryPath, "FutureReleaseInfo.json"));
+        }
     }
 }

@@ -1,31 +1,27 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
-using Deployment.ReleaseTasks.ProdSiteBuild;
+using Deployment.Helpers;
 using Deployment.Tasks;
-using Deployment.Tasks.GitTasks.CommitAllAndPush;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.ReleaseTasks.ProdSiteBuildAndCommit
+namespace Deployment.ReleaseTasks.MarkAsCompleted
 {
-    public class ProdSiteBuildAndCommitReleaseTask : BaseDeploymentTask
+    public class MarkAsCompletedReleaseTask : BaseDeploymentTask
     {
-        //ProdSiteBuildReleaseTask
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new ProdSiteBuildReleaseTask());
+            var futureReleaseInfo = FutureReleaseInfoReader.ReadSource();
 
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            futureReleaseInfo.Status = FutureReleaseStatus.Completed.ToString();
+            futureReleaseInfo.FinishDate = DateTime.Now;
 
-            Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
-            {
-                Message = "Site has been updated",
-                RepositoryPaths = new List<string>() { siteSolution.Path }
-            }));
+            FutureReleaseInfoWriter.WriteSource(futureReleaseInfo);
         }
 
         /// <inheritdoc/>

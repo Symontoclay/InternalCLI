@@ -1,7 +1,10 @@
 ﻿using CommonUtils;
 using Deployment.DevTasks.DevFullMaintaining;
 using Deployment.DevTasks.UpdateAndCommitCopyrightInFileHeaders;
+using Deployment.Helpers;
+using Deployment.ReleaseTasks.MarkAsCompleted;
 using Deployment.ReleaseTasks.MergeReleaseBranchToMaster;
+using Deployment.ReleaseTasks.ProdSiteBuild;
 using Deployment.Tasks;
 using NLog;
 using System;
@@ -20,12 +23,44 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            //Case7();
+            //Case6();
+            //Case5();
             //Case4();
-            Case3();//<==
+            //Case3();//<==
             //Case2();
             //Case1();
 
             _logger.Info("End");
+        }
+
+        private void Case7()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new ProdSiteBuildReleaseTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+        }
+
+        private void Case6()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new MarkAsCompletedReleaseTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+        }
+
+        private void Case5()
+        {
+            var mayIMakeRelease = FutureReleaseGuard.MayIMakeRelease();
+
+            _logger.Info($"mayIMakeRelease = {mayIMakeRelease}");
         }
 
         private void Case4()

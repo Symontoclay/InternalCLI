@@ -1,4 +1,5 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using BaseDevPipeline;
+using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,29 @@ namespace Deployment.ReleaseTasks.GitHubRelease
 {
     public class GitHubReleaseReleaseTask : BaseDeploymentTask
     {//GitHubReleaseTask
+        public GitHubReleaseReleaseTask()
+            : this(new GitHubReleaseReleaseTaskOptions() { 
+                Repositories = ProjectsDataSource.GetSolutionsWithMaintainedReleases().Select(p => p.Path).ToList()
+            })
+        {
+        }
+
+        public GitHubReleaseReleaseTask(GitHubReleaseReleaseTaskOptions options)
+        {
+            _options = options;
+        }
+
+        private readonly GitHubReleaseReleaseTaskOptions _options;
+
+        /// <inheritdoc/>
+        protected override void OnValidateOptions()
+        {
+            ValidateOptionsAsNonNull(_options);
+
+            ValidateList(nameof(_options.Repositories), _options.Repositories);
+            _options.Repositories.ForEach(item => ValidateFileName(nameof(item), item));
+        }
+
         /// <inheritdoc/>
         protected override void OnRun()
         {

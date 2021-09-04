@@ -20,7 +20,7 @@ namespace Deployment.DevTasks.DevSiteBuild
             { 
                 SiteName = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).RepositoryName,
                 SourcePath = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).SourcePath,
-                DestPath = ProjectsDataSource.GetDevArtifact( KindOfArtifact.ProjectSite).Path
+                DestPath = ProjectsDataSource.GetDevArtifact(KindOfArtifact.ProjectSite).Path
             })
         {
         }
