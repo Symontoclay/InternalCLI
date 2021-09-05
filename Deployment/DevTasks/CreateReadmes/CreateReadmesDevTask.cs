@@ -15,7 +15,10 @@ namespace Deployment.DevTasks.CreateReadmes
 {
     public class CreateReadmesDevTask : BaseDeploymentTask
     {
-        public 
+        public CreateReadmesDevTask(uint deep)
+            : base(null, deep)
+        {
+        }
 
         /// <inheritdoc/>
         protected override void OnRun()

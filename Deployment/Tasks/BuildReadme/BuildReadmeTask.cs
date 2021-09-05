@@ -14,11 +14,8 @@ namespace Deployment.Tasks.BuildReadme
 {
     public class BuildReadmeTask : BaseDeploymentTask
     {
-#if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
-
-        public BuildReadmeTask(BuildReadmeTaskOptions options)
+        public BuildReadmeTask(BuildReadmeTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
@@ -53,72 +50,6 @@ namespace Deployment.Tasks.BuildReadme
             content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
 
             File.WriteAllText(_options.TargetReadmeFileName, content);
-
-            //var sb = new StringBuilder();
-
-            //var wasBadges = false;
-
-            //if (!string.IsNullOrWhiteSpace(_options.CommonBadgesFileName))
-            //{
-            //    var content = File.ReadAllText(_options.CommonBadgesFileName);
-
-            //    content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
-
-            //    if (!string.IsNullOrWhiteSpace(content))
-            //    {
-            //        sb.Append(content);
-
-            //        wasBadges = true;
-            //    }
-            //}
-
-            //if (!string.IsNullOrWhiteSpace(_options.RepositorySpecificBadgesFileName))
-            //{
-            //    var content = File.ReadAllText(_options.RepositorySpecificBadgesFileName);
-
-            //    content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
-
-            //    if (!string.IsNullOrWhiteSpace(content))
-            //    {
-            //        sb.Append(content);
-
-            //        wasBadges = true;
-            //    }
-            //}
-
-            //if (wasBadges)
-            //{
-            //    sb.AppendLine();
-            //    sb.AppendLine();
-            //}
-
-            //if (!string.IsNullOrWhiteSpace(_options.RepositorySpecificReadmeFileName))
-            //{
-            //    var content = File.ReadAllText(_options.RepositorySpecificReadmeFileName);
-
-            //    content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
-
-            //    if (!string.IsNullOrWhiteSpace(content))
-            //    {
-            //        sb.AppendLine(content);
-            //        sb.AppendLine();
-            //    }
-            //}
-
-            //if (!string.IsNullOrWhiteSpace(_options.CommonReadmeFileName))
-            //{
-            //    var content = File.ReadAllText(_options.CommonReadmeFileName);
-
-            //    content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
-
-            //    if (!string.IsNullOrWhiteSpace(content))
-            //    {
-            //        sb.AppendLine(content);
-            //        sb.AppendLine();
-            //    }
-            //}
-
-            //File.WriteAllText(_options.TargetReadmeFileName, sb.ToString());
         }
 
         /// <inheritdoc/>
