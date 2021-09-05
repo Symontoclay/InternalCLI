@@ -46,9 +46,28 @@ namespace Deployment.Tasks
         /// <inheritdoc/>
         public virtual void Run()
         {
-            CheckValidationOptions();
+            var n = Deep * 4;
 
-            OnRun();
+            var spaces = DisplayHelper.Spaces(n);
+
+            try
+            {
+                _logger.Info($"{spaces}{GetType().Name} started.");
+
+                CheckValidationOptions();
+
+                OnRun();
+
+                _logger.Info($"{spaces}{GetType().Name} finished");
+            }
+            catch(Exception e)
+            {
+                _logger.Info($"{spaces}Error in {GetType().Name} with options:");
+                _logger.Info(_options?.ToString(n + 4));
+                _logger.Info(e);
+
+                throw;
+            }
         }
 
         protected virtual void OnValidateOptions()
