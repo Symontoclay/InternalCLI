@@ -16,7 +16,7 @@ namespace Deployment.DevTasks.UpdateAndCommitProjectsVersion
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new UpdateProjectsVersionDevTask());
+            Exec(new UpdateProjectsVersionDevTask(NextDeep));
 
             var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
@@ -24,7 +24,7 @@ namespace Deployment.DevTasks.UpdateAndCommitProjectsVersion
             {
                 Message = "Version has been updated",
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            }));
+            }, NextDeep));
         }
 
         /// <inheritdoc/>

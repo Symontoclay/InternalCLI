@@ -23,11 +23,11 @@ namespace Deployment.DevTasks.DevFullMaintaining
             {
                 Message = "snapshot",
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            }));
+            }, NextDeep));
 
-            Exec(new UpdateAndCommitProjectsVersionDevTask());
+            Exec(new UpdateAndCommitProjectsVersionDevTask(NextDeep));
 
-            Exec(new UpdateAndCommitCopyrightInFileHeadersDevTask());
+            Exec(new UpdateAndCommitCopyrightInFileHeadersDevTask(NextDeep));
         }
 
         /// <inheritdoc/>

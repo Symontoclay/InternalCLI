@@ -14,6 +14,11 @@ namespace Deployment.DevTasks.CoreToCLIFolder
 {
     public class CoreToCLIFolderDevTask : BaseDeploymentTask
     {
+        public CoreToCLIFolderDevTask()
+            : base(null, 0u)
+        {
+        }
+
         /// <inheritdoc/>
         protected override void OnRun()
         {

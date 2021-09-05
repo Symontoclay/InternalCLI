@@ -20,6 +20,16 @@ namespace Deployment.ReleaseTasks.MakeRelease
     /// </summary>
     public class MakeReleaseReleaseTask : BaseDeploymentTask
     {
+        public MakeReleaseReleaseTask()
+            : this(0u)
+        {
+        }
+
+        public MakeReleaseReleaseTask(uint deep)
+            : base(null, deep)
+        {
+        }
+
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <inheritdoc/>
@@ -32,13 +42,13 @@ namespace Deployment.ReleaseTasks.MakeRelease
                 return;
             }
 
-            Exec(new DevFullMaintainingDevTask());
+            Exec(new DevFullMaintainingDevTask(NextDeep));
 
-            Exec(new MergeReleaseBranchToMasterReleaseTask());
+            Exec(new MergeReleaseBranchToMasterReleaseTask(NextDeep));
 
-            Exec(new DeploymentToProdReleaseTask());
+            Exec(new DeploymentToProdReleaseTask(NextDeep));
 
-            Exec(new MarkAsCompletedReleaseTask());
+            Exec(new MarkAsCompletedReleaseTask(NextDeep));
         }
 
         /// <inheritdoc/>

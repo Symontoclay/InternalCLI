@@ -17,16 +17,17 @@ namespace Deployment.DevTasks.CoreToSiteSource
 {
     public class CoreToSiteSourceDevTask : BaseDeploymentTask
     {
-        public CoreToSiteSourceDevTask()
+        public CoreToSiteSourceDevTask(uint deep)
             : this(new CoreToSiteSourceDevTaskOptions() 
             {
                 CoreCProjPath = ProjectsDataSource.GetProject(KindOfProject.CoreAssetLib).CsProjPath,
                 SiteSourceDir = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).SourcePath
-            })
+            }, deep)
         {
         }
 
-        public CoreToSiteSourceDevTask(CoreToSiteSourceDevTaskOptions options)
+        public CoreToSiteSourceDevTask(CoreToSiteSourceDevTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
@@ -56,13 +57,13 @@ namespace Deployment.DevTasks.CoreToSiteSource
                 //BuildConfiguration = KindOfBuildConfiguration.Release,
                 OutputDir = tempDir.FullName,
                 NoLogo = true
-            }));
+            }, NextDeep));
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {
                 TargetDir = destDir,
                 SkipExistingFilesInTargetDir = false
-            }));
+            }, NextDeep));
 
             deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
             {
@@ -71,7 +72,7 @@ namespace Deployment.DevTasks.CoreToSiteSource
                 SaveSubDirs = false,
                 OnlyFileExts = new List<string>() { "dll", "xml" },
                 FileNameShouldContain = new List<string>() { "SymOntoClay." }
-            }));
+            }, NextDeep));
 
             deploymentPipeline.Run();
         }

@@ -11,10 +11,21 @@ namespace Deployment.Tasks
 {
     public abstract class BaseDeploymentTask : IDeploymentTask
     {
+        protected BaseDeploymentTask(IObjectToString options, uint deep)
+        {
+            _options = options;
+            _deep = deep;
+        }
+
+        private readonly IObjectToString _options;
+        private readonly uint _deep;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private bool? _isValid;
         private List<string> _validationMessages = new List<string>();
+
+        public uint Deep => _deep;
+        public uint NextDeep => _deep + 1;
 
         /// <inheritdoc/>
         public bool? IsValid => _isValid;

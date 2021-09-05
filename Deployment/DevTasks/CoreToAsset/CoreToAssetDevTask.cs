@@ -16,16 +16,17 @@ namespace Deployment.DevTasks.CoreToAsset
 {
     public class CoreToAssetDevTask : BaseDeploymentTask
     {
-        public CoreToAssetDevTask()
+        public CoreToAssetDevTask(uint deep)
             : this(new CoreToAssetDevTaskOptions() 
             {
                 CoreCProjPath = ProjectsDataSource.GetProject(KindOfProject.CoreAssetLib).CsProjPath,
                 DestDir = ProjectsDataSource.GetSolution(KindOfProject.Unity).SourcePath
-            })
+            }, deep)
         {
         }
 
-        public CoreToAssetDevTask(CoreToAssetDevTaskOptions options)
+        public CoreToAssetDevTask(CoreToAssetDevTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

@@ -14,26 +14,31 @@ namespace Deployment.ReleaseTasks.DeploymentToProd
 {
     public class DeploymentToProdReleaseTask : BaseDeploymentTask
     {
+        public DeploymentToProdReleaseTask(uint deep)
+            : base(null, deep)
+        {
+        }
+
         /// <inheritdoc/>
         protected override void OnRun()
         {
             //Core
-            Exec(new CoreToAssetDevTask());
+            Exec(new CoreToAssetDevTask(NextDeep));
 
-            Exec(new CoreToSiteSourceDevTask());
+            Exec(new CoreToSiteSourceDevTask(NextDeep));
             
             //Site
-            Exec(new UnityToSiteSourceDevTask());
+            Exec(new UnityToSiteSourceDevTask(NextDeep));
 
-            Exec(new UpdateReleaseNotesDevTask());
+            Exec(new UpdateReleaseNotesDevTask(NextDeep));
 
-            Exec(new ProdSiteBuildAndCommitReleaseTask());
+            Exec(new ProdSiteBuildAndCommitReleaseTask(NextDeep));
 
             //Readmies
-            Exec(new CreateAndCommitReadmesDevTask());
+            Exec(new CreateAndCommitReadmesDevTask(NextDeep));
 
             //Release to GitHub
-            Exec(new GitHubReleaseReleaseTask());
+            Exec(new GitHubReleaseReleaseTask(NextDeep));
         }
 
         /// <inheritdoc/>
