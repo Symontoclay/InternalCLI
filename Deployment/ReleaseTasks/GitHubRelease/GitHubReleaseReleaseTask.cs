@@ -46,6 +46,11 @@ namespace Deployment.ReleaseTasks.GitHubRelease
         {
         }
 
+        public GitHubReleaseReleaseTask()
+            : this(0u)
+        {
+        }
+
         public GitHubReleaseReleaseTask(uint deep)
             : this(CreateOptions(), deep)
         {

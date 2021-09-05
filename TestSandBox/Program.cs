@@ -7,6 +7,8 @@ using Deployment;
 using Deployment.DevTasks.CoreToAsset;
 using Deployment.DevTasks.CreateReadmes;
 using Deployment.Helpers;
+using Deployment.ReleaseTasks.GitHubRelease;
+using Deployment.ReleaseTasks.MarkAsCompleted;
 using Deployment.Tasks;
 using Newtonsoft.Json;
 using NLog;
@@ -37,6 +39,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            //TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
             //TstTesting();
             //TstCreateReadme();//<==
@@ -63,7 +66,7 @@ namespace TestSandBox
             //TstReleaseItemsHandler();
             //TstLessHandler();
             //TstRoadMap();
-            TstReleaseTaskHandler();//<==
+            //TstReleaseTaskHandler();//<==
             //TstGitTasksHandler();
             //TstDeploymentTaskBasedBuildHandler();
             //TstSimplifyFullNameOfType();
@@ -71,6 +74,23 @@ namespace TestSandBox
             //TstReadXMLDoc();
         }
 
+        private static void TstFinishRelease0_3_2()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new GitHubReleaseReleaseTask());
+
+            deploymentPipeline.Add(new MarkAsCompletedReleaseTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
+        }
+        
         private static void TstRestoreSlnInUnityProject()//:(
         {
             _logger.Info("Begin");

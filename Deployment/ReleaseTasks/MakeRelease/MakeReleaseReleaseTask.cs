@@ -1,10 +1,13 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using BaseDevPipeline;
+using CommonUtils.DebugHelpers;
 using Deployment.DevTasks.DevFullMaintaining;
 using Deployment.Helpers;
 using Deployment.ReleaseTasks.DeploymentToProd;
 using Deployment.ReleaseTasks.MarkAsCompleted;
 using Deployment.ReleaseTasks.MergeReleaseBranchToMaster;
 using Deployment.Tasks;
+using Deployment.Tasks.GitTasks.Checkout;
+using Deployment.Tasks.GitTasks.CommitAllAndPush;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -40,6 +43,27 @@ namespace Deployment.ReleaseTasks.MakeRelease
                 _logger.Info("Making release is forbiden! There is not started release!");
 
                 return;
+            }
+
+            var futureReleaseInfo = FutureReleaseInfoReader.Read();
+
+            var versionBranchName = futureReleaseInfo.Version;
+
+            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+
+            //Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
+            //{
+            //    Message = "snapshot",
+            //    RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
+            //}, NextDeep));
+
+            foreach (var repository in targetSolutions)
+            {
+                Exec(new CheckoutTask(new CheckoutTaskOptions()
+                {
+                    RepositoryPath = repository.Path,
+                    BranchName = versionBranchName
+                }, NextDeep));
             }
 
             Exec(new DevFullMaintainingDevTask(NextDeep));
