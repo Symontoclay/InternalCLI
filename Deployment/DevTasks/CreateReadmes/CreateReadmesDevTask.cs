@@ -15,6 +15,11 @@ namespace Deployment.DevTasks.CreateReadmes
 {
     public class CreateReadmesDevTask : BaseDeploymentTask
     {
+        public CreateReadmesDevTask()
+            : this(0u)
+        {
+        }
+
         public CreateReadmesDevTask(uint deep)
             : base(null, deep)
         {
@@ -55,7 +60,7 @@ namespace Deployment.DevTasks.CreateReadmes
                     RepositorySpecificBadgesFileName = targetSolution.BadgesSource,
                     RepositorySpecificReadmeFileName = targetSolution.ReadmeSource,
                     TargetReadmeFileName = targetReadmeFileName
-                }));
+                }, NextDeep));
 
                 switch(targetSolution.Kind)
                 {
@@ -66,7 +71,7 @@ namespace Deployment.DevTasks.CreateReadmes
                             DestDir = targetSolution.Path,
                             SaveSubDirs = false,
                             TargetFiles = new List<string>() { targetReadmeFileName }
-                        }));
+                        }, NextDeep));
                         break;
                 }
             }

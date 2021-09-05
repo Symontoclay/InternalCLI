@@ -10,7 +10,8 @@ namespace Deployment.Tasks.VersionTasks.UpdateProjectCopyright
 {
     public class UpdateProjectCopyrightTask : BaseDeploymentTask
     {
-        public UpdateProjectCopyrightTask(UpdateProjectCopyrightTaskOptions options)
+        public UpdateProjectCopyrightTask(UpdateProjectCopyrightTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

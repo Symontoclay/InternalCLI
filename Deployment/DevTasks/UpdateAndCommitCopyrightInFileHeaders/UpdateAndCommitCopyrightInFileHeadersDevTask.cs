@@ -13,10 +13,20 @@ namespace Deployment.DevTasks.UpdateAndCommitCopyrightInFileHeaders
 {
     public class UpdateAndCommitCopyrightInFileHeadersDevTask : BaseDeploymentTask
     {
+        public UpdateAndCommitCopyrightInFileHeadersDevTask()
+            : this(0u)
+        {
+        }
+
+        public UpdateAndCommitCopyrightInFileHeadersDevTask(uint deep)
+            : base(null, deep)
+        {
+        }
+
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new UpdateCopyrightInFileHeadersDevTask());
+            Exec(new UpdateCopyrightInFileHeadersDevTask(NextDeep));
 
             var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
@@ -24,7 +34,7 @@ namespace Deployment.DevTasks.UpdateAndCommitCopyrightInFileHeaders
             {
                 Message = "File headers has been updated",
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            }));
+            }, NextDeep));
         }
 
         /// <inheritdoc/>

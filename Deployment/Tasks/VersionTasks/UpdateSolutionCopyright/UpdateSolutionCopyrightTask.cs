@@ -13,6 +13,12 @@ namespace Deployment.Tasks.VersionTasks.UpdateSolutionCopyright
     public class UpdateSolutionCopyrightTask : BaseDeploymentTask
     {
         public UpdateSolutionCopyrightTask(UpdateSolutionCopyrightTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public UpdateSolutionCopyrightTask(UpdateSolutionCopyrightTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
@@ -38,7 +44,7 @@ namespace Deployment.Tasks.VersionTasks.UpdateSolutionCopyright
                 Exec(new UpdateProjectCopyrightTask(new UpdateProjectCopyrightTaskOptions() {
                     ProjectFilePath = projectName,
                     Copyright = _options.Copyright
-                }));
+                }, NextDeep));
             }
         }
 

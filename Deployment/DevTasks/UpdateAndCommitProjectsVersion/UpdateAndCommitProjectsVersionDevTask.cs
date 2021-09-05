@@ -13,6 +13,16 @@ namespace Deployment.DevTasks.UpdateAndCommitProjectsVersion
 {
     public class UpdateAndCommitProjectsVersionDevTask : BaseDeploymentTask
     {
+        public UpdateAndCommitProjectsVersionDevTask()
+            : this(0u)
+        {
+        }
+
+        public UpdateAndCommitProjectsVersionDevTask(uint deep)
+            : base(null, deep)
+        {
+        }
+
         /// <inheritdoc/>
         protected override void OnRun()
         {

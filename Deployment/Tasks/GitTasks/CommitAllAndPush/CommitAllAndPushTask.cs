@@ -15,6 +15,12 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
     public class CommitAllAndPushTask : BaseDeploymentTask
     {
         public CommitAllAndPushTask(CommitAllAndPushTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public CommitAllAndPushTask(CommitAllAndPushTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
@@ -52,7 +58,7 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
                     Exec(new AddTask(new AddTaskOptions() { 
                         RepositoryPath = repositoryPath,
                         RelativeFileName = untrackedFile.RelativePath
-                    }));
+                    }, NextDeep));
                 }
             }
 
@@ -62,7 +68,7 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
                 {
                     RepositoryPath = repositoryPath,
                     Message = _options.Message
-                }));
+                }, NextDeep));
             }
 
             foreach (var repositoryPath in _options.RepositoryPaths)
@@ -70,7 +76,7 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
                 Exec(new PullTask(new PullTaskOptions()
                 {
                     RepositoryPath = repositoryPath
-                }));
+                }, NextDeep));
             }
 
             foreach (var repositoryPath in _options.RepositoryPaths)
@@ -78,7 +84,7 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
                 Exec(new PushTask(new PushTaskOptions()
                 {
                     RepositoryPath = repositoryPath
-                }));
+                }, NextDeep));
             }
         }
 

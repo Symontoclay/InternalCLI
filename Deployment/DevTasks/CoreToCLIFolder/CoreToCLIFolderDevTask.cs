@@ -15,7 +15,12 @@ namespace Deployment.DevTasks.CoreToCLIFolder
     public class CoreToCLIFolderDevTask : BaseDeploymentTask
     {
         public CoreToCLIFolderDevTask()
-            : base(null, 0u)
+            : this(0u)
+        {
+        }
+
+        public CoreToCLIFolderDevTask(uint deep)
+            : base(null, deep)
         {
         }
 
@@ -30,14 +35,14 @@ namespace Deployment.DevTasks.CoreToCLIFolder
             {
                 TargetDir = cliFolderTargetPath,
                 SkipExistingFilesInTargetDir = false
-            }));
+            }, NextDeep));
 
             Exec(new PublishTask(new PublishTaskOptions()
             {
                 ProjectOrSoutionFileName = cliProject.CsProjPath,
                 OutputDir = cliFolderTargetPath,
                 NoLogo = true
-            }));
+            }, NextDeep));
         }
 
         /// <inheritdoc/>

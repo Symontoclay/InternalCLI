@@ -12,6 +12,12 @@ namespace Deployment.Tasks.GitTasks.Checkout
     public class CheckoutTask : BaseDeploymentTask
     {
         public CheckoutTask(CheckoutTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public CheckoutTask(CheckoutTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

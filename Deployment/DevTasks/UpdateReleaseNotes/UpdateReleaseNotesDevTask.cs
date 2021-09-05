@@ -16,17 +16,23 @@ namespace Deployment.DevTasks.UpdateReleaseNotes
     public class UpdateReleaseNotesDevTask: BaseDeploymentTask
     {
         public UpdateReleaseNotesDevTask()
+            : this(0u)
+        {
+        }
+
+        public UpdateReleaseNotesDevTask(uint deep)
             : this(new UpdateReleaseNotesDevTaskOptions() 
             {
                 ReleaseMngrRepositoryPath = ProjectsDataSource.GetSolution(KindOfProject.ReleaseMngrSolution).Path,
                 ArtifactsForDeployment = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).ArtifactsForDeployment.ToList(),
                 ReleaseNotesFilePath = BuildReleaseNotesPath(ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).SourcePath),
                 BaseHref = ProjectsDataSource.GetSolution(KindOfProject.CoreSolution).Href
-            })
+            }, deep)
         {
         }
 
-        public UpdateReleaseNotesDevTask(UpdateReleaseNotesDevTaskOptions options)
+        public UpdateReleaseNotesDevTask(UpdateReleaseNotesDevTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
@@ -59,7 +65,7 @@ namespace Deployment.DevTasks.UpdateReleaseNotes
                 ArtifactsForDeployment = _options.ArtifactsForDeployment,
                 ReleaseNotesFilePath = _options.ReleaseNotesFilePath,
                 BaseHref = _options.BaseHref
-            }));
+            }, NextDeep));
         }
 
         /// <inheritdoc/>

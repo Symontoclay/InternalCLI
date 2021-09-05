@@ -12,6 +12,12 @@ namespace Deployment.Tasks.GitTasks.UndoChanges
     public class UndoChangesTask : BaseDeploymentTask
     {
         public UndoChangesTask(UndoChangesTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public UndoChangesTask(UndoChangesTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

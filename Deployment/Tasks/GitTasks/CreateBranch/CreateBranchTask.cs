@@ -13,6 +13,12 @@ namespace Deployment.Tasks.GitTasks.CreateBranch
     public class CreateBranchTask : BaseDeploymentTask
     {
         public CreateBranchTask(CreateBranchTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public CreateBranchTask(CreateBranchTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

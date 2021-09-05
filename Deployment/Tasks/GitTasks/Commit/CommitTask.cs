@@ -12,6 +12,12 @@ namespace Deployment.Tasks.GitTasks.Commit
     public class CommitTask : BaseDeploymentTask
     {
         public CommitTask(CommitTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public CommitTask(CommitTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

@@ -16,6 +16,12 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
     public class CopyAllFromDirectoryTask : BaseDeploymentTask
     {
         public CopyAllFromDirectoryTask(CopyAllFromDirectoryTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public CopyAllFromDirectoryTask(CopyAllFromDirectoryTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
@@ -57,7 +63,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
                 DestDir = _options.DestDir,
                 SaveSubDirs = _options.SaveSubDirs,
                 TargetFiles = sourceFullFileNamesList
-            }));
+            }, NextDeep));
         }
 
         /// <inheritdoc/>

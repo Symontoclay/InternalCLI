@@ -20,6 +20,12 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
 #endif
 
         public UpdateReleaseNotesTask(UpdateReleaseNotesTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public UpdateReleaseNotesTask(UpdateReleaseNotesTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

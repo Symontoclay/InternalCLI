@@ -12,6 +12,16 @@ namespace Deployment.DevTasks.PullSolutionsWithMaintainedReleases
 {
     public class PullSolutionsWithMaintainedReleasesDevTask : BaseDeploymentTask
     {
+        public PullSolutionsWithMaintainedReleasesDevTask()
+            : this(0u)
+        {
+        }
+
+        public PullSolutionsWithMaintainedReleasesDevTask(uint deep)
+            : base(null, deep)
+        {
+        }
+
         /// <inheritdoc/>
         protected override void OnRun()
         {
@@ -22,7 +32,7 @@ namespace Deployment.DevTasks.PullSolutionsWithMaintainedReleases
                 Exec(new PullTask(new PullTaskOptions()
                 {
                     RepositoryPath = targetSolution.Path
-                }));
+                }, NextDeep));
             }
         }
 

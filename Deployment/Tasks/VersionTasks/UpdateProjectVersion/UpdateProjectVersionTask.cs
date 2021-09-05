@@ -10,7 +10,8 @@ namespace Deployment.Tasks.VersionTasks.UpdateProjectVersion
 {
     public class UpdateProjectVersionTask : BaseDeploymentTask
     {
-        public UpdateProjectVersionTask(UpdateProjectVersionTaskOptions options)
+        public UpdateProjectVersionTask(UpdateProjectVersionTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

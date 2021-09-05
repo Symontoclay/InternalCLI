@@ -14,6 +14,11 @@ namespace Deployment.Tasks.BuildReadme
 {
     public class BuildReadmeTask : BaseDeploymentTask
     {
+        public BuildReadmeTask(BuildReadmeTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
         public BuildReadmeTask(BuildReadmeTaskOptions options, uint deep)
             : base(options, deep)
         {

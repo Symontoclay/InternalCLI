@@ -16,6 +16,12 @@ namespace Deployment.Tasks.SiteTasks.SiteBuild
 #endif
 
         public SiteBuildTask(SiteBuildTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public SiteBuildTask(SiteBuildTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

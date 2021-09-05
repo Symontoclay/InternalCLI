@@ -16,6 +16,11 @@ namespace Deployment.DevTasks.CoreToAsset
 {
     public class CoreToAssetDevTask : BaseDeploymentTask
     {
+        public CoreToAssetDevTask()
+            : this(0u)
+        {
+        }
+
         public CoreToAssetDevTask(uint deep)
             : this(new CoreToAssetDevTaskOptions() 
             {
@@ -54,7 +59,7 @@ namespace Deployment.DevTasks.CoreToAsset
                 //BuildConfiguration = KindOfBuildConfiguration.Release,
                 OutputDir = tempDir.FullName,
                 NoLogo = true
-            }));
+            }, NextDeep));
 
             deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
             {
@@ -63,7 +68,7 @@ namespace Deployment.DevTasks.CoreToAsset
                 SaveSubDirs = false,
                 OnlyFileExts = new List<string>() { "dll" },
                 FileNameShouldContain = new List<string>() { "SymOntoClay." }
-            }));
+            }, NextDeep));
 
             deploymentPipeline.Run();
         }

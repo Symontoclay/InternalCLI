@@ -49,6 +49,8 @@ namespace CommonUtils
 
             var exitCode = _process.ExitCode;
 
+            _logger.Info($"exitCode = {exitCode}");
+
             return exitCode;
         }
 

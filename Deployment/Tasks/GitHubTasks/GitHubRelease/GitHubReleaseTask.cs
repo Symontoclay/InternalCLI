@@ -13,6 +13,12 @@ namespace Deployment.Tasks.GitHubTasks.GitHubRelease
     public class GitHubReleaseTask : BaseDeploymentTask
     {
         public GitHubReleaseTask(GitHubReleaseTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public GitHubReleaseTask(GitHubReleaseTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

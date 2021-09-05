@@ -17,6 +17,16 @@ namespace Deployment.DevTasks.DevExportPackage
 {
     public class DevExportPackageDevTask : BaseDeploymentTask
     {
+        public DevExportPackageDevTask()
+            : this(0u)
+        {
+        }
+
+        public DevExportPackageDevTask(uint deep)
+            : base(null, deep)
+        {
+        }
+
         /// <inheritdoc/>
         protected override void OnRun()
         {
@@ -38,7 +48,7 @@ namespace Deployment.DevTasks.DevExportPackage
             {
                 TargetDir = unityArtifact.Path,
                 SkipExistingFilesInTargetDir = false
-            }));
+            }, NextDeep));
 
             var sourceDir = unitySolution.SourcePath.Replace(unitySolution.Path, string.Empty).Trim();
 
@@ -53,7 +63,7 @@ namespace Deployment.DevTasks.DevExportPackage
                 RootDir = unitySolution.Path,
                 SourceDir = sourceDir,
                 OutputPackageName = Path.Combine(unityArtifact.Path, DeployedItemsFactory.GetUnityAssetName(version))
-            }));
+            }, NextDeep));
         }
 
         /// <inheritdoc/>

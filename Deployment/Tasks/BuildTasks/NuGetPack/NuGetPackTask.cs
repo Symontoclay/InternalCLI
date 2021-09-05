@@ -13,6 +13,12 @@ namespace Deployment.Tasks.BuildTasks.NuGetPack
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public NuGetPackTask(NuGetPackTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public NuGetPackTask(NuGetPackTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

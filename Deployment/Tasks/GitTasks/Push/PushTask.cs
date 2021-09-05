@@ -12,6 +12,12 @@ namespace Deployment.Tasks.GitTasks.Push
     public class PushTask : BaseDeploymentTask
     {
         public PushTask(PushTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public PushTask(PushTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

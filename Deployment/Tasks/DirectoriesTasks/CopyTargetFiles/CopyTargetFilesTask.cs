@@ -13,7 +13,8 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
 {
     public class CopyTargetFilesTask : BaseDeploymentTask
     {
-        public CopyTargetFilesTask(CopyTargetFilesTaskOptions options)
+        public CopyTargetFilesTask(CopyTargetFilesTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
             _targetFiles = options?.TargetFiles.Select(p => p.Replace("\\", "/").Trim()).ToList();

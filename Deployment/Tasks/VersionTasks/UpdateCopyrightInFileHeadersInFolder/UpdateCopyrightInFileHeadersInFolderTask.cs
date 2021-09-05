@@ -14,6 +14,12 @@ namespace Deployment.Tasks.VersionTasks.UpdateCopyrightInFileHeadersInFolder
     public class UpdateCopyrightInFileHeadersInFolderTask : BaseDeploymentTask
     {
         public UpdateCopyrightInFileHeadersInFolderTask(UpdateCopyrightInFileHeadersInFolderTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public UpdateCopyrightInFileHeadersInFolderTask(UpdateCopyrightInFileHeadersInFolderTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
@@ -51,7 +57,7 @@ namespace Deployment.Tasks.VersionTasks.UpdateCopyrightInFileHeadersInFolder
             {
                 Text = _options.Text,
                 TargetFiles = sourceFullFileNamesList
-            }));
+            }, NextDeep));
         }
 
         /// <inheritdoc/>

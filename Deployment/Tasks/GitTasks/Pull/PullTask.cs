@@ -12,6 +12,12 @@ namespace Deployment.Tasks.GitTasks.Pull
     public class PullTask : BaseDeploymentTask
     {
         public PullTask(PullTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public PullTask(PullTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

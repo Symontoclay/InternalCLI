@@ -17,6 +17,11 @@ namespace Deployment.DevTasks.CoreToSiteSource
 {
     public class CoreToSiteSourceDevTask : BaseDeploymentTask
     {
+        public CoreToSiteSourceDevTask()
+            : this(0u)
+        {
+        }
+
         public CoreToSiteSourceDevTask(uint deep)
             : this(new CoreToSiteSourceDevTaskOptions() 
             {

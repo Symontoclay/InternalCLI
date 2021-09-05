@@ -13,11 +13,15 @@ namespace Deployment.ReleaseTasks.ProdSiteBuildAndCommit
 {
     public class ProdSiteBuildAndCommitReleaseTask : BaseDeploymentTask
     {
-        //ProdSiteBuildReleaseTask
+        public ProdSiteBuildAndCommitReleaseTask(uint deep)
+            : base(null, deep)
+        {
+        }
+
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new ProdSiteBuildReleaseTask());
+            Exec(new ProdSiteBuildReleaseTask(NextDeep));
 
             var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
 
@@ -25,7 +29,7 @@ namespace Deployment.ReleaseTasks.ProdSiteBuildAndCommit
             {
                 Message = "Site has been updated",
                 RepositoryPaths = new List<string>() { siteSolution.Path }
-            }));
+            }, NextDeep));
         }
 
         /// <inheritdoc/>

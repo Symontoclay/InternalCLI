@@ -10,6 +10,12 @@ namespace Deployment.Tasks.BuildTasks.Publish
     public class PublishTask : BaseDeploymentTask
     {
         public PublishTask(PublishTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public PublishTask(PublishTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

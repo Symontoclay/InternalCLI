@@ -41,12 +41,18 @@ namespace Deployment.ReleaseTasks.GitHubRelease
             return options;
         }
 
-        public GitHubReleaseReleaseTask()
-            : this(CreateOptions())
+        public GitHubReleaseReleaseTask(GitHubReleaseReleaseTaskOptions options)
+            : this(options, 0u)
         {
         }
 
-        public GitHubReleaseReleaseTask(GitHubReleaseReleaseTaskOptions options)
+        public GitHubReleaseReleaseTask(uint deep)
+            : this(CreateOptions(), deep)
+        {
+        }
+
+        public GitHubReleaseReleaseTask(GitHubReleaseReleaseTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
@@ -104,7 +110,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
                 RootDir = unitySolution.Path,
                 SourceDir = sourceDir,
                 OutputPackageName = unityPackageFullPath
-            }));
+            }, NextDeep));
 
             var cliProject = ProjectsDataSource.GetProject(KindOfProject.CLI);
 
@@ -113,7 +119,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
                 ProjectOrSoutionFileName = cliProject.CsProjPath,
                 OutputDir = cliTempDir.FullName,
                 NoLogo = true
-            }));
+            }, NextDeep));
 
             var cliArchName = DeployedItemsFactory.GetCLIArchName(version);
 
@@ -123,7 +129,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
             {
                 SourceDir = cliTempDir.FullName,
                 OutputFilePath = cliArchFullPath
-            }));
+            }, NextDeep));
 
             var token = settings.GetSecret("GitHub");
 
@@ -150,7 +156,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
                             UploadedFilePath = cliArchFullPath
                         }
                     }
-                }));
+                }, NextDeep));
             }
         }
 

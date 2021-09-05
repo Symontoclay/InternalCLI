@@ -12,6 +12,12 @@ namespace Deployment.Tasks.GitTasks.Merge
     public class MergeTask : BaseDeploymentTask
     {
         public MergeTask(MergeTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public MergeTask(MergeTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

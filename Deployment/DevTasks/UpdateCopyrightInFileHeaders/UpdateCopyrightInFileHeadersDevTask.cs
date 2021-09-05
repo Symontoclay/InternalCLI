@@ -13,6 +13,11 @@ namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
 {
     public class UpdateCopyrightInFileHeadersDevTask : BaseDeploymentTask
     {
+        public UpdateCopyrightInFileHeadersDevTask(uint deep)
+            : base(null, deep)
+        {
+        }
+
         /// <inheritdoc/>
         protected override void OnRun()
         {
@@ -31,7 +36,7 @@ namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
                         {
                             Text = license.HeaderContent,
                             SourceDir = targetSolution.Path
-                        }));
+                        }, NextDeep));
                         break;
 
                     case KindOfProject.Unity:
@@ -39,7 +44,7 @@ namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
                         {
                             Text = license.HeaderContent,
                             SourceDir = targetSolution.SourcePath
-                        }));
+                        }, NextDeep));
                         break;
 
                     default:

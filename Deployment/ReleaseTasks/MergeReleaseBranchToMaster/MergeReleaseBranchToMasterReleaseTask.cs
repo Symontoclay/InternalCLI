@@ -46,12 +46,18 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
             return options;
         }
 
-        public MergeReleaseBranchToMasterReleaseTask()
-            : this(CreateOptions())
+        public MergeReleaseBranchToMasterReleaseTask(MergeReleaseBranchToMasterReleaseTaskOptions options)
+            : this(options, 0u)
         {
         }
 
-        public MergeReleaseBranchToMasterReleaseTask(MergeReleaseBranchToMasterReleaseTaskOptions options)
+        public MergeReleaseBranchToMasterReleaseTask(uint deep)
+            : this(CreateOptions(), deep)
+        {
+        }
+
+        public MergeReleaseBranchToMasterReleaseTask(MergeReleaseBranchToMasterReleaseTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
@@ -85,7 +91,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                     Exec(new TestTask(new TestTaskOptions()
                     {
                         ProjectOrSoutionFileName = projPath
-                    }));
+                    }, NextDeep));
                 }
             }
 
@@ -107,7 +113,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                 {
                     RepositoryPath = repository.RepositoryPath,
                     BranchName = versionBranchName
-                }));
+                }, NextDeep));
             }
 
             if (projectsForTesting.Any())
@@ -117,7 +123,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                     Exec(new TestTask(new TestTaskOptions()
                     {
                         ProjectOrSoutionFileName = projPath
-                    }));
+                    }, NextDeep));
                 }
             }
 
@@ -129,7 +135,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                 {
                     RepositoryPath = repository.RepositoryPath,
                     BranchName = releaseBranchName
-                }));
+                }, NextDeep));
             }
 
             if (projectsForTesting.Any())
@@ -139,7 +145,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                     Exec(new TestTask(new TestTaskOptions()
                     {
                         ProjectOrSoutionFileName = projPath
-                    }));
+                    }, NextDeep));
                 }
             }
 
@@ -148,7 +154,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                 Exec(new PushTask(new PushTaskOptions()
                 {
                     RepositoryPath = repository.RepositoryPath
-                }));
+                }, NextDeep));
             }
 
             foreach (var repository in _options.Repositories)
@@ -158,21 +164,21 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                     RepositoryPath = repository.RepositoryPath,
                     BranchName = releaseBranchName,
                     IsOrigin = false
-                }));
+                }, NextDeep));
 
                 Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
                 {
                     RepositoryPath = repository.RepositoryPath,
                     BranchName = versionBranchName,
                     IsOrigin = false
-                }));
+                }, NextDeep));
 
                 Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
                 {
                     RepositoryPath = repository.RepositoryPath,
                     BranchName = versionBranchName,
                     IsOrigin = true
-                }));
+                }, NextDeep));
             }
         }
 
@@ -184,7 +190,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                 {
                     RepositoryPath = repository.RepositoryPath,
                     BranchName = branchName
-                }));
+                }, NextDeep));
             }
         }
 
@@ -196,7 +202,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                 {
                     RepositoryPath = repository.RepositoryPath,
                     BranchName = branchName
-                }));
+                }, NextDeep));
             }
         }
 

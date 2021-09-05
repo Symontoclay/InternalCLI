@@ -13,6 +13,16 @@ namespace Deployment.ReleaseTasks.MarkAsCompleted
 {
     public class MarkAsCompletedReleaseTask : BaseDeploymentTask
     {
+        public MarkAsCompletedReleaseTask()
+            : this(0u)
+        {
+        }
+
+        public MarkAsCompletedReleaseTask(uint deep)
+            : base(null, deep)
+        {
+        }
+
         /// <inheritdoc/>
         protected override void OnRun()
         {

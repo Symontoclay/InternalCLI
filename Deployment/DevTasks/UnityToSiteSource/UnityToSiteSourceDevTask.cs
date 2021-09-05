@@ -16,14 +16,20 @@ namespace Deployment.DevTasks.UnityToSiteSource
     public class UnityToSiteSourceDevTask : BaseDeploymentTask
     {
         public UnityToSiteSourceDevTask()
-            : this(new UnityToSiteSourceDevTaskOptions() { 
-                UnitySlnPath = ProjectsDataSource.GetSolution(KindOfProject.Unity).Path,
-                SiteSourceDir = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).SourcePath
-            })
+            : this(0u)
         {
         }
 
-        public UnityToSiteSourceDevTask(UnityToSiteSourceDevTaskOptions options)
+        public UnityToSiteSourceDevTask(uint deep)
+            : this(new UnityToSiteSourceDevTaskOptions() { 
+                UnitySlnPath = ProjectsDataSource.GetSolution(KindOfProject.Unity).Path,
+                SiteSourceDir = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).SourcePath
+            }, deep)
+        {
+        }
+
+        public UnityToSiteSourceDevTask(UnityToSiteSourceDevTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
@@ -55,13 +61,13 @@ namespace Deployment.DevTasks.UnityToSiteSource
                 //BuildConfiguration = KindOfBuildConfiguration.Release,
                 OutputDir = tempDir.FullName,
                 NoLogo = true
-            }));
+            }, NextDeep));
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {
                 TargetDir = destDir,
                 SkipExistingFilesInTargetDir = true
-            }));
+            }, NextDeep));
 
             deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
             {
@@ -70,7 +76,7 @@ namespace Deployment.DevTasks.UnityToSiteSource
                 SaveSubDirs = false,
                 OnlyFileExts = new List<string>() { "dll", "xml" }//,
                 //FileNameShouldContain = new List<string>() { "Assembly-CSharp" }
-            }));
+            }, NextDeep));
 
             deploymentPipeline.Run();
         }

@@ -13,6 +13,12 @@ namespace Deployment.Tasks.VersionTasks.UpdateUnityPackageVersion
     public class UpdateUnityPackageVersionTask : BaseDeploymentTask
     {
         public UpdateUnityPackageVersionTask(UpdateUnityPackageVersionTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public UpdateUnityPackageVersionTask(UpdateUnityPackageVersionTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

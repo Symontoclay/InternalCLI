@@ -14,6 +14,16 @@ namespace Deployment.ReleaseTasks.ProdSiteBuild
 {
     public class ProdSiteBuildReleaseTask : BaseDeploymentTask
     {
+        public ProdSiteBuildReleaseTask()
+            : this(0u)
+        {
+        }
+
+        public ProdSiteBuildReleaseTask(uint deep)
+            : base(null, deep)
+        {
+        }
+
         /// <inheritdoc/>
         protected override void OnRun()
         {
@@ -28,7 +38,7 @@ namespace Deployment.ReleaseTasks.ProdSiteBuild
                 SourcePath = siteSolution.SourcePath,
                 DestPath = siteSolution.Path,
                 TempPath = tempDir.FullName
-            }));
+            }, NextDeep));
         }
 
         /// <inheritdoc/>

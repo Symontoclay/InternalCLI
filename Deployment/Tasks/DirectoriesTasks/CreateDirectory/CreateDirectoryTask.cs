@@ -14,6 +14,12 @@ namespace Deployment.Tasks.DirectoriesTasks.CreateDirectory
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public CreateDirectoryTask(CreateDirectoryTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public CreateDirectoryTask(CreateDirectoryTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

@@ -14,6 +14,16 @@ namespace Deployment.DevTasks.DevFullMaintaining
 {
     public class DevFullMaintainingDevTask : BaseDeploymentTask
     {
+        public DevFullMaintainingDevTask()
+            : this(0u)
+        {
+        }
+
+        public DevFullMaintainingDevTask(uint deep)
+            : base(null, deep)
+        {
+        }
+
         /// <inheritdoc/>
         protected override void OnRun()
         {

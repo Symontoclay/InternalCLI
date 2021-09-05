@@ -121,11 +121,17 @@ namespace Deployment.Tasks
 
         protected int RunProcess(string fileName, string arguments)
         {
+            _logger.Info($"{fileName} {arguments}");
+
             var process = Process.Start(fileName, arguments);
 
             process.WaitForExit();
 
-            return process.ExitCode;
+            var exitCode = process.ExitCode;
+
+            _logger.Info($"exitCode = {exitCode}");
+
+            return exitCode;
         }
 
         /// <inheritdoc/>

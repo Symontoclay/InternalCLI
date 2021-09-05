@@ -11,7 +11,8 @@ namespace Deployment.Tasks.GitTasks.Add
 {
     public class AddTask : BaseDeploymentTask
     {
-        public AddTask(AddTaskOptions options)
+        public AddTask(AddTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

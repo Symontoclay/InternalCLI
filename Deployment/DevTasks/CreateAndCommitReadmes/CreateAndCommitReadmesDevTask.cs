@@ -16,13 +16,19 @@ namespace Deployment.DevTasks.CreateAndCommitReadmes
     public class CreateAndCommitReadmesDevTask : BaseDeploymentTask
     {
         public CreateAndCommitReadmesDevTask()
-            : this(new CreateAndCommitReadmesDevTaskOptions() { 
-                Message = "README.md has been updated"
-            })
+            : this(0u)
         {
         }
 
-        public CreateAndCommitReadmesDevTask(CreateAndCommitReadmesDevTaskOptions options)
+        public CreateAndCommitReadmesDevTask(uint deep)
+            : this(new CreateAndCommitReadmesDevTaskOptions() { 
+                Message = "README.md has been updated"
+            }, deep)
+        {
+        }
+
+        public CreateAndCommitReadmesDevTask(CreateAndCommitReadmesDevTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
@@ -39,14 +45,14 @@ namespace Deployment.DevTasks.CreateAndCommitReadmes
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new CreateReadmesDevTask());
+            Exec(new CreateReadmesDevTask(NextDeep));
 
             var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions() { 
                 Message = _options.Message,
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            }));
+            }, NextDeep));
         }
 
         /// <inheritdoc/>

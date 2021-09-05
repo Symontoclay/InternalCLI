@@ -12,6 +12,12 @@ namespace Deployment.Tasks.GitTasks.DeleteBranch
     public class DeleteBranchTask : BaseDeploymentTask
     {
         public DeleteBranchTask(DeleteBranchTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public DeleteBranchTask(DeleteBranchTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

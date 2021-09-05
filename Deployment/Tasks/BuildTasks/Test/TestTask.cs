@@ -10,6 +10,12 @@ namespace Deployment.Tasks.BuildTasks.Test
     public class TestTask : BaseDeploymentTask
     {
         public TestTask(TestTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public TestTask(TestTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

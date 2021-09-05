@@ -11,6 +11,12 @@ namespace Deployment.Tasks.ArchTasks.Zip
     public class ZipTask : BaseDeploymentTask
     {
         public ZipTask(ZipTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public ZipTask(ZipTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

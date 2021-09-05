@@ -16,16 +16,22 @@ namespace Deployment.DevTasks.DevSiteBuild
     public class DevSiteBuildTask: BaseDeploymentTask
     {
         public DevSiteBuildTask()
+            : this(0u)
+        {
+        }
+
+        public DevSiteBuildTask(uint deep)
             : this(new DevSiteBuildTaskOptions() 
             { 
                 SiteName = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).RepositoryName,
                 SourcePath = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).SourcePath,
                 DestPath = ProjectsDataSource.GetDevArtifact(KindOfArtifact.ProjectSite).Path
-            })
+            }, deep)
         {
         }
 
-        public DevSiteBuildTask(DevSiteBuildTaskOptions options)
+        public DevSiteBuildTask(DevSiteBuildTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
@@ -51,7 +57,7 @@ namespace Deployment.DevTasks.DevSiteBuild
             {
                 TargetDir = _options.DestPath,
                 SkipExistingFilesInTargetDir = false
-            }));
+            }, NextDeep));
 
             deploymentPipeline.Add(new SiteBuildTask(new SiteBuildTaskOptions()
             {
@@ -60,7 +66,7 @@ namespace Deployment.DevTasks.DevSiteBuild
                 SourcePath = _options.SourcePath,
                 DestPath = _options.DestPath,
                 TempPath = tempDir.FullName
-            }));
+            }, NextDeep));
 
             deploymentPipeline.Run();
         }

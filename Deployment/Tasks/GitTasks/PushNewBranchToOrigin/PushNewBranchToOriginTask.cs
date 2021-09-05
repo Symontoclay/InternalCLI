@@ -12,6 +12,12 @@ namespace Deployment.Tasks.GitTasks.PushNewBranchToOrigin
     public class PushNewBranchToOriginTask : BaseDeploymentTask
     {
         public PushNewBranchToOriginTask(PushNewBranchToOriginTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public PushNewBranchToOriginTask(PushNewBranchToOriginTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

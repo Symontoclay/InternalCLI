@@ -13,6 +13,12 @@ namespace Deployment.Tasks.VersionTasks.UpdateSolutionVersion
     public class UpdateSolutionVersionTask : BaseDeploymentTask
     {
         public UpdateSolutionVersionTask(UpdateSolutionVersionTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public UpdateSolutionVersionTask(UpdateSolutionVersionTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
@@ -39,7 +45,7 @@ namespace Deployment.Tasks.VersionTasks.UpdateSolutionVersion
                 Exec(new UpdateProjectVersionTask(new UpdateProjectVersionTaskOptions() { 
                    ProjectFilePath = projectName,
                    Version = _options.Version
-                }));
+                }, NextDeep));
             }
         }
 

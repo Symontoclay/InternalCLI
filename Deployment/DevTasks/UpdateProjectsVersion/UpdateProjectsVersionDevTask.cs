@@ -15,6 +15,16 @@ namespace Deployment.DevTasks.UpdateProjectsVersion
 {
     public class UpdateProjectsVersionDevTask : BaseDeploymentTask
     {
+        public UpdateProjectsVersionDevTask()
+            : this(0u)
+        {
+        }
+
+        public UpdateProjectsVersionDevTask(uint deep)
+            : base(null, deep)
+        {
+        }
+
         /// <inheritdoc/>
         protected override void OnRun()
         {
@@ -41,13 +51,13 @@ namespace Deployment.DevTasks.UpdateProjectsVersion
                         {
                             SolutionFilePath = targetSolution.SlnPath,
                             Version = version
-                        }));
+                        }, NextDeep));
 
                         Exec(new UpdateSolutionCopyrightTask(new UpdateSolutionCopyrightTaskOptions()
                         {
                             SolutionFilePath = targetSolution.SlnPath,
                             Copyright = copyright
-                        }));
+                        }, NextDeep));
                         break;
 
                     case KindOfProject.Unity:
@@ -55,7 +65,7 @@ namespace Deployment.DevTasks.UpdateProjectsVersion
                         {
                             PackageSourcePath = targetSolution.SourcePath,
                             Version = version
-                        }));
+                        }, NextDeep));
                         break;
 
                     default:

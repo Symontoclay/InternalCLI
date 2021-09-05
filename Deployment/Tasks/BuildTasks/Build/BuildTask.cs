@@ -12,6 +12,12 @@ namespace Deployment.Tasks.BuildTasks.Build
     public class BuildTask : BaseDeploymentTask
     {
         public BuildTask(BuildTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public BuildTask(BuildTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

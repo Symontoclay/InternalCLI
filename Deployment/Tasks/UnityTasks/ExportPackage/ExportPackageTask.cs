@@ -13,6 +13,12 @@ namespace Deployment.Tasks.UnityTasks.ExportPackage
     public class ExportPackageTask : BaseDeploymentTask
     {
         public ExportPackageTask(ExportPackageTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public ExportPackageTask(ExportPackageTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }

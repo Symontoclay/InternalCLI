@@ -17,6 +17,12 @@ namespace Deployment.Tasks.VersionTasks.UpdateCopyrightInFileHeaders
 #endif
 
         public UpdateCopyrightInFileHeadersTask(UpdateCopyrightInFileHeadersTaskOptions options)
+            : this(options, 0u)
+        {
+        }
+
+        public UpdateCopyrightInFileHeadersTask(UpdateCopyrightInFileHeadersTaskOptions options, uint deep)
+            : base(options, deep)
         {
             _options = options;
         }
