@@ -40,7 +40,7 @@ namespace Deployment.ReleaseTasks.MakeRelease
         {
             if(!FutureReleaseGuard.MayIMakeRelease())
             {
-                _logger.Info("Making release is forbiden! There is not started release!");
+                _logger.Info("Making release is forbiden! New version has not been started!");
 
                 return;
             }
