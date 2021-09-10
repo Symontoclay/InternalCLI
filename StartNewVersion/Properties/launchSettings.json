@@ -1,8 +1,7 @@
 {
   "profiles": {
     "StartNewVersion": {
-      "commandName": "Project",
-      "commandLineArgs": "0.3.3"
+      "commandName": "Project"
     }
   }
 }
