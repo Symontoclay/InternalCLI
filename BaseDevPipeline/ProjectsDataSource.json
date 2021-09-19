@@ -96,7 +96,7 @@
     },
     {
       "Kind": "CLIFolder",
-      "Path": "%USERPROFILE%/Documents/SymOntoClayCLIDist"
+      "Path": "%USERPROFILE%/Documents/SymOntoClayCLIDist_1"
     }
   ],
   "Licenses": [

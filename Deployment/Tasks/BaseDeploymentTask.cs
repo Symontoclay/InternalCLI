@@ -138,21 +138,6 @@ namespace Deployment.Tasks
 
         protected abstract void OnRun();
 
-        protected int RunProcess(string fileName, string arguments)
-        {
-            _logger.Info($"{fileName} {arguments}");
-
-            var process = Process.Start(fileName, arguments);
-
-            process.WaitForExit();
-
-            var exitCode = process.ExitCode;
-
-            _logger.Info($"exitCode = {exitCode}");
-
-            return exitCode;
-        }
-
         /// <inheritdoc/>
         public override string ToString()
         {

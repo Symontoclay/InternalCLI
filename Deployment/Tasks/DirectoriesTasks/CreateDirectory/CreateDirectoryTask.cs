@@ -2,9 +2,11 @@
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Deployment.Tasks.DirectoriesTasks.CreateDirectory
@@ -34,6 +36,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CreateDirectory
         }
 
         /// <inheritdoc/>
+        [DebuggerHidden]
         protected override void OnRun()
         {
             var targetDir = _options.TargetDir;
@@ -42,7 +45,29 @@ namespace Deployment.Tasks.DirectoriesTasks.CreateDirectory
             {
                 if (!_options.SkipExistingFilesInTargetDir)
                 {
-                    Directory.Delete(targetDir, true);
+                    var n = 0;
+
+                    while(true)
+                    {
+                        n++;
+
+                        try
+                        {
+                            Directory.Delete(targetDir, true);
+
+                            break;
+                        }
+                        catch(System.UnauthorizedAccessException e)
+                        {
+#if DEBUG
+                            _logger.Info($"n = {n}");
+                            _logger.Info($"e = {e}");
+#endif
+                        }
+
+                        Thread.Sleep(5000);
+                    }
+                    
                     Directory.CreateDirectory(targetDir);
                 }
             }

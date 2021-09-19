@@ -1,4 +1,5 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,11 +50,13 @@ namespace Deployment.Tasks.BuildTasks.Test
                 sb.Append($" --runtime {_options.RuntimeIdentifier}");
             }
 
-            var exitCode = RunProcess("dotnet", sb.ToString());
+            var processWrapper = new ProcessSyncWrapper("dotnet", sb.ToString());
+
+            var exitCode = processWrapper.Run();
 
             if (exitCode != 0)
             {
-                throw new Exception($"Compilation of {_options.ProjectOrSoutionFileName} has been failed.");
+                throw new Exception($"Compilation of {_options.ProjectOrSoutionFileName} has been failed. | {string.Join(' ', processWrapper.Output)} | {string.Join(' ', processWrapper.Errors)}");
             }
         }
 
