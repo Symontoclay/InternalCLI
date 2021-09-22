@@ -8,7 +8,7 @@
   ],
   "UnityPaths": [
     "%ProgramFiles%/Unity/Editor/Unity.exe",
-    "%ProgramFiles%/Unity/Hub/Editor/2020.2.3f1/Editor/Unity.exe"
+    "%ProgramFiles%/Unity/Hub/Editor/2021.1.20f1/Editor/Unity.exe"
   ],
   "ArtifactsForDeployment": [
     "CLIArch",
