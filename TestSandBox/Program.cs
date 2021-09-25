@@ -105,13 +105,23 @@ namespace TestSandBox
                 {
                     _logger.Info($"e = {e}");
                 }
+
+                try
+                {
+                    var fileInfo = new FileInfo(file);
+                    fileInfo.Delete();
+                }
+                catch (Exception e)
+                {
+                    _logger.Info($"e = {e}");
+                }
             }
 
-            var startInfo = new ProcessStartInfo("cmd.exe", @"rmdir /s /q ""c:\Users\Acer\Documents\SymOntoClayCLIDist\""");
-            startInfo.CreateNoWindow = false;
-            startInfo.UseShellExecute = true;
+            //var startInfo = new ProcessStartInfo("cmd.exe", @"rmdir /s /q ""c:\Users\Acer\Documents\SymOntoClayCLIDist\""");
+            //startInfo.CreateNoWindow = false;
+            //startInfo.UseShellExecute = true;
 
-            var proc = Process.Start(startInfo);
+            //var proc = Process.Start(startInfo);
 
             //proc.WaitForExit();
 
