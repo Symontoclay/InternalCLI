@@ -26,6 +26,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using TestSandBox.XMLDoc;
 using XMLDocReader.CSharpDoc;
 
@@ -80,42 +81,49 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var dir = @"c:\Users\Acer\Documents\SymOntoClayCLIDist\";
+            var dir = @"c:\Users\Acer\Documents\SymOntoClayCLIDist";
 
-            try
-            {
-                Directory.Delete(dir, true);
-            }catch(Exception e)
-            {
-                _logger.Info($"e = {e}");
-            }            
+            Directory.Move(dir, @"c:\Users\Acer\Documents\tmp2");
 
-            var files = Directory.GetFiles(dir);
+            Thread.Sleep(100);
 
-            foreach (var file in files)
-            {
-                _logger.Info($"file = {file}");
+            Directory.Delete(@"c:\Users\Acer\Documents\tmp2", true);//:(
 
-                try
-                {
-                    File.SetAttributes(file, FileAttributes.Normal);
-                    File.Delete(file);//:(
-                }
-                catch (Exception e)
-                {
-                    _logger.Info($"e = {e}");
-                }
+            //try
+            //{
+            //    Directory.Delete(dir, true);
+            //}
+            //catch (Exception e)
+            //{
+            //    _logger.Info($"e = {e}");
+            //}
 
-                try
-                {
-                    var fileInfo = new FileInfo(file);
-                    fileInfo.Delete();
-                }
-                catch (Exception e)
-                {
-                    _logger.Info($"e = {e}");
-                }
-            }
+            //var files = Directory.GetFiles(dir);
+
+            //foreach (var file in files)
+            //{
+            //    _logger.Info($"file = {file}");
+
+            //    try
+            //    {
+            //        File.SetAttributes(file, FileAttributes.Normal);
+            //        File.Delete(file);//:(
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        _logger.Info($"e = {e}");
+            //    }
+
+            //    try
+            //    {
+            //        var fileInfo = new FileInfo(file);
+            //        fileInfo.Delete();
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        _logger.Info($"e = {e}");
+            //    }
+            //}
 
             //var startInfo = new ProcessStartInfo("cmd.exe", @"rmdir /s /q ""c:\Users\Acer\Documents\SymOntoClayCLIDist\""");
             //startInfo.CreateNoWindow = false;
