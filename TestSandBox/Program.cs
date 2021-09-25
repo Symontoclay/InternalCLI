@@ -83,15 +83,15 @@ namespace TestSandBox
 
             var dir = @"c:\Users\Acer\Documents\SymOntoClayCLIDist";
 
-            Directory.Move(dir, @"c:\Users\Acer\Documents\tmp2");
+            //Directory.Move(dir, @"c:\Users\Acer\Documents\tmp2");
 
-            Thread.Sleep(100);
+            //Thread.Sleep(100);
 
-            Directory.Delete(@"c:\Users\Acer\Documents\tmp2", true);//:(
+            //Directory.Delete(@"c:\Users\Acer\Documents\tmp2", true);//:(
 
             //try
             //{
-            //    Directory.Delete(dir, true);
+                Directory.Delete(dir, true);
             //}
             //catch (Exception e)
             //{
