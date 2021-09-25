@@ -39,6 +39,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstRemoveDir();
+            //TstRemoveDir();
             //TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
             //TstTesting();
@@ -72,6 +74,50 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstRemoveDir()
+        {
+            _logger.Info("Begin");
+
+            var dir = @"c:\Users\Acer\Documents\SymOntoClayCLIDist\";
+
+            try
+            {
+                Directory.Delete(dir, true);
+            }catch(Exception e)
+            {
+                _logger.Info($"e = {e}");
+            }            
+
+            var files = Directory.GetFiles(dir);
+
+            foreach (var file in files)
+            {
+                _logger.Info($"file = {file}");
+
+                try
+                {
+                    File.SetAttributes(file, FileAttributes.Normal);
+                    File.Delete(file);//:(
+                }
+                catch (Exception e)
+                {
+                    _logger.Info($"e = {e}");
+                }
+            }
+
+            var startInfo = new ProcessStartInfo("cmd.exe", @"rmdir /s /q ""c:\Users\Acer\Documents\SymOntoClayCLIDist\""");
+            startInfo.CreateNoWindow = false;
+            startInfo.UseShellExecute = true;
+
+            var proc = Process.Start(startInfo);
+
+            //proc.WaitForExit();
+
+            //_logger.Info($"proc.ExitCode = {proc.ExitCode}");
+
+            _logger.Info("End");
         }
 
         private static void TstFinishRelease0_3_2()
