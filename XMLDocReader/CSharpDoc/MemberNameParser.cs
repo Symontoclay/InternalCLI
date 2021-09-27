@@ -10,7 +10,7 @@ namespace XMLDocReader.CSharpDoc
     public static class MemberNameParser
     {
 #if DEBUG
-        //private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static MemberName Parse(string initialName)
@@ -187,7 +187,7 @@ namespace XMLDocReader.CSharpDoc
             return memberName;
         }
 
-        private static void FillUpDisplayedName(MemberName memberName)
+        public static void FillUpDisplayedName(MemberName memberName)
         {
 #if DEBUG
             //_logger.Info($"memberName = '{memberName}'");
@@ -302,13 +302,7 @@ namespace XMLDocReader.CSharpDoc
                     //_logger.Info($"parameter = '{parameter}'");
 #endif
 
-                    var paramName = Parse($"T:{parameter}");
-
-#if DEBUG
-                    //_logger.Info($"paramName = {paramName}");
-#endif
-
-                    resultParamsList.Add(paramName.DisplayedName);
+                    resultParamsList.Add(parameter);
                 }
 
                 sb.Append(string.Join(',', resultParamsList));

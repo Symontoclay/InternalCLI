@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CollectionsHelpers.CollectionsHelpers;
+using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace XMLDocReader.CSharpDoc
 {
     public static class PackageCardCleaner
     {
-        //private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public static void Clean(List<PackageCard> packageCardsList, string targetRootTypeName, RepackingTypeCardOptions repackingTypeCardOptions)
         {
@@ -498,7 +499,7 @@ namespace XMLDocReader.CSharpDoc
                         {
                             //_logger.Info($"param = {param}");
 
-                            if (param.UsedTypesList.Any())
+                            if (!param.UsedTypesList.IsNullOrEmpty())
                             {
                                 foreach (var usedType in param.UsedTypesList)
                                 {

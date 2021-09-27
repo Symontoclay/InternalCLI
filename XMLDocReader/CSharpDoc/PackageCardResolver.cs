@@ -11,7 +11,7 @@ namespace XMLDocReader.CSharpDoc
 {
     public static class PackageCardResolver
     {
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public static void FillUpTypeCardsPropetties(List<PackageCard> packageCardsList, bool ignoreErrors)
         {
@@ -73,14 +73,17 @@ namespace XMLDocReader.CSharpDoc
                 {
                     var errorStr = $"'{baseType.FullName}' must be documented.";
 
-                    if(ignoreErrors)
+                    if(!baseType.FullName.StartsWith("UnityEngine."))
                     {
-                        classCard.ErrorsList.Add(errorStr);
-                    }
-                    else
-                    {
-                        throw new Exception(errorStr);
-                    }                    
+                        if (ignoreErrors)
+                        {
+                            classCard.ErrorsList.Add(errorStr);
+                        }
+                        else
+                        {
+                            throw new Exception(errorStr);
+                        }
+                    }                   
                 }
             }
 
@@ -262,11 +265,16 @@ namespace XMLDocReader.CSharpDoc
 
                         method.ReturnsTypeCard = typesTuple.Item1;
                         method.ReturnsTypeName = typesTuple.Item2;
-                        method.UsedTypesList = typesTuple.Item3;
+
+                        if(typesTuple.Item3 != null)
+                        {
+                            method.UsedTypesList = typesTuple.Item3;
+                        }
+                        
                         method.ErrorsList = typesTuple.Item4;
 
                         //_logger.Info($"method (after) = {method}");
-                    }                    
+                    }
 
                     if(method.ParamsList.Any())
                     {
@@ -279,6 +287,7 @@ namespace XMLDocReader.CSharpDoc
                             if(parameterType != null)
                             {
                                 //_logger.Info($"parameterType.FullName = {parameterType.FullName}");
+                                //_logger.Info($"parameterType.FullName = {parameterType.g}");
 
                                 var typesTuple = GetTargetTypesForMember(parameterType, namedElemsCardInitialNamesDict, ignoreErrors);
 

@@ -11,7 +11,7 @@ namespace XMLDocReader.CSharpDoc
     public static class PackageCardReader
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static List<PackageCard> Read(List<PackageCardReaderSettings> settingsList)
@@ -582,6 +582,18 @@ namespace XMLDocReader.CSharpDoc
 
             result.Returns = memberCard.Returns;
 
+#if DEBUG
+            //var genArgs = result.MethodInfo.GetGenericArguments();
+
+            //_logger.Info($"genArgs.Length = {genArgs.Length}");
+
+            //foreach(var genItem in genArgs)
+            //{
+            //    _logger.Info($"genItem.FullName = {genItem.FullName}");
+            //    _logger.Info($"genItem.Name = {genItem.Name}");
+            //}
+#endif
+
             if (memberCard.ParamsList.Any())
             {
                 var methodReflectionParamsList = result.MethodInfo.GetParameters();
@@ -604,13 +616,36 @@ namespace XMLDocReader.CSharpDoc
 
             if (memberCard.TypeParamsList.Any())
             {
-                throw new NotImplementedException();
+                foreach(var sourceItem in memberCard.TypeParamsList)
+                {
+#if DEBUG
+                    //_logger.Info($"sourceItem = {sourceItem}");
+#endif
+
+                    var typeParameter = new TypeParamCard();
+                    typeParameter.Name = sourceItem.Name;
+                    typeParameter.Value = sourceItem.Value;
+
+                    result.TypeParamsList.Add(typeParameter);
+
+                    memberCard.Name.TypeParametersList.Add(sourceItem.Name);
+
+#if DEBUG             
+                    //_logger.Info($"memberCard.Name = {memberCard.Name}");
+#endif
+                }
+
+                memberCard.Name.RecalculateDisplayedName();
             }
 
             if (memberCard.ExceptionsList.Any())
             {
                 throw new NotImplementedException();
             }
+
+#if DEBUG
+            //_logger.Info($"result.Name = {result.Name}");
+#endif
 
             return result;
         }

@@ -21,6 +21,11 @@ namespace XMLDocReader.CSharpDoc
         public List<string> TypeParametersList { get; set; } = new List<string>();
         public List<string> ParametersList { get; set; } = new List<string>();        
 
+        public void RecalculateDisplayedName()
+        {
+            MemberNameParser.FillUpDisplayedName(this);
+        }
+
         /// <inheritdoc/>
         public override string ToString()
         {

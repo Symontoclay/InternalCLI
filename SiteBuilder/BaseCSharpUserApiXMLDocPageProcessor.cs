@@ -29,6 +29,30 @@ namespace SiteBuilder
             sb.AppendLine($"<div>{GetContent(summary)}</div>");
         }
 
+        protected void PrintTypeParameters(StringBuilder sb, List<TypeParamCard> typeParamsList)
+        {
+            if (typeParamsList.Any())
+            {
+                sb.AppendLine("<h2>Type Parameters</h2>");
+
+                sb.AppendLine("<div>");
+                sb.AppendLine("<dl>");
+
+                foreach (var param in typeParamsList)
+                {
+#if DEBUG
+                    //_logger.Info($"param = {param}");
+#endif
+
+                    sb.AppendLine($"<dt>{param.Name}</dt>");
+                    sb.AppendLine($"<dd>{GetContent(param.Value)}</dd>");
+                }
+
+                sb.AppendLine("</dl>");
+                sb.AppendLine("</div>");
+            }
+        }
+
         protected void PrintParameters(StringBuilder sb, List<MethodParamCard> paramsList)
         {
             if (paramsList.Any())

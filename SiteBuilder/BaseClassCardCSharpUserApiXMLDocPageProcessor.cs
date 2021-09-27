@@ -61,7 +61,11 @@ namespace SiteBuilder
             _classCard = classCard;
 
 #if DEBUG
-            if(_classCard.ExamplesList.Any())
+            //_logger.Info($"_classCard = {_classCard}");
+#endif
+
+#if DEBUG
+            if (_classCard.ExamplesList.Any())
             {
                 throw new NotImplementedException();
             }
