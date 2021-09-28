@@ -382,7 +382,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                             var wikiNode = doc.CreateElement("i");
                             parentNode.ReplaceChild(wikiNode, rootNode);
                             wikiNode.AddClass("fab fa-github");
-                            wikiNode.SetAttributeValue("title", "Facebook");
+                            wikiNode.SetAttributeValue("title", "GitHub");
                         }
                         break;
 

@@ -280,8 +280,11 @@ namespace SiteBuilder
 
             AppendLine("<footer class='container' role='contentinfo'>");
             AppendLine("<div class='row justify-content-center'>");
-            AppendLine("<div class='col col-md-10'>");//
-            AppendLine("<span style='font-size: 16px;'><a href='https://www.youtube.com/channel/UCgw9QmyKGZQXQyugbzCstZA'><i class='fab fa-youtube' title='SymOntoClay on Youtube'></i></a></span></br>");
+            AppendLine("<div class='col col-md-10'>");
+            AppendLine("<span style='font-size: 17px;'><a href='https://github.com/Symontoclay'><i class='fab fa-github' title='SymOntoClay on GitHub'></i></a></span>");
+            AppendLine("<span style='font-size: 17px;'><a href='https://www.youtube.com/channel/UCgw9QmyKGZQXQyugbzCstZA'><i class='fab fa-youtube' title='SymOntoClay on Youtube'></i></a></span>");
+            AppendLine("</br>");
+
             AppendLine("</br>");
             AppendLine($"This page was last modified on {_siteElement.LastUpdateDate.ToString("dd MMMM yyyy", _targetCulture)}</br>");
             //Append(", at ");
