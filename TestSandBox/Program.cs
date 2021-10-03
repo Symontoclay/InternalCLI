@@ -40,9 +40,9 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstRemoveDir();
             //TstRemoveDir();
-            //TstFinishRelease0_3_2();
+            //TstRemoveDir();
+            TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
             //TstTesting();
             //TstCreateReadme();//<==
