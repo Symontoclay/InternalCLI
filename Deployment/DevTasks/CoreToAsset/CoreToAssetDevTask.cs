@@ -1,4 +1,5 @@
 ﻿using BaseDevPipeline;
+using CollectionsHelpers.CollectionsHelpers;
 using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Build;
@@ -22,10 +23,11 @@ namespace Deployment.DevTasks.CoreToAsset
         }
 
         public CoreToAssetDevTask(uint deep)
-            : this(new CoreToAssetDevTaskOptions() 
+            : this(new CoreToAssetDevTaskOptions()
             {
                 CoreCProjPath = ProjectsDataSource.GetProject(KindOfProject.CoreAssetLib).CsProjPath,
-                DestDir = ProjectsDataSource.GetSolution(KindOfProject.Unity).SourcePath
+                DestDir = ProjectsDataSource.GetSolution(KindOfProject.Unity).SourcePath,
+                Plugins = ProjectsDataSource.GetProjects(KindOfProject.CorePlugin).Select(p => p.CsProjPath).ToList()
             }, deep)
         {
         }
@@ -69,6 +71,31 @@ namespace Deployment.DevTasks.CoreToAsset
                 OnlyFileExts = new List<string>() { "dll" },
                 FileNameShouldContain = new List<string>() { "SymOntoClay." }
             }, NextDeep));
+
+            if(!_options.Plugins.IsNullOrEmpty())
+            {
+                foreach(var pluginCProjPath in _options.Plugins)
+                {
+                    using var tempDir_2 = new TempDirectory();
+
+                    deploymentPipeline.Add(new BuildTask(new BuildTaskOptions()
+                    {
+                        ProjectOrSoutionFileName = pluginCProjPath,
+                        //BuildConfiguration = KindOfBuildConfiguration.Release,
+                        OutputDir = tempDir_2.FullName,
+                        NoLogo = true
+                    }, NextDeep));
+
+                    deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
+                    {
+                        SourceDir = tempDir_2.FullName,
+                        DestDir = _options.DestDir,
+                        SaveSubDirs = false,
+                        OnlyFileExts = new List<string>() { "dll" },
+                        FileNameShouldContain = new List<string>() { "SymOntoClay." }
+                    }, NextDeep));
+                }
+            }
 
             deploymentPipeline.Run();
         }
