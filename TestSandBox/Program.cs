@@ -3,6 +3,7 @@ using BaseDevPipeline.SourceData;
 using CommonMark;
 using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CSharpUtils;
 using Deployment;
 using Deployment.DevTasks.CoreToAsset;
 using Deployment.DevTasks.CreateReadmes;
@@ -27,6 +28,7 @@ using System.Net.Http.Json;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Xml.Linq;
 using TestSandBox.XMLDoc;
 using XMLDocReader.CSharpDoc;
 
@@ -40,9 +42,10 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstSetXmlDocFileNameToCsProj();
             //TstRemoveDir();
             //TstRemoveDir();
-            TstFinishRelease0_3_2();
+            //TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
             //TstTesting();
             //TstCreateReadme();//<==
@@ -75,6 +78,54 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstSetXmlDocFileNameToCsProj()
+        {
+            _logger.Info("Begin");
+
+            _logger.Info($"Path.GetDirectoryName(SymOntoClayCore.csproj) = {Path.GetDirectoryName("SymOntoClayCore.csproj")}");
+
+            var projFileName = Path.Combine(EVPath.Normalize("%USERPROFILE%"), @"source\repos\SymOntoClay\SymOntoClayCore\SymOntoClayCore.csproj");
+
+            _logger.Info($"Path.GetDirectoryName(projFileName) = {Path.GetDirectoryName(projFileName)}");
+
+            NTstSetXmlDocFileNameToCsProj(projFileName);
+
+            projFileName = Path.Combine(EVPath.Normalize("%USERPROFILE%"), @"source\repos\SymOntoClayAsset\Assembly-CSharp.csproj");
+
+            NTstSetXmlDocFileNameToCsProj(projFileName);
+
+            var result = CSharpProjectHelper.SetDocumentationFileInUnityProjectIfEmpty(projFileName);
+
+            _logger.Info($"result = {result}");
+
+            _logger.Info("End");
+        }
+
+        private static void NTstSetXmlDocFileNameToCsProj(string projFileName)
+        {
+            _logger.Info($"projFileName = {projFileName}");
+
+            XElement project = null;
+
+            using (var fs = File.OpenRead(projFileName))
+            {
+                project = XElement.Load(fs);
+            }
+
+            foreach (var projElem in project.Elements().Where(p => p.HasAttributes && p.Attributes().Any(x => x.Name == "Condition" && x.Value.Replace(" ", string.Empty).Trim() == "'$(Configuration)|$(Platform)'=='Debug|AnyCPU'")))
+            {
+                _logger.Info($"projElem = {projElem}");
+            }
+
+            var targetElem = project.Elements().FirstOrDefault(p => p.HasAttributes && p.Attributes().Any(x => x.Name == "Condition" && x.Value.Replace(" ", string.Empty).Trim() == "'$(Configuration)|$(Platform)'=='Debug|AnyCPU'"));
+
+            _logger.Info($"targetElem = {targetElem}");
+
+            var documentationFileNode = targetElem.Element("DocumentationFile");
+
+            _logger.Info($"documentationFileNode = {documentationFileNode}");
         }
 
         private static void TstRemoveDir()

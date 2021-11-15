@@ -11,7 +11,7 @@ namespace CSharpUtils
     public static class CSharpProjectHelper
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static List<string> GetCSharpFileNames(string projectFileName)
@@ -209,6 +209,73 @@ namespace CSharpUtils
             return needUpdate;
         }
 
+        public static string GetOutputPath(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
+        {
+            var project = LoadProject(projectFileName);
+
+            var propertyGroup = GetPropertyGroup(project, kindOfConfiguration);
+
+            var outputPathNode = propertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName.ToLower() == "OutputPath".ToLower());
+
+            return (outputPathNode?.Value)?? string.Empty;
+        }
+
+        public static string GetDocumentationFile(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
+        {
+            var project = LoadProject(projectFileName);
+
+            var propertyGroup = GetPropertyGroup(project, kindOfConfiguration);
+
+            var documentationFileNode = propertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName.ToLower() == "DocumentationFile".ToLower());
+
+            return (documentationFileNode?.Value) ?? string.Empty;
+        }
+
+        public static bool SetDocumentationFileInUnityProjectIfEmpty(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
+        {
+            return SetDocumentationFileIfEmpty(projectFileName, "Assembly-CSharp.xml", kindOfConfiguration);
+        }
+
+        public static bool SetDocumentationFileIfEmpty(string projectFileName, string documentationFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
+        {
+            if(!string.IsNullOrWhiteSpace(GetDocumentationFile(projectFileName, kindOfConfiguration)))
+            {
+                return false;
+            }
+
+            if(string.IsNullOrWhiteSpace(Path.GetDirectoryName(documentationFileName)))
+            {
+                documentationFileName = Path.Combine(GetOutputPath(projectFileName, kindOfConfiguration), documentationFileName);
+            }
+
+            return SetDocumentationFile(projectFileName, documentationFileName, kindOfConfiguration);
+        }
+
+        public static bool SetDocumentationFile(string projectFileName, string documentationFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
+        {
+            var project = LoadProject(projectFileName);
+
+            var propertyGroup = GetPropertyGroup(project, kindOfConfiguration);
+
+            var documentationFileNode = propertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName.ToLower() == "DocumentationFile".ToLower());
+
+            if(documentationFileNode == null)
+            {
+                documentationFileNode = new XElement(XName.Get("DocumentationFile"));
+                documentationFileNode.Value = documentationFileName;
+                documentationFileNode.RemoveAttributes();
+                propertyGroup.Add(documentationFileNode);
+            }
+            else
+            {
+                documentationFileNode.Value = documentationFileName;
+            }
+
+            SaveProject(project, projectFileName);
+
+            return true;
+        }
+
         private static XElement LoadProject(string projectFileName)
         {
             using (var fs = File.OpenRead(projectFileName))
@@ -222,7 +289,7 @@ namespace CSharpUtils
             project.Save(projectFileName);
             var txt = File.ReadAllText(projectFileName);
 
-            txt = txt.Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", string.Empty).TrimStart();
+            txt = txt.Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", string.Empty).Replace("xmlns=\"\"", string.Empty).TrimStart();
 
             File.WriteAllText(projectFileName, txt);
         }
@@ -230,6 +297,30 @@ namespace CSharpUtils
         private static XElement GetMainPropertyGroup(XElement project)
         {
             return project.Elements().FirstOrDefault(p => p.Name == "PropertyGroup" && !p.HasAttributes);
+        }
+
+        private static XElement GetPropertyGroup(XElement project, KindOfConfiguration kindOfConfiguration)
+        {
+            switch (kindOfConfiguration)
+            {
+                case KindOfConfiguration.Debug:
+                    return GetDebugPropertyGroup(project);
+
+                case KindOfConfiguration.Release:
+                    return GetReleasePropertyGroup(project);
+
+                default: 
+                    throw new ArgumentOutOfRangeException(nameof(kindOfConfiguration), kindOfConfiguration, null);
+            }
+        }
+
+        private static XElement GetDebugPropertyGroup(XElement project)
+        {
+            return project.Elements().FirstOrDefault(p => p.HasAttributes && p.Attributes().Any(x => x.Name == "Condition" && x.Value.Replace(" ", string.Empty).Trim() == "'$(Configuration)|$(Platform)'=='Debug|AnyCPU'"));
+        }
+        private static XElement GetReleasePropertyGroup(XElement project)
+        {
+            return project.Elements().FirstOrDefault(p => p.HasAttributes && p.Attributes().Any(x => x.Name == "Condition" && x.Value.Replace(" ", string.Empty).Trim() == "'$(Configuration)|$(Platform)'=='Release|AnyCPU'"));
         }
     }
 }
