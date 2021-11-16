@@ -2,9 +2,9 @@
 using CommonUtils.DebugHelpers;
 using Deployment.Helpers;
 using Deployment.Tasks;
-using Deployment.Tasks.VersionTasks.UpdateSolutionCopyright;
-using Deployment.Tasks.VersionTasks.UpdateSolutionVersion;
-using Deployment.Tasks.VersionTasks.UpdateUnityPackageVersion;
+using Deployment.Tasks.ProjectsTasks.UpdateSolutionCopyright;
+using Deployment.Tasks.ProjectsTasks.UpdateSolutionVersion;
+using Deployment.Tasks.ProjectsTasks.UpdateUnityPackageVersion;
 using System;
 using System.Collections.Generic;
 using System.Linq;

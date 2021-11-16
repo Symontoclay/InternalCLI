@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.VersionTasks.UpdateSolutionVersion
+namespace Deployment.Tasks.ProjectsTasks.UpdateUnityPackageVersion
 {
-    public class UpdateSolutionVersionTaskOptions : IObjectToString
+    public class UpdateUnityPackageVersionTaskOptions : IObjectToString
     {
-        public string SolutionFilePath { get; set; }
+        public string PackageSourcePath { get; set; }
         public string Version { get; set; }
 
         /// <inheritdoc/>
@@ -30,7 +30,7 @@ namespace Deployment.Tasks.VersionTasks.UpdateSolutionVersion
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(SolutionFilePath)} = {SolutionFilePath}");
+            sb.AppendLine($"{spaces}{nameof(PackageSourcePath)} = {PackageSourcePath}");
             sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
 
             return sb.ToString();

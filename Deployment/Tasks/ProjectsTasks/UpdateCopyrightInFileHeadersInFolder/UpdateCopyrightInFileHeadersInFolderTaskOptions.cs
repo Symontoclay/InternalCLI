@@ -5,19 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.VersionTasks.UpdateProjectVersion
+namespace Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInFolder
 {
-    public class UpdateProjectVersionTaskOptions : IObjectToString
+    public class UpdateCopyrightInFileHeadersInFolderTaskOptions : IObjectToString
     {
-        public string ProjectFilePath { get; set; }
-        public string Version { get; set; }
+        public string SourceDir { get; set; }
+        public string Text { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
         {
             return ToString(0u);
         }
-        
+
         /// <inheritdoc/>
         public string ToString(uint n)
         {
@@ -30,8 +30,8 @@ namespace Deployment.Tasks.VersionTasks.UpdateProjectVersion
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(ProjectFilePath)} = {ProjectFilePath}");
-            sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
+            sb.AppendLine($"{spaces}{nameof(Text)} = {Text}");
+            sb.AppendLine($"{spaces}{nameof(SourceDir)} = {SourceDir}");
 
             return sb.ToString();
         }

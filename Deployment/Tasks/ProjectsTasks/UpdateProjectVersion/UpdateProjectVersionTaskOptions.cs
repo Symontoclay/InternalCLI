@@ -5,19 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.VersionTasks.UpdateSolutionCopyright
+namespace Deployment.Tasks.ProjectsTasks.UpdateProjectVersion
 {
-    public class UpdateSolutionCopyrightTaskOptions : IObjectToString
+    public class UpdateProjectVersionTaskOptions : IObjectToString
     {
-        public string SolutionFilePath { get; set; }
-        public string Copyright { get; set; }
+        public string ProjectFilePath { get; set; }
+        public string Version { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
         {
             return ToString(0u);
         }
-
+        
         /// <inheritdoc/>
         public string ToString(uint n)
         {
@@ -30,8 +30,8 @@ namespace Deployment.Tasks.VersionTasks.UpdateSolutionCopyright
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(SolutionFilePath)} = {SolutionFilePath}");
-            sb.AppendLine($"{spaces}{nameof(Copyright)} = {Copyright}");
+            sb.AppendLine($"{spaces}{nameof(ProjectFilePath)} = {ProjectFilePath}");
+            sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
 
             return sb.ToString();
         }

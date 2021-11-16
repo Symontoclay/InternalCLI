@@ -1,6 +1,6 @@
 ﻿using CommonUtils.DebugHelpers;
 using Deployment.Helpers;
-using Deployment.Tasks.VersionTasks.UpdateCopyrightInFileHeaders;
+using Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeaders;
 using Newtonsoft.Json;
 using NLog;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.VersionTasks.UpdateCopyrightInFileHeadersInFolder
+namespace Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInFolder
 {
     public class UpdateCopyrightInFileHeadersInFolderTask : BaseDeploymentTask
     {

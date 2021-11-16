@@ -1,8 +1,8 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
-using Deployment.Tasks.VersionTasks.UpdateCopyrightInFileHeadersInCSProjectOrSolution;
-using Deployment.Tasks.VersionTasks.UpdateCopyrightInFileHeadersInFolder;
+using Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInCSProjectOrSolution;
+using Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInFolder;
 using System;
 using System.Collections.Generic;
 using System.Linq;

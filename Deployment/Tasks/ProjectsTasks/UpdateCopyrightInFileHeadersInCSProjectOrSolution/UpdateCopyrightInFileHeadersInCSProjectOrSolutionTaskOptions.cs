@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.VersionTasks.UpdateUnityPackageVersion
+namespace Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInCSProjectOrSolution
 {
-    public class UpdateUnityPackageVersionTaskOptions : IObjectToString
+    public class UpdateCopyrightInFileHeadersInCSProjectOrSolutionTaskOptions : IObjectToString
     {
-        public string PackageSourcePath { get; set; }
-        public string Version { get; set; }
+        public string SourceDir { get; set; }
+        public string Text { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -30,8 +30,8 @@ namespace Deployment.Tasks.VersionTasks.UpdateUnityPackageVersion
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(PackageSourcePath)} = {PackageSourcePath}");
-            sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
+            sb.AppendLine($"{spaces}{nameof(Text)} = {Text}");
+            sb.AppendLine($"{spaces}{nameof(SourceDir)} = {SourceDir}");
 
             return sb.ToString();
         }

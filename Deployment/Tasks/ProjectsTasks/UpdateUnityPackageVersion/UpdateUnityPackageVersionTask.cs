@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.VersionTasks.UpdateUnityPackageVersion
+namespace Deployment.Tasks.ProjectsTasks.UpdateUnityPackageVersion
 {
     public class UpdateUnityPackageVersionTask : BaseDeploymentTask
     {

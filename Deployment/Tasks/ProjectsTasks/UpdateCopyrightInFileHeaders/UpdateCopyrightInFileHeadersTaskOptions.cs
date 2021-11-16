@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.VersionTasks.UpdateCopyrightInFileHeaders
+namespace Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeaders
 {
     public class UpdateCopyrightInFileHeadersTaskOptions : IObjectToString
     {

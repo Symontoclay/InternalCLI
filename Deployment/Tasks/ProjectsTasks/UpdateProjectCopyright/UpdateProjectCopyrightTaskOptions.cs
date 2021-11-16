@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.VersionTasks.UpdateProjectCopyright
+namespace Deployment.Tasks.ProjectsTasks.UpdateProjectCopyright
 {
     public class UpdateProjectCopyrightTaskOptions : IObjectToString
     {

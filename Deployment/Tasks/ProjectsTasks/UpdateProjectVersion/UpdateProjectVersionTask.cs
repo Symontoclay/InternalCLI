@@ -6,17 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.VersionTasks.UpdateProjectCopyright
+namespace Deployment.Tasks.ProjectsTasks.UpdateProjectVersion
 {
-    public class UpdateProjectCopyrightTask : BaseDeploymentTask
+    public class UpdateProjectVersionTask : BaseDeploymentTask
     {
-        public UpdateProjectCopyrightTask(UpdateProjectCopyrightTaskOptions options, uint deep)
+        public UpdateProjectVersionTask(UpdateProjectVersionTaskOptions options, uint deep)
             : base(options, deep)
         {
             _options = options;
         }
 
-        private readonly UpdateProjectCopyrightTaskOptions _options;
+        private readonly UpdateProjectVersionTaskOptions _options;
 
         /// <inheritdoc/>
         protected override void OnValidateOptions()
@@ -28,7 +28,7 @@ namespace Deployment.Tasks.VersionTasks.UpdateProjectCopyright
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            CSharpProjectHelper.SetCopyright(_options.ProjectFilePath, _options.Copyright);
+            CSharpProjectHelper.SetVersion(_options.ProjectFilePath, _options.Version);
         }
 
         /// <inheritdoc/>
@@ -38,9 +38,9 @@ namespace Deployment.Tasks.VersionTasks.UpdateProjectCopyright
 
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Updates copyright in project '{_options.ProjectFilePath}'.");
-            sb.AppendLine($"{spaces}The copyright:");
-            sb.AppendLine(_options.Copyright);
+            sb.AppendLine($"{spaces}Updates version in project '{_options.ProjectFilePath}'.");
+            sb.AppendLine($"{spaces}The version:");
+            sb.AppendLine(_options.Version);
             sb.Append(PrintValidation(n));
 
             return sb.ToString();

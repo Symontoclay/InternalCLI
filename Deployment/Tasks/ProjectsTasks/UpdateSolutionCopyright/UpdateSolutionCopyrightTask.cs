@@ -1,6 +1,6 @@
 ﻿using CommonUtils.DebugHelpers;
 using CSharpUtils;
-using Deployment.Tasks.VersionTasks.UpdateProjectCopyright;
+using Deployment.Tasks.ProjectsTasks.UpdateProjectCopyright;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.VersionTasks.UpdateSolutionCopyright
+namespace Deployment.Tasks.ProjectsTasks.UpdateSolutionCopyright
 {
     public class UpdateSolutionCopyrightTask : BaseDeploymentTask
     {

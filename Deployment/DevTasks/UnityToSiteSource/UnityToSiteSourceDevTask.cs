@@ -4,6 +4,7 @@ using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Build;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
+using Deployment.Tasks.ProjectsTasks.SetDocumentationFileInUnityProjectIfEmpty;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -54,6 +55,11 @@ namespace Deployment.DevTasks.UnityToSiteSource
             var deploymentPipeline = new DeploymentPipeline();
 
             var unityCsProjectPath = Path.Combine(_options.UnitySlnPath, "Assembly-CSharp.csproj");
+
+            deploymentPipeline.Add(new SetDocumentationFileInUnityProjectIfEmptyTask(
+                new SetDocumentationFileInUnityProjectIfEmptyTaskOptions() {
+                     ProjectFilePath = unityCsProjectPath
+                }, NextDeep));
 
             deploymentPipeline.Add(new BuildTask(new BuildTaskOptions()
             {

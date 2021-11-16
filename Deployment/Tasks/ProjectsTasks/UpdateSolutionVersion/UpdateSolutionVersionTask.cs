@@ -1,6 +1,6 @@
 ﻿using CommonUtils.DebugHelpers;
 using CSharpUtils;
-using Deployment.Tasks.VersionTasks.UpdateProjectVersion;
+using Deployment.Tasks.ProjectsTasks.UpdateProjectVersion;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.VersionTasks.UpdateSolutionVersion
+namespace Deployment.Tasks.ProjectsTasks.UpdateSolutionVersion
 {
     public class UpdateSolutionVersionTask : BaseDeploymentTask
     {
