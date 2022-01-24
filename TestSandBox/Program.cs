@@ -42,7 +42,9 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstSetXmlDocFileNameToCsProj();
+            //TstEnumerateAssetsFiles();
+            TstCopyProjectSource();
+            //TstSetXmlDocFileNameToCsProj();
             //TstRemoveDir();
             //TstRemoveDir();
             //TstFinishRelease0_3_2();
@@ -78,6 +80,156 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstEnumerateAssetsFiles()
+        {
+            _logger.Info("Begin");
+
+            var sb = new StringBuilder();
+
+            var slnFolder = Path.Combine(EVPath.Normalize("%USERPROFILE%"), @"source\repos\SymOntoClayAsset\Assets\SymOntoClay");
+
+            _logger.Info($"slnFolder = {slnFolder}");            
+
+            TstEnumerateAssetsFiles_ProcessDir(slnFolder, sb);
+
+            slnFolder = Path.Combine(EVPath.Normalize("%USERPROFILE%"), @"source\repos\SymOntoClayAsset\Assets\SymOntoClaySamles");
+
+            _logger.Info($"slnFolder = {slnFolder}");
+
+            TstEnumerateAssetsFiles_ProcessDir(slnFolder, sb);
+
+            _logger.Info($"sb = {sb}");
+
+            File.WriteAllText(Path.GetRandomFileName(), sb.ToString());
+
+            _logger.Info("End");
+        }
+
+        private static void TstEnumerateAssetsFiles_ProcessDir(string dir, StringBuilder sb)
+        {
+            _logger.Info($"dir = {dir}");
+
+            var subDirs = Directory.GetDirectories(dir);
+
+            foreach(var subDir in subDirs)
+            {
+                TstEnumerateAssetsFiles_ProcessDir(subDir, sb);
+            }
+
+            var files = Directory.GetFiles(dir);
+
+            foreach (var file in files)
+            {
+                if(file.EndsWith(".meta"))
+                {
+                    continue;
+                }
+
+                if(file.EndsWith("LICENSE"))
+                {
+                    continue;
+                }
+
+                if (file.EndsWith("package.json"))
+                {
+                    continue;
+                }
+
+                if (file.EndsWith("README.md"))
+                {
+                    continue;
+                }
+
+                if (file.EndsWith("SymOntoClay.Core.dll"))
+                {
+                    continue;
+                }
+
+                if (file.EndsWith("SymOntoClay.CoreHelper.dll"))
+                {
+                    continue;
+                }
+
+                if (file.EndsWith("SymOntoClay.SoundBuses.dll"))
+                {
+                    continue;
+                }
+
+                if (file.EndsWith("SymOntoClay.UnityAsset.Core.dll"))
+                {
+                    continue;
+                }
+
+                _logger.Info($"file = {file}");
+
+                sb.AppendLine(file);
+            }
+        }
+
+        private static void TstCopyProjectSource()
+        {
+            _logger.Info("Begin");
+
+            var slnFolder = Path.Combine(EVPath.Normalize("%USERPROFILE%"), @"source\repos\SymOntoClay");
+
+            _logger.Info($"slnFolder = {slnFolder}");
+
+            var targetFolder = @"d:\tmp\SymOntoClay_1";
+
+            _logger.Info($"targetFolder = {targetFolder}");
+
+            TstCopyProjectSource_ProcessDir(slnFolder, targetFolder, slnFolder);
+
+            _logger.Info("End");
+        }
+
+        private static void TstCopyProjectSource_ProcessDir(string dir, string targetFolder, string slnFolder)
+        {
+            if (dir.EndsWith(".git"))
+            {
+                return;
+            }
+
+            if (dir.EndsWith(".vs"))
+            {
+                return;
+            }
+
+            if (dir.EndsWith("bin"))
+            {
+                return;
+            }
+
+            if (dir.EndsWith("obj"))
+            {
+                return;
+            }
+
+            _logger.Info($"dir = {dir}");
+
+            var newDirName = dir.Replace(slnFolder, targetFolder);
+
+            _logger.Info($"newDirName = {newDirName}");
+
+            var subDirs = Directory.GetDirectories(dir);
+
+            foreach (var subDir in subDirs)
+            {
+                TstCopyProjectSource_ProcessDir(subDir, targetFolder, slnFolder);
+            }
+
+            var files = Directory.GetFiles(dir);
+
+            foreach (var file in files)
+            {
+                _logger.Info($"file = {file}");
+
+                var newFileName = file.Replace(slnFolder, targetFolder);
+
+                _logger.Info($"newFileName = {newFileName}");
+            }
         }
 
         private static void TstSetXmlDocFileNameToCsProj()
