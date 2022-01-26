@@ -250,6 +250,11 @@ namespace BaseDevPipeline.Data.Implementation
         {
             if (string.IsNullOrWhiteSpace(sourceSlnPath))
             {
+                if(!Directory.Exists(sourceSlnPath))
+                {
+                    return string.Empty;
+                }
+
                 var slnFiles = Directory.GetFiles(path, "*.sln").Select(p => PathsHelper.Normalize(p));
 
                 if(!slnFiles.Any())

@@ -136,7 +136,7 @@ namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
         {
             return JsonConvert.DeserializeObject<List<ReleaseItem>>(File.ReadAllText(_options.ReleaseNotesFilePath));
         }
-
+        
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
         {

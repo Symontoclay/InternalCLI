@@ -87,6 +87,24 @@
       "Href": "https://github.com/Symontoclay/ReleaseMngr",
       "Path": "%BASE_PATH%/ReleaseMngr",
       "License": "MIT"
+    },
+    {
+      "Kind": "UnityExample",
+      "Href": "https://github.com/Symontoclay/demo1_linear_code",
+      "Path": "%BASE_PATH%/demo1_linear_code",
+      "License": "MIT"
+    },
+    {
+      "Kind": "UnityExample",
+      "Href": "https://github.com/Symontoclay/demo2_simple_trigger",
+      "Path": "%BASE_PATH%/demo2_simple_trigger",
+      "License": "MIT"
+    },
+    {
+      "Kind": "UnityExample",
+      "Href": "https://github.com/Symontoclay/demo3_action",
+      "Path": "%BASE_PATH%/demo3_action",
+      "License": "MIT"
     }
   ],
   "DevArtifacts": [

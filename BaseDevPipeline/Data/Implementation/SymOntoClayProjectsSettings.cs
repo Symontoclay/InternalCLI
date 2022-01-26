@@ -91,6 +91,12 @@ namespace BaseDevPipeline.Data.Implementation
         }
 
         /// <inheritdoc/>
+        public IReadOnlyList<ISolutionSettings> GetUnityExampleSolutions()
+        {
+            return _unityExampleSolutions;
+        }
+
+        /// <inheritdoc/>
         public IProjectSettings GetProject(KindOfProject kind)
         {
             return GetProjects(kind).SingleOrDefault();
@@ -140,6 +146,7 @@ namespace BaseDevPipeline.Data.Implementation
             _solutionsDict = Solutions.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<ISolutionSettings>().ToList());
             _solutionsWithMaintainedReleases = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.ProjectSite || p.Kind == KindOfProject.Unity).Cast<ISolutionSettings>().ToList();
             _solutionsWithMaintainedVersionsInCSharpProjects = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.Unity).Cast<ISolutionSettings>().ToList();
+            _unityExampleSolutions = Solutions.Where(p => p.Kind == KindOfProject.UnityExample).Cast<ISolutionSettings>().ToList();
             _projectsDict = Projects.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<IProjectSettings>().ToList());
             _devArtifactsDict = DevArtifacts.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<IArtifactSettings>().ToList());
 
@@ -157,6 +164,7 @@ namespace BaseDevPipeline.Data.Implementation
         private Dictionary<KindOfProject, List<ISolutionSettings>> _solutionsDict;
         private List<ISolutionSettings> _solutionsWithMaintainedReleases;
         private List<ISolutionSettings> _solutionsWithMaintainedVersionsInCSharpProjects;
+        private List<ISolutionSettings> _unityExampleSolutions;
         private Dictionary<KindOfProject, List<IProjectSettings>> _projectsDict;
         private Dictionary<KindOfArtifact, List<IArtifactSettings>> _devArtifactsDict;
         private Dictionary<string, ILicenseSettings> _licesnsesDict;

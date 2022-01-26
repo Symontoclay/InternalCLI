@@ -20,6 +20,10 @@ namespace BaseDevPipeline
         UnitTest,
         IntegrationTest,
         AdditionalApp,
-        ReleaseMngrSolution
+        ReleaseMngrSolution,
+        /// <summary>
+        /// Describes repository with Unity example demoscene.
+        /// </summary>
+        UnityExample
     }
 }

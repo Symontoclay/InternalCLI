@@ -11,6 +11,8 @@ using Deployment.Helpers;
 using Deployment.ReleaseTasks.GitHubRelease;
 using Deployment.ReleaseTasks.MarkAsCompleted;
 using Deployment.Tasks;
+using Deployment.Tasks.BuildChangeLog;
+using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
 using Newtonsoft.Json;
 using NLog;
 using Octokit;
@@ -42,8 +44,10 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstUnityExampleSolutions();
+            //TstBuildChangeLog();
             //TstEnumerateAssetsFiles();
-            TstCopyProjectSource();
+            //TstCopyProjectSource();
             //TstSetXmlDocFileNameToCsProj();
             //TstRemoveDir();
             //TstRemoveDir();
@@ -82,6 +86,36 @@ namespace TestSandBox
             //TstReadXMLDoc();
         }
 
+        private static void TstUnityExampleSolutions()
+        {
+            _logger.Info("Begin");
+
+            var unityExamplesSolutionsList = ProjectsDataSource.GetUnityExampleSolutions();
+
+            foreach (var unityExamplesSolution in unityExamplesSolutionsList)
+            {
+                _logger.Info($"unityExamplesSolution = {unityExamplesSolution}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private static void TstBuildChangeLog()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new BuildChangeLogTask(new BuildChangeLogTaskOptions() { 
+                TargetChangeLogFileName = Path.Combine(Directory.GetCurrentDirectory(), "CHANGELOG.md"),
+                ReleaseNotesFilePath = CommonFileNamesHelper.BuildReleaseNotesPath()
+            }));
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
+        }
+
         private static void TstEnumerateAssetsFiles()
         {
             _logger.Info("Begin");
@@ -90,7 +124,7 @@ namespace TestSandBox
 
             var slnFolder = Path.Combine(EVPath.Normalize("%USERPROFILE%"), @"source\repos\SymOntoClayAsset\Assets\SymOntoClay");
 
-            _logger.Info($"slnFolder = {slnFolder}");            
+            _logger.Info($"slnFolder = {slnFolder}");
 
             TstEnumerateAssetsFiles_ProcessDir(slnFolder, sb);
 
@@ -176,6 +210,30 @@ namespace TestSandBox
 
             _logger.Info($"slnFolder = {slnFolder}");
 
+            var targetFolder = @"d:\tmp\SymOntoClay_2";
+
+            _logger.Info($"targetFolder = {targetFolder}");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new CopySourceFilesOfVSSolutionTask(new CopySourceFilesOfVSSolutionTaskOptions() { 
+                 SourceDir = slnFolder,
+                 DestDir = targetFolder
+            }));
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
+        }
+
+        private static void TstCopyProjectSource_2()
+        {
+            _logger.Info("Begin");
+
+            var slnFolder = Path.Combine(EVPath.Normalize("%USERPROFILE%"), @"source\repos\SymOntoClay");
+
+            _logger.Info($"slnFolder = {slnFolder}");
+
             var targetFolder = @"d:\tmp\SymOntoClay_1";
 
             _logger.Info($"targetFolder = {targetFolder}");
@@ -213,6 +271,11 @@ namespace TestSandBox
 
             _logger.Info($"newDirName = {newDirName}");
 
+            if(!Directory.Exists(newDirName))
+            {
+                Directory.CreateDirectory(newDirName);
+            }
+
             var subDirs = Directory.GetDirectories(dir);
 
             foreach (var subDir in subDirs)
@@ -229,6 +292,8 @@ namespace TestSandBox
                 var newFileName = file.Replace(slnFolder, targetFolder);
 
                 _logger.Info($"newFileName = {newFileName}");
+
+                File.Copy(file, newFileName, true);
             }
         }
 

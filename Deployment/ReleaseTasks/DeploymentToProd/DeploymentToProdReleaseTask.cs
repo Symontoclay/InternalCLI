@@ -1,6 +1,7 @@
 ﻿using CommonUtils.DebugHelpers;
 using Deployment.DevTasks.CoreToAsset;
 using Deployment.DevTasks.CoreToSiteSource;
+using Deployment.DevTasks.CreateAndCommitChangeLogs;
 using Deployment.DevTasks.CreateAndCommitReadmes;
 using Deployment.DevTasks.UnityToSiteSource;
 using Deployment.DevTasks.UpdateReleaseNotes;
@@ -36,6 +37,9 @@ namespace Deployment.ReleaseTasks.DeploymentToProd
 
             //Readmies
             Exec(new CreateAndCommitReadmesDevTask(NextDeep));
+
+            //CHANGELOG.md
+            Exec(new CreateAndCommitChangeLogsDevTask(NextDeep));
 
             //Release to GitHub
             Exec(new GitHubReleaseReleaseTask(NextDeep));
