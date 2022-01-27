@@ -24,6 +24,7 @@ namespace SiteBuilder.SiteData
         public string CSharpUserApiJsonPath { get; set; } = string.Empty;
         public string DestCSharpUserApiPath { get; set; } = string.Empty;
         public string DestKeyFeaturesPath { get; set; } = string.Empty;
+        public MicroDataInfo Microdata { get; set; }
         public List<string> IgnoredDirs { get; set; }
 
         private void Init()
@@ -57,6 +58,11 @@ namespace SiteBuilder.SiteData
             //{
             //    DestCSharpUserApiPath = DestCSharpUserApiPath;
             //}
+
+            if (Microdata == null)
+            {
+                Microdata = new MicroDataInfo();
+            }
         }
 
         /// <inheritdoc/>
@@ -90,6 +96,8 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(DestCSharpUserApiPath)} = {DestCSharpUserApiPath}");
             sb.AppendLine($"{spaces}{nameof(DestKeyFeaturesPath)} = {DestKeyFeaturesPath}");
             sb.PrintPODList(n, nameof(IgnoredDirs), IgnoredDirs);
+
+            sb.PrintObjProp(n, nameof(Microdata), Microdata);
 
             return sb.ToString();
         }

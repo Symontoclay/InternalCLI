@@ -141,43 +141,15 @@ namespace SiteBuilder
         private void GenerateText()
         {
             var sitePageInfo = _siteElement.SitePageInfo;
-            var siteMictodata = sitePageInfo.Microdata;
-
+            
             AppendLine("<!DOCTYPE html>");
-            AppendLine("<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>");
+            AppendLine("<html lang='en' xmlns='http://www.w3.org/1999/xhtml' prefix='og: https://ogp.me/ns#'>");
             AppendLine("<head>");
             AppendLine("<meta charset='utf-8' />");
             AppendLine("<meta name='generator' content='SymOntoClay/InternalCLI:SiteBuilder'>");
-            AppendLine("<meta property='og:type' content='article' />");
             AppendLine("<meta name='viewport' content='width=device-width, initial-scale=1'>");
 
-            if (!string.IsNullOrWhiteSpace(siteMictodata?.Title))
-            {
-                AppendLine($"<meta property='og:title' content='{siteMictodata.Title}' />");
-                //AppendLine($"<meta itemprop='name' content='{MicrodataTitle}' />");
-            }
-
-            if (!string.IsNullOrWhiteSpace(siteMictodata?.ImageUrl))
-            {
-                AppendLine($"<meta property='og:image' content='{PagesPathsHelper.RelativeHrefToAbsolute(siteMictodata.ImageUrl, _generalSiteBuilderSettings)}' />");
-                //AppendLine($"<link rel='\"image_src\" href=\"{PagesPathsHelper.RelativeHrefToAbsolute(ImageUrl)}\" />");
-                //AppendLine("<meta property='og:image:type' content='image/png'>");
-                //AppendLine("<meta property='og:image:width' content='300'>");
-                //AppendLine("<meta property='og:image:height' content='300'>");
-                if (!string.IsNullOrWhiteSpace(siteMictodata?.ImageAlt))
-                {
-                    //AppendLine($"<meta property='og:image:alt' content='{ImageAlt}' />");
-                }
-            }
-
-            AppendLine($"<meta property='og:url' content='{_siteElement.Href}' />");
-
-            if (!string.IsNullOrWhiteSpace(siteMictodata?.Description))
-            {
-                Append("<meta name='description' content='");
-                Append(siteMictodata.Description);
-                AppendLine("'>");
-            }
+            GenerateMicrodata();
 
             var title = GetTitle();
 
@@ -213,26 +185,7 @@ namespace SiteBuilder
                 AppendLine("<script src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>");
             }
 
-            var tmpGAScript = new StringBuilder();
-            tmpGAScript.AppendLine("<!-- Global site tag (gtag.js) - Google Analytics -->");
-            tmpGAScript.AppendLine("<script async src='https://www.googletagmanager.com/gtag/js?id=G-4T85EVM2WV'></script>");
-            tmpGAScript.AppendLine("<script>");
-            tmpGAScript.AppendLine("  window.dataLayer = window.dataLayer || [];");
-            tmpGAScript.AppendLine("  function gtag(){dataLayer.push(arguments);}");
-            tmpGAScript.AppendLine("  gtag('js', new Date());");
-            tmpGAScript.AppendLine("  gtag('config', 'G-4T85EVM2WV');");
-            tmpGAScript.AppendLine("</script>");
-
-            //tmpGAScript.Append("<script>");
-            //tmpGAScript.Append("(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){");
-            //tmpGAScript.Append("(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),");
-            //tmpGAScript.Append("m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)");
-            //tmpGAScript.Append("})(window,document,'script','//www.google-analytics.com/analytics.js','ga');");
-            //tmpGAScript.Append("ga('create', 'G-4T85EVM2WV', 'auto');");
-            //tmpGAScript.Append("ga('send', 'pageview');");
-            //tmpGAScript.Append("</script>");
-
-            AppendLine(tmpGAScript.ToString());
+            GenerateGoogleAnalytics();
 
             AppendLine("</head>");
             AppendLine("<body>");
@@ -283,6 +236,7 @@ namespace SiteBuilder
             AppendLine("<div class='col col-md-10'>");
             AppendLine("<span style='font-size: 17px;'><a href='https://github.com/Symontoclay'><i class='fab fa-github' title='SymOntoClay on GitHub'></i></a></span>");
             AppendLine("<span style='font-size: 17px;'><a href='https://www.youtube.com/channel/UCgw9QmyKGZQXQyugbzCstZA'><i class='fab fa-youtube' title='SymOntoClay on Youtube'></i></a></span>");
+            AppendLine("<span style='font-size: 17px;'><a href='https://github.com/Symontoclay/SymOntoClay/discussions'><i class='far fa-comments' title='Discussions'></i></a></span>");
             AppendLine("</br>");
 
             AppendLine("</br>");
@@ -331,6 +285,97 @@ namespace SiteBuilder
             }
 
             return $"{initYear} - {currentYear}";
+        }
+
+        private void GenerateMicrodata()
+        {
+            var globalMictodata = _generalSiteBuilderSettings.SiteSettings.Microdata;
+
+            var sitePageInfo = _siteElement.SitePageInfo;
+            var siteMictodata = sitePageInfo.Microdata;
+
+            AppendLine("<meta property='og:type' content='article' />");
+
+            if (!string.IsNullOrWhiteSpace(siteMictodata?.Title))
+            {
+                AppendLine($"<meta property='og:title' content='{siteMictodata.Title}' />");
+                //AppendLine($"<meta itemprop='name' content='{MicrodataTitle}' />");
+            }
+            else
+            {
+                if(!string.IsNullOrWhiteSpace(globalMictodata?.Title))
+                {
+                    AppendLine($"<meta property='og:title' content='{globalMictodata.Title}' />");
+                }
+            }
+
+            var needAdditionalImageSettings = false;
+
+            if (!string.IsNullOrWhiteSpace(siteMictodata?.ImageUrl))
+            {
+                var imageUrl = PagesPathsHelper.RelativeHrefToAbsolute(siteMictodata.ImageUrl, _generalSiteBuilderSettings);
+
+                AppendLine($"<meta property='og:image' content='{imageUrl}' />");
+                AppendLine($"<link rel='\"image_src\" href=\"{imageUrl}\" />");
+            }
+            else
+            {
+                if(!string.IsNullOrWhiteSpace(globalMictodata?.ImageUrl))
+                {
+                    var imageUrl = PagesPathsHelper.RelativeHrefToAbsolute(globalMictodata.ImageUrl, _generalSiteBuilderSettings);
+
+                    AppendLine($"<meta property='og:image' content='{imageUrl}' />");
+                    AppendLine($"<link rel='\"image_src\" href=\"{imageUrl}\" />");
+                }
+            }
+
+            if(needAdditionalImageSettings)
+            {
+                //AppendLine("<meta property='og:image:type' content='image/png'>");
+                //AppendLine("<meta property='og:image:width' content='300'>");
+                //AppendLine("<meta property='og:image:height' content='300'>");
+            }
+
+            if (!string.IsNullOrWhiteSpace(siteMictodata?.ImageAlt))
+            {
+                AppendLine($"<meta property='og:image:alt' content='{siteMictodata.ImageAlt}' />");
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(globalMictodata?.ImageAlt))
+                {
+                    AppendLine($"<meta property='og:image:alt' content='{globalMictodata.ImageAlt}' />");
+                }
+            }
+
+            AppendLine($"<meta property='og:url' content='{_siteElement.Href}' />");
+
+            if (!string.IsNullOrWhiteSpace(siteMictodata?.Description))
+            {
+                AppendLine($"<meta name='description' content='{siteMictodata.Description}'/>");
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(globalMictodata?.Description))
+                {
+                    AppendLine($"<meta name='description' content='{globalMictodata.Description}'/>");
+                }
+            }
+        }
+
+        private void GenerateGoogleAnalytics()
+        {
+            var tmpGAScript = new StringBuilder();
+            tmpGAScript.AppendLine("<!-- Global site tag (gtag.js) - Google Analytics -->");
+            tmpGAScript.AppendLine("<script async src='https://www.googletagmanager.com/gtag/js?id=G-4T85EVM2WV'></script>");
+            tmpGAScript.AppendLine("<script>");
+            tmpGAScript.AppendLine("  window.dataLayer = window.dataLayer || [];");
+            tmpGAScript.AppendLine("  function gtag(){dataLayer.push(arguments);}");
+            tmpGAScript.AppendLine("  gtag('js', new Date());");
+            tmpGAScript.AppendLine("  gtag('config', 'G-4T85EVM2WV');");
+            tmpGAScript.AppendLine("</script>");
+
+            AppendLine(tmpGAScript.ToString());
         }
 
         protected void GenerateArticle()

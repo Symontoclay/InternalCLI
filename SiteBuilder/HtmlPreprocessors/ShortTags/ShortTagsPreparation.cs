@@ -421,6 +421,15 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                         }
                         break;
 
+                    case "Discussions":
+                        {
+                            var wikiNode = doc.CreateElement("i");
+                            parentNode.ReplaceChild(wikiNode, rootNode);
+                            wikiNode.AddClass("far fa-comments");
+                            wikiNode.SetAttributeValue("title", "Discussions");
+                        }
+                        break;
+
                     default:
                         rootNode.Remove();
                         break;
