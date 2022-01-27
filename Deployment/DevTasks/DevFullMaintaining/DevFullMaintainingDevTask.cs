@@ -46,7 +46,7 @@ namespace Deployment.DevTasks.DevFullMaintaining
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            //sb.AppendLine($"{spaces}Builds and commits READMEs for all projects with maintained versions.");
+            //sb.AppendLine($"{spaces}Builds and commits versions and headers for all projects with maintained versions.");
             sb.Append(PrintValidation(n));
 
             return sb.ToString();
