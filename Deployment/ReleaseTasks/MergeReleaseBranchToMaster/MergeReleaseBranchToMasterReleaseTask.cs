@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using Deployment.DevTasks.CopyAndTest;
 using Deployment.Helpers;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Test;
@@ -88,7 +89,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
 
                 foreach(var projPath in projectsForTesting)
                 {
-                    Exec(new TestTask(new TestTaskOptions()
+                    Exec(new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
                     {
                         ProjectOrSoutionFileName = projPath
                     }, NextDeep));
@@ -120,7 +121,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
             {
                 foreach (var projPath in projectsForTesting)
                 {
-                    Exec(new TestTask(new TestTaskOptions()
+                    Exec(new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
                     {
                         ProjectOrSoutionFileName = projPath
                     }, NextDeep));
@@ -142,7 +143,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
             {
                 foreach (var projPath in projectsForTesting)
                 {
-                    Exec(new TestTask(new TestTaskOptions()
+                    Exec(new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
                     {
                         ProjectOrSoutionFileName = projPath
                     }, NextDeep));

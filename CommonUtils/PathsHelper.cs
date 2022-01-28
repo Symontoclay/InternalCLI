@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace CommonUtils
@@ -14,6 +15,22 @@ namespace CommonUtils
             }
 
             return EVPath.Normalize(path).Replace("\\", "/");
+        }
+
+        public static string GetSlnFolder(string projectOrSoutionFileName)
+        {
+            if (projectOrSoutionFileName.EndsWith(".sln"))
+            {
+                return Path.GetDirectoryName(projectOrSoutionFileName);
+            }
+
+            if(projectOrSoutionFileName.EndsWith(".csproj"))
+            {
+                var directoryInfo = new DirectoryInfo(Path.GetDirectoryName(projectOrSoutionFileName));
+                return directoryInfo.Parent.FullName;
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

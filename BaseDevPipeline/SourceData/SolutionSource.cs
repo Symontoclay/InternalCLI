@@ -24,6 +24,8 @@ namespace BaseDevPipeline.SourceData
         public bool IsCommonReadmeSource { get; set; }
         public string CommonReadmeSource { get; set; }
         public string CommonBadgesSource { get; set; }
+        public string CodeOfConductSource { get; set; }
+        public string ContributingSource { get; set; }
         public List<ProjectSource> Projects { get; set; }
         public List<string> ArtifactsForDeployment { get; set; }
 
@@ -57,6 +59,9 @@ namespace BaseDevPipeline.SourceData
             sb.AppendLine($"{spaces}{nameof(IsCommonReadmeSource)} = { IsCommonReadmeSource}");
             sb.AppendLine($"{spaces}{nameof(CommonReadmeSource)} = {CommonReadmeSource}");
             sb.AppendLine($"{spaces}{nameof(CommonBadgesSource)} = {CommonBadgesSource}");
+            sb.AppendLine($"{spaces}{nameof(CodeOfConductSource)} = {CodeOfConductSource}");
+            sb.AppendLine($"{spaces}{nameof(ContributingSource)} = {ContributingSource}");
+
             sb.PrintObjListProp(n, nameof(Projects), Projects);
             sb.PrintPODList(n, nameof(ArtifactsForDeployment), ArtifactsForDeployment);
 

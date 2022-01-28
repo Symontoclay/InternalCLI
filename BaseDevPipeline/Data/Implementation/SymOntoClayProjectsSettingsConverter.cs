@@ -242,6 +242,9 @@ namespace BaseDevPipeline.Data.Implementation
                 item.CommonReadmeSource = PathsHelper.Normalize(solutionSource.CommonReadmeSource);
                 item.CommonBadgesSource = PathsHelper.Normalize(solutionSource.CommonBadgesSource);
 
+                item.CodeOfConductSource = PathsHelper.Normalize(solutionSource.CodeOfConductSource);
+                item.ContributingSource = PathsHelper.Normalize(solutionSource.ContributingSource);
+
                 soulutions.Add(item);
             }
         }

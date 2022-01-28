@@ -333,6 +333,16 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 return;
             }
 
+            if(rootNode.Name == "curr_year")
+            {
+                var parentNode = rootNode.ParentNode;
+
+                var rootSpanNode = doc.CreateTextNode(DateTime.Now.Year.ToString());
+                parentNode.ReplaceChild(rootSpanNode, rootNode);
+
+                return;
+            }
+
             if (rootNode.Name == "ico")
             {
                 var parentNode = rootNode.ParentNode;

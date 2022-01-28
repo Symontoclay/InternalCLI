@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using Deployment.DevTasks.CopyAndTest;
 using Deployment.DevTasks.UpdateProjectsVersion;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Test;
@@ -31,7 +32,7 @@ namespace Deployment.DevTasks.UpdateTestAndCommitProjectsVersion
 
             var coreSolution = ProjectsDataSource.GetSolution(KindOfProject.CoreSolution);
 
-            Exec(new TestTask(new TestTaskOptions()
+            Exec(new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
             {
                 ProjectOrSoutionFileName = coreSolution.SlnPath
             }, NextDeep));

@@ -24,5 +24,7 @@ namespace BaseDevPipeline.Data
         bool EnableGenerateReadme { get; }
         string ReadmeSource { get; }
         string BadgesSource { get; }
+        string CodeOfConductSource { get; }
+        string ContributingSource { get; }
     }
 }

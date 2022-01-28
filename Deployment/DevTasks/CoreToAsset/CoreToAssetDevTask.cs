@@ -1,6 +1,7 @@
 ﻿using BaseDevPipeline;
 using CollectionsHelpers.CollectionsHelpers;
 using CommonUtils.DebugHelpers;
+using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Build;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
@@ -55,7 +56,7 @@ namespace Deployment.DevTasks.CoreToAsset
 
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new BuildTask(new BuildTaskOptions()
+            deploymentPipeline.Add(new CopyAndBuildVSProjectOrSolutionDevTask(new CopyAndBuildVSProjectOrSolutionDevTaskOptions()
             {
                 ProjectOrSoutionFileName = _options.CoreCProjPath,
                 //BuildConfiguration = KindOfBuildConfiguration.Release,
@@ -78,7 +79,7 @@ namespace Deployment.DevTasks.CoreToAsset
                 {
                     using var tempDir_2 = new TempDirectory();
 
-                    deploymentPipeline.Add(new BuildTask(new BuildTaskOptions()
+                    deploymentPipeline.Add(new CopyAndBuildVSProjectOrSolutionDevTask(new CopyAndBuildVSProjectOrSolutionDevTaskOptions()
                     {
                         ProjectOrSoutionFileName = pluginCProjPath,
                         //BuildConfiguration = KindOfBuildConfiguration.Release,

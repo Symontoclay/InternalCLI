@@ -41,6 +41,8 @@ namespace BaseDevPipeline.Data.Implementation
         public bool IsCommonReadmeSource { get; set; }
         public string CommonReadmeSource { get; set; }
         public string CommonBadgesSource { get; set; }
+        public string CodeOfConductSource { get; set; }
+        public string ContributingSource { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -75,6 +77,8 @@ namespace BaseDevPipeline.Data.Implementation
             sb.AppendLine($"{spaces}{nameof(EnableGenerateReadme)} = {EnableGenerateReadme}");
             sb.AppendLine($"{spaces}{nameof(ReadmeSource)} = {ReadmeSource}");
             sb.AppendLine($"{spaces}{nameof(BadgesSource)} = {BadgesSource}");
+            sb.AppendLine($"{spaces}{nameof(CodeOfConductSource)} = {CodeOfConductSource}");
+            sb.AppendLine($"{spaces}{nameof(ContributingSource)} = {ContributingSource}");
 
             return sb.ToString();
         }

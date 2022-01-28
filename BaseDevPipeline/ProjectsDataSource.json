@@ -72,7 +72,9 @@
       "IsCommonReadmeSource": true,
       "CommonReadmeSource": "%SLN_ROOT_PATH%/siteSource/CommonReadmes/__common_README.md",
       "CommonBadgesSource": "%SLN_ROOT_PATH%/siteSource/CommonReadmes/__common_BADGES.md",
-      "ReadmeSource": "%SLN_ROOT_PATH%/siteSource/__ReadmeSource.md"
+      "ReadmeSource": "%SLN_ROOT_PATH%/siteSource/__ReadmeSource.md",
+      "CodeOfConductSource": "%SLN_ROOT_PATH%/siteSource/__CODE_OF_CONDUCTSource.md",
+      "ContributingSource": "%SLN_ROOT_PATH%/siteSource/__CONTRIBUTINGSource.md"
     },
     {
       "Kind": "Unity",

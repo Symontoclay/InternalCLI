@@ -5,6 +5,8 @@ using CommonUtils;
 using CommonUtils.DebugHelpers;
 using CSharpUtils;
 using Deployment;
+using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
+using Deployment.DevTasks.CopyAndTest;
 using Deployment.DevTasks.CoreToAsset;
 using Deployment.DevTasks.CreateReadmes;
 using Deployment.Helpers;
@@ -12,7 +14,10 @@ using Deployment.ReleaseTasks.GitHubRelease;
 using Deployment.ReleaseTasks.MarkAsCompleted;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildChangeLog;
+using Deployment.Tasks.BuildContributing;
+using Deployment.Tasks.BuildLicense;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
+using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using Newtonsoft.Json;
 using NLog;
 using Octokit;
@@ -44,7 +49,11 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstUnityExampleSolutions();
+            TstCopyAndBuild();
+            //TstCopyAndTest();
+            //TstBuildContributingTask();
+            //TstBuildLicense();
+            //TstUnityExampleSolutions();
             //TstBuildChangeLog();
             //TstEnumerateAssetsFiles();
             //TstCopyProjectSource();
@@ -84,6 +93,96 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstCopyAndBuild()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
+            {
+                TargetDir = "a",
+                SkipExistingFilesInTargetDir = false
+            }));
+
+            deploymentPipeline.Add(new CopyAndBuildVSProjectOrSolutionDevTask(new CopyAndBuildVSProjectOrSolutionDevTaskOptions() {
+                ProjectOrSoutionFileName = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClay\SymOntoClayCore\SymOntoClayCore.csproj"),
+                //BuildConfiguration = KindOfBuildConfiguration.Release,
+                OutputDir = Path.Combine(Directory.GetCurrentDirectory(), "a"),
+                NoLogo = true
+            }));
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
+        }
+
+        private static void TstCopyAndTest()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
+            {
+                ProjectOrSoutionFileName = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClay\SymOntoClay.sln")
+            }));
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
+        }
+
+        private static void TstBuildContributingTask()
+        {
+            _logger.Info("Begin");
+
+            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+
+            _logger.Info($"siteSolution = {siteSolution}");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new BuildContributingTask(new BuildContributingTaskOptions() {
+                SiteSourcePath = siteSolution.SourcePath,
+                SiteDestPath = siteSolution.Path,
+                SiteName = siteSolution.RepositoryName,
+                SourceFileName = siteSolution.ContributingSource,
+                TargetFileName = Path.Combine(Directory.GetCurrentDirectory(), "CONTRIBUTING.md")
+            }));
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
+        }
+
+        private static void TstBuildLicense()
+        {
+            _logger.Info("Begin");
+
+            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+
+            _logger.Info($"siteSolution = {siteSolution}");
+
+            var repository = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects().First();
+
+            _logger.Info($"repository = {repository}");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new BuildLicenseTask(new BuildLicenseTaskOptions() {
+                SiteSourcePath = siteSolution.SourcePath,
+                SiteDestPath = siteSolution.Path,
+                SiteName = siteSolution.RepositoryName,
+                TargetFileName = Path.Combine(Directory.GetCurrentDirectory(), "LICENSE"),
+                Content = repository.License.Content
+            }));
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstUnityExampleSolutions()
