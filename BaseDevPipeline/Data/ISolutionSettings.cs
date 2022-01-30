@@ -26,5 +26,8 @@ namespace BaseDevPipeline.Data
         string BadgesSource { get; }
         string CodeOfConductSource { get; }
         string ContributingSource { get; }
+        string FullUnityVersion { get; }
+        string UnityVersion { get; }
+        string UnityRelease { get; }
     }
 }

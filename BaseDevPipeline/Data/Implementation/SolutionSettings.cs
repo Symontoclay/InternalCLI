@@ -43,6 +43,9 @@ namespace BaseDevPipeline.Data.Implementation
         public string CommonBadgesSource { get; set; }
         public string CodeOfConductSource { get; set; }
         public string ContributingSource { get; set; }
+        public string FullUnityVersion { get; set; } = string.Empty;
+        public string UnityVersion { get; set; } = string.Empty;
+        public string UnityRelease { get; set; } = string.Empty;
 
         /// <inheritdoc/>
         public override string ToString()
@@ -79,6 +82,9 @@ namespace BaseDevPipeline.Data.Implementation
             sb.AppendLine($"{spaces}{nameof(BadgesSource)} = {BadgesSource}");
             sb.AppendLine($"{spaces}{nameof(CodeOfConductSource)} = {CodeOfConductSource}");
             sb.AppendLine($"{spaces}{nameof(ContributingSource)} = {ContributingSource}");
+            sb.AppendLine($"{spaces}{nameof(FullUnityVersion)} = {FullUnityVersion}");
+            sb.AppendLine($"{spaces}{nameof(UnityVersion)} = {UnityVersion}");
+            sb.AppendLine($"{spaces}{nameof(UnityRelease)} = {UnityRelease}");
 
             return sb.ToString();
         }

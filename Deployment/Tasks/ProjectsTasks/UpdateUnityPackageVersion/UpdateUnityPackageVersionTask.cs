@@ -42,6 +42,16 @@ namespace Deployment.Tasks.ProjectsTasks.UpdateUnityPackageVersion
 
             manifest.version = _options.Version;
 
+            if(!string.IsNullOrWhiteSpace(_options.UnityVersion))
+            {
+                manifest.unity = _options.UnityVersion;
+            }
+
+            if (!string.IsNullOrWhiteSpace(_options.UnityRelease))
+            {
+                manifest.unityRelease = _options.UnityRelease;
+            }
+
             UnityPackageManifestModelHelper.SaveCompactFile(manifestFileName, manifest);
         }
 
@@ -54,6 +64,14 @@ namespace Deployment.Tasks.ProjectsTasks.UpdateUnityPackageVersion
 
             sb.AppendLine($"{spaces}Updates version in unity package '{_options.PackageSourcePath}'.");
             sb.AppendLine($"{spaces}The version: {_options.Version}");
+            if (!string.IsNullOrWhiteSpace(_options.UnityVersion))
+            {
+                sb.AppendLine($"{spaces}The unity version: {_options.UnityVersion}");
+            }
+            if (!string.IsNullOrWhiteSpace(_options.UnityRelease))
+            {
+                sb.AppendLine($"{spaces}The unity release: {_options.UnityRelease}");
+            }
             sb.Append(PrintValidation(n));
 
             return sb.ToString();

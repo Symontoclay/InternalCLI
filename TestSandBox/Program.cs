@@ -50,7 +50,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstUpdateUnityExampleRepository();
+            //TstUpdateUnityExampleRepository();
             //TstCopyAndBuild();
             //TstCopyAndTest();
             //TstBuildContributingTask();
@@ -84,7 +84,7 @@ namespace TestSandBox
             //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
-            //TstProjectsDataSource();
+            TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();

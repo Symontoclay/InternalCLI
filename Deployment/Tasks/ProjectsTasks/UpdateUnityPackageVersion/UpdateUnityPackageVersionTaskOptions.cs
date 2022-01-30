@@ -11,6 +11,8 @@ namespace Deployment.Tasks.ProjectsTasks.UpdateUnityPackageVersion
     {
         public string PackageSourcePath { get; set; }
         public string Version { get; set; }
+        public string UnityVersion { get; set; }
+        public string UnityRelease { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -32,6 +34,8 @@ namespace Deployment.Tasks.ProjectsTasks.UpdateUnityPackageVersion
 
             sb.AppendLine($"{spaces}{nameof(PackageSourcePath)} = {PackageSourcePath}");
             sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
+            sb.AppendLine($"{spaces}{nameof(UnityVersion)} = {UnityVersion}");
+            sb.AppendLine($"{spaces}{nameof(UnityRelease)} = {UnityRelease}");
 
             return sb.ToString();
         }

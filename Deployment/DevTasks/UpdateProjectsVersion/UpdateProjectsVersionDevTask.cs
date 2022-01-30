@@ -64,7 +64,9 @@ namespace Deployment.DevTasks.UpdateProjectsVersion
                         Exec(new UpdateUnityPackageVersionTask(new UpdateUnityPackageVersionTaskOptions()
                         {
                             PackageSourcePath = targetSolution.SourcePath,
-                            Version = version
+                            Version = version,
+                            UnityVersion = targetSolution.UnityVersion,
+                            UnityRelease = targetSolution.UnityRelease
                         }, NextDeep));
                         break;
 
