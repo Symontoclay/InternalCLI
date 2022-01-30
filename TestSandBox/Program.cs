@@ -19,6 +19,7 @@ using Deployment.Tasks.BuildContributing;
 using Deployment.Tasks.BuildLicense;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
+using Deployment.Tasks.GitTasks.Clone;
 using Newtonsoft.Json;
 using NLog;
 using Octokit;
@@ -50,6 +51,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstCloneRepository();
             //TstUpdateUnityExampleRepository();
             //TstCopyAndBuild();
             //TstCopyAndTest();
@@ -84,7 +86,7 @@ namespace TestSandBox
             //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
-            TstProjectsDataSource();
+            //TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
@@ -95,6 +97,24 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstCloneRepository()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new CloneTask(new CloneTaskOptions() { 
+                RepositoryHref = "https://github.com/metatypeman/a1.git",
+                RepositoryPath = PathsHelper.Normalize(@"%USERPROFILE%\source")
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstUpdateUnityExampleRepository()
