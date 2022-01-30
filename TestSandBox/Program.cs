@@ -9,6 +9,7 @@ using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
 using Deployment.DevTasks.CopyAndTest;
 using Deployment.DevTasks.CoreToAsset;
 using Deployment.DevTasks.CreateReadmes;
+using Deployment.DevTasks.UpdateUnityExampleRepository;
 using Deployment.Helpers;
 using Deployment.ReleaseTasks.GitHubRelease;
 using Deployment.ReleaseTasks.MarkAsCompleted;
@@ -49,7 +50,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstCopyAndBuild();
+            TstUpdateUnityExampleRepository();
+            //TstCopyAndBuild();
             //TstCopyAndTest();
             //TstBuildContributingTask();
             //TstBuildLicense();
@@ -93,6 +95,24 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstUpdateUnityExampleRepository()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new UpdateUnityExampleRepositoryDevTask(new UpdateUnityExampleRepositoryDevTaskOptions() { 
+                 SourceRepository = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClayAsset"),
+                 DestinationRepository = @"d:\demo1_linear_code\"
+            }));
+
+            //_logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstCopyAndBuild()

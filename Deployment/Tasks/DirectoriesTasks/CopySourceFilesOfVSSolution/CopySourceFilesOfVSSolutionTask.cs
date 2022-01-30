@@ -1,4 +1,5 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,7 +35,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            ProcessDir(_options.SourceDir, _options.DestDir, _options.SourceDir);
+            ProcessDir(_options.SourceDir, PathsHelper.Normalize(_options.DestDir), PathsHelper.Normalize(_options.SourceDir));
         }
 
         private void ProcessDir(string dir, string targetFolder, string slnFolder)
@@ -59,7 +60,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject
                 return;
             }
 
-            var newDirName = dir.Replace(slnFolder, targetFolder);
+            var newDirName = PathsHelper.Normalize(dir).Replace(slnFolder, targetFolder);
 
             if (!Directory.Exists(newDirName))
             {
@@ -77,7 +78,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject
 
             foreach (var file in files)
             {
-                var newFileName = file.Replace(slnFolder, targetFolder);
+                var newFileName = PathsHelper.Normalize(file).Replace(slnFolder, targetFolder);
 
                 File.Copy(file, newFileName, true);
             }
