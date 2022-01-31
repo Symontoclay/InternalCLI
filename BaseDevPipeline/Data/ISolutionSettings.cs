@@ -24,10 +24,10 @@ namespace BaseDevPipeline.Data
         bool EnableGenerateReadme { get; }
         string ReadmeSource { get; }
         string BadgesSource { get; }
-        string CodeOfConductSource { get; }
-        string ContributingSource { get; }
         string FullUnityVersion { get; }
         string UnityVersion { get; }
         string UnityRelease { get; }
+
+        void RereadUnityVersion();
     }
 }

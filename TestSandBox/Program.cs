@@ -9,6 +9,7 @@ using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
 using Deployment.DevTasks.CopyAndTest;
 using Deployment.DevTasks.CoreToAsset;
 using Deployment.DevTasks.CreateReadmes;
+using Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories;
 using Deployment.DevTasks.UpdateUnityExampleRepository;
 using Deployment.Helpers;
 using Deployment.ReleaseTasks.GitHubRelease;
@@ -51,7 +52,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstCloneRepository();
+            TstUpdateAndCommitUnityExampleRepositoriesDevTask();
+            //TstCloneRepository();
             //TstUpdateUnityExampleRepository();
             //TstCopyAndBuild();
             //TstCopyAndTest();
@@ -97,6 +99,21 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstUpdateAndCommitUnityExampleRepositoriesDevTask()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new UpdateAndCommitUnityExampleRepositoriesDevTask());
+
+            //_logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstCloneRepository()
@@ -179,7 +196,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+
+            var siteSolution = settings.GetSolution(KindOfProject.ProjectSite);
 
             _logger.Info($"siteSolution = {siteSolution}");
 
@@ -189,7 +208,7 @@ namespace TestSandBox
                 SiteSourcePath = siteSolution.SourcePath,
                 SiteDestPath = siteSolution.Path,
                 SiteName = siteSolution.RepositoryName,
-                SourceFileName = siteSolution.ContributingSource,
+                SourceFileName = settings.ContributingSource,
                 TargetFileName = Path.Combine(Directory.GetCurrentDirectory(), "CONTRIBUTING.md")
             }));
 

@@ -246,17 +246,7 @@ namespace BaseDevPipeline.Data.Implementation
                 item.CodeOfConductSource = PathsHelper.Normalize(solutionSource.CodeOfConductSource);
                 item.ContributingSource = PathsHelper.Normalize(solutionSource.ContributingSource);
 
-                if(item.Kind == KindOfProject.Unity || item.Kind == KindOfProject.UnityExample)
-                {
-                    var targetUnityVersion = UnityHelper.GetTargetUnityVersion(item.Path);
-
-                    item.FullUnityVersion = targetUnityVersion;
-
-                    var lastPointPos = targetUnityVersion.IndexOf(".", targetUnityVersion.IndexOf(".") + 1);
-
-                    item.UnityVersion = targetUnityVersion.Substring(0, lastPointPos);
-                    item.UnityRelease = targetUnityVersion.Substring(lastPointPos + 1);
-                }
+                item.RereadUnityVersion();
 
                 soulutions.Add(item);
             }

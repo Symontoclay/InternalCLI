@@ -15,6 +15,11 @@ namespace CSharpUtils
         {
             var targetProjectPath = Path.Combine(rootPath, "ProjectSettings", "ProjectVersion.txt");
 
+            if (!File.Exists(targetProjectPath))
+            {
+                return string.Empty;
+            }
+
             var linesList = File.ReadAllLines(targetProjectPath);
 
             var line = linesList.SingleOrDefault(p => p.Contains("m_EditorVersion:"));

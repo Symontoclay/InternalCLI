@@ -17,6 +17,9 @@ namespace BaseDevPipeline.Data.Implementation
         public string CommonReadmeSource { get; set; }
         public string CommonBadgesSource { get; set; }
 
+        public string CodeOfConductSource { get; set; }
+        public string ContributingSource { get; set; }
+
         public string Copyright { get; set; }
 
         /// <inheritdoc/>
@@ -158,6 +161,8 @@ namespace BaseDevPipeline.Data.Implementation
             {
                 CommonReadmeSource = solutionForCommonReadme.CommonReadmeSource;
                 CommonBadgesSource = solutionForCommonReadme.CommonBadgesSource;
+                CodeOfConductSource = solutionForCommonReadme.CodeOfConductSource;
+                ContributingSource = solutionForCommonReadme.ContributingSource;
             }
         }
 
@@ -194,6 +199,8 @@ namespace BaseDevPipeline.Data.Implementation
             sb.AppendLine($"{spaces}{nameof(BasePath)} = {BasePath}");
             sb.AppendLine($"{spaces}{nameof(CommonReadmeSource)} = {CommonReadmeSource}");
             sb.AppendLine($"{spaces}{nameof(CommonBadgesSource)} = {CommonBadgesSource}");
+            sb.AppendLine($"{spaces}{nameof(CodeOfConductSource)} = {CodeOfConductSource}");
+            sb.AppendLine($"{spaces}{nameof(ContributingSource)} = {ContributingSource}");
             sb.AppendLine($"{spaces}{nameof(SecretFilePath)} = {SecretFilePath}");
             sb.PrintObjListProp(n, nameof(UtityExeInstances), UtityExeInstances);
             sb.PrintObjListProp(n, nameof(Solutions), Solutions);

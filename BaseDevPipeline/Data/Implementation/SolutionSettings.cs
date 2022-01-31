@@ -1,4 +1,5 @@
 ﻿using CommonUtils.DebugHelpers;
+using CSharpUtils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,25 @@ namespace BaseDevPipeline.Data.Implementation
         public string FullUnityVersion { get; set; } = string.Empty;
         public string UnityVersion { get; set; } = string.Empty;
         public string UnityRelease { get; set; } = string.Empty;
+
+        /// <inheritdoc/>
+        public void RereadUnityVersion()
+        {
+            if (Kind == KindOfProject.Unity || Kind == KindOfProject.UnityExample)
+            {
+                var targetUnityVersion = UnityHelper.GetTargetUnityVersion(Path);
+
+                if (!string.IsNullOrWhiteSpace(targetUnityVersion))
+                {
+                    FullUnityVersion = targetUnityVersion;
+
+                    var lastPointPos = targetUnityVersion.IndexOf(".", targetUnityVersion.IndexOf(".") + 1);
+
+                    UnityVersion = targetUnityVersion.Substring(0, lastPointPos);
+                    UnityRelease = targetUnityVersion.Substring(lastPointPos + 1);
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public override string ToString()
