@@ -111,7 +111,7 @@ namespace TestSandBox
 
             //_logger.Info($"deploymentPipeline = {deploymentPipeline}");
 
-            deploymentPipeline.Run();
+            //deploymentPipeline.Run();
 
             _logger.Info("End");
         }

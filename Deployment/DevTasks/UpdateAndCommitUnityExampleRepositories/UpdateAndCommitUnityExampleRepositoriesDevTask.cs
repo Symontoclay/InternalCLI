@@ -4,6 +4,7 @@ using Deployment.DevTasks.UpdateUnityExampleRepository;
 using Deployment.Tasks;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using Deployment.Tasks.GitTasks.Clone;
+using Deployment.Tasks.GitTasks.CommitAllAndPush;
 using Deployment.Tasks.GitTasks.Pull;
 using NLog;
 using System;
@@ -17,10 +18,6 @@ namespace Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories
 {
     public class UpdateAndCommitUnityExampleRepositoriesDevTask : BaseDeploymentTask
     {
-#if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
-
         public UpdateAndCommitUnityExampleRepositoriesDevTask()
             : this(0u)
         {
@@ -42,11 +39,7 @@ namespace Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories
 
             foreach (var unityExampleSolution in unityExamplesSolutionsList)
             {
-#if DEBUG
-                _logger.Info($"unityExampleSolution = {unityExampleSolution}");
-#endif
-
-                if(Directory.Exists(unityExampleSolution.Path))
+                if (Directory.Exists(unityExampleSolution.Path))
                 {
                     Exec(new PullTask(new PullTaskOptions()
                     {
@@ -55,29 +48,27 @@ namespace Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories
                 }
                 else
                 {
-                    Exec(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
-                    {
-                        TargetDir = unityExampleSolution.Path,
-                        SkipExistingFilesInTargetDir = false
-                    }, NextDeep));
+                    var baseReposPath = Path.GetDirectoryName(unityExampleSolution.Path);
 
                     Exec(new CloneTask(new CloneTaskOptions()
                     {
                         RepositoryHref = unityExampleSolution.GitFileHref,
-                        RepositoryPath = unityExampleSolution.Path
+                        RepositoryPath = baseReposPath
                     }, NextDeep));
 
                     unityExampleSolution.RereadUnityVersion();
-
-#if DEBUG
-                    _logger.Info($"unityExampleSolution (2) = {unityExampleSolution}");
-#endif
                 }
 
                 Exec(new UpdateUnityExampleRepositoryDevTask(new UpdateUnityExampleRepositoryDevTaskOptions()
                 {
-                    SourceRepository = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClayAsset"),
+                    SourceRepository = unitySolution.Path,
                     DestinationRepository = unityExampleSolution.Path
+                }, NextDeep));
+
+                Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
+                {
+                    Message = "SymOntoClay version has been updated",
+                    RepositoryPaths = new List<string> { unityExampleSolution.Path }
                 }, NextDeep));
             }
         }
