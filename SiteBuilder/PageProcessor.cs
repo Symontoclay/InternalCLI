@@ -245,7 +245,7 @@ namespace SiteBuilder
             //Append(LastUpdateDate.ToString("HH:mm", tmpFormat));
 
             AppendLine($"&copy;&nbsp; <a href='https://github.com/metatypeman'>Sergiy Tolkachov AKA metatypeman</a> {GetCopyRightDate()}</br>");
-            AppendLine("The text is available under the <a href='https://creativecommons.org/licenses/by-sa/3.0/'>Creative Commons Attribution-ShareAlike 3.0 Unported License By Sa</a>&nbsp;<i class='fab fa-creative-commons-by'></i><i class='fab fa-creative-commons-sa'></i>");
+            AppendLine("The text is available under the <a href='https://creativecommons.org/licenses/by-sa/4.0/'>Creative Commons Attribution-ShareAlike 4.0 International License By Sa</a>&nbsp;<i class='fab fa-creative-commons'></i><i class='fab fa-creative-commons-by'></i><i class='fab fa-creative-commons-sa'></i>");
             AppendLine("</br>&nbsp;");
             AppendLine("</div>");
             AppendLine("</div>");

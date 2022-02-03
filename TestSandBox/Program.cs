@@ -52,13 +52,13 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstUpdateAndCommitUnityExampleRepositoriesDevTask();
+            //TstUpdateAndCommitUnityExampleRepositoriesDevTask();
             //TstCloneRepository();
             //TstUpdateUnityExampleRepository();
             //TstCopyAndBuild();
             //TstCopyAndTest();
             //TstBuildContributingTask();
-            //TstBuildLicense();
+            TstBuildLicense();
             //TstUnityExampleSolutions();
             //TstBuildChangeLog();
             //TstEnumerateAssetsFiles();
@@ -225,7 +225,9 @@ namespace TestSandBox
 
             _logger.Info($"siteSolution = {siteSolution}");
 
-            var repository = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects().First();
+            //var repository = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects().First();
+
+            var repository = siteSolution;
 
             _logger.Info($"repository = {repository}");
 

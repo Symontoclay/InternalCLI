@@ -15,6 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="CCBYSA4_0License.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="MITLicense.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

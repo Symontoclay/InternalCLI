@@ -69,6 +69,7 @@
       "Href": "https://github.com/Symontoclay/symontoclay.github.io",
       "Path": "%BASE_PATH%/symontoclay.github.io",
       "SourcePath": "%SLN_ROOT_PATH%/siteSource/",
+      "License": "CCBYSA4_0",
       "IsCommonReadmeSource": true,
       "CommonReadmeSource": "%SLN_ROOT_PATH%/siteSource/CommonReadmes/__common_README.md",
       "CommonBadgesSource": "%SLN_ROOT_PATH%/siteSource/CommonReadmes/__common_BADGES.md",
@@ -127,6 +128,10 @@
     {
       "Name": "MIT",
       "FileName": "%APPDIR%/MITLicense.txt"
+    },
+    {
+      "Name": "CCBYSA4_0",
+      "FileName": "%APPDIR%/CCBYSA4_0License.txt"
     }
   ],
   "Copyright": "Copyright (c) 2020 - 2021 Sergiy Tolkachov aka metatypeman"
