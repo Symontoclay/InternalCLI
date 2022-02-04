@@ -54,14 +54,14 @@ namespace TestSandBox
 
             //TstUpdateAndCommitUnityExampleRepositoriesDevTask();
             //TstCloneRepository();
-            //TstUpdateUnityExampleRepository();
+            TstUpdateUnityExampleRepository();
             //TstCopyAndBuild();
             //TstCopyAndTest();
             //TstBuildContributingTask();
             //TstBuildLicense();
             //TstUnityExampleSolutions();
             //TstBuildChangeLog();
-            TstEnumerateAssetsFiles();
+            //TstEnumerateAssetsFiles();
             //TstCopyProjectSource();
             //TstSetXmlDocFileNameToCsProj();
             //TstRemoveDir();
@@ -142,7 +142,7 @@ namespace TestSandBox
 
             deploymentPipeline.Add(new UpdateUnityExampleRepositoryDevTask(new UpdateUnityExampleRepositoryDevTaskOptions() { 
                  SourceRepository = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClayAsset"),
-                 DestinationRepository = @"d:\demo1_linear_code\"
+                 DestinationRepository = @"d:\tmp\demo1_linear_code\"
             }));
 
             //_logger.Info($"deploymentPipeline = {deploymentPipeline}");

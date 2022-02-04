@@ -39,6 +39,7 @@ namespace Deployment.DevTasks.UpdateUnityExampleRepository
         {
             UpdatePpubishedAssetDirectory();
             UpdateSamplesDirectory();
+            UpdateSymOntoClayScriptsDirectory();
         }
 
         private void UpdatePpubishedAssetDirectory()
@@ -99,6 +100,36 @@ namespace Deployment.DevTasks.UpdateUnityExampleRepository
                 var newFileName = PathsHelper.Normalize(file).Replace(baseSourceDir, baseDestDir);
 
                 File.Copy(file, newFileName, true);
+            }
+        }
+
+        private void UpdateSymOntoClayScriptsDirectory()
+        {
+            var oldSymOntoClayScriptsDirectory = PathsHelper.Normalize(Path.Combine(_options.DestinationRepository, "Assets", "SymOntoClayDSLCode"));
+
+            if(!Directory.Exists(oldSymOntoClayScriptsDirectory))
+            {
+                return;
+            }
+
+            var destinationSymOntoClayScriptsDirectory = PathsHelper.Normalize(Path.Combine(_options.DestinationRepository, "Assets", "SymOntoClayScripts"));
+
+            if(Directory.Exists(destinationSymOntoClayScriptsDirectory))
+            {
+                Directory.Delete(destinationSymOntoClayScriptsDirectory, true);
+            }
+
+            Directory.CreateDirectory(destinationSymOntoClayScriptsDirectory);
+
+            EnumerateFilesForCopying(oldSymOntoClayScriptsDirectory, oldSymOntoClayScriptsDirectory, destinationSymOntoClayScriptsDirectory);
+
+            Directory.Delete(oldSymOntoClayScriptsDirectory, true);
+
+            var oldSymOntoClayScriptsDirectoryMetaFileName = $"{oldSymOntoClayScriptsDirectory}.meta";
+
+            if(File.Exists(oldSymOntoClayScriptsDirectoryMetaFileName))
+            {
+                File.Delete(oldSymOntoClayScriptsDirectoryMetaFileName);
             }
         }
 
