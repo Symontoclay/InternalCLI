@@ -58,10 +58,10 @@ namespace TestSandBox
             //TstCopyAndBuild();
             //TstCopyAndTest();
             //TstBuildContributingTask();
-            TstBuildLicense();
+            //TstBuildLicense();
             //TstUnityExampleSolutions();
             //TstBuildChangeLog();
-            //TstEnumerateAssetsFiles();
+            TstEnumerateAssetsFiles();
             //TstCopyProjectSource();
             //TstSetXmlDocFileNameToCsProj();
             //TstRemoveDir();
@@ -356,9 +356,12 @@ namespace TestSandBox
                     continue;
                 }
 
-                _logger.Info($"file = {file}");
+                var fileNameForPrinting = file.Substring(file.IndexOf("SymOntoClayAsset"));
 
-                sb.AppendLine(file);
+                _logger.Info($"file = {file}");
+                _logger.Info($"fileNameForPrinting = {fileNameForPrinting}");
+
+                sb.AppendLine(fileNameForPrinting);
             }
         }
 

@@ -61,9 +61,17 @@ namespace SiteBuilder.HtmlPreprocessors.RoadmapGeneration
             var parentNode = rootNode.ParentNode;
             parentNode.ReplaceChild(newRoadMapNode, rootNode);
 
+            newRoadMapNode.AddClass("roadmap-container");
+
+            var roadMapStartNode = doc.CreateElement("div");
+            newRoadMapNode.AppendChild(roadMapStartNode);
+            roadMapStartNode.AddClass("roadmap-start");
+
 #if DEBUG
-            //_logger.Info($"GeneralSettings.RoadMapItemsList.Count = {GeneralSettings.RoadMapItemsList.Count}");
+            //_logger.Info($"generalSiteBuilderSettings.RoadMapItemsList.Count = {generalSiteBuilderSettings.RoadMapItemsList.Count}");
 #endif
+
+            var odd = true;
 
             foreach (var item in generalSiteBuilderSettings.RoadMapItemsList)
             {
@@ -71,58 +79,44 @@ namespace SiteBuilder.HtmlPreprocessors.RoadmapGeneration
                 //_logger.Info($"item = {item}");
 #endif
 
-                if(item.Kind != KindOfRoadMapItem.Step && item.Kind != KindOfRoadMapItem.Unplanned)
-                {
-                    throw new NotImplementedException();
-                }
-
-                if(item.KindOfCompeltion == KindOfRoadMapItemCompeltion.Completed || item.KindOfCompeltion == KindOfRoadMapItemCompeltion.Unknown)
-                {
-                    continue;
-                }
-
-#if DEBUG
-                //_logger.Info($"item = {item}");
-#endif
-
                 var itemNode = doc.CreateElement("div");
-                newRoadMapNode.AppendChild(itemNode);
-                itemNode.SetAttributeValue("style", "margin-bottom: 20px;");
+                roadMapStartNode.AppendChild(itemNode);
+                itemNode.AddClass("roadmap-start-block");
 
-                var sb = new StringBuilder();
+                var itemContentNode = doc.CreateElement("div");
+                itemNode.AppendChild(itemContentNode);
+                itemContentNode.AddClass("roadmap-start-content");
 
-                if(item.Kind == KindOfRoadMapItem.Step)
+                var itemLRColumn = doc.CreateElement("div");
+                itemContentNode.AppendChild(itemLRColumn);
+
+                if(odd)
                 {
-                    sb.AppendLine($"<h2>{item.Name}</h2>");
+                    itemLRColumn.AddClass("roadmap-left-column");
 
-                    if (item.KindOfCompeltion == KindOfRoadMapItemCompeltion.Developed)
-                    {
-                        sb.AppendLine($"<div><i class='fas fa-tasks'></i>&nbsp;&nbsp;In development</div>");
-                    }
-                    else
-                    {
-                        sb.AppendLine($"<div><i class='fas fa-hourglass-start'></i>&nbsp;&nbsp;Planned</div>");
-                    }
-
-                    sb.AppendLine($"<div><i class='far fa-calendar-alt'></i>&nbsp;&nbsp;<span style='font-weight: bold;'>Period</span>: {item.Start.Value.ToString("D", _targetCulture)} - {item.End.Value.ToString("D", _targetCulture)}</div>");
-
-                    sb.AppendLine($"<div><span style='font-weight: bold;'>Version</span>: {item.Version}</div>");
+                    odd = false;
                 }
                 else
                 {
-                    if(item.Kind == KindOfRoadMapItem.Unplanned)
-                    {
-                        sb.AppendLine("<h2><i class='fas fa-warehouse'></i>&nbsp;&nbsp;Undivided backlog</h2>");
-                    }
-                    else
-                    {
-                        throw new NotImplementedException();
-                    }
+                    itemLRColumn.AddClass("roadmap-right-column");
+
+                    odd = true;
                 }
 
-                sb.AppendLine($"<div>{ContentPreprocessor.Run(item.Description, item.IsMarkdown, generalSiteBuilderSettings)}</div>");
+                var sb = new StringBuilder();
 
-                itemNode.InnerHtml = sb.ToString();
+                sb.AppendLine($"<h4>{item.Title}</h4>");
+
+                sb.AppendLine($"<p><b>{item.PeriodOfCompletion}</b></p>");
+
+                sb.AppendLine($"<p>{ContentPreprocessor.Run(item.Description, item.IsMarkDown, generalSiteBuilderSettings)}</p>");
+
+                if(!string.IsNullOrWhiteSpace(item.HrefWithDetailedInfomation))
+                {
+                    sb.AppendLine($"<p><a href='{item.HrefWithDetailedInfomation}'>Read more</a></p>");
+                }
+
+                itemLRColumn.InnerHtml = sb.ToString();
             }
         }
     }

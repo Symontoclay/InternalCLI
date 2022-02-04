@@ -199,6 +199,18 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 return;
             }
 
+            if (rootNode.Name == "contributing_preview_content")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                newNode.InnerHtml = "<include path='CommonFragments/contributing_preview_content.thtml'/>";
+
+                return;
+            }
+
             //if(rootNode.Name == "")
             //{
             //    var newNode = doc.CreateElement("div");
