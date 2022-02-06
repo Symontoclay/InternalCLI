@@ -58,7 +58,7 @@ namespace Deployment.ReleaseTasks.DeploymentToProd
             Exec(new GitHubReleaseReleaseTask(NextDeep));
 
             //Update unity examples repositories
-            Exec(new UpdateAndCommitUnityExampleRepositoriesDevTask(NextDeep));
+            //Exec(new UpdateAndCommitUnityExampleRepositoriesDevTask(NextDeep));
         }
 
         /// <inheritdoc/>

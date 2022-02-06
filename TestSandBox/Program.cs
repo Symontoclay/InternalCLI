@@ -54,7 +54,7 @@ namespace TestSandBox
 
             //TstUpdateAndCommitUnityExampleRepositoriesDevTask();
             //TstCloneRepository();
-            TstUpdateUnityExampleRepository();
+            //TstUpdateUnityExampleRepository();
             //TstCopyAndBuild();
             //TstCopyAndTest();
             //TstBuildContributingTask();

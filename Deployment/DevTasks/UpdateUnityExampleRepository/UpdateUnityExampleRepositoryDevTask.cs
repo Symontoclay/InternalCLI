@@ -13,6 +13,9 @@ namespace Deployment.DevTasks.UpdateUnityExampleRepository
 {
     public class UpdateUnityExampleRepositoryDevTask : BaseDeploymentTask
     {
+#if DEBUG
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
         public UpdateUnityExampleRepositoryDevTask(UpdateUnityExampleRepositoryDevTaskOptions options)
              : this(options, 0u)
         {
@@ -37,6 +40,11 @@ namespace Deployment.DevTasks.UpdateUnityExampleRepository
         /// <inheritdoc/>
         protected override void OnRun()
         {
+#if DEBUG
+            _logger.Info($"_options.SourceRepository = {_options.SourceRepository}");
+            _logger.Info($"_options.DestinationRepository = {_options.DestinationRepository}");
+#endif
+
             UpdatePpubishedAssetDirectory();
             UpdateSamplesDirectory();
             UpdateSymOntoClayScriptsDirectory();
@@ -48,7 +56,12 @@ namespace Deployment.DevTasks.UpdateUnityExampleRepository
 
             var destinationPublishedAssetDirectory = PathsHelper.Normalize(Path.Combine(_options.DestinationRepository, "Assets", "SymOntoClay"));
 
-            if(Directory.Exists(destinationPublishedAssetDirectory))
+#if DEBUG
+            _logger.Info($"pubishedAssetDirectory = {pubishedAssetDirectory}");
+            _logger.Info($"destinationPublishedAssetDirectory = {destinationPublishedAssetDirectory}");
+#endif
+
+            if (Directory.Exists(destinationPublishedAssetDirectory))
             {
                 Directory.Delete(destinationPublishedAssetDirectory, true);
             }
@@ -60,6 +73,10 @@ namespace Deployment.DevTasks.UpdateUnityExampleRepository
         {
             var oldSsamplesDirectory = PathsHelper.Normalize(Path.Combine(_options.DestinationRepository, "Assets", "ExamplesOfSymOntoClay"));
 
+#if DEBUG
+            _logger.Info($"oldSsamplesDirectory = {oldSsamplesDirectory}");
+#endif
+
             if (Directory.Exists(oldSsamplesDirectory))
             {
                 Directory.Delete(oldSsamplesDirectory, true);
@@ -68,6 +85,16 @@ namespace Deployment.DevTasks.UpdateUnityExampleRepository
             var samplesDirectory = PathsHelper.Normalize(Path.Combine(_options.SourceRepository, "Assets", "SymOntoClaySamles"));
 
             var destinationSamplesDirectory = PathsHelper.Normalize(Path.Combine(_options.DestinationRepository, "Assets", "SymOntoClaySamles"));
+
+            if(Directory.Exists(destinationSamplesDirectory))
+            {
+                Directory.Delete(destinationSamplesDirectory, true);
+            }
+
+#if DEBUG
+            _logger.Info($"samplesDirectory = {samplesDirectory}");
+            _logger.Info($"destinationSamplesDirectory = {destinationSamplesDirectory}");
+#endif
 
             EnumerateFilesForCopying(samplesDirectory, samplesDirectory, destinationSamplesDirectory);
         }
@@ -107,14 +134,26 @@ namespace Deployment.DevTasks.UpdateUnityExampleRepository
         {
             var oldSymOntoClayScriptsDirectory = PathsHelper.Normalize(Path.Combine(_options.DestinationRepository, "Assets", "SymOntoClayDSLCode"));
 
-            if(!Directory.Exists(oldSymOntoClayScriptsDirectory))
+#if DEBUG
+            _logger.Info($"oldSymOntoClayScriptsDirectory = {oldSymOntoClayScriptsDirectory}");
+#endif
+
+            if (!Directory.Exists(oldSymOntoClayScriptsDirectory))
             {
+#if DEBUG
+                _logger.Info("!Directory.Exists(oldSymOntoClayScriptsDirectory) return;");
+#endif
+
                 return;
             }
 
             var destinationSymOntoClayScriptsDirectory = PathsHelper.Normalize(Path.Combine(_options.DestinationRepository, "Assets", "SymOntoClayScripts"));
 
-            if(Directory.Exists(destinationSymOntoClayScriptsDirectory))
+#if DEBUG
+            _logger.Info($"destinationSymOntoClayScriptsDirectory = {destinationSymOntoClayScriptsDirectory}");
+#endif
+
+            if (Directory.Exists(destinationSymOntoClayScriptsDirectory))
             {
                 Directory.Delete(destinationSymOntoClayScriptsDirectory, true);
             }
@@ -127,7 +166,11 @@ namespace Deployment.DevTasks.UpdateUnityExampleRepository
 
             var oldSymOntoClayScriptsDirectoryMetaFileName = $"{oldSymOntoClayScriptsDirectory}.meta";
 
-            if(File.Exists(oldSymOntoClayScriptsDirectoryMetaFileName))
+#if DEBUG
+            _logger.Info($"oldSymOntoClayScriptsDirectoryMetaFileName = {oldSymOntoClayScriptsDirectoryMetaFileName}");
+#endif
+
+            if (File.Exists(oldSymOntoClayScriptsDirectoryMetaFileName))
             {
                 File.Delete(oldSymOntoClayScriptsDirectoryMetaFileName);
             }
