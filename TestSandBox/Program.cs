@@ -52,6 +52,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstExecuteMethod();
             //TstUpdateAndCommitUnityExampleRepositoriesDevTask();
             //TstCloneRepository();
             //TstUpdateUnityExampleRepository();
@@ -99,6 +100,20 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstExecuteMethod()
+        {
+            _logger.Info("Begin");
+
+            //Yes!!! It regenerates .csproj and .sln file!
+            var cmdStrBuilder = new StringBuilder(@"""C:/Program Files/Unity/Hub/Editor/2021.2.9f1/Editor/Unity.exe""");
+            cmdStrBuilder.Append($" -quit -batchmode -projectPath \"{PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClayAsset").Replace("\\", "/")}\"");
+            cmdStrBuilder.Append(" -executeMethod SymOntoClay.UnityAsset.Editors.EmptyScript.Run");
+
+            _logger.Info($"cmdStrBuilder = {cmdStrBuilder}");
+
+            _logger.Info("End");
         }
 
         private static void TstUpdateAndCommitUnityExampleRepositoriesDevTask()
@@ -1319,9 +1334,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            //var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
 
-            //_logger.Info($"settings = {settings}");
+            _logger.Info($"settings = {settings}");
 
             var unitySolution = ProjectsDataSource.GetSolution(KindOfProject.Unity);
 
