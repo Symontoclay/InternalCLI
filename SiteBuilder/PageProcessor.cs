@@ -316,7 +316,7 @@ namespace SiteBuilder
                 var imageUrl = PagesPathsHelper.RelativeHrefToAbsolute(siteMictodata.ImageUrl, _generalSiteBuilderSettings);
 
                 AppendLine($"<meta property='og:image' content='{imageUrl}' />");
-                AppendLine($"<link rel='\"image_src\" href=\"{imageUrl}\" />");
+                AppendLine($"<link rel='image_src' href='{imageUrl}' />");
             }
             else
             {
@@ -325,7 +325,7 @@ namespace SiteBuilder
                     var imageUrl = PagesPathsHelper.RelativeHrefToAbsolute(globalMictodata.ImageUrl, _generalSiteBuilderSettings);
 
                     AppendLine($"<meta property='og:image' content='{imageUrl}' />");
-                    AppendLine($"<link rel='\"image_src\" href=\"{imageUrl}\" />");
+                    AppendLine($"<link rel='image_src' href='{imageUrl}' />");
                 }
             }
 

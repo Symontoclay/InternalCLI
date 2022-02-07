@@ -21,6 +21,7 @@ using Deployment.Tasks.BuildLicense;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using Deployment.Tasks.GitTasks.Clone;
+using Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution;
 using Newtonsoft.Json;
 using NLog;
 using Octokit;
@@ -52,6 +53,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            //TstPrepareUnityCSProjAndSolutionTask();
             TstExecuteMethod();
             //TstUpdateAndCommitUnityExampleRepositoriesDevTask();
             //TstCloneRepository();
@@ -100,6 +102,24 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstPrepareUnityCSProjAndSolutionTask()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new PrepareUnityCSProjAndSolutionTask(new PrepareUnityCSProjAndSolutionTaskOptions() { 
+                UnityExeFilePath = @"C:/Program Files/Unity/Hub/Editor/2021.2.9f1/Editor/Unity.exe",
+                RootDir = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClayAsset")
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            //deploymentPipeline.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstExecuteMethod()

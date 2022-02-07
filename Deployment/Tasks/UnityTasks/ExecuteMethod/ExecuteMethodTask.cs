@@ -1,46 +1,43 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
-using Newtonsoft.Json;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.UnityTasks.ExportPackage
+namespace Deployment.Tasks.UnityTasks.ExecuteMethod
 {
-    public class ExportPackageTask : BaseDeploymentTask
+    public class ExecuteMethodTask : BaseDeploymentTask
     {
-        public ExportPackageTask(ExportPackageTaskOptions options)
+        public ExecuteMethodTask(ExecuteMethodTaskOptions options)
             : this(options, 0u)
         {
         }
 
-        public ExportPackageTask(ExportPackageTaskOptions options, uint deep)
+        public ExecuteMethodTask(ExecuteMethodTaskOptions options, uint deep)
             : base(options, deep)
         {
             _options = options;
         }
 
-        private readonly ExportPackageTaskOptions _options;
+        private readonly ExecuteMethodTaskOptions _options;
 
         /// <inheritdoc/>
         protected override void OnValidateOptions()
         {
             ValidateOptionsAsNonNull(_options);
             ValidateFileName(nameof(_options.UnityExeFilePath), _options.UnityExeFilePath);
-            ValidateFileName(nameof(_options.OutputPackageName), _options.OutputPackageName);
+            ValidateStringValueAsNonNullOrEmpty(nameof(_options.MethodName), _options.MethodName);
             ValidateDirectory(nameof(_options.RootDir), _options.RootDir);
-            ValidateDirectory(nameof(_options.SourceDir), _options.SourceDir);
         }
 
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var commandLine = $"-quit -batchmode -projectPath \"{_options.RootDir.Replace("\\", "/")}\" -exportPackage \"{_options.SourceDir.Replace("\\", "/")}\" \"{_options.OutputPackageName.Replace("\\", "/")}\"";
-
             var execPath = $"\"{_options.UnityExeFilePath.Replace("\\", "/")}\"";
+
+            var commandLine = $"-quit -batchmode -projectPath \"{_options.RootDir.Replace("\\", "/")}\" -executeMethod {_options.MethodName}";
 
             var processWrapper = new ProcessSyncWrapper(execPath, commandLine);
 
@@ -48,7 +45,7 @@ namespace Deployment.Tasks.UnityTasks.ExportPackage
 
             if (exitCode != 0)
             {
-                throw new Exception($"Export of {_options.SourceDir} has been failed. | {string.Join(' ', processWrapper.Output)} | {string.Join(' ', processWrapper.Errors)}");
+                throw new Exception($"Executing method '{_options.MethodName}' has been failed. | {string.Join(' ', processWrapper.Output)} | {string.Join(' ', processWrapper.Errors)}");
             }
         }
 
@@ -58,7 +55,7 @@ namespace Deployment.Tasks.UnityTasks.ExportPackage
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Exports directory '{_options.SourceDir}' of '{_options.RootDir}' to Unity package '{_options.OutputPackageName}'");
+            sb.AppendLine($"{spaces}Executes method '{_options.MethodName}' of '{_options.RootDir}'.");
             sb.AppendLine($"{spaces}'{_options.UnityExeFilePath}' will be used as exe.");
             sb.Append(PrintValidation(n));
 

@@ -55,7 +55,7 @@ namespace Deployment.DevTasks.UnityToSiteSource
             var deploymentPipeline = new DeploymentPipeline();
 
             var unityCsProjectPath = Path.Combine(_options.UnitySlnPath, "Assembly-CSharp.csproj");
-
+            
             deploymentPipeline.Add(new SetDocumentationFileInUnityProjectIfEmptyTask(
                 new SetDocumentationFileInUnityProjectIfEmptyTaskOptions() {
                      ProjectFilePath = unityCsProjectPath
