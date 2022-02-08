@@ -27,7 +27,7 @@ namespace BaseDevPipeline.Data.Implementation
 
             result.SecretFilePath = DetectSecretFilePath(source.SecretsFilePaths);
 
-            result.UtityExeInstances = DetectUnities(source.UnityPaths);
+            result.UtityExeInstances = DetectUnities();
 
             var artifactsForDeployment = source.ArtifactsForDeployment;
 
@@ -92,24 +92,31 @@ namespace BaseDevPipeline.Data.Implementation
             throw new NotImplementedException();
         }
 
-        private static List<UtityExeInstance> DetectUnities(List<string> unityPaths)
+        private static List<UtityExeInstance> DetectUnities()
         {
-            var normalizedUnityPaths = unityPaths.Select(p => PathsHelper.Normalize(p));
+            var baseUnityPath = EVPath.Normalize("%ProgramFiles%/Unity/Hub/Editor");
 
-            var existingUnityPaths = normalizedUnityPaths.Where(p => File.Exists(p));
+            if(!Directory.Exists(baseUnityPath))
+            {
+                return new List<UtityExeInstance>();
+            }
 
-            if(!existingUnityPaths.Any())
+            var existingUnityPaths = Directory.GetDirectories(baseUnityPath);
+
+            if (!existingUnityPaths.Any())
             {
                 return new List<UtityExeInstance>();
             }
 
             var result = new List<UtityExeInstance>();
 
-            foreach(var utityPath in existingUnityPaths)
+            foreach(var initUnityPath in existingUnityPaths)
             {
+                var unityPath = Path.Combine(initUnityPath, "Editor", "Unity.exe");
+
                 try
                 {
-                    using (var process = new ProcessSyncWrapper(utityPath, "-version"))
+                    using (var process = new ProcessSyncWrapper(unityPath, "-version"))
                     {
                         var exitCode = process.Run();
 
@@ -122,7 +129,7 @@ namespace BaseDevPipeline.Data.Implementation
 
                         var item = new UtityExeInstance()
                         {
-                            Path = utityPath,
+                            Path = unityPath,
                             Version = output
                         };
 

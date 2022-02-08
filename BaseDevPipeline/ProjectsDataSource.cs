@@ -117,11 +117,6 @@ namespace BaseDevPipeline
                 {
                     "%USERPROFILE%/SymOntoClay_secrets.json"
                 },
-                UnityPaths = new List<string>()
-                {
-                    "%ProgramFiles%/Unity/Editor/Unity.exe",
-                    "%ProgramFiles%/Unity/Hub/Editor/2020.2.3f1/Editor/Unity.exe"
-                },
                 ArtifactsForDeployment = new List<string>()
                 {
                     "CLIArch"

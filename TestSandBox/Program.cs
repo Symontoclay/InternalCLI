@@ -54,7 +54,7 @@ namespace TestSandBox
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             //TstPrepareUnityCSProjAndSolutionTask();
-            TstExecuteMethod();
+            //TstExecuteMethod();
             //TstUpdateAndCommitUnityExampleRepositoriesDevTask();
             //TstCloneRepository();
             //TstUpdateUnityExampleRepository();
@@ -91,7 +91,7 @@ namespace TestSandBox
             //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
-            //TstProjectsDataSource();
+            TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
@@ -1349,6 +1349,14 @@ namespace TestSandBox
 
             _logger.Info("End");
         }
+
+        /*
+           "UnityPaths": [
+    "%ProgramFiles%/Unity/Editor/Unity.exe",
+    "%ProgramFiles%/Unity/Hub/Editor/2021.1.20f1/Editor/Unity.exe",
+    "%ProgramFiles%/Unity/Hub/Editor/2021.2.9f1/Editor/Unity.exe"
+  ],
+         */
 
         private static void TstProjectsDataSource()
         {

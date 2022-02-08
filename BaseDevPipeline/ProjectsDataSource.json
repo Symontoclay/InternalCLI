@@ -6,11 +6,6 @@
   "SecretsFilePaths": [
     "%USERPROFILE%/example_s.json"
   ],
-  "UnityPaths": [
-    "%ProgramFiles%/Unity/Editor/Unity.exe",
-    "%ProgramFiles%/Unity/Hub/Editor/2021.1.20f1/Editor/Unity.exe",
-    "%ProgramFiles%/Unity/Hub/Editor/2021.2.9f1/Editor/Unity.exe"
-  ],
   "ArtifactsForDeployment": [
     "CLIArch",
     "UnityPackage"
