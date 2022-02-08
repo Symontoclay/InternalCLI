@@ -13,10 +13,6 @@ namespace Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution
 {
     public class PrepareUnityCSProjAndSolutionTask : BaseDeploymentTask
     {
-#if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
-
         public PrepareUnityCSProjAndSolutionTask(PrepareUnityCSProjAndSolutionTaskOptions options)
             : this(options, 0u)
         {
@@ -41,11 +37,6 @@ namespace Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution
         /// <inheritdoc/>
         protected override void OnRun()
         {
-#if DEBUG
-            _logger.Info($"_options.UnityExeFilePath = {_options.UnityExeFilePath}");
-            _logger.Info($"_options.RootDir = {_options.RootDir}");
-#endif
-
             DeleteExistingSolutions();
 
             Exec(new GenerateUnityCSProjAndSolutionTask(new GenerateUnityCSProjAndSolutionTaskOptions() {
@@ -54,10 +45,6 @@ namespace Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution
             }, NextDeep));
 
             var unityCsProjectPath = Path.Combine(_options.RootDir, "Assembly-CSharp.csproj");
-
-#if DEBUG
-            _logger.Info($"unityCsProjectPath = {unityCsProjectPath}");
-#endif
 
             Exec(new SetDocumentationFileInUnityProjectIfEmptyTask(
                 new SetDocumentationFileInUnityProjectIfEmptyTaskOptions()
@@ -72,10 +59,6 @@ namespace Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution
 
             foreach (var file in files)
             {
-#if DEBUG
-                _logger.Info($"file = {file}");
-#endif
-
                 if (file.EndsWith(".sln"))
                 {
                     File.Delete(file);
