@@ -5,6 +5,7 @@ using Deployment.Tasks;
 using Deployment.Tasks.ProjectsTasks.UpdateSolutionCopyright;
 using Deployment.Tasks.ProjectsTasks.UpdateSolutionVersion;
 using Deployment.Tasks.ProjectsTasks.UpdateUnityPackageVersion;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,10 @@ namespace Deployment.DevTasks.UpdateProjectsVersion
 {
     public class UpdateProjectsVersionDevTask : BaseDeploymentTask
     {
+#if DEBUG
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
+
         public UpdateProjectsVersionDevTask()
             : this(0u)
         {
@@ -42,6 +47,10 @@ namespace Deployment.DevTasks.UpdateProjectsVersion
 
             foreach (var targetSolution in targetSolutions)
             {
+#if DEBUG
+                _logger.Info($"targetSolution = {targetSolution}");
+#endif
+
                 var kind = targetSolution.Kind;
 
                 switch (kind)

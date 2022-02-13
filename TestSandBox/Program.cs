@@ -69,7 +69,7 @@ namespace TestSandBox
             //TstSetXmlDocFileNameToCsProj();
             //TstRemoveDir();
             //TstRemoveDir();
-            //TstFinishRelease0_3_2();
+            TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
             //TstTesting();
             //TstCreateReadme();//<==
@@ -91,7 +91,7 @@ namespace TestSandBox
             //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
-            TstProjectsDataSource();
+            //TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
@@ -117,7 +117,7 @@ namespace TestSandBox
 
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");
 
-            //deploymentPipeline.Run();
+            deploymentPipeline.Run();
 
             _logger.Info("End");
         }

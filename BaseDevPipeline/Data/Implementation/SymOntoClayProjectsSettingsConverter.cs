@@ -179,6 +179,13 @@ namespace BaseDevPipeline.Data.Implementation
 
                 item.SlnPath = DetectSlnPath(solutionSource.SlnPath, item.Path);
 
+                if(string.IsNullOrWhiteSpace(item.SlnPath) && (item.Kind == KindOfProject.Unity || item.Kind == KindOfProject.UnityExample))
+                {
+                    var dirInfo = new DirectoryInfo(item.Path);
+
+                    item.SlnPath = Path.Combine(item.Path, $"{dirInfo.Name}.sln");
+                }
+
                 item.SourcePath = PathsHelper.Normalize(solutionSource.SourcePath);
 
                 if(string.IsNullOrWhiteSpace(solutionSource.License))
@@ -263,7 +270,7 @@ namespace BaseDevPipeline.Data.Implementation
         {
             if (string.IsNullOrWhiteSpace(sourceSlnPath))
             {
-                if(!Directory.Exists(sourceSlnPath))
+                if(!Directory.Exists(path))
                 {
                     return string.Empty;
                 }
