@@ -14,8 +14,8 @@
   "Solutions": [
     {
       "Kind": "CoreSolution",
-      "Href": "https://github.com/metatypeman/__SymOntoClay",
-      "Path": "%BASE_PATH%/__SymOntoClay",
+      "Href": "https://github.com/Symontoclay/SymOntoClay",
+      "Path": "%BASE_PATH%/SymOntoClay",
       "License": "MIT",
       "Projects": [
         {
@@ -62,8 +62,8 @@
     },
     {
       "Kind": "ProjectSite",
-      "Href": "https://github.com/metatypeman/__symontoclay.github.io",
-      "Path": "%BASE_PATH%/__symontoclay.github.io",
+      "Href": "https://github.com/Symontoclay/symontoclay.github.io",
+      "Path": "%BASE_PATH%/symontoclay.github.io",
       "SourcePath": "%SLN_ROOT_PATH%/siteSource/",
       "License": "CCBYSA4_0",
       "IsCommonReadmeSource": true,
@@ -75,16 +75,16 @@
     },
     {
       "Kind": "Unity",
-      "Href": "https://github.com/metatypeman/__SymOntoClayAsset",
-      "Path": "%BASE_PATH%/__SymOntoClayAsset",
+      "Href": "https://github.com/Symontoclay/SymOntoClayAsset",
+      "Path": "%BASE_PATH%/SymOntoClayAsset",
       "License": "MIT",
       "SourcePath": "%SLN_ROOT_PATH%/Assets/SymOntoClay",
       "EnableGenerateReadme": true
     },
     {
       "Kind": "ReleaseMngrSolution",
-      "Href": "https://github.com/metatypeman/__ReleaseMngr",
-      "Path": "%BASE_PATH%/__ReleaseMngr",
+      "Href": "https://github.com/Symontoclay/ReleaseMngr",
+      "Path": "%BASE_PATH%/ReleaseMngr",
       "License": "MIT"
     }
   ],
