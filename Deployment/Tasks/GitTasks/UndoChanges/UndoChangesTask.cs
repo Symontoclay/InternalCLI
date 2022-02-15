@@ -57,7 +57,7 @@ namespace Deployment.Tasks.GitTasks.UndoChanges
 
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Undoes changes of current branch for file '{_options.RelativeTargetFilePath}' in repository at path '{_options.RepositoryPath}'.");
+            sb.AppendLine($"{spaces}Undos changes of current branch for file '{_options.RelativeTargetFilePath}' in repository at path '{_options.RepositoryPath}'.");
             sb.Append(PrintValidation(n));
 
             return sb.ToString();

@@ -53,6 +53,9 @@
     <None Update="SymOntoClayCoreHelper.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="tmp_config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="__common_BADGES.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

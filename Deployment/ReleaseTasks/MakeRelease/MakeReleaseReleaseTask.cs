@@ -8,6 +8,7 @@ using Deployment.ReleaseTasks.MergeReleaseBranchToMaster;
 using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.Checkout;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
+using Deployment.Tasks.GitTasks.SetUpRepository;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace Deployment.ReleaseTasks.MakeRelease
             : this(0u)
         {
         }
-
+        
         public MakeReleaseReleaseTask(uint deep)
             : base(null, deep)
         {
@@ -56,6 +57,14 @@ namespace Deployment.ReleaseTasks.MakeRelease
             //    Message = "snapshot",
             //    RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
             //}, NextDeep));
+
+            foreach (var repository in targetSolutions)
+            {
+                Exec(new SetUpRepositoryTask(new SetUpRepositoryTaskOptions()
+                {
+                    RepositoryPath = repository.Path
+                }, NextDeep));
+            }
 
             foreach (var repository in targetSolutions)
             {

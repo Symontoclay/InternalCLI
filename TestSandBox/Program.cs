@@ -21,6 +21,7 @@ using Deployment.Tasks.BuildLicense;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using Deployment.Tasks.GitTasks.Clone;
+using Deployment.Tasks.GitTasks.SetUpRepository;
 using Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution;
 using Newtonsoft.Json;
 using NLog;
@@ -53,6 +54,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstSetUpRepositoryTask();
+            //TstIniFile();
             //TstPrepareUnityCSProjAndSolutionTask();
             //TstExecuteMethod();
             //TstUpdateAndCommitUnityExampleRepositoriesDevTask();
@@ -69,7 +72,7 @@ namespace TestSandBox
             //TstSetXmlDocFileNameToCsProj();
             //TstRemoveDir();
             //TstRemoveDir();
-            TstFinishRelease0_3_2();
+            //TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
             //TstTesting();
             //TstCreateReadme();//<==
@@ -102,6 +105,50 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstSetUpRepositoryTask()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new SetUpRepositoryTask(new SetUpRepositoryTaskOptions() { 
+                RepositoryPath = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\__symontoclay.github.io")
+            }));
+
+            //_logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
+        }
+
+        private static void TstIniFile()
+        {
+            _logger.Info("Begin");
+
+            var fileName = Path.Combine(Directory.GetCurrentDirectory(), "tmp_config");
+
+            _logger.Info($"fileName = {fileName}");
+
+            var iniFile = new IniFile(fileName);
+
+            var value = iniFile.ReadStringValue("core", "filemode");
+
+            _logger.Info($"value = {value}");
+
+            //iniFile.WriteStringValue("user", "name", "metatypeman");
+
+            var intVal = iniFile.ReadInt32Value("core", "repositoryformatversion");
+
+            _logger.Info($"intVal = {intVal}");
+
+            var boolVal = iniFile.ReadBooleanValue("core", "filemode");
+
+            _logger.Info($"boolVal = {boolVal}");
+
+            _logger.Info("End");
         }
 
         private static void TstPrepareUnityCSProjAndSolutionTask()
