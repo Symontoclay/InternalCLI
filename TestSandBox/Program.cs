@@ -54,7 +54,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstSetUpRepositoryTask();
+            //TstSetUpRepositoryTask();
             //TstIniFile();
             //TstPrepareUnityCSProjAndSolutionTask();
             //TstExecuteMethod();
@@ -94,7 +94,7 @@ namespace TestSandBox
             //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
-            //TstProjectsDataSource();
+            TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
