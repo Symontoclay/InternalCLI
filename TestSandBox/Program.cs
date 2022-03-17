@@ -12,6 +12,7 @@ using Deployment.DevTasks.CreateReadmes;
 using Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories;
 using Deployment.DevTasks.UpdateUnityExampleRepository;
 using Deployment.Helpers;
+using Deployment.ReleaseTasks.DeploymentToProd;
 using Deployment.ReleaseTasks.GitHubRelease;
 using Deployment.ReleaseTasks.MarkAsCompleted;
 using Deployment.Tasks;
@@ -72,6 +73,7 @@ namespace TestSandBox
             //TstSetXmlDocFileNameToCsProj();
             //TstRemoveDir();
             //TstRemoveDir();
+            TstFinishRelease0_3_6();
             //TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
             //TstTesting();
@@ -94,7 +96,7 @@ namespace TestSandBox
             //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
-            TstProjectsDataSource();
+            //TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
@@ -113,7 +115,7 @@ namespace TestSandBox
 
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new SetUpRepositoryTask(new SetUpRepositoryTaskOptions() { 
+            deploymentPipeline.Add(new SetUpRepositoryTask(new SetUpRepositoryTaskOptions() {
                 RepositoryPath = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\__symontoclay.github.io")
             }));
 
@@ -157,7 +159,7 @@ namespace TestSandBox
 
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new PrepareUnityCSProjAndSolutionTask(new PrepareUnityCSProjAndSolutionTaskOptions() { 
+            deploymentPipeline.Add(new PrepareUnityCSProjAndSolutionTask(new PrepareUnityCSProjAndSolutionTaskOptions() {
                 UnityExeFilePath = @"C:/Program Files/Unity/Hub/Editor/2021.2.9f1/Editor/Unity.exe",
                 RootDir = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClayAsset")
             }));
@@ -204,7 +206,7 @@ namespace TestSandBox
 
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new CloneTask(new CloneTaskOptions() { 
+            deploymentPipeline.Add(new CloneTask(new CloneTaskOptions() {
                 RepositoryHref = "https://github.com/metatypeman/a1.git",
                 RepositoryPath = PathsHelper.Normalize(@"%USERPROFILE%\source")
             }));
@@ -222,9 +224,9 @@ namespace TestSandBox
 
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new UpdateUnityExampleRepositoryDevTask(new UpdateUnityExampleRepositoryDevTaskOptions() { 
-                 SourceRepository = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClayAsset"),
-                 DestinationRepository = @"d:\tmp\demo1_linear_code\"
+            deploymentPipeline.Add(new UpdateUnityExampleRepositoryDevTask(new UpdateUnityExampleRepositoryDevTaskOptions() {
+                SourceRepository = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClayAsset"),
+                DestinationRepository = @"d:\tmp\demo1_linear_code\"
             }));
 
             //_logger.Info($"deploymentPipeline = {deploymentPipeline}");
@@ -348,7 +350,7 @@ namespace TestSandBox
 
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new BuildChangeLogTask(new BuildChangeLogTaskOptions() { 
+            deploymentPipeline.Add(new BuildChangeLogTask(new BuildChangeLogTaskOptions() {
                 TargetChangeLogFileName = Path.Combine(Directory.GetCurrentDirectory(), "CHANGELOG.md"),
                 ReleaseNotesFilePath = CommonFileNamesHelper.BuildReleaseNotesPath()
             }));
@@ -389,7 +391,7 @@ namespace TestSandBox
 
             var subDirs = Directory.GetDirectories(dir);
 
-            foreach(var subDir in subDirs)
+            foreach (var subDir in subDirs)
             {
                 TstEnumerateAssetsFiles_ProcessDir(subDir, sb);
             }
@@ -398,12 +400,12 @@ namespace TestSandBox
 
             foreach (var file in files)
             {
-                if(file.EndsWith(".meta"))
+                if (file.EndsWith(".meta"))
                 {
                     continue;
                 }
 
-                if(file.EndsWith("LICENSE"))
+                if (file.EndsWith("LICENSE"))
                 {
                     continue;
                 }
@@ -461,9 +463,9 @@ namespace TestSandBox
 
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new CopySourceFilesOfVSSolutionTask(new CopySourceFilesOfVSSolutionTaskOptions() { 
-                 SourceDir = slnFolder,
-                 DestDir = targetFolder
+            deploymentPipeline.Add(new CopySourceFilesOfVSSolutionTask(new CopySourceFilesOfVSSolutionTaskOptions() {
+                SourceDir = slnFolder,
+                DestDir = targetFolder
             }));
 
             deploymentPipeline.Run();
@@ -516,7 +518,7 @@ namespace TestSandBox
 
             _logger.Info($"newDirName = {newDirName}");
 
-            if(!Directory.Exists(newDirName))
+            if (!Directory.Exists(newDirName))
             {
                 Directory.CreateDirectory(newDirName);
             }
@@ -604,7 +606,7 @@ namespace TestSandBox
 
             //try
             //{
-                Directory.Delete(dir, true);
+            Directory.Delete(dir, true);
             //}
             //catch (Exception e)
             //{
@@ -647,6 +649,23 @@ namespace TestSandBox
             //proc.WaitForExit();
 
             //_logger.Info($"proc.ExitCode = {proc.ExitCode}");
+
+            _logger.Info("End");
+        }
+
+        private static void TstFinishRelease0_3_6()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new DeploymentToProdReleaseTask());
+
+            deploymentPipeline.Add(new MarkAsCompletedReleaseTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
 
             _logger.Info("End");
         }

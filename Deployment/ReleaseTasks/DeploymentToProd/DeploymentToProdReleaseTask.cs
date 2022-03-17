@@ -19,6 +19,11 @@ namespace Deployment.ReleaseTasks.DeploymentToProd
 {
     public class DeploymentToProdReleaseTask : BaseDeploymentTask
     {
+        public DeploymentToProdReleaseTask()
+            : this(0u)
+        {
+        }
+
         public DeploymentToProdReleaseTask(uint deep)
             : base(null, deep)
         {
