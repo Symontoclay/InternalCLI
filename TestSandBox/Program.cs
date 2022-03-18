@@ -8,6 +8,11 @@ using Deployment;
 using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
 using Deployment.DevTasks.CopyAndTest;
 using Deployment.DevTasks.CoreToAsset;
+using Deployment.DevTasks.CreateAndCommitChangeLogs;
+using Deployment.DevTasks.CreateAndCommitCodeOfConducts;
+using Deployment.DevTasks.CreateAndCommitContributings;
+using Deployment.DevTasks.CreateAndCommitLicenses;
+using Deployment.DevTasks.CreateAndCommitReadmes;
 using Deployment.DevTasks.CreateReadmes;
 using Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories;
 using Deployment.DevTasks.UpdateUnityExampleRepository;
@@ -73,7 +78,8 @@ namespace TestSandBox
             //TstSetXmlDocFileNameToCsProj();
             //TstRemoveDir();
             //TstRemoveDir();
-            TstFinishRelease0_3_6();
+            TstFinishRelease0_3_6_p();
+            //TstFinishRelease0_3_6();
             //TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
             //TstTesting();
@@ -651,6 +657,35 @@ namespace TestSandBox
             //_logger.Info($"proc.ExitCode = {proc.ExitCode}");
 
             _logger.Info("End");
+        }
+
+        private static void TstFinishRelease0_3_6_p()
+        {
+            var deploymentPipeline = new DeploymentPipeline();
+
+            //Readmies
+            deploymentPipeline.Add(new CreateAndCommitReadmesDevTask());
+
+            //CHANGELOG.md
+            deploymentPipeline.Add(new CreateAndCommitChangeLogsDevTask());
+
+            //CODE_OF_CONDUCT.md
+            deploymentPipeline.Add(new CreateAndCommitCodeOfConductsDevTask());
+
+            //CONTRIBUTING.md
+            deploymentPipeline.Add(new CreateAndCommitContributingsDevTask());
+
+            //LICENSEs
+            deploymentPipeline.Add(new CreateAndCommitLicensesDevTask());
+
+            //Release to GitHub
+            deploymentPipeline.Add(new GitHubReleaseReleaseTask());
+            //-----
+            deploymentPipeline.Add(new MarkAsCompletedReleaseTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
         }
 
         private static void TstFinishRelease0_3_6()
