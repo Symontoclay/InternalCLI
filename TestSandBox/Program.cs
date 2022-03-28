@@ -34,6 +34,7 @@ using NLog;
 using Octokit;
 using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
+using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
 using SiteBuilder.SiteData;
 using System;
 using System.Collections;
@@ -179,6 +180,15 @@ namespace TestSandBox
             foreach(var lngExamplesPage in lngExamplesPagesList)
             {
                 _logger.Info($"lngExamplesPage = {lngExamplesPage}");
+
+                var examplesList = CodeExampleReader.Read(lngExamplesPage);
+
+                _logger.Info($"examplesList.Count = {examplesList.Count}");
+
+                foreach (var example in examplesList)
+                {
+                    _logger.Info($"example = {example}");
+                }
             }
 
             _logger.Info("End");
