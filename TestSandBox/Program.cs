@@ -61,8 +61,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstExternalExit();
-            //TstBuildExamples();
+            //TstExternalExit();
+            TstBuildExamples();
             //TstSetUpRepositoryTask();
             //TstIniFile();
             //TstPrepareUnityCSProjAndSolutionTask();
@@ -150,15 +150,25 @@ namespace TestSandBox
                 SiteName = siteSolution.RepositoryName,
             });
 
-            var socExePath = @"c:\Users\Acer\source\repos\SymOntoClay\SymOntoClayCLI\bin\Debug\net6.0\soc.exe";
+            //var socExePath = @"c:\Users\Acer\source\repos\SymOntoClay\SymOntoClayCLI\bin\Debug\net6.0\soc.exe";
 
-            _logger.Info($"socExePath = {socExePath}");
+            //_logger.Info($"socExePath = {socExePath}");
 
-            var processSyncWrapper = new ProcessSyncWrapper(socExePath, "help");
+            //var tmpDir = @"c:\Users\Acer\Documents\tmp2\";
 
-            var exitCode = processSyncWrapper.Run();
+            //_logger.Info($"tmpDir = {tmpDir}");
 
-            _logger.Info($"exitCode = {exitCode}");
+            //var processSyncWrapper = new ProcessSyncWrapper(socExePath, "new Example", tmpDir);
+
+            //var exitCode = processSyncWrapper.Run();
+
+            //_logger.Info($"exitCode = {exitCode}");
+
+            //var mainSocFileName = Path.Combine(tmpDir, "Example", "Npcs", "Example", "Example.soc");
+
+            //_logger.Info($"mainSocFileName = {mainSocFileName}");
+
+            //_logger.Info($"processSyncWrapper.Output = {JsonConvert.SerializeObject(processSyncWrapper.Output, Formatting.Indented)}");
 
             var lngExamplesPath = siteSettings.SiteSettings.LngExamplesPath;
 

@@ -285,6 +285,11 @@ namespace SiteBuilder
                         break;
 
                     case KindOfSiteElement.File:
+                        if(siteElement.InitialFullFileName.EndsWith(".console"))
+                        {
+                            break;
+                        }
+
                         File.Copy(siteElement.InitialFullFileName, siteElement.TargetFullFileName);
                         break;
 

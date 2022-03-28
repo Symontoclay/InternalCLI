@@ -8,12 +8,22 @@ namespace CommonUtils
     public class ProcessSyncWrapper : Disposable
     {
         public ProcessSyncWrapper(string fileName, string arguments)
+            : this(fileName, arguments, null)
+        {
+        }
+
+        public ProcessSyncWrapper(string fileName, string arguments, string workingDirectory)
         {
             _process = new Process();
             _process.StartInfo.FileName = fileName;
             _process.StartInfo.Arguments = arguments;
             _process.StartInfo.UseShellExecute = false;
             _process.StartInfo.RedirectStandardOutput = true;
+
+            if(!string.IsNullOrWhiteSpace(workingDirectory))
+            {
+                _process.StartInfo.WorkingDirectory = workingDirectory;
+            }
 
             _process.OutputDataReceived += Process_OutputDataReceived;
             _process.ErrorDataReceived += Process_ErrorDataReceived;
