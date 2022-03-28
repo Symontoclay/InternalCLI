@@ -151,13 +151,20 @@ namespace TestSandBox
                 SiteName = siteSolution.RepositoryName,
             });
 
-            //var socExePath = @"c:\Users\Acer\source\repos\SymOntoClay\SymOntoClayCLI\bin\Debug\net6.0\soc.exe";
+            var socExePath = @"c:\Users\Acer\source\repos\SymOntoClay\SymOntoClayCLI\bin\Debug\net6.0\soc.exe";
 
             //_logger.Info($"socExePath = {socExePath}");
 
-            //var tmpDir = @"c:\Users\Acer\Documents\tmp2\";
+            var tmpDir = @"c:\Users\Acer\Documents\tmp2\";
 
-            //_logger.Info($"tmpDir = {tmpDir}");
+            _logger.Info($"tmpDir = {tmpDir}");
+
+            if(Directory.Exists(tmpDir))
+            {
+                Directory.Delete(tmpDir, true);
+            }
+
+            Directory.CreateDirectory(tmpDir);
 
             //var processSyncWrapper = new ProcessSyncWrapper(socExePath, "new Example", tmpDir);
 
@@ -188,6 +195,26 @@ namespace TestSandBox
                 foreach (var example in examplesList)
                 {
                     _logger.Info($"example = {example}");
+
+                    var newProcessSyncWrapper = new ProcessSyncWrapper(socExePath, "new Example", tmpDir);
+
+                    var exitCode = newProcessSyncWrapper.Run();
+
+                    _logger.Info($"exitCode = {exitCode}");
+
+                    var mainSocFileName = Path.Combine(tmpDir, "Example", "Npcs", "Example", "Example.soc");
+
+                    _logger.Info($"mainSocFileName = {mainSocFileName}");
+
+                    File.WriteAllText(mainSocFileName, example.Code.Trim());
+
+                    var runProcessSyncWrapper = new ProcessSyncWrapper(socExePath, "run -nologo -timeout 5000", Path.Combine(tmpDir, "Example"));
+
+                    exitCode = runProcessSyncWrapper.Run();
+
+                    _logger.Info($"exitCode = {exitCode}");
+
+                    _logger.Info($"runProcessSyncWrapper.Output = {JsonConvert.SerializeObject(runProcessSyncWrapper.Output, Formatting.Indented)}");
                 }
             }
 
