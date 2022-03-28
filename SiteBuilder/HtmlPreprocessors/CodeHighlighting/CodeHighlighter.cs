@@ -133,7 +133,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
             if(rootNode.Name == "console")
             {
-                ProcessConsole(rootNode, doc);
+                ProcessConsole(rootNode, doc, generalSiteBuilderSettings);
                 return;
             }
 
@@ -143,13 +143,14 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             }
         }
 
-        private static void ProcessConsole(HtmlNode rootNode, HtmlDocument doc)
+        private static void ProcessConsole(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             var exampleNameStr = rootNode.GetAttributeValue("example_name", null);
 
             if (!string.IsNullOrWhiteSpace(exampleNameStr))
             {
-                throw new NotImplementedException();
+                ProcessExamplesConsole(rootNode, doc, exampleNameStr, generalSiteBuilderSettings);
+                return;
             }
 
             var initialText = rootNode.GetDirectInnerText();
@@ -182,25 +183,74 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
             }
         }
 
+        private static void ProcessExamplesConsole(HtmlNode rootNode, HtmlDocument doc, string exampleName, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+        {
+#if DEBUG
+            //_logger.Info($"exampleName = {exampleName}");
+#endif
+
+            var consoleTextFileName = Path.Combine(generalSiteBuilderSettings.SiteSettings.LngExamplesPath, $"{exampleName}.console");
+
+#if DEBUG
+            //_logger.Info($"consoleTextFileName = {consoleTextFileName}");
+#endif
+
+            if(!File.Exists(consoleTextFileName))
+            {
+                throw new Exception($"File '{consoleTextFileName}' does not exist! Please build rebuild examples.");
+            }
+
+            var consoleText = File.ReadAllText(consoleTextFileName);
+
+#if DEBUG
+            //_logger.Info($"consoleText = {consoleText}");
+#endif
+
+            var newRootNode = doc.CreateElement("console");
+            var parentNode = rootNode.ParentNode;
+            parentNode.ReplaceChild(newRootNode, rootNode);
+
+            newRootNode.InnerHtml = consoleText;
+
+#if DEBUG
+            //_logger.Info($"newRootNode.OuterHtml = {newRootNode.OuterHtml}");
+#endif
+        }
+
         private static void ProcessExamplesLng(HtmlNode rootNode, HtmlDocument doc, string exampleName, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
 #if DEBUG
-            _logger.Info($"exampleName = {exampleName}");
+            //_logger.Info($"exampleName = {exampleName}");
 #endif
 
             var initialText = rootNode.GetDirectInnerText();
 
 #if DEBUG
-            _logger.Info($"initialText = {initialText}");
+            //_logger.Info($"initialText = {initialText}");
 #endif
 
-            var exampleFileName = Path.Combine(generalSiteBuilderSettings.SiteSettings.DestLngExamplesPath, $"{exampleName}.zip");
+            var exampleFileName = Path.Combine(generalSiteBuilderSettings.SiteSettings.DestLngExamplesPath, $"{exampleName}.zip").Replace("\\", "/");
+
+            if(!exampleFileName.StartsWith("/"))
+            {
+                exampleFileName = $"/{exampleFileName}";
+            }
 
 #if DEBUG
-            _logger.Info($"exampleFileName = {exampleFileName}");
+            //_logger.Info($"exampleFileName = {exampleFileName}");
 #endif
+            var newCodeNode = doc.CreateElement("code");
+            var parentNode = rootNode.ParentNode;
+            parentNode.ReplaceChild(newCodeNode, rootNode);
 
-            throw new NotImplementedException();
+            newCodeNode.Attributes.Add("data-lng", "soc");
+            newCodeNode.Attributes.Add("example-href", exampleFileName);
+
+            newCodeNode.InnerHtml = initialText;
+
+#if DEBUG
+            //_logger.Info($"newCodeNode.OuterHtml = {newCodeNode.OuterHtml}");
+#endif
         }
 
         private static void ProcessLng(HtmlNode rootNode, HtmlDocument doc, KindOfLng kindOfLng, GeneralSiteBuilderSettings generalSiteBuilderSettings)
