@@ -41,6 +41,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -196,25 +197,11 @@ namespace TestSandBox
                 {
                     _logger.Info($"example = {example}");
 
-                    var newProcessSyncWrapper = new ProcessSyncWrapper(socExePath, "new Example", tmpDir);
+                    var result = ExampleCreator.CreateExample(example, tmpDir, socExePath);
 
-                    var exitCode = newProcessSyncWrapper.Run();
+                    _logger.Info($"result = {result}");
 
-                    _logger.Info($"exitCode = {exitCode}");
 
-                    var mainSocFileName = Path.Combine(tmpDir, "Example", "Npcs", "Example", "Example.soc");
-
-                    _logger.Info($"mainSocFileName = {mainSocFileName}");
-
-                    File.WriteAllText(mainSocFileName, example.Code.Trim());
-
-                    var runProcessSyncWrapper = new ProcessSyncWrapper(socExePath, "run -nologo -timeout 5000", Path.Combine(tmpDir, "Example"));
-
-                    exitCode = runProcessSyncWrapper.Run();
-
-                    _logger.Info($"exitCode = {exitCode}");
-
-                    _logger.Info($"runProcessSyncWrapper.Output = {JsonConvert.SerializeObject(runProcessSyncWrapper.Output, Formatting.Indented)}");
                 }
             }
 
