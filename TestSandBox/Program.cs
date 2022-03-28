@@ -46,6 +46,7 @@ using System.Net.Http.Json;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using TestSandBox.XMLDoc;
 using XMLDocReader.CSharpDoc;
@@ -60,7 +61,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstBuildExamples();
+            TstExternalExit();
+            //TstBuildExamples();
             //TstSetUpRepositoryTask();
             //TstIniFile();
             //TstPrepareUnityCSProjAndSolutionTask();
@@ -114,6 +116,23 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstExternalExit()
+        {
+            _logger.Info("Begin");
+
+            Task.Run(() => {
+                Thread.Sleep(10000);
+
+                _logger.Info("External Exit!");
+
+                Environment.Exit(0);
+            });
+
+            Thread.Sleep(50000);
+
+            _logger.Info("End");
         }
 
         private static void TstBuildExamples()
