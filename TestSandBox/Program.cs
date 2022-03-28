@@ -60,6 +60,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstBuildExamples();
             //TstSetUpRepositoryTask();
             //TstIniFile();
             //TstPrepareUnityCSProjAndSolutionTask();
@@ -78,7 +79,7 @@ namespace TestSandBox
             //TstSetXmlDocFileNameToCsProj();
             //TstRemoveDir();
             //TstRemoveDir();
-            TstFinishRelease0_3_6_p();
+            //TstFinishRelease0_3_6_p();
             //TstFinishRelease0_3_6();
             //TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
@@ -113,6 +114,45 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstBuildExamples()
+        {
+            _logger.Info("Begin");
+
+            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+
+            //_logger.Info($"siteSolution = {siteSolution}");
+
+            var siteSettings = new GeneralSiteBuilderSettings(new GeneralSiteBuilderSettingsOptions()
+            {
+                SourcePath = siteSolution.SourcePath,
+                DestPath = siteSolution.Path,
+                SiteName = siteSolution.RepositoryName,
+            });
+
+            var socExePath = @"c:\Users\Acer\source\repos\SymOntoClay\SymOntoClayCLI\bin\Debug\net6.0\soc.exe";
+
+            _logger.Info($"socExePath = {socExePath}");
+
+            var processSyncWrapper = new ProcessSyncWrapper(socExePath, "help");
+
+            var exitCode = processSyncWrapper.Run();
+
+            _logger.Info($"exitCode = {exitCode}");
+
+            var lngExamplesPath = siteSettings.SiteSettings.LngExamplesPath;
+
+            _logger.Info($"lngExamplesPath = {lngExamplesPath}");
+
+            var lngExamplesPagesList = siteSettings.SiteSettings.LngExamplesPages;
+
+            foreach(var lngExamplesPage in lngExamplesPagesList)
+            {
+                _logger.Info($"lngExamplesPage = {lngExamplesPage}");
+            }
+
+            _logger.Info("End");
         }
 
         private static void TstSetUpRepositoryTask()
