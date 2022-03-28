@@ -5,6 +5,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -92,6 +93,14 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                     return;
                 }
 
+                var exampleNameStr = rootNode.GetAttributeValue("example_name", null);
+
+                if (!string.IsNullOrWhiteSpace(exampleNameStr))
+                {
+                    ProcessExamplesLng(rootNode, doc, exampleNameStr, generalSiteBuilderSettings);
+                    return;
+                }
+
                 var language = rootNode.GetAttributeValue("data-lng", null);
 
 #if DEBUG
@@ -136,6 +145,13 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
         private static void ProcessConsole(HtmlNode rootNode, HtmlDocument doc)
         {
+            var exampleNameStr = rootNode.GetAttributeValue("example_name", null);
+
+            if (!string.IsNullOrWhiteSpace(exampleNameStr))
+            {
+                throw new NotImplementedException();
+            }
+
             var initialText = rootNode.GetDirectInnerText();
 
 #if DEBUG
@@ -164,6 +180,27 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 newRootNode.AppendChild(lineNode);
                 lineNode.InnerHtml = line;
             }
+        }
+
+        private static void ProcessExamplesLng(HtmlNode rootNode, HtmlDocument doc, string exampleName, GeneralSiteBuilderSettings generalSiteBuilderSettings)
+        {
+#if DEBUG
+            _logger.Info($"exampleName = {exampleName}");
+#endif
+
+            var initialText = rootNode.GetDirectInnerText();
+
+#if DEBUG
+            _logger.Info($"initialText = {initialText}");
+#endif
+
+            var exampleFileName = Path.Combine(generalSiteBuilderSettings.SiteSettings.DestLngExamplesPath, $"{exampleName}.zip");
+
+#if DEBUG
+            _logger.Info($"exampleFileName = {exampleFileName}");
+#endif
+
+            throw new NotImplementedException();
         }
 
         private static void ProcessLng(HtmlNode rootNode, HtmlDocument doc, KindOfLng kindOfLng, GeneralSiteBuilderSettings generalSiteBuilderSettings)

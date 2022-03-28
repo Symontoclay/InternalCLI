@@ -163,7 +163,7 @@ namespace SiteBuilder
                 SiteSettings.DestKeyFeaturesPath = $"{SiteHref}/{SiteSettings.DestKeyFeaturesPath}";
             }
 
-            if(!SiteSettings.IgnoredDirs.IsNullOrEmpty())
+            if (!SiteSettings.IgnoredDirs.IsNullOrEmpty())
             {
                 IgnoredDirsList.AddRange(SiteSettings.IgnoredDirs);
             }

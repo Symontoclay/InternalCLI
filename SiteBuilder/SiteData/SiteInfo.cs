@@ -24,6 +24,8 @@ namespace SiteBuilder.SiteData
         public string CSharpUserApiJsonPath { get; set; } = string.Empty;
         public string DestCSharpUserApiPath { get; set; } = string.Empty;
         public string DestKeyFeaturesPath { get; set; } = string.Empty;
+        public string LngExamplesPath { get; set; } = string.Empty;
+        public string DestLngExamplesPath { get; set; } = string.Empty;
         public MicroDataInfo Microdata { get; set; }
         public List<string> IgnoredDirs { get; set; }
 
@@ -49,7 +51,12 @@ namespace SiteBuilder.SiteData
                 CSharpUserApiJsonPath = EVPath.Normalize(CSharpUserApiJsonPath);
             }
 
-            if(!IgnoredDirs.IsNullOrEmpty())
+            if (!string.IsNullOrWhiteSpace(LngExamplesPath))
+            {
+                LngExamplesPath = EVPath.Normalize(LngExamplesPath);
+            }
+
+            if (!IgnoredDirs.IsNullOrEmpty())
             {
                 IgnoredDirs = IgnoredDirs.Select(p => EVPath.Normalize(p)).ToList();
             }
@@ -95,6 +102,8 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(CSharpUserApiJsonPath)} = {CSharpUserApiJsonPath}");
             sb.AppendLine($"{spaces}{nameof(DestCSharpUserApiPath)} = {DestCSharpUserApiPath}");
             sb.AppendLine($"{spaces}{nameof(DestKeyFeaturesPath)} = {DestKeyFeaturesPath}");
+            sb.AppendLine($"{spaces}{nameof(LngExamplesPath)} = {LngExamplesPath}");
+            sb.AppendLine($"{spaces}{nameof(DestLngExamplesPath)} = {DestLngExamplesPath}");
             sb.PrintPODList(n, nameof(IgnoredDirs), IgnoredDirs);
 
             sb.PrintObjProp(n, nameof(Microdata), Microdata);
