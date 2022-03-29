@@ -3,6 +3,8 @@ using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
 using Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInCSProjectOrSolution;
 using Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInFolder;
+using SiteBuilder;
+using SiteBuilder.HtmlPreprocessors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +19,22 @@ namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
             : base(null, deep)
         {
         }
-
+        
         /// <inheritdoc/>
         protected override void OnRun()
         {
             var license = ProjectsDataSource.GetLicense("MIT");
+
+            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+
+            var siteSettings = new GeneralSiteBuilderSettings(new GeneralSiteBuilderSettingsOptions()
+            {
+                SourcePath = siteSolution.SourcePath,
+                DestPath = siteSolution.Path,
+                SiteName = siteSolution.RepositoryName,
+            });
+
+            var headerText = ContentPreprocessor.Run(license.HeaderContent, MarkdownStrategy.GenerateMarkdown, siteSettings);
 
             var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
@@ -34,7 +47,7 @@ namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
                     case KindOfProject.CoreSolution:
                         Exec(new UpdateCopyrightInFileHeadersInCSProjectOrSolutionTask(new UpdateCopyrightInFileHeadersInCSProjectOrSolutionTaskOptions()
                         {
-                            Text = license.HeaderContent,
+                            Text = headerText,
                             SourceDir = targetSolution.Path
                         }, NextDeep));
                         break;
@@ -42,7 +55,7 @@ namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
                     case KindOfProject.Unity:
                         Exec(new UpdateCopyrightInFileHeadersInFolderTask(new UpdateCopyrightInFileHeadersInFolderTaskOptions()
                         {
-                            Text = license.HeaderContent,
+                            Text = headerText,
                             SourceDir = targetSolution.SourcePath
                         }, NextDeep));
                         break;

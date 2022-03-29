@@ -64,8 +64,9 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstPrepareLicenses();
             //TstExternalExit();
-            TstBuildExamplesTask();
+            //TstBuildExamplesTask();
             //TstBuildExamples();
             //TstSetUpRepositoryTask();
             //TstIniFile();
@@ -120,6 +121,32 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstPrepareLicenses()
+        {
+            _logger.Info("Begin");
+
+            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+
+            //_logger.Info($"siteSolution = {siteSolution}");
+
+            var siteSettings = new GeneralSiteBuilderSettings(new GeneralSiteBuilderSettingsOptions()
+            {
+                SourcePath = siteSolution.SourcePath,
+                DestPath = siteSolution.Path,
+                SiteName = siteSolution.RepositoryName,
+            });
+
+            var license = ProjectsDataSource.GetLicense("MIT");
+
+            _logger.Info($"license.HeaderContent = {license.HeaderContent}");
+
+            var headerText = ContentPreprocessor.Run(license.HeaderContent, MarkdownStrategy.GenerateMarkdown, siteSettings);
+
+            _logger.Info($"headerText = {headerText}");
+
+            _logger.Info("End");
         }
 
         private static void TstExternalExit()

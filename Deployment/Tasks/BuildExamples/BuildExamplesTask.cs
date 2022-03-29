@@ -95,7 +95,7 @@ namespace Deployment.Tasks.ExamplesCreator
             foreach(var cleanedFile in cleanedFiles)
             {
 #if DEBUG
-                _logger.Info($"cleanedFile = {cleanedFile}");
+                //_logger.Info($"cleanedFile = {cleanedFile}");
 #endif
 
                 File.Delete(cleanedFile);
