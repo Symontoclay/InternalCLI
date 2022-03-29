@@ -63,6 +63,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartNewVersion", "StartNew
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreToInternalCLIDist", "CoreToInternalCLIDist\CoreToInternalCLIDist.csproj", "{9FA787CC-4FD6-4732-ACC1-74C0FCB492F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevBuildExamples", "DevBuildExamples\DevBuildExamples.csproj", "{153488FD-FD8D-4BFE-BFD8-0E202C9E5BCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,10 @@ Global
 		{9FA787CC-4FD6-4732-ACC1-74C0FCB492F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FA787CC-4FD6-4732-ACC1-74C0FCB492F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FA787CC-4FD6-4732-ACC1-74C0FCB492F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{153488FD-FD8D-4BFE-BFD8-0E202C9E5BCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{153488FD-FD8D-4BFE-BFD8-0E202C9E5BCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{153488FD-FD8D-4BFE-BFD8-0E202C9E5BCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{153488FD-FD8D-4BFE-BFD8-0E202C9E5BCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -198,6 +204,7 @@ Global
 		{7A647850-C1EC-40E9-B518-D9618158C5AC} = {11454302-7E69-4F5F-8D15-64795CEA9E60}
 		{AC9D5C14-E155-4278-B3FA-336931929309} = {11454302-7E69-4F5F-8D15-64795CEA9E60}
 		{9FA787CC-4FD6-4732-ACC1-74C0FCB492F0} = {247D30BB-7880-4F31-A862-3FB2D21FAF9A}
+		{153488FD-FD8D-4BFE-BFD8-0E202C9E5BCC} = {247D30BB-7880-4F31-A862-3FB2D21FAF9A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {06C4A77F-C5ED-463F-A718-5E248AB5CDAB}

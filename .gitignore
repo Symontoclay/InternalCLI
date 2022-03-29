@@ -55,3 +55,5 @@ PageCreator/obj
 /MakeRelease/obj
 /StartNewVersion/bin
 /StartNewVersion/obj
+/DevBuildExamples/obj
+/DevBuildExamples/bin

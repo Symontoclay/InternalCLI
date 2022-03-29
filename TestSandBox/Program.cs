@@ -5,6 +5,7 @@ using CommonUtils;
 using CommonUtils.DebugHelpers;
 using CSharpUtils;
 using Deployment;
+using Deployment.DevTasks.BuildExamples;
 using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
 using Deployment.DevTasks.CopyAndTest;
 using Deployment.DevTasks.CoreToAsset;
@@ -65,7 +66,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstCoreToInternalCLIDistDevTask();
+            TstBuildExamplesDevTask();
+            //TstCoreToInternalCLIDistDevTask();
             //TstPrepareLicenses();
             //TstExternalExit();
             //TstBuildExamplesTask();
@@ -123,6 +125,21 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstBuildExamplesDevTask()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new BuildExamplesDevTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstCoreToInternalCLIDistDevTask()

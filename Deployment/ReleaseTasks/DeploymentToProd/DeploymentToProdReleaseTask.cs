@@ -1,5 +1,7 @@
 ﻿using CommonUtils.DebugHelpers;
+using Deployment.DevTasks.BuildExamples;
 using Deployment.DevTasks.CoreToAsset;
+using Deployment.DevTasks.CoreToCLIFolder;
 using Deployment.DevTasks.CoreToSiteSource;
 using Deployment.DevTasks.CreateAndCommitChangeLogs;
 using Deployment.DevTasks.CreateAndCommitCodeOfConducts;
@@ -41,6 +43,9 @@ namespace Deployment.ReleaseTasks.DeploymentToProd
             Exec(new UnityToSiteSourceDevTask(NextDeep));
 
             Exec(new UpdateReleaseNotesDevTask(NextDeep));
+
+            Exec(new CoreToCLIFolderDevTask(NextDeep));
+            Exec(new BuildExamplesDevTask(NextDeep));
 
             Exec(new ProdSiteBuildAndCommitReleaseTask(NextDeep));
 

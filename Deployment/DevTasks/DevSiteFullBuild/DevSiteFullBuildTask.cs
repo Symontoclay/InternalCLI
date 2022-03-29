@@ -1,5 +1,7 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using Deployment.DevTasks.BuildExamples;
+using Deployment.DevTasks.CoreToCLIFolder;
 using Deployment.DevTasks.CoreToSiteSource;
 using Deployment.DevTasks.DevSiteBuild;
 using Deployment.DevTasks.UnityToSiteSource;
@@ -36,6 +38,8 @@ namespace Deployment.DevTasks.DevSiteFullBuild
             Exec(new UpdateReleaseNotesDevTask(NextDeep));
             Exec(new CoreToSiteSourceDevTask(NextDeep));
             Exec(new UnityToSiteSourceDevTask(NextDeep));
+            Exec(new CoreToCLIFolderDevTask(NextDeep));
+            Exec(new BuildExamplesDevTask(NextDeep));
             Exec(new DevSiteBuildTask(NextDeep));
         }
 
