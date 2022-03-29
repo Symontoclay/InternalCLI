@@ -1,6 +1,7 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
 using CSharpUtils;
+using Deployment.DevTasks.CopyAndPublishVSProjectOrSolution;
 using Deployment.Helpers;
 using Deployment.Tasks;
 using Deployment.Tasks.ArchTasks.Zip;
@@ -119,7 +120,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
 
             var cliProject = ProjectsDataSource.GetProject(KindOfProject.CLI);
 
-            Exec(new PublishTask(new PublishTaskOptions()
+            Exec(new CopyAndPublishVSProjectOrSolutionDevTask(new CopyAndPublishVSProjectOrSolutionDevTaskOptions()
             {
                 ProjectOrSoutionFileName = cliProject.CsProjPath,
                 OutputDir = cliTempDir.FullName,

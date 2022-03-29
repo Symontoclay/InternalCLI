@@ -42,6 +42,10 @@ namespace BaseDevPipeline.Data.Implementation
 
             result.RepositoryReadmeSource = source.RepositoryReadmeSource;
             result.RepositoryBadgesSource = source.RepositoryBadgesSource;
+
+            result.InternalCLIDist = PathsHelper.Normalize(source.InternalCLIDist);
+            result.SocExePath = Path.Combine(result.InternalCLIDist, "soc.exe");
+
             result.Copyright = source.Copyright;
 
             var licensesDict = new Dictionary<string, LicenseSettings>();

@@ -12,7 +12,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
     public class CodeExampleReader
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static List<CodeExample> Read(string pageFileName)

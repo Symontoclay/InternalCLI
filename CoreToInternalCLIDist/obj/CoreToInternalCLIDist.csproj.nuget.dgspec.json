@@ -1,0 +1,515 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CoreToInternalCLIDist\\CoreToInternalCLIDist.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Acer\\source\\repos\\InternalCLI\\BaseDevPipeline\\BaseDevPipeline.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\BaseDevPipeline\\BaseDevPipeline.csproj",
+        "projectName": "BaseDevPipeline",
+        "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\BaseDevPipeline\\BaseDevPipeline.csproj",
+        "packagesPath": "C:\\Users\\Acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\BaseDevPipeline\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\CommonUtils.csproj": {
+                "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\CommonUtils.csproj"
+              },
+              "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CSharpUtils\\CSharpUtils.csproj": {
+                "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CSharpUtils\\CSharpUtils.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "NLog": {
+              "target": "Package",
+              "version": "[4.7.5, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\CommonUtils.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\CommonUtils.csproj",
+        "projectName": "CommonUtils",
+        "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\CommonUtils.csproj",
+        "packagesPath": "C:\\Users\\Acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "NLog": {
+              "target": "Package",
+              "version": "[4.7.5, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "System.Configuration.ConfigurationManager": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CoreToInternalCLIDist\\CoreToInternalCLIDist.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CoreToInternalCLIDist\\CoreToInternalCLIDist.csproj",
+        "projectName": "CoreToInternalCLIDist",
+        "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CoreToInternalCLIDist\\CoreToInternalCLIDist.csproj",
+        "packagesPath": "C:\\Users\\Acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CoreToInternalCLIDist\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\Acer\\source\\repos\\InternalCLI\\Deployment\\Deployment.csproj": {
+                "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\Deployment\\Deployment.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "NLog": {
+              "target": "Package",
+              "version": "[4.7.5, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CSharpUtils\\CSharpUtils.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CSharpUtils\\CSharpUtils.csproj",
+        "projectName": "CSharpUtils",
+        "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CSharpUtils\\CSharpUtils.csproj",
+        "packagesPath": "C:\\Users\\Acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CSharpUtils\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\CommonUtils.csproj": {
+                "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\CommonUtils.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "NLog": {
+              "target": "Package",
+              "version": "[4.7.5, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Acer\\source\\repos\\InternalCLI\\Deployment\\Deployment.csproj": {
+      "version": "1.0.1",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\Deployment\\Deployment.csproj",
+        "projectName": "Deployment",
+        "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\Deployment\\Deployment.csproj",
+        "packagesPath": "C:\\Users\\Acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\Deployment\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\Acer\\source\\repos\\InternalCLI\\BaseDevPipeline\\BaseDevPipeline.csproj": {
+                "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\BaseDevPipeline\\BaseDevPipeline.csproj"
+              },
+              "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\CommonUtils.csproj": {
+                "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\CommonUtils.csproj"
+              },
+              "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CSharpUtils\\CSharpUtils.csproj": {
+                "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CSharpUtils\\CSharpUtils.csproj"
+              },
+              "C:\\Users\\Acer\\source\\repos\\InternalCLI\\SiteBuilder\\SiteBuilder.csproj": {
+                "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\SiteBuilder\\SiteBuilder.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "NLog": {
+              "target": "Package",
+              "version": "[4.7.5, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "Octokit": {
+              "target": "Package",
+              "version": "[0.50.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Acer\\source\\repos\\InternalCLI\\SiteBuilder\\SiteBuilder.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\SiteBuilder\\SiteBuilder.csproj",
+        "projectName": "SiteBuilder",
+        "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\SiteBuilder\\SiteBuilder.csproj",
+        "packagesPath": "C:\\Users\\Acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\SiteBuilder\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\CommonUtils.csproj": {
+                "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\CommonUtils.csproj"
+              },
+              "C:\\Users\\Acer\\source\\repos\\InternalCLI\\XMLDocReader\\XMLDocReader.csproj": {
+                "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\XMLDocReader\\XMLDocReader.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "CommonMark.NET": {
+              "target": "Package",
+              "version": "[0.15.1, )"
+            },
+            "HtmlAgilityPack": {
+              "target": "Package",
+              "version": "[1.11.26, )"
+            },
+            "NLog": {
+              "target": "Package",
+              "version": "[4.7.5, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "System.Configuration.ConfigurationManager": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            },
+            "dotless": {
+              "target": "Package",
+              "version": "[1.6.7, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Acer\\source\\repos\\InternalCLI\\XMLDocReader\\XMLDocReader.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\XMLDocReader\\XMLDocReader.csproj",
+        "projectName": "XMLDocReader",
+        "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\XMLDocReader\\XMLDocReader.csproj",
+        "packagesPath": "C:\\Users\\Acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\XMLDocReader\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\CommonUtils.csproj": {
+                "projectPath": "C:\\Users\\Acer\\source\\repos\\InternalCLI\\CommonUtils\\CommonUtils.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "NLog": {
+              "target": "Package",
+              "version": "[4.7.5, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

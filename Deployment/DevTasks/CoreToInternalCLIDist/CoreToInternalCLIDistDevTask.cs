@@ -2,25 +2,23 @@
 using CommonUtils.DebugHelpers;
 using Deployment.DevTasks.CopyAndPublishVSProjectOrSolution;
 using Deployment.Tasks;
-using Deployment.Tasks.BuildTasks.Publish;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.DevTasks.CoreToCLIFolder
+namespace Deployment.DevTasks.CoreToInternalCLIDist
 {
-    public class CoreToCLIFolderDevTask : BaseDeploymentTask
+    public class CoreToInternalCLIDistDevTask : BaseDeploymentTask
     {
-        public CoreToCLIFolderDevTask()
+        public CoreToInternalCLIDistDevTask()
             : this(0u)
         {
         }
 
-        public CoreToCLIFolderDevTask(uint deep)
+        public CoreToInternalCLIDistDevTask(uint deep)
             : base(null, deep)
         {
         }
@@ -28,9 +26,11 @@ namespace Deployment.DevTasks.CoreToCLIFolder
         /// <inheritdoc/>
         protected override void OnRun()
         {
+            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+
             var cliProject = ProjectsDataSource.GetProject(KindOfProject.CLI);
 
-            var cliFolderTargetPath = ProjectsDataSource.GetDevArtifact(KindOfArtifact.CLIFolder).Path;
+            var cliFolderTargetPath = settings.InternalCLIDist;
 
             Exec(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {
@@ -52,7 +52,7 @@ namespace Deployment.DevTasks.CoreToCLIFolder
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Exports CLI to dev destanation.");
+            sb.AppendLine($"{spaces}Exports CLI to internal CLI destanation.");
             sb.Append(PrintValidation(n));
 
             return sb.ToString();

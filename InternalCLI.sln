@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30523.141
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonUtils", "CommonUtils\CommonUtils.csproj", "{7F89F21F-758F-470B-A787-3CA98C422C98}"
 EndProject
@@ -59,7 +59,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReleasePipelines", "Release
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MakeRelease", "MakeRelease\MakeRelease.csproj", "{7A647850-C1EC-40E9-B518-D9618158C5AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartNewVersion", "StartNewVersion\StartNewVersion.csproj", "{AC9D5C14-E155-4278-B3FA-336931929309}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartNewVersion", "StartNewVersion\StartNewVersion.csproj", "{AC9D5C14-E155-4278-B3FA-336931929309}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreToInternalCLIDist", "CoreToInternalCLIDist\CoreToInternalCLIDist.csproj", "{9FA787CC-4FD6-4732-ACC1-74C0FCB492F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -167,6 +169,10 @@ Global
 		{AC9D5C14-E155-4278-B3FA-336931929309}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC9D5C14-E155-4278-B3FA-336931929309}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC9D5C14-E155-4278-B3FA-336931929309}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA787CC-4FD6-4732-ACC1-74C0FCB492F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA787CC-4FD6-4732-ACC1-74C0FCB492F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA787CC-4FD6-4732-ACC1-74C0FCB492F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA787CC-4FD6-4732-ACC1-74C0FCB492F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -191,6 +197,7 @@ Global
 		{5EF11F1A-727E-4E3B-9C1F-0E64C5C7A42B} = {247D30BB-7880-4F31-A862-3FB2D21FAF9A}
 		{7A647850-C1EC-40E9-B518-D9618158C5AC} = {11454302-7E69-4F5F-8D15-64795CEA9E60}
 		{AC9D5C14-E155-4278-B3FA-336931929309} = {11454302-7E69-4F5F-8D15-64795CEA9E60}
+		{9FA787CC-4FD6-4732-ACC1-74C0FCB492F0} = {247D30BB-7880-4F31-A862-3FB2D21FAF9A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {06C4A77F-C5ED-463F-A718-5E248AB5CDAB}

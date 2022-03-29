@@ -8,6 +8,7 @@ using Deployment;
 using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
 using Deployment.DevTasks.CopyAndTest;
 using Deployment.DevTasks.CoreToAsset;
+using Deployment.DevTasks.CoreToInternalCLIDist;
 using Deployment.DevTasks.CreateAndCommitChangeLogs;
 using Deployment.DevTasks.CreateAndCommitCodeOfConducts;
 using Deployment.DevTasks.CreateAndCommitContributings;
@@ -64,7 +65,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstPrepareLicenses();
+            TstCoreToInternalCLIDistDevTask();
+            //TstPrepareLicenses();
             //TstExternalExit();
             //TstBuildExamplesTask();
             //TstBuildExamples();
@@ -121,6 +123,21 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstCoreToInternalCLIDistDevTask()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new CoreToInternalCLIDistDevTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstPrepareLicenses()
@@ -1627,13 +1644,16 @@ namespace TestSandBox
 
             var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
 
-            _logger.Info($"settings = {settings}");
+            //_logger.Info($"settings = {settings}");
 
-            var unitySolution = ProjectsDataSource.GetSolution(KindOfProject.Unity);
+            //var unitySolution = ProjectsDataSource.GetSolution(KindOfProject.Unity);
 
-            _logger.Info($"unitySolution = {unitySolution}");
+            //_logger.Info($"unitySolution = {unitySolution}");
 
             //ProjectsDataSource.SaveExampleFile("ProjectsDataSource_1.json");
+
+            _logger.Info($"settings.InternalCLIDist = {settings.InternalCLIDist}");
+            _logger.Info($"settings.SocExePath = {settings.SocExePath}");
 
             _logger.Info("End");
         }

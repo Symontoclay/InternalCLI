@@ -22,6 +22,9 @@ namespace BaseDevPipeline.Data.Implementation
 
         public string Copyright { get; set; }
 
+        public string InternalCLIDist { get; set; }
+        public string SocExePath { get; set; }
+
         /// <inheritdoc/>
         public string GetSecret(string key)
         {
@@ -208,6 +211,8 @@ namespace BaseDevPipeline.Data.Implementation
             sb.PrintObjListProp(n, nameof(DevArtifacts), DevArtifacts);
             sb.PrintObjListProp(n, nameof(Licenses), Licenses);
             sb.AppendLine($"{spaces}{nameof(Copyright)} = {Copyright}");
+            sb.AppendLine($"{spaces}{nameof(InternalCLIDist)} = {InternalCLIDist}");
+            sb.AppendLine($"{spaces}{nameof(SocExePath)} = {SocExePath}");
 
             return sb.ToString();
         }
