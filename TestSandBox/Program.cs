@@ -26,6 +26,7 @@ using Deployment.Tasks.BuildContributing;
 using Deployment.Tasks.BuildLicense;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
+using Deployment.Tasks.ExamplesCreator;
 using Deployment.Tasks.GitTasks.Clone;
 using Deployment.Tasks.GitTasks.SetUpRepository;
 using Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution;
@@ -142,7 +143,40 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
 
+            //_logger.Info($"siteSolution = {siteSolution}");
+
+            var siteSettings = new GeneralSiteBuilderSettings(new GeneralSiteBuilderSettingsOptions()
+            {
+                SourcePath = siteSolution.SourcePath,
+                DestPath = siteSolution.Path,
+                SiteName = siteSolution.RepositoryName,
+            });
+
+            var socExePath = @"c:\Users\Acer\source\repos\SymOntoClay\SymOntoClayCLI\bin\Debug\net6.0\soc.exe";
+
+            //_logger.Info($"socExePath = {socExePath}");
+
+            //var lngExamplesPath = siteSettings.SiteSettings.LngExamplesPath;
+
+            var lngExamplesPath = @"c:\Users\Acer\Documents\tmp3\";
+
+            _logger.Info($"lngExamplesPath = {lngExamplesPath}");
+
+            var lngExamplesPagesList = siteSettings.SiteSettings.LngExamplesPages;
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new BuildExamplesTask(new BuildExamplesTaskOptions() {
+                LngExamplesPages = lngExamplesPagesList,
+                DestDir = lngExamplesPath,
+                SocExePath = socExePath
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
 
             _logger.Info("End");
         }

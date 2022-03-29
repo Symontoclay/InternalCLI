@@ -39,7 +39,14 @@ namespace Deployment.Tasks.ExamplesCreator
         /// <inheritdoc/>
         protected override void OnRun()
         {
+            ClearDestDir();
 
+            throw new NotImplementedException();
+        }
+
+        private void ClearDestDir()
+        {
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc/>
