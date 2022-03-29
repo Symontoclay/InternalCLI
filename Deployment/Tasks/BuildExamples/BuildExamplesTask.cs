@@ -1,7 +1,10 @@
 ﻿using CommonUtils.DebugHelpers;
+using Deployment.Helpers;
 using NLog;
+using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +14,7 @@ namespace Deployment.Tasks.ExamplesCreator
     public class BuildExamplesTask : BaseDeploymentTask
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public BuildExamplesTask(BuildExamplesTaskOptions options)
@@ -41,12 +44,62 @@ namespace Deployment.Tasks.ExamplesCreator
         {
             ClearDestDir();
 
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
+
+            foreach (var lngExamplesPage in _options.LngExamplesPages)
+            {
+#if DEBUG
+                //_logger.Info($"lngExamplesPage = {lngExamplesPage}");
+#endif
+
+                var examplesList = CodeExampleReader.Read(lngExamplesPage);
+
+#if DEBUG
+                //_logger.Info($"examplesList.Count = {examplesList.Count}");
+#endif
+                foreach (var example in examplesList)
+                {
+#if DEBUG
+                    //_logger.Info($"example = {example}");
+#endif
+
+                    var result = ExampleCreator.CreateExample(example, tempDir.FullName, _options.SocExePath);
+
+#if DEBUG
+                    //_logger.Info($"result = {result}");
+#endif
+
+                    var newArchFileName = Path.Combine(_options.DestDir, Path.GetFileName(result.ArchFileName));
+
+#if DEBUG
+                    //_logger.Info($"newArchFileName = {newArchFileName}");
+#endif
+
+                    File.Copy(result.ArchFileName, newArchFileName);
+
+                    var newConsoleFileName = Path.Combine(_options.DestDir, Path.GetFileName(result.ConsoleFileName));
+
+#if DEBUG
+                    //_logger.Info($"newConsoleFileName = {newConsoleFileName}");
+#endif
+
+                    File.Copy(result.ConsoleFileName, newConsoleFileName);
+                }
+            }
         }
 
         private void ClearDestDir()
         {
-            throw new NotImplementedException();
+            var cleanedFiles = Directory.GetFiles(_options.DestDir).Where(p => p.EndsWith(".zip") || p.EndsWith(".console")).ToList();
+
+            foreach(var cleanedFile in cleanedFiles)
+            {
+#if DEBUG
+                _logger.Info($"cleanedFile = {cleanedFile}");
+#endif
+
+                File.Delete(cleanedFile);
+            }
         }
 
         /// <inheritdoc/>
