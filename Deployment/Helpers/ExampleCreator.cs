@@ -15,7 +15,7 @@ namespace Deployment.Helpers
     public static class ExampleCreator
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static ExampleCreatorResult CreateExample(CodeExample example, string baseDir, string socExePath)

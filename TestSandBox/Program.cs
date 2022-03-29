@@ -64,7 +64,8 @@ namespace TestSandBox
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             //TstExternalExit();
-            TstBuildExamples();
+            TstBuildExamplesTask();
+            //TstBuildExamples();
             //TstSetUpRepositoryTask();
             //TstIniFile();
             //TstPrepareUnityCSProjAndSolutionTask();
@@ -137,6 +138,15 @@ namespace TestSandBox
             _logger.Info("End");
         }
 
+        private static void TstBuildExamplesTask()
+        {
+            _logger.Info("Begin");
+
+
+
+            _logger.Info("End");
+        }
+
         private static void TstBuildExamples()
         {
             _logger.Info("Begin");
@@ -200,8 +210,6 @@ namespace TestSandBox
                     var result = ExampleCreator.CreateExample(example, tmpDir, socExePath);
 
                     _logger.Info($"result = {result}");
-
-
                 }
             }
 
