@@ -57,3 +57,6 @@ PageCreator/obj
 /StartNewVersion/obj
 /DevBuildExamples/obj
 /DevBuildExamples/bin
+/CoreToInternalCLIDist/bin/Debug/net6.0
+/CoreToInternalCLIDist/obj/Debug/net6.0/CoreToInternalCLIDist.AssemblyInfo.cs
+/CoreToInternalCLIDist/obj/Debug/net6.0/CoreToInternalCLIDist.AssemblyInfoInputs.cache
