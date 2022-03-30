@@ -15,7 +15,7 @@ namespace Deployment.Helpers
     public static class ExampleCreator
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static ExampleCreatorResult CreateExample(CodeExample example, string baseDir, string socExePath)
@@ -49,6 +49,10 @@ namespace Deployment.Helpers
 
             var exampleDir = Path.Combine(baseDir, "Example");
 
+#if DEBUG
+            //_logger.Info($"exampleDir = {exampleDir}");
+#endif
+
             var runProcessSyncWrapper = new ProcessSyncWrapper(socExePath, "run -nologo -timeout 5000", exampleDir);
 
             exitCode = runProcessSyncWrapper.Run();
@@ -60,7 +64,11 @@ namespace Deployment.Helpers
 
             if (exitCode != 0)
             {
-                throw new Exception($"Exit code is {exitCode}!");
+                var sb = new StringBuilder();
+                sb.AppendLine($"Unable to run example '{example.Name}':");
+                sb.AppendLine(example.Code);
+                sb.AppendLine($"Exit code is {exitCode}!");
+                throw new Exception(sb.ToString());
             }
 
             var someLogFile = Directory.GetFiles(exampleDir).SingleOrDefault(p => p.EndsWith(".log"));
@@ -97,6 +105,8 @@ namespace Deployment.Helpers
 #endif
 
             File.WriteAllText(consoleFileName, consoleSb.ToString());
+
+            Directory.Delete(exampleDir, true);
 
             return new ExampleCreatorResult() 
             { 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -7,6 +8,8 @@ namespace CommonUtils
 {
     public class ProcessSyncWrapper : Disposable
     {
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         public ProcessSyncWrapper(string fileName, string arguments)
             : this(fileName, arguments, null)
         {
@@ -40,9 +43,13 @@ namespace CommonUtils
 
         public int Run()
         {
+            _logger.Info($"{_process.StartInfo.FileName} {_process.StartInfo.Arguments}");
+
             _process.Start();
             _process.BeginOutputReadLine();
             _process.WaitForExit();
+
+            _logger.Info($"ExitCode = {_process.ExitCode}");
 
             return _process.ExitCode;
         }
