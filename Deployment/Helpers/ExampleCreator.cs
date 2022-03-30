@@ -77,7 +77,10 @@ namespace Deployment.Helpers
             //_logger.Info($"someLogFile = {someLogFile}");
 #endif
 
-            File.Delete(someLogFile);
+            if(!string.IsNullOrWhiteSpace(someLogFile))
+            {
+                File.Delete(someLogFile);
+            }            
 
             var targetZipFileName = Path.Combine(baseDir, $"{example.Name}.zip");
 
