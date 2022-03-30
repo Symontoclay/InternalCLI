@@ -100,6 +100,16 @@ namespace Deployment.Helpers
 
             foreach(var line in runProcessSyncWrapper.Output)
             {
+                if(DetectException(line))
+                {
+                    var sb = new StringBuilder();
+                    sb.AppendLine($"Unable to run example '{example.Name}':");
+                    sb.AppendLine(example.Code);
+                    sb.AppendLine("The suspicious otput:");
+                    sb.AppendLine(line);
+                    throw new Exception(sb.ToString());
+                }
+
                 consoleSb.AppendLine(NormalizeTextForConsole(line));
             }
 
@@ -116,6 +126,11 @@ namespace Deployment.Helpers
                 ArchFileName = targetZipFileName,
                 ConsoleFileName = consoleFileName
             };
+        }
+
+        private static bool DetectException(string source)
+        {
+            return (source.Contains("System.") || source.Contains("at SymOntoClay.")) && (source.Contains(@"in C:\") || source.Contains(@"in D:\")) && source.Contains(".cs:line ");
         }
 
         private static string NormalizeTextForConsole(string source)
