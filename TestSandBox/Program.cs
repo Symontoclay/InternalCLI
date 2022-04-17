@@ -33,6 +33,7 @@ using Deployment.Tasks.GitTasks.Clone;
 using Deployment.Tasks.GitTasks.SetUpRepository;
 using Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using NLog;
 using Octokit;
 using SiteBuilder;
@@ -66,7 +67,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstBuildExamplesDevTask();
+            TstBson();
+            //TstBuildExamplesDevTask();
             //TstCoreToInternalCLIDistDevTask();
             //TstPrepareLicenses();
             //TstExternalExit();
@@ -125,6 +127,34 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstBson()
+        {
+            _logger.Info("Begin");
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "ReleaseNotes.json");
+
+            _logger.Info($"filePath = {filePath}");
+
+            var targetFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ReleaseNotes.bson");
+
+            _logger.Info($"targetFilePath = {targetFilePath}");
+
+            var obj = JsonConvert.DeserializeObject(File.ReadAllText(filePath));
+
+            var ms = new MemoryStream();
+
+            using var writer = new BsonWriter(ms);
+
+            var serializer = new JsonSerializer();
+            serializer.Serialize(writer, obj);
+
+            var data = Convert.ToBase64String(ms.ToArray());
+
+            File.WriteAllText(targetFilePath, data);
+
+            _logger.Info("End");
         }
 
         private static void TstBuildExamplesDevTask()
