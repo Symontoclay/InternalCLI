@@ -133,26 +133,26 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "ReleaseNotes.json");
+            //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "ReleaseNotes.json");
 
-            _logger.Info($"filePath = {filePath}");
+            //_logger.Info($"filePath = {filePath}");
 
-            var targetFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ReleaseNotes.bson");
+            //var targetFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ReleaseNotes.bson");
 
-            _logger.Info($"targetFilePath = {targetFilePath}");
+            //_logger.Info($"targetFilePath = {targetFilePath}");
 
-            var obj = JsonConvert.DeserializeObject(File.ReadAllText(filePath));
+            //var obj = JsonConvert.DeserializeObject(File.ReadAllText(filePath));
 
-            var ms = new MemoryStream();
+            //var ms = new MemoryStream();
 
-            using var writer = new BsonWriter(ms);
+            //using var writer = new BsonWriter(ms);
 
-            var serializer = new JsonSerializer();
-            serializer.Serialize(writer, obj);
+            //var serializer = new JsonSerializer();
+            //serializer.Serialize(writer, obj);
 
-            var data = Convert.ToBase64String(ms.ToArray());
+            //var data = Convert.ToBase64String(ms.ToArray());
 
-            File.WriteAllText(targetFilePath, data);
+            //File.WriteAllText(targetFilePath, data);
 
             _logger.Info("End");
         }
