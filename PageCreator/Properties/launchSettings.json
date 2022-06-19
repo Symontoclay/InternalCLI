@@ -2,7 +2,7 @@
   "profiles": {
     "PageCreator": {
       "commandName": "Project",
-      "commandLineArgs": "contributing"
+      "commandLineArgs": "standard_library"
     }
   }
 }
