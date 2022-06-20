@@ -57,7 +57,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CreateDirectory
 
                             break;
                         }
-                        catch(System.UnauthorizedAccessException e)
+                        catch(UnauthorizedAccessException e)
                         {
 #if DEBUG
                             _logger.Info($"n = {n}");
@@ -66,6 +66,11 @@ namespace Deployment.Tasks.DirectoriesTasks.CreateDirectory
                         }
 
                         Thread.Sleep(5000);
+
+                        if(n > 10)
+                        {
+                            break;
+                        }
                     }
                     
                     Directory.CreateDirectory(targetDir);

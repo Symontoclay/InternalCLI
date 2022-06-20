@@ -67,7 +67,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstBson();
+            //TstBson();
             //TstBuildExamplesDevTask();
             //TstCoreToInternalCLIDistDevTask();
             //TstPrepareLicenses();
@@ -93,7 +93,7 @@ namespace TestSandBox
             //TstRemoveDir();
             //TstRemoveDir();
             //TstFinishRelease0_3_6_p();
-            //TstFinishRelease0_3_6();
+            TstFinishRelease0_3_6();
             //TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
             //TstTesting();

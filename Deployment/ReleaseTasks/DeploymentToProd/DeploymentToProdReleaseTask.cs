@@ -44,7 +44,7 @@ namespace Deployment.ReleaseTasks.DeploymentToProd
 
             Exec(new UpdateReleaseNotesDevTask(NextDeep));
 
-            Exec(new CoreToCLIFolderDevTask(NextDeep));
+            //Exec(new CoreToCLIFolderDevTask(NextDeep));
             Exec(new BuildExamplesDevTask(NextDeep));
 
             Exec(new ProdSiteBuildAndCommitReleaseTask(NextDeep));
