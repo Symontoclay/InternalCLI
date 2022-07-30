@@ -48,6 +48,10 @@
           "Path": "SymOntoClayUnity3DAssetTest"
         },
         {
+          "Kind": "IntegrationTest",
+          "Path": "SymOntoClayHardTests"
+        },
+        {
           "Kind": "AdditionalApp",
           "Path": "TestSandbox"
         },
@@ -58,6 +62,14 @@
         {
           "Kind": "CorePlugin",
           "Path": "SymOntoClaySoundBuses"
+        },
+        {
+          "Kind": "CorePlugin",
+          "Path": "SymOntoClayNLP"
+        },
+        {
+          "Kind": "CorePlugin",
+          "Path": "SymOntoClayStandardFacts"
         }
       ]
     },
