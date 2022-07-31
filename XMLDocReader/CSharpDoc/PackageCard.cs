@@ -8,7 +8,7 @@ namespace XMLDocReader.CSharpDoc
 {
     public class PackageCard : IObjectToString, IObjectToShortString, IObjectToBriefString
     {
-        public AssemblyName AssemblyName { get; set; }
+        public string AssemblyName { get; set; }
         public List<NamespaceCard> NamespacesList { get; set; } = new List<NamespaceCard>();
         public List<ClassCard> ClassesList { get; set; } = new List<ClassCard>();
         public List<ClassCard> InterfacesList { get; set; } = new List<ClassCard>();

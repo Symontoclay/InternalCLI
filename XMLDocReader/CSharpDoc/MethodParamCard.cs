@@ -1,4 +1,5 @@
 ﻿using CommonUtils.DebugHelpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -9,6 +10,7 @@ namespace XMLDocReader.CSharpDoc
     public class MethodParamCard: IObjectToString, IObjectToShortString, IObjectToBriefString
     {
         public string Name { get; set; }
+        [JsonIgnore]
         public ParameterInfo ParameterInfo { get; set; }
         public NamedElementCard ParameterTypeCard { get; set; }
         public MemberName ParameterTypeName { get; set; }

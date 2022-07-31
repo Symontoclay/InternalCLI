@@ -1,4 +1,5 @@
 ﻿using CommonUtils.DebugHelpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -10,6 +11,7 @@ namespace XMLDocReader.CSharpDoc
     {
         public EnumCard Parent { get; set; }
         public KindOfMemberAccess KindOfMemberAccess { get; set; } = KindOfMemberAccess.Unknown;
+        [JsonIgnore]
         public FieldInfo FieldInfo { get; set; }
         public string Value { get; set; }
 

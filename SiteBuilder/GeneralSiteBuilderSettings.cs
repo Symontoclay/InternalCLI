@@ -17,7 +17,7 @@ namespace SiteBuilder
     public class GeneralSiteBuilderSettings
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public GeneralSiteBuilderSettings(GeneralSiteBuilderSettingsOptions options)
@@ -253,7 +253,7 @@ namespace SiteBuilder
             var csharpApiJsonPath = SiteSettings.CSharpUserApiJsonPath;
 
 #if DEBUG
-            //_logger.Info($"csharpApiJsonPath = {csharpApiJsonPath}");
+            _logger.Info($"csharpApiJsonPath = {csharpApiJsonPath}");
 #endif
 
             if (string.IsNullOrWhiteSpace(csharpApiJsonPath))
@@ -286,12 +286,37 @@ namespace SiteBuilder
             };
 
 #if DEBUG
-            //_logger.Info($"options = {options}");
+            _logger.Info($"options = {options}");
 #endif
-            CSharpUserApiXMLDocsList = CSharpXMLDocLoader.Load(options);
+            //CSharpUserApiXMLDocsList = CSharpXMLDocLoader.Load(options);
+            var tmpCSharpUserApiXMLDocsList = CSharpXMLDocLoader.Load(options);
 
 #if DEBUG
             //_logger.Info($"CSharpApiXMLDocsList.Count = {CSharpUserApiXMLDocsList.Count}");
+            _logger.Info($"tmpCSharpUserApiXMLDocsList.Count = {tmpCSharpUserApiXMLDocsList.Count}");
+
+            var jsonSerializerSettings = new JsonSerializerSettings()
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.All,
+                StringEscapeHandling = StringEscapeHandling.EscapeHtml,
+                TypeNameHandling = TypeNameHandling.All
+            };
+
+            //_logger.Info($"CSharpApiXMLDocsList = {JsonConvert.SerializeObject(CSharpUserApiXMLDocsList, jsonSerializerSettings)}");
+            //_logger.Info($"tmpCSharpUserApiXMLDocsList = {JsonConvert.SerializeObject(tmpCSharpUserApiXMLDocsList, jsonSerializerSettings)}");
+
+            CSharpUserApiXMLDocsList = new List<PackageCard>();
+
+            foreach (var tmpPackageCard in tmpCSharpUserApiXMLDocsList)
+            {
+                var tmpPackageCardJson = JsonConvert.SerializeObject(tmpPackageCard, jsonSerializerSettings);
+
+                _logger.Info($"tmpPackageCardJson = {tmpPackageCardJson}");
+
+                var packageCard = JsonConvert.DeserializeObject<PackageCard>(tmpPackageCardJson, jsonSerializerSettings);
+
+                CSharpUserApiXMLDocsList.Add(packageCard);
+            }
 #endif
 
             foreach (var packageCard in CSharpUserApiXMLDocsList)

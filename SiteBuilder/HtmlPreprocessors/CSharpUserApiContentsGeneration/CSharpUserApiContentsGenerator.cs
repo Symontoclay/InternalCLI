@@ -69,7 +69,7 @@ namespace SiteBuilder.HtmlPreprocessors.CSharpUserApiContentsGeneration
                 //_logger.Info($"packageCard.AssemblyName.Name = {packageCard.AssemblyName.Name}");
 #endif
 
-                sb.AppendLine($"<h2>{packageCard.AssemblyName.Name}</h2>");
+                sb.AppendLine($"<h2>{packageCard.AssemblyName}</h2>");
 
                 if (packageCard.InterfacesList.Any())
                 {

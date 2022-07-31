@@ -1,4 +1,5 @@
 ﻿using CommonUtils.DebugHelpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -8,6 +9,7 @@ namespace XMLDocReader.CSharpDoc
 {
     public class MethodCard : BaseMethodCard
     {
+        [JsonIgnore]
         public MethodInfo MethodInfo { get; set; }
         public string Returns { get; set; }
         public NamedElementCard ReturnsTypeCard { get; set; }

@@ -1,4 +1,5 @@
 ﻿using CommonUtils.DebugHelpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -8,6 +9,7 @@ namespace XMLDocReader.CSharpDoc
 {
     public class PropertyCard: MemberCard
     {
+        [JsonIgnore]
         public PropertyInfo PropertyInfo { get; set; }
         public NamedElementCard PropertyTypeCard { get; set; }
         public MemberName PropertyTypeName { get; set; }

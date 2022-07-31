@@ -16,11 +16,11 @@ namespace SiteBuilder
         {
         }
 
-        protected void PrintMetadata(StringBuilder sb, MemberName name, AssemblyName assemblyName)
+        protected void PrintMetadata(StringBuilder sb, MemberName name, string assemblyName)
         {
             sb.AppendLine("<div style='margin-top: 20px; margin-bottom: 20px; font-size: 14px;'>");
             sb.AppendLine($"<div><span style='font-weight: bold;'>Namespace:</span>&nbsp;{name.Path}</div>");
-            sb.AppendLine($"<div><span style='font-weight: bold;'>Assembly:</span>&nbsp;{assemblyName.Name}</div>");
+            sb.AppendLine($"<div><span style='font-weight: bold;'>Assembly:</span>&nbsp;{assemblyName}</div>");
             sb.AppendLine("</div>");
         }
 

@@ -1,4 +1,5 @@
 ﻿using CommonUtils.DebugHelpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace XMLDocReader.CSharpDoc
     {
         /// <inheritdoc/>
         public KindOfType KindOfType => KindOfType.Enum;
+        [JsonIgnore]
         public Type Type { get; set; }
         public bool IsPublic { get; set; }
 

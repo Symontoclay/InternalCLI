@@ -32,7 +32,7 @@ namespace XMLDocReader.CSharpDoc
             var packageCard = new PackageCard();
 
             var targetAssembly = Assembly.LoadFrom(settings.AssemblyFileName);
-            packageCard.AssemblyName = targetAssembly.GetName();
+            packageCard.AssemblyName = targetAssembly.GetName().Name;
 
             var typesDict = new Dictionary<string, Type>();
 
