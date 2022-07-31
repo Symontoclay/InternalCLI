@@ -1812,7 +1812,7 @@ namespace TestSandBox
             {
                 //SolutionDir = "%USERPROFILE%/Documents/GitHub/SymOntoClay",
                 //AlternativeSolutionDir = "%USERPROFILE%/source/repos/SymOntoClay",
-                XmlDocFiles = new List<string>()
+                DocFiles = new List<string>()
                 {
                     "%SITE_SOURCE_PATH%/CSharpApiFiles/SymOntoClay.CoreHelper.xml",
                     "%SITE_SOURCE_PATH%/CSharpApiFiles/SymOntoClay.Core.xml",

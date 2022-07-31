@@ -5,14 +5,13 @@ using System.Text;
 
 namespace XMLDocReader.CSharpDoc
 {
-    public class CSharpXMLDocLoaderOptions : IObjectToString
+    public class CSharpDocLoaderOptions : IObjectToString
     {
-        public List<string> XmlFileNamesList { get; set; } = new List<string>();
+        public List<string> FileNamesList { get; set; } = new List<string>();
         public List<string> TargetRootTypeNamesList { get; set; } = new List<string>();
         public bool PublicMembersOnly { get; set; }
         public bool IgnoreErrors { get; set; }
         public string BaseHref { get; set; }
-        public string SourceDir { get; set; }
         public string DestDir { get; set; }
 
         /// <inheritdoc/>
@@ -33,12 +32,11 @@ namespace XMLDocReader.CSharpDoc
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.PrintPODList(n, nameof(XmlFileNamesList), XmlFileNamesList);
+            sb.PrintPODList(n, nameof(FileNamesList), FileNamesList);
             sb.PrintPODList(n, nameof(TargetRootTypeNamesList), TargetRootTypeNamesList);
             sb.AppendLine($"{spaces}{nameof(PublicMembersOnly)} = {PublicMembersOnly}");
             sb.AppendLine($"{spaces}{nameof(IgnoreErrors)} = {IgnoreErrors}");
             sb.AppendLine($"{spaces}{nameof(BaseHref)} = {BaseHref}");
-            sb.AppendLine($"{spaces}{nameof(SourceDir)} = {SourceDir}");
             sb.AppendLine($"{spaces}{nameof(DestDir)} = {DestDir}");
 
             return sb.ToString();

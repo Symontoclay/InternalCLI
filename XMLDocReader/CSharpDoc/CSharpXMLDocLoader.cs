@@ -11,14 +11,34 @@ namespace XMLDocReader.CSharpDoc
     public static class CSharpXMLDocLoader
     {
 #if DEBUG
-        //private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
-        public static List<PackageCard> Load(CSharpXMLDocLoaderOptions options)
+        public static List<PackageCard> Load(CSharpDocLoaderOptions options)
+        {
+#if DEBUG
+            _logger.Info($"options = {options}");
+#endif
+
+            var packageCardsList = ReadJsonFiles(options.FileNamesList);
+
+            if (options.PublicMembersOnly || options.TargetRootTypeNamesList.Any())
+            {
+                var repackingTypeCardOptions = new RepackingTypeCardOptions() { PublicMembersOnly = options.PublicMembersOnly };
+
+                PackageCardCleaner.Clean(packageCardsList, options.TargetRootTypeNamesList, repackingTypeCardOptions);
+            }
+
+            FillUpHrefAndTargetFullFileName(packageCardsList, options.BaseHref, options.DestDir);
+
+            return packageCardsList;
+        }
+
+        public static List<PackageCard> LoadOrigin(CSharpOriginDocLoaderOptions options)
         {
 #if DEBUG
             //_logger.Info($"options = {options}");
 #endif
-            var settingsList = PackageCardReaderSettingsHelper.ConvertXMLFileNamesListToSettingsList(options.XmlFileNamesList);
+            var settingsList = PackageCardReaderSettingsHelper.ConvertXMLFileNamesListToSettingsList(options.FileNamesList);
 
 #if DEBUG
             //_logger.Info($"settingsList = {JsonConvert.SerializeObject(settingsList, Formatting.Indented)}");
@@ -28,23 +48,25 @@ namespace XMLDocReader.CSharpDoc
             PackageCardResolver.FillUpTypeCardsPropetties(packageCardsList, options.IgnoreErrors);
             PackageCardResolver.ResolveInheritdocAndInclude(packageCardsList, options.IgnoreErrors);
 
-            if(options.PublicMembersOnly || options.TargetRootTypeNamesList.Any())
-            {
-                var repackingTypeCardOptions = new RepackingTypeCardOptions() { PublicMembersOnly = options.PublicMembersOnly };
-
-                PackageCardCleaner.Clean(packageCardsList, options.TargetRootTypeNamesList, repackingTypeCardOptions);
-            }
-
-            FillUpHrefAndTargetFullFileName(packageCardsList, options.BaseHref, options.SourceDir, options.DestDir);
-
             return packageCardsList;
         }
 
-        private static void FillUpHrefAndTargetFullFileName(List<PackageCard> packageCardsList, string baseHref, string sourceDir, string destDir)
+        private static List<PackageCard> ReadJsonFiles(List<string> fileNamesList)
+        {
+            var result = new List<PackageCard>();
+
+            foreach(var fileName in fileNamesList)
+            {
+                result.Add(JsonSerializationHelper.DeserializeObjectFromFile(fileName));
+            }
+
+            return result;
+        }
+
+        private static void FillUpHrefAndTargetFullFileName(List<PackageCard> packageCardsList, string baseHref, string destDir)
         {
 #if DEBUG
             //_logger.Info($"baseHref = '{baseHref}'");
-            //_logger.Info($"sourceDir = '{sourceDir}'");
             //_logger.Info($"destDir = '{destDir}'");
 #endif
 

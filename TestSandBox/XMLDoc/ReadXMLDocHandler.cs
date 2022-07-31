@@ -37,9 +37,9 @@ namespace TestSandBox.XMLDoc
 
             var ignoreErrors = true;
 
-            var options = new CSharpXMLDocLoaderOptions() 
+            var options = new CSharpDocLoaderOptions() 
             {
-                XmlFileNamesList = fileNamesList,
+                FileNamesList = fileNamesList,
                 TargetRootTypeNamesList = new List<string>() { targetRootTypeName },
                 PublicMembersOnly = true,
                 IgnoreErrors = ignoreErrors
