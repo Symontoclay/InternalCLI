@@ -53,6 +53,10 @@ namespace Deployment.Tasks
             try
             {
                 _logger.Info($"{spaces}{GetType().Name} started.");
+                if(_options != null)
+                {
+                    _logger.Info($"{_options.ToString(n + 4)}");
+                }                
 
                 CheckValidationOptions();
 
