@@ -19,7 +19,7 @@ namespace Deployment.Tasks
 
         private readonly IObjectToString _options;
         private readonly uint _deep;
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        protected readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private bool? _isValid;
         private List<string> _validationMessages = new List<string>();

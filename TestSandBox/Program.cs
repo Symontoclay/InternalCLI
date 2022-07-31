@@ -15,6 +15,7 @@ using Deployment.DevTasks.CreateAndCommitCodeOfConducts;
 using Deployment.DevTasks.CreateAndCommitContributings;
 using Deployment.DevTasks.CreateAndCommitLicenses;
 using Deployment.DevTasks.CreateAndCommitReadmes;
+using Deployment.DevTasks.CreateExtendedDocFile;
 using Deployment.DevTasks.CreateReadmes;
 using Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories;
 using Deployment.DevTasks.UpdateUnityExampleRepository;
@@ -67,6 +68,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstCreateExtendedDocFileDevTask();
             //TstBson();
             //TstBuildExamplesDevTask();
             //TstCoreToInternalCLIDistDevTask();
@@ -93,7 +95,7 @@ namespace TestSandBox
             //TstRemoveDir();
             //TstRemoveDir();
             //TstFinishRelease0_3_6_p();
-            TstFinishRelease0_3_6();
+            //TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
             //TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
             //TstTesting();
@@ -127,6 +129,25 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstCreateExtendedDocFileDevTask()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new CreateExtendedDocFileDevTask(new CreateExtendedDocFileDevTaskOptions()
+            {
+                XmlDocFile = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClay\SymOntoClayCore\bin\Debug\netstandard2.0\SymOntoClay.Core.xml"),
+                ExtendedDocFile = PathsHelper.Normalize(@"%USERPROFILE%\source\SymOntoClay.Core.json")
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstBson()

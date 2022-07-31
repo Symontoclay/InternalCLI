@@ -1,6 +1,7 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
 using CSharpUtils;
+using Deployment.DevTasks.CreateExtendedDocFile;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Build;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
@@ -93,16 +94,19 @@ namespace Deployment.DevTasks.UnityToSiteSource
                 SkipExistingFilesInTargetDir = true
             }, NextDeep));
 
-            deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
-            {
-                SourceDir = tempDir.FullName,
-                DestDir = destDir,
-                SaveSubDirs = false,
-                OnlyFileExts = new List<string>() { "dll", "xml" }//,
-                //FileNameShouldContain = new List<string>() { "Assembly-CSharp" }
-            }, NextDeep));
-
             deploymentPipeline.Run();
+
+            var xmlFileName = Path.Combine(tempDir.FullName, "Assembly-CSharp.xml");
+
+            var baseFileName = Path.GetFileName(xmlFileName);
+
+            var destFileName = Path.Combine(destDir, baseFileName.Replace(".xml", ".json"));
+
+            Exec(new CreateExtendedDocFileDevTask(new CreateExtendedDocFileDevTaskOptions()
+            {
+                XmlDocFile = xmlFileName,
+                ExtendedDocFile = destFileName
+            }));
         }
 
         /// <inheritdoc/>

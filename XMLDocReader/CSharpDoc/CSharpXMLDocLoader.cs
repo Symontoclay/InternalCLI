@@ -11,12 +11,12 @@ namespace XMLDocReader.CSharpDoc
     public static class CSharpXMLDocLoader
     {
 #if DEBUG
-        private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
+        //private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
         public static List<PackageCard> Load(CSharpDocLoaderOptions options)
         {
 #if DEBUG
-            _logger.Info($"options = {options}");
+            //_logger.Info($"options = {options}");
 #endif
 
             var packageCardsList = ReadJsonFiles(options.FileNamesList);

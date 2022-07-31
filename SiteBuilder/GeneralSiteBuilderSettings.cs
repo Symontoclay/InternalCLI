@@ -253,7 +253,7 @@ namespace SiteBuilder
             var csharpApiJsonPath = SiteSettings.CSharpUserApiJsonPath;
 
 #if DEBUG
-            _logger.Info($"csharpApiJsonPath = {csharpApiJsonPath}");
+            //_logger.Info($"csharpApiJsonPath = {csharpApiJsonPath}");
 #endif
 
             if (string.IsNullOrWhiteSpace(csharpApiJsonPath))
@@ -274,50 +274,9 @@ namespace SiteBuilder
                 throw new Exception("There are not any xml documentation files.");
             }
 
-            var options_1 = new CSharpOriginDocLoaderOptions()
-            {
-                FileNamesList = csharpApiOptions.DocFiles.Select(p => EVPath.Normalize(p)).ToList(),
-                //TargetRootTypeNamesList = csharpApiOptions.UnityAssetCoreRootTypes,
-                //PublicMembersOnly = csharpApiOptions.PublicMembersOnly,
-                IgnoreErrors = csharpApiOptions.IgnoreErrors//,
-                //BaseHref = Path.Combine(SiteHref, SiteSettings.DestCSharpUserApiPath),
-                //DestDir = Path.Combine(DestPath, SiteSettings.DestCSharpUserApiPath)
-            };
-
-#if DEBUG
-            _logger.Info($"options_1 = {options_1}");
-#endif
-            //
-            var tmpCSharpUserApiXMLDocsList = CSharpXMLDocLoader.LoadOrigin(options_1);
-
-#if DEBUG
-            //_logger.Info($"CSharpApiXMLDocsList.Count = {CSharpUserApiXMLDocsList.Count}");
-            _logger.Info($"tmpCSharpUserApiXMLDocsList.Count = {tmpCSharpUserApiXMLDocsList.Count}");
-
-            var jsonSerializerSettings = JsonSerializationHelper.JsonSerializerSettings;
-
-            //_logger.Info($"CSharpApiXMLDocsList = {JsonConvert.SerializeObject(CSharpUserApiXMLDocsList, jsonSerializerSettings)}");
-            //_logger.Info($"tmpCSharpUserApiXMLDocsList = {JsonConvert.SerializeObject(tmpCSharpUserApiXMLDocsList, jsonSerializerSettings)}");
-
-            //CSharpUserApiXMLDocsList = new List<PackageCard>();
-
-            foreach (var tmpPackageCard in tmpCSharpUserApiXMLDocsList)
-            {
-                _logger.Info($"tmpPackageCard.AssemblyName = {tmpPackageCard.AssemblyName}");
-                var tmpFileName = Path.Combine(@"C:\Users\Acer\source\repos\symontoclay.github.io\siteSource\CSharpApiFiles\", $"{tmpPackageCard.AssemblyName}.json");
-                _logger.Info($"tmpFileName = {tmpFileName}");
-
-                JsonSerializationHelper.SerializeToFile(tmpPackageCard, tmpFileName);
-
-                //var packageCard = JsonConvert.DeserializeObject<PackageCard>(tmpPackageCardJson, jsonSerializerSettings);
-
-                //CSharpUserApiXMLDocsList.Add(packageCard);
-            }
-#endif
-
             var options = new CSharpDocLoaderOptions()
             {
-                FileNamesList = csharpApiOptions.DocFiles.Select(p => EVPath.Normalize(p).Replace(".xml", ".json")).ToList(),
+                FileNamesList = csharpApiOptions.DocFiles.Select(p => EVPath.Normalize(p)).ToList(),
                 TargetRootTypeNamesList = csharpApiOptions.UnityAssetCoreRootTypes,
                 PublicMembersOnly = csharpApiOptions.PublicMembersOnly,
                 IgnoreErrors = csharpApiOptions.IgnoreErrors,
@@ -326,17 +285,21 @@ namespace SiteBuilder
             };
 
 #if DEBUG
-            _logger.Info($"options = {options}");
+            //_logger.Info($"options = {options}");
 #endif
 
             CSharpUserApiXMLDocsList = CSharpXMLDocLoader.Load(options);
 
 #if DEBUG
-            _logger.Info($"tmpCSharpUserApiXMLDocsList.Count = {tmpCSharpUserApiXMLDocsList.Count}");
+            //_logger.Info($"CSharpUserApiXMLDocsList.Count = {CSharpUserApiXMLDocsList.Count}");
 #endif
 
             foreach (var packageCard in CSharpUserApiXMLDocsList)
             {
+#if DEBUG
+                //_logger.Info($"packageCard.AssemblyName = {packageCard.AssemblyName}");
+#endif
+
                 foreach (var item in packageCard.InterfacesList)
                 {
                     CSharpUserApiXMLDocsCodeDocumentDict[item.InitialName] = item;
