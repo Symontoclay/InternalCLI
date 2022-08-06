@@ -17,6 +17,10 @@ namespace BaseDevPipeline
         private static ISymOntoClayProjectsSettings _settings;
         private static object _lockObj = new object();
 
+#if DEBUG
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
+
         public static ISymOntoClayProjectsSettings GetSymOntoClayProjectsSettings()
         {
             lock(_lockObj)
@@ -33,6 +37,10 @@ namespace BaseDevPipeline
 
         public static ISymOntoClayProjectsSettings GetSymOntoClayProjectsSettings(string fileName)
         {
+#if DEBUG
+            _logger.Info($"fileName = {fileName}");
+#endif
+
             return SymOntoClayProjectsSettingsConverter.Convert(JsonConvert.DeserializeObject<SymOntoClaySettingsSource>(File.ReadAllText(fileName)));
         }
 

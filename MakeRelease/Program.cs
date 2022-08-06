@@ -1,4 +1,5 @@
-﻿using Deployment.ReleaseTasks.MakeRelease;
+﻿using BaseDevPipeline;
+using Deployment.ReleaseTasks.MakeRelease;
 using NLog;
 using System;
 
@@ -11,6 +12,10 @@ namespace MakeRelease
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+#if DEBUG
+            ProjectsDataSource.GetSymOntoClayProjectsSettings();
+#endif
 
             Console.WriteLine("This app will release future version. Are you sure?");
             Console.WriteLine("Press 'y' or 'Y' for release or other else key for cancel release.");
