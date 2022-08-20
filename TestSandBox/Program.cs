@@ -68,7 +68,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstCreateExtendedDocFileDevTask();
+            //TstCreateExtendedDocFileDevTask();
             //TstBson();
             //TstBuildExamplesDevTask();
             //TstCoreToInternalCLIDistDevTask();
@@ -108,7 +108,7 @@ namespace TestSandBox
             //TstDeployedItemsFactory();
             //TstAddReleaseNote();
             //TstReadAndReSaveReleaseNotes();
-            //TstOctokit();
+            TstOctokit();
             //TstSecrets();
             //TstGitHubAPICreateRelease();
             //TstGitHubAPIGet();
@@ -1411,7 +1411,7 @@ namespace TestSandBox
             var owner = "metatypeman";
             var repo = "a1";
 
-            var version = "3.6.4";
+            var version = "3.7.0";
 
             var newRelease = new NewRelease(version);
             newRelease.Name = version;
