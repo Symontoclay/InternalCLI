@@ -23,7 +23,7 @@ namespace Deployment.Helpers
 #if DEBUG
             //_logger.Info($"example = {example}");
             //_logger.Info($"baseDir = {baseDir}");
-            //_logger.Info($"socExePath = {socExePath}");
+            _logger.Info($"socExePath = {socExePath}");
 #endif
 
             var newProcessSyncWrapper = new ProcessSyncWrapper(socExePath, "new Example", baseDir);
@@ -58,8 +58,8 @@ namespace Deployment.Helpers
             exitCode = runProcessSyncWrapper.Run();
 
 #if DEBUG
-            //_logger.Info($"exitCode = {exitCode}");
-            //_logger.Info($"runProcessSyncWrapper.Output = {JsonConvert.SerializeObject(runProcessSyncWrapper.Output, Formatting.Indented)}");
+            _logger.Info($"exitCode = {exitCode}");
+            _logger.Info($"runProcessSyncWrapper.Output = {JsonConvert.SerializeObject(runProcessSyncWrapper.Output, Formatting.Indented)}");
 #endif
 
             if (exitCode != 0)

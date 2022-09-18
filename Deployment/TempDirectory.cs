@@ -36,7 +36,7 @@ namespace Deployment
             {
                 try
                 {
-                    Directory.Delete(_dir, true);
+                    //Directory.Delete(_dir, true);
                 }catch
                 {
                     _logger.Info($"Directory '{_dir}' has not been deleted.");
