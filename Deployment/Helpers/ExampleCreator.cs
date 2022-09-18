@@ -45,6 +45,10 @@ namespace Deployment.Helpers
             //_logger.Info($"mainSocFileName = {mainSocFileName}");
 #endif
 
+#if DEBUG
+            _logger.Info($"example.Code.Trim() = {example.Code.Trim()}");
+#endif
+
             File.WriteAllText(mainSocFileName, example.Code.Trim());
 
             var exampleDir = Path.Combine(baseDir, "Example");
@@ -100,7 +104,11 @@ namespace Deployment.Helpers
 
             foreach(var line in runProcessSyncWrapper.Output)
             {
-                if(DetectException(line))
+#if DEBUG
+                _logger.Info($"line = {line}");
+#endif
+
+                if (DetectException(line))
                 {
                     var sb = new StringBuilder();
                     sb.AppendLine($"Unable to run example '{example.Name}':");
