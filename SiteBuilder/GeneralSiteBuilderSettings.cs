@@ -23,7 +23,7 @@ namespace SiteBuilder
         public GeneralSiteBuilderSettings(GeneralSiteBuilderSettingsOptions options)
         {
             var destPath = EVPath.Normalize(options.DestPath);
-
+            
 #if DEBUG
             //_logger.Info($"destPath = {destPath}");
 #endif

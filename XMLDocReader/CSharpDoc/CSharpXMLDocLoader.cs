@@ -11,7 +11,7 @@ namespace XMLDocReader.CSharpDoc
     public static class CSharpXMLDocLoader
     {
 #if DEBUG
-        //private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
         public static List<PackageCard> Load(CSharpDocLoaderOptions options)
         {
@@ -128,6 +128,14 @@ namespace XMLDocReader.CSharpDoc
 
 #if DEBUG
             //_logger.Info($"preparedItemName = {preparedItemName}");
+            //_logger.Info($"preparedItemName.Length = {preparedItemName.Length}");
+#endif
+
+            preparedItemName = MinifyHref(preparedItemName);
+
+#if DEBUG
+            //_logger.Info($"preparedItemName (after) = {preparedItemName}");
+            //_logger.Info($"preparedItemName.Length (after) = {preparedItemName.Length}");
 #endif
 
             item.Href = Path.Combine(baseHref, preparedItemName).Replace("\\", "/");
@@ -143,6 +151,18 @@ namespace XMLDocReader.CSharpDoc
         {
             var preparedName = PrepareName(item.Name.InitialName);
 
+#if DEBUG
+            //_logger.Info($"preparedName = {preparedName}");
+            //_logger.Info($"preparedName.Length = {preparedName.Length}");
+#endif
+
+            preparedName = MinifyHref(preparedName);
+
+#if DEBUG
+            //_logger.Info($"preparedName (after) = {preparedName}");
+            //_logger.Info($"preparedName.Length (after) = {preparedName.Length}");
+#endif
+
             item.Href = Path.Combine(baseHref, preparedName).Replace("\\", "/");
             item.TargetFullFileName = Path.Combine(destDir, preparedName).Replace("\\", "/");
         }
@@ -152,6 +172,45 @@ namespace XMLDocReader.CSharpDoc
             var preparedInitialName = initialName.Substring(2).Replace("#", "_").Replace("[", "_").Replace("]", "_").Replace("(", "_").Replace(")", "_").Replace("{", "_").Replace("}", "_").Replace(",", "_").ToLower();
 
             return $"{preparedInitialName}.html";
+        }
+
+        private const int minify_step = 20;
+
+        private static string MinifyHref(string value)
+        {
+            if(value.Length <= minify_step)
+            {
+                return value;
+            }
+
+            value = value.Replace(".html", string.Empty).Replace(".", string.Empty);
+
+            var length = value.Length;
+
+#if DEBUG
+            //_logger.Info($"length = {length}");
+#endif
+
+            var increment = length / minify_step;
+
+#if DEBUG
+            //_logger.Info($"increment = {increment}");
+#endif
+
+            var sb = new StringBuilder();
+
+            var pos = 0;
+
+            while(pos < length)
+            {
+                sb.Append(value[pos]);
+
+                pos += increment;
+            }
+
+            sb.Append(".html");
+
+            return sb.ToString();
         }
     }
 }
