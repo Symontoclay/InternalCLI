@@ -2,7 +2,7 @@
   "profiles": {
     "PageCreator": {
       "commandName": "Project",
-      "commandLineArgs": "standard_library"
+      "commandLineArgs": "callpointer"
     }
   }
 }
