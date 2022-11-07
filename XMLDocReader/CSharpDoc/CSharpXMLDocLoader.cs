@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CommonUtils;
+using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace XMLDocReader.CSharpDoc
     public static class CSharpXMLDocLoader
     {
 #if DEBUG
-        private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
+        //private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
         public static List<PackageCard> Load(CSharpDocLoaderOptions options)
         {
@@ -174,43 +175,9 @@ namespace XMLDocReader.CSharpDoc
             return $"{preparedInitialName}.html";
         }
 
-        private const int minify_step = 20;
-
         private static string MinifyHref(string value)
         {
-            if(value.Length <= minify_step)
-            {
-                return value;
-            }
-
-            value = value.Replace(".html", string.Empty).Replace(".", string.Empty);
-
-            var length = value.Length;
-
-#if DEBUG
-            //_logger.Info($"length = {length}");
-#endif
-
-            var increment = length / minify_step;
-
-#if DEBUG
-            //_logger.Info($"increment = {increment}");
-#endif
-
-            var sb = new StringBuilder();
-
-            var pos = 0;
-
-            while(pos < length)
-            {
-                sb.Append(value[pos]);
-
-                pos += increment;
-            }
-
-            sb.Append(".html");
-
-            return sb.ToString();
+            return $"{MD5Helper.GetHash(value)}.html";
         }
     }
 }

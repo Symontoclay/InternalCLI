@@ -68,6 +68,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstMd5Hash();
             //TstCreateExtendedDocFileDevTask();
             //TstBson();
             //TstBuildExamplesDevTask();
@@ -95,7 +96,7 @@ namespace TestSandBox
             //TstRemoveDir();
             //TstRemoveDir();
             //TstFinishRelease0_3_6_p();
-            TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
+            //TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
             //TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
             //TstTesting();
@@ -129,6 +130,21 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstMd5Hash()
+        {
+            _logger.Info("Begin");
+
+            var input = "SymOntoClay.Core.xml";
+
+            _logger.Info($"input = '{input}'");
+
+            var output = MD5Helper.GetHash(input);
+
+            _logger.Info($"output = '{output}'");
+
+            _logger.Info("End");
         }
 
         private static void TstCreateExtendedDocFileDevTask()
