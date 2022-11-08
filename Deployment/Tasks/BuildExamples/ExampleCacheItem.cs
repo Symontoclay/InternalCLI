@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace Deployment.Tasks.ExamplesCreator
+namespace Deployment.Tasks.BuildExamples
 {
-    public class BuildExamplesTaskOptions : IObjectToString
+    public class ExampleCacheItem : IObjectToString
     {
-        public List<string> LngExamplesPages { get; set; }
-        public string DestDir { get; set; }
-        public string CacheDir { get; set; }
-        public string SocExePath { get; set; }
+        public string PageName { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -31,12 +31,9 @@ namespace Deployment.Tasks.ExamplesCreator
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
-
-            sb.PrintPODList(n, nameof(LngExamplesPages), LngExamplesPages);
-            sb.AppendLine($"{spaces}{nameof(DestDir)} = {DestDir}");
-            sb.AppendLine($"{spaces}{nameof(CacheDir)} = {CacheDir}");
-            sb.AppendLine($"{spaces}{nameof(SocExePath)} = {SocExePath}");
-
+            sb.AppendLine($"{spaces}{nameof(PageName)} = {PageName}");
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.AppendLine($"{spaces}{nameof(Code)} = {Code}");
             return sb.ToString();
         }
     }

@@ -26,6 +26,7 @@ using Deployment.ReleaseTasks.MarkAsCompleted;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildChangeLog;
 using Deployment.Tasks.BuildContributing;
+using Deployment.Tasks.BuildExamples;
 using Deployment.Tasks.BuildLicense;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
@@ -68,7 +69,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstMd5Hash();
+            TstExampleCache();
+            //TstMd5Hash();
             //TstCreateExtendedDocFileDevTask();
             //TstBson();
             //TstBuildExamplesDevTask();
@@ -130,6 +132,48 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstExampleCache()
+        {
+            _logger.Info("Begin");
+
+            var lngExamplesPage = @"c:\Users\sergiy.tolkachov\source\repos\InternalCLI\TestSandBox\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll";
+            //var destDir = @"c:\Users\sergiy.tolkachov\source\repos\InternalCLI\TestSandBox\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll";
+            var destDir = @"c:\Users\sergiy.tolkachov\source\repos\InternalCLI\TestSandBox\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0";
+
+            _logger.Info($"lngExamplesPage = '{lngExamplesPage}'");
+            _logger.Info($"destDir = '{destDir}'");
+
+            var longestBasePath = PathsHelper.GetLongestCommonPath(lngExamplesPage, destDir);
+
+            _logger.Info($"longestBasePath = '{longestBasePath}'");
+
+            var preparedFileName = lngExamplesPage.Replace(longestBasePath, string.Empty);
+
+            _logger.Info($"preparedFileName = '{preparedFileName}'");
+
+            var fileName = ExampleCacheHelper.GetFileName(lngExamplesPage, "Example1");
+
+            _logger.Info($"fileName = '{fileName}'");
+
+            var code = @"app PeaceKeeper
+{
+	on {: see(I, #a) :} with priority 1 => {
+	     'D' >> @>log;
+	}
+}";
+
+            _logger.Info($"code = '{code}'");
+
+            var item = new ExampleCacheItem();
+
+
+
+
+            _logger.Info($"item = {JsonConvert.SerializeObject(item, Formatting.Indented)}");
+
+            _logger.Info("End");
         }
 
         private static void TstMd5Hash()
