@@ -16,7 +16,7 @@ namespace Deployment.Tasks.BuildExamples
 
         public static string GetFileName(string lngExamplesPage, string exampleName)
         {
-            return $"{MD5Helper.GetHash($"{lngExamplesPage}_{exampleName}")}.json";
+            return $"{MD5Helper.GetHash(lngExamplesPage)}_{exampleName}.json";
         }
     }
 }

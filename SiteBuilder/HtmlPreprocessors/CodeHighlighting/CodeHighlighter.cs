@@ -1,4 +1,5 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 using NLog;
@@ -295,9 +296,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
              //_logger.Info($"normalizedCode = {normalizedCode}");
 #endif
 
-            var base64Array = Encoding.UTF8.GetBytes(normalizedCode);
-
-            var base64Str = Convert.ToBase64String(base64Array);
+            var base64Str = Base64Helper.GetBase64String(normalizedCode);
 
             var scriptSb = new StringBuilder();
 

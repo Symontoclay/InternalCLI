@@ -69,7 +69,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstExampleCache();
+            //TstExampleCacheRead();
+            TstExampleCacheWrite();
             //TstMd5Hash();
             //TstCreateExtendedDocFileDevTask();
             //TstBson();
@@ -134,7 +135,7 @@ namespace TestSandBox
             //TstReadXMLDoc();
         }
 
-        private static void TstExampleCache()
+        private static void TstExampleCacheRead()
         {
             _logger.Info("Begin");
 
@@ -153,7 +154,9 @@ namespace TestSandBox
 
             _logger.Info($"preparedFileName = '{preparedFileName}'");
 
-            var fileName = ExampleCacheHelper.GetFileName(lngExamplesPage, "Example1");
+            var exampleName = "Example1";
+
+            var fileName = ExampleCacheHelper.GetFileName(lngExamplesPage, exampleName);
 
             _logger.Info($"fileName = '{fileName}'");
 
@@ -166,12 +169,63 @@ namespace TestSandBox
 
             _logger.Info($"code = '{code}'");
 
+            var base64Str = Base64Helper.GetBase64String(code);
+
+            _logger.Info($"base64Str = '{base64Str}'");
+
+
+
+            _logger.Info("End");
+        }
+
+        private static void TstExampleCacheWrite()
+        {
+            _logger.Info("Begin");
+
+            var lngExamplesPage = @"c:\Users\sergiy.tolkachov\source\repos\InternalCLI\TestSandBox\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll";
+            //var destDir = @"c:\Users\sergiy.tolkachov\source\repos\InternalCLI\TestSandBox\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll";
+            var destDir = @"c:\Users\sergiy.tolkachov\source\repos\InternalCLI\TestSandBox\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0";
+
+            _logger.Info($"lngExamplesPage = '{lngExamplesPage}'");
+            _logger.Info($"destDir = '{destDir}'");
+
+            var longestBasePath = PathsHelper.GetLongestCommonPath(lngExamplesPage, destDir);
+
+            _logger.Info($"longestBasePath = '{longestBasePath}'");
+
+            var preparedFileName = lngExamplesPage.Replace(longestBasePath, string.Empty);
+
+            _logger.Info($"preparedFileName = '{preparedFileName}'");
+
+            var exampleName = "Example1";
+
+            var fileName = ExampleCacheHelper.GetFileName(lngExamplesPage, exampleName);
+
+            _logger.Info($"fileName = '{fileName}'");
+
+            var code = @"app PeaceKeeper
+{
+	on {: see(I, #a) :} with priority 1 => {
+	     'D' >> @>log;
+	}
+}";
+
+            _logger.Info($"code = '{code}'");
+
+            var codeExample = new CodeExample();
+            codeExample.Name = exampleName;
+            codeExample.Code = code;
+
+            _logger.Info($"codeExample = {JsonConvert.SerializeObject(codeExample, Formatting.Indented)}");
+
             var item = new ExampleCacheItem();
-
-
-
+            item.PageName = preparedFileName;
+            item.Name = exampleName;
+            item.Code = Base64Helper.GetBase64String(code);
 
             _logger.Info($"item = {JsonConvert.SerializeObject(item, Formatting.Indented)}");
+
+            File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), fileName), JsonConvert.SerializeObject(item, Formatting.Indented));
 
             _logger.Info("End");
         }
