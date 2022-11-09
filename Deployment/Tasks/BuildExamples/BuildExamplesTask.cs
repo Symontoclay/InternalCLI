@@ -46,11 +46,17 @@ namespace Deployment.Tasks.ExamplesCreator
 
             using var tempDir = new TempDirectory();
 
+#if DEBUG
+            _logger.Info($"_options.DestDir = {_options.DestDir}");
+#endif
+
             foreach (var lngExamplesPage in _options.LngExamplesPages)
             {
 #if DEBUG
-                //_logger.Info($"lngExamplesPage = {lngExamplesPage}");
+                _logger.Info($"lngExamplesPage = {lngExamplesPage}");
 #endif
+
+                throw new NotImplementedException();
 
                 var examplesList = CodeExampleReader.Read(lngExamplesPage);
 
