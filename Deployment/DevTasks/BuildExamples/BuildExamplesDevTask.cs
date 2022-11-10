@@ -43,7 +43,8 @@ namespace Deployment.DevTasks.BuildExamples
             {
                 LngExamplesPages = lngExamplesPagesList,
                 DestDir = siteSettings.SiteSettings.LngExamplesPath,
-                SocExePath = settings.SocExePath
+                SocExePath = settings.SocExePath,
+                CacheDir = siteSettings.SiteSettings.LngExamplesCachePath
             }, NextDeep));
         }
 

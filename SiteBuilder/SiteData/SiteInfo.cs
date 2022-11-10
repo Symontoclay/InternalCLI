@@ -26,6 +26,7 @@ namespace SiteBuilder.SiteData
         public string DestKeyFeaturesPath { get; set; } = string.Empty;
         public string LngExamplesPath { get; set; } = string.Empty;
         public string DestLngExamplesPath { get; set; } = string.Empty;
+        public string LngExamplesCachePath { get; set; } = string.Empty;
         public List<string> LngExamplesPages { get; set; }
         public MicroDataInfo Microdata { get; set; }
         public List<string> IgnoredDirs { get; set; }
@@ -57,7 +58,12 @@ namespace SiteBuilder.SiteData
                 LngExamplesPath = EVPath.Normalize(LngExamplesPath);
             }
 
-            if(!LngExamplesPages.IsNullOrEmpty())
+            if (!string.IsNullOrWhiteSpace(LngExamplesCachePath))
+            {
+                LngExamplesCachePath = EVPath.Normalize(LngExamplesCachePath);
+            }
+
+            if (!LngExamplesPages.IsNullOrEmpty())
             {
                 LngExamplesPages = LngExamplesPages.Select(p => EVPath.Normalize(p)).ToList();
             }

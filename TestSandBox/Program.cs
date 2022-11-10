@@ -171,11 +171,11 @@ namespace TestSandBox
 
             _logger.Info($"codeExample = {JsonConvert.SerializeObject(codeExample, Formatting.Indented)}");
 
-            var notNeedToBuild = ExampleCacheHelper.IsNeedToBuild(codeExample, preparedFileName, cacheDir);
+            var needToBuild = ExampleCacheHelper.IsNeedToBuild(codeExample, preparedFileName, cacheDir);
 
-            _logger.Info($"notNeedToBuild = {notNeedToBuild}");
+            _logger.Info($"needToBuild = {needToBuild}");
 
-            if(notNeedToBuild)
+            if(needToBuild)
             {
                 ExampleCacheHelper.SaveToCache(codeExample, preparedFileName, cacheDir);
             }

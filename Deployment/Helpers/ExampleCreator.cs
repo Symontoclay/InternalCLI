@@ -86,7 +86,7 @@ namespace Deployment.Helpers
                 File.Delete(someLogFile);
             }            
 
-            var targetZipFileName = Path.Combine(baseDir, $"{example.Name}.zip");
+            var targetZipFileName = Path.Combine(baseDir, GetZipFileName(example));
 
 #if DEBUG
             //_logger.Info($"targetZipFileName = {targetZipFileName}");
@@ -94,7 +94,7 @@ namespace Deployment.Helpers
 
             ZipFile.CreateFromDirectory(exampleDir, targetZipFileName);
 
-            var consoleFileName = Path.Combine(baseDir, $"{example.Name}.console");
+            var consoleFileName = Path.Combine(baseDir, GetConsoleFileName(example));
 
 #if DEBUG
             //_logger.Info($"consoleFileName = {consoleFileName}");
@@ -134,6 +134,16 @@ namespace Deployment.Helpers
                 ArchFileName = targetZipFileName,
                 ConsoleFileName = consoleFileName
             };
+        }
+
+        public static string GetZipFileName(CodeExample example)
+        {
+            return $"{example.Name}.zip";
+        }
+
+        public static string GetConsoleFileName(CodeExample example)
+        {
+            return $"{example.Name}.console";
         }
 
         private static bool DetectException(string source)

@@ -1,5 +1,8 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CollectionsHelpers.CollectionsHelpers;
+using CommonUtils;
+using CommonUtils.DebugHelpers;
 using Deployment.Helpers;
+using Deployment.Tasks.BuildExamples;
 using NLog;
 using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
 using System;
@@ -42,7 +45,22 @@ namespace Deployment.Tasks.ExamplesCreator
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            ClearDestDir();
+            var cacheDir = _options.CacheDir;
+
+#if DEBUG
+            _logger.Info($"cacheDir = {cacheDir}");
+#endif
+
+            var hasCache = !string.IsNullOrWhiteSpace(cacheDir);
+
+#if DEBUG
+            _logger.Info($"hasCache = {hasCache}");
+#endif
+
+            if (!hasCache)
+            {
+                ClearDestDir();
+            }
 
             using var tempDir = new TempDirectory();
 
@@ -50,58 +68,153 @@ namespace Deployment.Tasks.ExamplesCreator
             _logger.Info($"_options.DestDir = {_options.DestDir}");
 #endif
 
+            var targetFiles = new List<string>();
+
             foreach (var lngExamplesPage in _options.LngExamplesPages)
             {
 #if DEBUG
                 _logger.Info($"lngExamplesPage = {lngExamplesPage}");
 #endif
 
-                throw new NotImplementedException();
+                var longestBasePath = PathsHelper.GetLongestCommonPath(lngExamplesPage, _options.DestDir);
+
+#if DEBUG
+                _logger.Info($"longestBasePath = '{longestBasePath}'");
+#endif
+
+                var preparedFileName = lngExamplesPage.Replace(longestBasePath, string.Empty);
+
+#if DEBUG
+                _logger.Info($"preparedFileName = '{preparedFileName}'");
+#endif
 
                 var examplesList = CodeExampleReader.Read(lngExamplesPage);
 
 #if DEBUG
-                //_logger.Info($"examplesList.Count = {examplesList.Count}");
+                _logger.Info($"examplesList.Count = {examplesList.Count}");
 #endif
+
                 foreach (var example in examplesList)
                 {
 #if DEBUG
-                    //_logger.Info($"example = {example}");
+                    _logger.Info($"example = {example}");
 #endif
 
-                    var result = ExampleCreator.CreateExample(example, tempDir.FullName, _options.SocExePath);
+                    if(hasCache)
+                    {
+                        var needToBuild = ExampleCacheHelper.IsNeedToBuild(example, preparedFileName, cacheDir);
 
 #if DEBUG
-                    //_logger.Info($"result = {result}");
+                        _logger.Info($"needToBuild = {needToBuild}");
 #endif
 
-                    var newArchFileName = Path.Combine(_options.DestDir, Path.GetFileName(result.ArchFileName));
+                        if(needToBuild)
+                        {
+                            ClearOldExample(example);
 
-#if DEBUG
-                    //_logger.Info($"newArchFileName = {newArchFileName}");
-#endif
+                            var createdFiles = CreateExample(example, tempDir);
 
-                    File.Copy(result.ArchFileName, newArchFileName);
+                            targetFiles.AddRange(createdFiles);
 
-                    var newConsoleFileName = Path.Combine(_options.DestDir, Path.GetFileName(result.ConsoleFileName));
-
-#if DEBUG
-                    //_logger.Info($"newConsoleFileName = {newConsoleFileName}");
-#endif
-
-                    File.Copy(result.ConsoleFileName, newConsoleFileName);
+                            ExampleCacheHelper.SaveToCache(example, preparedFileName, cacheDir);
+                        }
+                        else
+                        {
+                            targetFiles.Add(Path.Combine(_options.DestDir, ExampleCreator.GetZipFileName(example)));
+                            targetFiles.Add(Path.Combine(_options.DestDir, ExampleCreator.GetConsoleFileName(example)));
+                        }
+                    }
+                    else
+                    {
+                        CreateExample(example, tempDir);
+                    }
                 }
             }
+
+            if(targetFiles.Any())
+            {
+                ClearDestDir(targetFiles);
+            }
+        }
+
+        private List<string> CreateExample(CodeExample example, TempDirectory tempDir)
+        {
+            var createdFiles = new List<string>();
+
+            var result = ExampleCreator.CreateExample(example, tempDir.FullName, _options.SocExePath);
+
+#if DEBUG
+            //_logger.Info($"result = {result}");
+#endif
+
+            var newArchFileName = Path.Combine(_options.DestDir, Path.GetFileName(result.ArchFileName));
+
+#if DEBUG
+            _logger.Info($"newArchFileName = {newArchFileName}");
+#endif
+
+            createdFiles.Add(newArchFileName);
+
+            File.Copy(result.ArchFileName, newArchFileName);
+
+            var newConsoleFileName = Path.Combine(_options.DestDir, Path.GetFileName(result.ConsoleFileName));
+
+#if DEBUG
+            _logger.Info($"newConsoleFileName = {newConsoleFileName}");
+#endif
+
+            createdFiles.Add(newConsoleFileName);
+
+            File.Copy(result.ConsoleFileName, newConsoleFileName);
+
+            return createdFiles;
+        }
+
+        private void ClearOldExample(CodeExample example)
+        {
+            var archFileName = Path.Combine(_options.DestDir, ExampleCreator.GetZipFileName(example));
+
+#if DEBUG
+            _logger.Info($"archFileName = {archFileName}");
+#endif
+
+            File.Delete(archFileName);
+
+            var consoleFileName = Path.Combine(_options.DestDir, ExampleCreator.GetConsoleFileName(example));
+
+#if DEBUG
+            _logger.Info($"consoleFileName = {consoleFileName}");
+#endif
+
+            File.Delete(consoleFileName);
         }
 
         private void ClearDestDir()
         {
+            ClearDestDir(null);
+        }
+
+        private void ClearDestDir(List<string> except)
+        {
             var cleanedFiles = Directory.GetFiles(_options.DestDir).Where(p => p.EndsWith(".zip") || p.EndsWith(".console")).ToList();
 
-            foreach(var cleanedFile in cleanedFiles)
+#if DEBUG
+            _logger.Info($"cleanedFiles.Count = {cleanedFiles.Count}");
+#endif
+
+            if (!except.IsNullOrEmpty())
+            {
+                cleanedFiles = cleanedFiles.Except(except).ToList();
+            }
+
+#if DEBUG
+            _logger.Info($"cleanedFiles.Count (after) = {cleanedFiles.Count}");
+#endif
+
+            foreach (var cleanedFile in cleanedFiles)
             {
 #if DEBUG
-                //_logger.Info($"cleanedFile = {cleanedFile}");
+                _logger.Info($"cleanedFile = {cleanedFile}");
 #endif
 
                 File.Delete(cleanedFile);
@@ -126,6 +239,7 @@ namespace Deployment.Tasks.ExamplesCreator
             }
 
             sb.AppendLine($"{spaces}Using CLI on '{_options.SocExePath}'.");
+            sb.AppendLine($"{spaces}CacheDir = '{_options.CacheDir}'.");
 
             sb.Append(PrintValidation(n));
 
