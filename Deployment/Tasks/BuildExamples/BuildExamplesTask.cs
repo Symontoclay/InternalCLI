@@ -108,7 +108,26 @@ namespace Deployment.Tasks.ExamplesCreator
                         _logger.Info($"needToBuild = {needToBuild}");
 #endif
 
-                        if(needToBuild)
+                        var fullZipFileName = Path.Combine(_options.DestDir, ExampleCreator.GetZipFileName(example));
+                        var fullConsoleFileName = Path.Combine(_options.DestDir, ExampleCreator.GetConsoleFileName(example));
+
+                        targetFiles.Add(fullZipFileName);
+                        targetFiles.Add(fullConsoleFileName);
+
+                        if(!needToBuild)
+                        {
+                            if(!File.Exists(fullZipFileName))
+                            {
+                                needToBuild = true;
+                            }
+
+                            if (!File.Exists(fullConsoleFileName))
+                            {
+                                needToBuild = true;
+                            }
+                        }
+
+                        if (needToBuild)
                         {
                             ClearOldExample(example);
 
@@ -117,11 +136,6 @@ namespace Deployment.Tasks.ExamplesCreator
                             targetFiles.AddRange(createdFiles);
 
                             ExampleCacheHelper.SaveToCache(example, preparedFileName, cacheDir);
-                        }
-                        else
-                        {
-                            targetFiles.Add(Path.Combine(_options.DestDir, ExampleCreator.GetZipFileName(example)));
-                            targetFiles.Add(Path.Combine(_options.DestDir, ExampleCreator.GetConsoleFileName(example)));
                         }
                     }
                     else
