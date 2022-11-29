@@ -11,6 +11,8 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
     {
         public string Name { get; set; }
         public string Code { get; set; }
+        public bool UseNLP { get; set; }
+        public List<string> SharedLibs { get; set; } = new List<string>();
 
         /// <inheritdoc/>
         public override string ToString()
@@ -32,6 +34,8 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Code)} = {Code}");
+            sb.AppendLine($"{spaces}{nameof(UseNLP)} = {UseNLP}");
+            sb.PrintPODList(n, nameof(SharedLibs), SharedLibs);
 
             return sb.ToString();
         }

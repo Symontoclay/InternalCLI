@@ -57,7 +57,40 @@ namespace Deployment.Helpers
             //_logger.Info($"exampleDir = {exampleDir}");
 #endif
 
-            var runProcessSyncWrapper = new ProcessSyncWrapper(socExePath, "run -nologo -timeout 5000", exampleDir);
+            var sharedLibs = example.SharedLibs;
+
+            if (sharedLibs.Any())
+            {
+                foreach(var lib in sharedLibs)
+                {
+                    var installProcessSyncWrapper = new ProcessSyncWrapper(socExePath, $"install {lib} -nologo", exampleDir);
+
+                    exitCode = installProcessSyncWrapper.Run();
+
+#if DEBUG
+                    _logger.Info($"exitCode = {exitCode}");
+                    _logger.Info($"installProcessSyncWrapper.Output = {JsonConvert.SerializeObject(installProcessSyncWrapper.Output, Formatting.Indented)}");
+#endif
+
+                    if (exitCode != 0)
+                    {
+                        var sb = new StringBuilder();
+                        sb.AppendLine($"Unable to install lib `{lib}` into example '{example.Name}':");
+                        sb.AppendLine(example.Code);
+                        sb.AppendLine($"Exit code is {exitCode}!");
+                        throw new Exception(sb.ToString());
+                    }
+                }
+            }
+
+            var runSb = new StringBuilder("run -nologo -timeout 5000");
+
+            if(example.UseNLP)
+            {
+                runSb.Append(" -nlp");
+            }
+
+            var runProcessSyncWrapper = new ProcessSyncWrapper(socExePath, runSb.ToString(), exampleDir);
 
             exitCode = runProcessSyncWrapper.Run();
 

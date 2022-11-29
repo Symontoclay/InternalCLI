@@ -30,7 +30,7 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
 
             return result;
         }
-
+        
         private static void ProcessNodes(HtmlNode rootNode, List<CodeExample> result)
         {
 #if DEBUG
@@ -55,6 +55,27 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
                 var item = new CodeExample();
                 item.Name = exampleNameStr;
                 item.Code = rootNode.GetDirectInnerText();
+
+                var useNLPStr = rootNode.GetAttributeValue("nlp", null);
+
+                if(!string.IsNullOrWhiteSpace(useNLPStr))
+                {
+                    useNLPStr = useNLPStr.ToLower().Trim();
+
+                    if (useNLPStr == "true")
+                    {
+                        item.UseNLP = true;
+                    }
+                }
+
+                var sharedLibsStr = rootNode.GetAttributeValue("libs", null);
+
+                if(!string.IsNullOrEmpty(sharedLibsStr))
+                {
+                    item.SharedLibs = sharedLibsStr.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                        .SelectMany(p => p.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                        .ToList();
+                }
 
                 result.Add(item);
 
