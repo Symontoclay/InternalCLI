@@ -1,4 +1,6 @@
-﻿using HtmlAgilityPack;
+﻿using CollectionsHelpers.CollectionsHelpers;
+using HtmlAgilityPack;
+using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
     public static class EBNFTemplatesResolver
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static string Run(string initialContent)
@@ -120,11 +122,36 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
 
                 var kind = rootNode.GetAttributeValue("kind", string.Empty);
 
-                //_logger.Info($"ExploreTemplateNodeskind = '{kind}'");
+                //_logger.Info($"ExploreTemplateNodes kind = '{kind}'");
 
                 var itemsList = gEBNFCStorage.GetGroup(name);
 
-                //_logger.Info($"ExploreTemplateNodesitemsList = {JsonConvert.SerializeObject(itemsList, Formatting.Indented)}");
+                //_logger.Info($"ExploreTemplateNodes itemsList = {JsonConvert.SerializeObject(itemsList, Formatting.Indented)}");
+
+                var include = rootNode.GetAttributeValue("include", string.Empty);
+
+                //_logger.Info($"ExploreTemplateNodes include = '{include}'");
+
+                if (!string.IsNullOrWhiteSpace(include))
+                {
+                    var includeList = include.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).SelectMany(p => p.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
+
+                    foreach(var includeName in includeList)
+                    {
+                        //_logger.Info($"ExploreTemplateNodes includeName = '{includeName}'");
+
+                        var includeItemsList = gEBNFCStorage.GetGroup(includeName);
+
+                        //_logger.Info($"ExploreTemplateNodes v = {JsonConvert.SerializeObject(includeItemsList, Formatting.Indented)}");
+
+                        if(includeItemsList.IsNullOrEmpty())
+                        {
+                            continue;
+                        }
+
+                        itemsList.AddRange(includeItemsList);
+                    }
+                }
 
                 if (!itemsList.Any())
                 {
@@ -133,13 +160,15 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
                     return true;
                 }
 
+                itemsList = itemsList.Distinct().OrderBy(p => p).ToList();
+
                 var resultList = new List<string>();
 
                 foreach (var item in itemsList)
                 {
                     //_logger.Info($"item = '{item}'");
 
-                    if (kind == "op_and")
+                    if (kind == "op_and" || kind == "op_declset")
                     {
                         resultList.Add($"[ <EBNFC name='{item}' /> ]");
                     }
@@ -153,12 +182,26 @@ namespace SiteBuilder.HtmlPreprocessors.EBNF
 
                 var separator = " ";
 
-                if (kind == "or")
+                switch(kind)
                 {
-                    separator = " | ";
+                    case "or":
+                        separator = " | ";
+                        break;
+
+                    case "op_declset":
+                        separator = "<br/>";
+                        break;
+
+                    default:
+                        break;
                 }
 
                 var resultStr = string.Join(separator, resultList);
+
+                if(kind == "op_declset")
+                {
+                    resultStr = $"[ {{ {resultStr} }} ]";
+                }
 
                 //_logger.Info($"ExploreTemplateNodes resultStr = '{resultStr}'");
 
