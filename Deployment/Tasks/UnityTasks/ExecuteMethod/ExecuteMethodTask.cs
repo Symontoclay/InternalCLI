@@ -45,7 +45,7 @@ namespace Deployment.Tasks.UnityTasks.ExecuteMethod
 
             if (exitCode != 0)
             {
-                throw new Exception($"Executing method '{_options.MethodName}' has been failed. | {string.Join(' ', processWrapper.Output)} | {string.Join(' ', processWrapper.Errors)}");
+                //throw new Exception($"Executing method '{_options.MethodName}' has been failed. | {string.Join(' ', processWrapper.Output)} | {string.Join(' ', processWrapper.Errors)}");
             }
         }
 

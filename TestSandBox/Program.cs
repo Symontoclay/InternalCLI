@@ -69,7 +69,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstExampleCache();
+            //TstExampleCache();
             //TstMd5Hash();
             //TstCreateExtendedDocFileDevTask();
             //TstBson();
@@ -98,7 +98,7 @@ namespace TestSandBox
             //TstRemoveDir();
             //TstRemoveDir();
             //TstFinishRelease0_3_6_p();
-            //TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
+            TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
             //TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
             //TstTesting();
