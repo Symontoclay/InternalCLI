@@ -101,7 +101,7 @@ namespace TestSandBox
             var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new GitHubReleaseTask(new GitHubReleaseTaskOptions() {
-                Token = token,
+                Token = token.Value,
                 RepositoryOwner = owner,
                 RepositoryName = repo,
                 Version = version,

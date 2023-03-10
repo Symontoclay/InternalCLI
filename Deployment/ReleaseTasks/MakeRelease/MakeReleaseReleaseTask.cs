@@ -46,6 +46,11 @@ namespace Deployment.ReleaseTasks.MakeRelease
                 return;
             }
 
+            if(!CheckGitHubToken())
+            {
+                return;
+            }
+
             var futureReleaseInfo = FutureReleaseInfoReader.Read();
 
             var versionBranchName = futureReleaseInfo.Version;
@@ -82,6 +87,36 @@ namespace Deployment.ReleaseTasks.MakeRelease
             Exec(new DeploymentToProdReleaseTask(NextDeep));
 
             Exec(new MarkAsCompletedReleaseTask(NextDeep));
+        }
+
+        private bool CheckGitHubToken()
+        {
+            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+
+            var token = settings.GetSecret("GitHub");
+
+            if(string.IsNullOrEmpty(token.Value))
+            {
+                _logger.Info("Making release is forbiden! GitHub token is empty!");
+
+                return false;
+            }
+
+            if(!token.ExpDate.HasValue)
+            {
+                _logger.Info("Making release is forbiden! ExpDate of GitHub token is empty!");
+
+                return false;
+            }
+
+            if(token.ExpDate <= DateTime.Now)
+            {
+                _logger.Info("Making release is forbiden! GitHub token is expired!");
+
+                return false;
+            }
+
+            return true;
         }
 
         /// <inheritdoc/>

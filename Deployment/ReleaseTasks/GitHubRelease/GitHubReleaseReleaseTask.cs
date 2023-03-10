@@ -142,7 +142,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
             foreach(var repository in _options.Repositories)
             {
                 Exec(new GitHubReleaseTask(new GitHubReleaseTaskOptions() {
-                    Token = token,
+                    Token = token.Value,
                     RepositoryOwner = repository.RepositoryOwner,
                     RepositoryName = repository.RepositoryName,
                     Version = version,

@@ -98,7 +98,7 @@ namespace TestSandBox
             //TstRemoveDir();
             //TstRemoveDir();
             //TstFinishRelease0_3_6_p();
-            TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
+            //TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
             //TstFinishRelease0_3_2();
             //TstRestoreSlnInUnityProject();
             //TstTesting();
@@ -112,7 +112,7 @@ namespace TestSandBox
             //TstAddReleaseNote();
             //TstReadAndReSaveReleaseNotes();
             //TstOctokit();
-            //TstSecrets();
+            TstSecrets();
             //TstGitHubAPICreateRelease();
             //TstGitHubAPIGet();
             //TstTempDirectory();
@@ -480,7 +480,7 @@ namespace TestSandBox
             var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new PrepareUnityCSProjAndSolutionTask(new PrepareUnityCSProjAndSolutionTaskOptions() {
-                UnityExeFilePath = @"C:/Program Files/Unity/Hub/Editor/2021.2.9f1/Editor/Unity.exe",
+                UnityExeFilePath = @"c:\Program Files\Unity\Hub\Editor\2022.2.8f1\Editor\Unity.exe",
                 RootDir = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClayAsset")
             }));
 
@@ -496,7 +496,7 @@ namespace TestSandBox
             _logger.Info("Begin");
 
             //Yes!!! It regenerates .csproj and .sln file!
-            var cmdStrBuilder = new StringBuilder(@"""C:/Program Files/Unity/Hub/Editor/2021.2.9f1/Editor/Unity.exe""");
+            var cmdStrBuilder = new StringBuilder(@"""c:\Program Files\Unity\Hub\Editor\2022.2.8f1\""");
             cmdStrBuilder.Append($" -quit -batchmode -projectPath \"{PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClayAsset").Replace("\\", "/")}\"");
             cmdStrBuilder.Append(" -executeMethod SymOntoClay.UnityAsset.Editors.EmptyScript.Run");
 
@@ -1472,7 +1472,7 @@ namespace TestSandBox
             _logger.Info($"secrets = {JsonConvert.SerializeObject(secrets, Formatting.Indented)}");
 
             var token = secrets["GitHub"];
-            var tokenAuth = new Credentials(token);
+            var tokenAuth = new Credentials(token.Value);
             client.Credentials = tokenAuth;
 
             var owner = "metatypeman";
@@ -1522,6 +1522,21 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            var secretsFileName = EVPath.Normalize("%USERPROFILE%/example_s.json");
+
+            _logger.Info($"secretsFileName = {secretsFileName}");
+
+            var secrets = SecretFile.ReadSecrets(secretsFileName);
+
+            _logger.Info($"secrets = {JsonConvert.SerializeObject(secrets, Formatting.Indented)}");
+
+            _logger.Info("End");
+        }
+
+        private static void TstSecrets_old()
+        {
+            _logger.Info("Begin");
+
             //var release_id = TstGitHubAPICreateRelease();
 
             //var exampleFile = Path.Combine(Directory.GetCurrentDirectory(), "example_secret.json");
@@ -1542,7 +1557,7 @@ namespace TestSandBox
 
             client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("AppName", "1.0"));
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/zip"));
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", token);
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", token.Value);
             client.DefaultRequestHeaders.Host = "uploads.github.com";
             client.Timeout = new TimeSpan(1, 0, 0);
 
@@ -1614,7 +1629,7 @@ namespace TestSandBox
 
             client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("AppName", "1.0"));
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", token);
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", token.Value);
 
             var objToSerialize = new
             {
@@ -1678,7 +1693,7 @@ namespace TestSandBox
 
             client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("AppName", "1.0"));
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", token);
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", token.Value);
 
             var responseTask = client.GetAsync("/user");
 
@@ -1787,6 +1802,7 @@ namespace TestSandBox
 
             //ProjectsDataSource.SaveExampleFile("ProjectsDataSource_1.json");
 
+            _logger.Info($"settings.UtityExeInstances = {JsonConvert.SerializeObject(settings.UtityExeInstances, Formatting.Indented)}");
             _logger.Info($"settings.InternalCLIDist = {settings.InternalCLIDist}");
             _logger.Info($"settings.SocExePath = {settings.SocExePath}");
 

@@ -26,13 +26,13 @@ namespace BaseDevPipeline.Data.Implementation
         public string SocExePath { get; set; }
 
         /// <inheritdoc/>
-        public string GetSecret(string key)
+        public SecretInfo GetSecret(string key)
         {
             return GetSecrets()[key];
         }
 
         /// <inheritdoc/>
-        public Dictionary<string, string> GetSecrets()
+        public Dictionary<string, SecretInfo> GetSecrets()
         {
             return SecretFile.ReadSecrets(SecretFilePath);
         }

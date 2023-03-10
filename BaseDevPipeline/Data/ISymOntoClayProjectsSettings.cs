@@ -17,8 +17,8 @@ namespace BaseDevPipeline.Data
         string ContributingSource { get; }
 
         string Copyright { get; }
-        string GetSecret(string key);
-        Dictionary<string, string> GetSecrets();
+        SecretInfo GetSecret(string key);
+        Dictionary<string, SecretInfo> GetSecrets();
         string InternalCLIDist { get; }
         string SocExePath { get; }
         IReadOnlyList<IUtityExeInstance> UtityExeInstances { get; }
