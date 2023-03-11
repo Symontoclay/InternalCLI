@@ -22,7 +22,7 @@ namespace Deployment.DevTasks.DevSiteFullBuild
             : this(0u)
         {
         }
-
+        
         public DevSiteFullBuildTask(uint deep)
             : base(null, deep)
         {

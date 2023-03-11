@@ -1,6 +1,7 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
 using Deployment.DevTasks.DevFullMaintaining;
+using Deployment.DevTasks.DevSiteFullBuildAndCommit;
 using Deployment.Helpers;
 using Deployment.ReleaseTasks.DeploymentToProd;
 using Deployment.ReleaseTasks.MarkAsCompleted;
@@ -80,7 +81,11 @@ namespace Deployment.ReleaseTasks.MakeRelease
                 }, NextDeep));
             }
 
+
+
             Exec(new DevFullMaintainingDevTask(NextDeep));
+
+            Exec(new DevSiteFullBuildAndCommitTask(NextDeep));
 
             Exec(new MergeReleaseBranchToMasterReleaseTask(NextDeep));
 

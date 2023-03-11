@@ -1,6 +1,7 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
-using Deployment.ReleaseTasks.ProdSiteBuild;
+using Deployment.DevTasks.DevSiteFullBuild;
+using Deployment.DevTasks.UpdateReleaseNotes;
 using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
 using System;
@@ -9,11 +10,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.ReleaseTasks.ProdSiteBuildAndCommit
+namespace Deployment.DevTasks.DevSiteFullBuildAndCommit
 {
-    public class ProdSiteBuildAndCommitReleaseTask : BaseDeploymentTask
+    public class DevSiteFullBuildAndCommitTask : BaseDeploymentTask
     {
-        public ProdSiteBuildAndCommitReleaseTask(uint deep)
+        public DevSiteFullBuildAndCommitTask()
+            : this(0u)
+        {
+        }
+        
+        public DevSiteFullBuildAndCommitTask(uint deep)
             : base(null, deep)
         {
         }
@@ -21,7 +27,7 @@ namespace Deployment.ReleaseTasks.ProdSiteBuildAndCommit
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new ProdSiteBuildReleaseTask(NextDeep));
+            Exec(new DevSiteFullBuildTask(NextDeep));
 
             var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
 
@@ -31,14 +37,14 @@ namespace Deployment.ReleaseTasks.ProdSiteBuildAndCommit
                 RepositoryPaths = new List<string>() { siteSolution.Path }
             }, NextDeep));
         }
-        
+
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Makes PROD site build and commits.");
+            sb.AppendLine($"{spaces}Makes Full dev site build and commits.");
             sb.Append(PrintValidation(n));
 
             return sb.ToString();
