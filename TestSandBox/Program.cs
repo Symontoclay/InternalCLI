@@ -69,6 +69,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstRemoveLogCommentsFromCSFile();
             //TstExampleCache();
             //TstMd5Hash();
             //TstCreateExtendedDocFileDevTask();
@@ -112,7 +113,7 @@ namespace TestSandBox
             //TstAddReleaseNote();
             //TstReadAndReSaveReleaseNotes();
             //TstOctokit();
-            TstSecrets();
+            //TstSecrets();
             //TstGitHubAPICreateRelease();
             //TstGitHubAPIGet();
             //TstTempDirectory();
@@ -132,6 +133,126 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstRemoveLogCommentsFromCSFile()
+        {
+            _logger.Info("Begin");
+
+            var csFilePath = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\InternalCLI\TestSandBox\bin\Debug\net6.0\NewExpressionParser.cs");
+
+            _logger.Info($"csFilePath = '{csFilePath}'");
+
+            var rowsList = File.ReadAllLines(csFilePath);
+
+            var rowsWithoutSingleLineCommentsList = new List<string>();
+
+            foreach(var row in rowsList)
+            {
+                _logger.Info($"row = '{row}'");
+
+                var trimmedRow = row.Trim();
+
+                _logger.Info($"trimmedRow = '{trimmedRow}'");
+
+                if(trimmedRow.StartsWith("//") && !trimmedRow.StartsWith("///"))
+                {
+                    continue;
+                }
+
+                rowsWithoutSingleLineCommentsList.Add(row);
+            }
+
+            _logger.Info("------------------------------------------------------------------------------");
+
+            var rowsWithoutPreprocessorConditonalsList = new List<string>();
+
+            var wasSkippedSharpIf = false;
+            var wasSkippedEmptyRowAfterSkippedSharpIf = false;
+
+            var n = -1;
+
+            foreach (var row in rowsWithoutSingleLineCommentsList)
+            {
+                n++;
+
+                _logger.Info($"wasSkippedSharpIf = {wasSkippedSharpIf}");
+                _logger.Info($"wasSkippedEmptyRowAfterSkippedSharpIf = {wasSkippedEmptyRowAfterSkippedSharpIf}");
+
+                _logger.Info($"n = {n}");
+                _logger.Info($"row = '{row}'");
+
+                var trimmedRow = row.Trim().ToLower();
+
+                _logger.Info($"trimmedRow = '{trimmedRow}'");
+
+                if(trimmedRow.StartsWith("#if"))
+                {
+                    var nextTrimmedRow = rowsWithoutSingleLineCommentsList[n + 1].Trim().ToLower();
+
+                    _logger.Info($"nextTrimmedRow = '{nextTrimmedRow}'");
+
+                    if(nextTrimmedRow.StartsWith("#endif"))
+                    {
+                        wasSkippedSharpIf = true;
+
+                        continue;
+                    }
+                    else
+                    {
+                        _logger.Info($"row (added) = '{row}'");
+
+                        rowsWithoutPreprocessorConditonalsList.Add(row);
+                    }
+                }
+                else
+                {
+                    if(trimmedRow.StartsWith("#endif") && wasSkippedSharpIf)
+                    {
+                        wasSkippedSharpIf = false;
+
+                        _logger.Info($"{n + 1} < {rowsWithoutSingleLineCommentsList.Count} = {n + 1 < rowsWithoutSingleLineCommentsList.Count}");
+
+                        if (n + 1 < rowsWithoutSingleLineCommentsList.Count)
+                        {
+                            var nextTrimmedRow = rowsWithoutSingleLineCommentsList[n + 1].Trim().ToLower();
+
+                            _logger.Info($"nextTrimmedRow = '{nextTrimmedRow}'");
+
+                            if(string.IsNullOrWhiteSpace(nextTrimmedRow))
+                            {
+                                wasSkippedEmptyRowAfterSkippedSharpIf = true;
+                            }
+                        }
+
+                        continue;
+                    }
+                    else
+                    {
+                        if(string.IsNullOrEmpty(trimmedRow) && wasSkippedEmptyRowAfterSkippedSharpIf)
+                        {
+                            wasSkippedEmptyRowAfterSkippedSharpIf = false;
+
+                            continue;
+                        }
+                        else
+                        {
+                            _logger.Info($"row (added) = '{row}'");
+
+                            rowsWithoutPreprocessorConditonalsList.Add(row);
+                        }                        
+                    }
+                }
+            }
+
+            _logger.Info("======================================");
+
+            foreach (var row in rowsWithoutPreprocessorConditonalsList)
+            {
+                _logger.Info($"row = '{row}'");
+            }
+
+            _logger.Info("End");
         }
 
         private static void TstExampleCache()
