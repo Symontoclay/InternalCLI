@@ -5,21 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.Tasks.ExamplesCreator
+namespace Deployment.DevTasks.RemoveSingleLineComments
 {
-    public class BuildExamplesTaskOptions : IObjectToString
+    public class RemoveSingleLineCommentsDevTaskOptions : IObjectToString
     {
-        public List<string> LngExamplesPages { get; set; }
-        public string DestDir { get; set; }
-        public string CacheDir { get; set; }
-        public string SocExePath { get; set; }
+        public string TargetDir { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
         {
             return ToString(0u);
         }
-        
+
         /// <inheritdoc/>
         public string ToString(uint n)
         {
@@ -32,10 +29,7 @@ namespace Deployment.Tasks.ExamplesCreator
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.PrintPODList(n, nameof(LngExamplesPages), LngExamplesPages);
-            sb.AppendLine($"{spaces}{nameof(DestDir)} = {DestDir}");
-            sb.AppendLine($"{spaces}{nameof(CacheDir)} = {CacheDir}");
-            sb.AppendLine($"{spaces}{nameof(SocExePath)} = {SocExePath}");
+            sb.AppendLine($"{spaces}{nameof(TargetDir)} = {TargetDir}");
 
             return sb.ToString();
         }

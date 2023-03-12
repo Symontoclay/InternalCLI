@@ -17,6 +17,7 @@ using Deployment.DevTasks.CreateAndCommitLicenses;
 using Deployment.DevTasks.CreateAndCommitReadmes;
 using Deployment.DevTasks.CreateExtendedDocFile;
 using Deployment.DevTasks.CreateReadmes;
+using Deployment.DevTasks.RemoveSingleLineComments;
 using Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories;
 using Deployment.DevTasks.UpdateUnityExampleRepository;
 using Deployment.Helpers;
@@ -69,7 +70,8 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstRemoveLogCommentsFromCSFile();
+            TstRemoveSingleLineCommentsDevTaskHandler();
+            //TstRemoveLogCommentsFromCSFile();
             //TstExampleCache();
             //TstMd5Hash();
             //TstCreateExtendedDocFileDevTask();
@@ -133,6 +135,24 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstRemoveSingleLineCommentsDevTaskHandler()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new RemoveSingleLineCommentsDevTask(new RemoveSingleLineCommentsDevTaskOptions()
+            {
+                TargetDir = @"d:\SymOntoClay\"
+            }));
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstRemoveLogCommentsFromCSFile()
