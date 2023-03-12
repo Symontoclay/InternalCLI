@@ -141,16 +141,26 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new DeploymentPipeline();
+            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
-            deploymentPipeline.Add(new RemoveSingleLineCommentsDevTask(new RemoveSingleLineCommentsDevTaskOptions()
+            _logger.Info($"targetSolution = {JsonConvert.SerializeObject(targetSolutions.Select(p => p.Path), Formatting.Indented)}");
+
+            foreach(var item in targetSolutions)
             {
-                TargetDir = @"d:\SymOntoClay\"
-            }));
+                _logger.Info($"item.Path = {item.Path}");
+                _logger.Info($"item.Kind = {item.Kind}");
+            }
 
-            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+            //var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Run();
+            //deploymentPipeline.Add(new RemoveSingleLineCommentsDevTask(new RemoveSingleLineCommentsDevTaskOptions()
+            //{
+            //    TargetDir = @"d:\SymOntoClay\"
+            //}));
+
+            //_logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            //deploymentPipeline.Run();
 
             _logger.Info("End");
         }

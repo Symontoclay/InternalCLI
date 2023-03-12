@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using Deployment.DevTasks.RemoveAndCommitSingleLineComments;
 using Deployment.DevTasks.UpdateAndCommitCopyrightInFileHeaders;
 using Deployment.DevTasks.UpdateAndCommitProjectsVersion;
 using Deployment.Tasks;
@@ -38,6 +39,8 @@ namespace Deployment.DevTasks.DevFullMaintaining
             Exec(new UpdateAndCommitProjectsVersionDevTask(NextDeep));
 
             Exec(new UpdateAndCommitCopyrightInFileHeadersDevTask(NextDeep));
+
+            Exec(new RemoveAndCommitSingleLineCommentsDevTask(NextDeep));
         }
 
         /// <inheritdoc/>

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.DevTasks.RemoveSingleLineComments
+namespace Deployment.DevTasks.RemoveAndCommitSingleLineComments
 {
-    public class RemoveSingleLineCommentsDevTaskOptions : IObjectToString
+    public class RemoveAndCommitSingleLineCommentsOptions : IObjectToString
     {
         public string TargetDir { get; set; }
-        
+
         /// <inheritdoc/>
         public override string ToString()
         {

@@ -16,10 +16,6 @@ namespace Deployment.Tasks.ExamplesCreator
 {
     public class BuildExamplesTask : BaseDeploymentTask
     {
-#if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
-
         public BuildExamplesTask(BuildExamplesTaskOptions options)
             : this(options, 0u)
         {
@@ -48,13 +44,13 @@ namespace Deployment.Tasks.ExamplesCreator
             var cacheDir = _options.CacheDir;
 
 #if DEBUG
-            _logger.Info($"cacheDir = {cacheDir}");
+            //_logger.Info($"cacheDir = {cacheDir}");
 #endif
 
             var hasCache = !string.IsNullOrWhiteSpace(cacheDir);
 
 #if DEBUG
-            _logger.Info($"hasCache = {hasCache}");
+            //_logger.Info($"hasCache = {hasCache}");
 #endif
 
             if (!hasCache)
@@ -65,7 +61,7 @@ namespace Deployment.Tasks.ExamplesCreator
             using var tempDir = new TempDirectory();
 
 #if DEBUG
-            _logger.Info($"_options.DestDir = {_options.DestDir}");
+            //_logger.Info($"_options.DestDir = {_options.DestDir}");
 #endif
 
             var targetFiles = new List<string>();
@@ -73,31 +69,31 @@ namespace Deployment.Tasks.ExamplesCreator
             foreach (var lngExamplesPage in _options.LngExamplesPages)
             {
 #if DEBUG
-                _logger.Info($"lngExamplesPage = {lngExamplesPage}");
+                //_logger.Info($"lngExamplesPage = {lngExamplesPage}");
 #endif
 
                 var longestBasePath = PathsHelper.GetLongestCommonPath(lngExamplesPage, _options.DestDir);
 
 #if DEBUG
-                _logger.Info($"longestBasePath = '{longestBasePath}'");
+                //_logger.Info($"longestBasePath = '{longestBasePath}'");
 #endif
 
                 var preparedFileName = lngExamplesPage.Replace(longestBasePath, string.Empty);
 
 #if DEBUG
-                _logger.Info($"preparedFileName = '{preparedFileName}'");
+                //_logger.Info($"preparedFileName = '{preparedFileName}'");
 #endif
 
                 var examplesList = CodeExampleReader.Read(lngExamplesPage);
 
 #if DEBUG
-                _logger.Info($"examplesList.Count = {examplesList.Count}");
+                //_logger.Info($"examplesList.Count = {examplesList.Count}");
 #endif
 
                 foreach (var example in examplesList)
                 {
 #if DEBUG
-                    _logger.Info($"example = {example}");
+                    //_logger.Info($"example = {example}");
 #endif
 
                     if(hasCache)
@@ -105,7 +101,7 @@ namespace Deployment.Tasks.ExamplesCreator
                         var needToBuild = ExampleCacheHelper.IsNeedToBuild(example, preparedFileName, cacheDir);
 
 #if DEBUG
-                        _logger.Info($"needToBuild = {needToBuild}");
+                        //_logger.Info($"needToBuild = {needToBuild}");
 #endif
 
                         var fullZipFileName = Path.Combine(_options.DestDir, ExampleCreator.GetZipFileName(example));
@@ -164,7 +160,7 @@ namespace Deployment.Tasks.ExamplesCreator
             var newArchFileName = Path.Combine(_options.DestDir, Path.GetFileName(result.ArchFileName));
 
 #if DEBUG
-            _logger.Info($"newArchFileName = {newArchFileName}");
+            //_logger.Info($"newArchFileName = {newArchFileName}");
 #endif
 
             createdFiles.Add(newArchFileName);
@@ -174,7 +170,7 @@ namespace Deployment.Tasks.ExamplesCreator
             var newConsoleFileName = Path.Combine(_options.DestDir, Path.GetFileName(result.ConsoleFileName));
 
 #if DEBUG
-            _logger.Info($"newConsoleFileName = {newConsoleFileName}");
+            //_logger.Info($"newConsoleFileName = {newConsoleFileName}");
 #endif
 
             createdFiles.Add(newConsoleFileName);
@@ -189,7 +185,7 @@ namespace Deployment.Tasks.ExamplesCreator
             var archFileName = Path.Combine(_options.DestDir, ExampleCreator.GetZipFileName(example));
 
 #if DEBUG
-            _logger.Info($"archFileName = {archFileName}");
+            //_logger.Info($"archFileName = {archFileName}");
 #endif
 
             File.Delete(archFileName);
@@ -197,7 +193,7 @@ namespace Deployment.Tasks.ExamplesCreator
             var consoleFileName = Path.Combine(_options.DestDir, ExampleCreator.GetConsoleFileName(example));
 
 #if DEBUG
-            _logger.Info($"consoleFileName = {consoleFileName}");
+            //_logger.Info($"consoleFileName = {consoleFileName}");
 #endif
 
             File.Delete(consoleFileName);
@@ -213,7 +209,7 @@ namespace Deployment.Tasks.ExamplesCreator
             var cleanedFiles = Directory.GetFiles(_options.DestDir).Where(p => p.EndsWith(".zip") || p.EndsWith(".console")).ToList();
 
 #if DEBUG
-            _logger.Info($"cleanedFiles.Count = {cleanedFiles.Count}");
+            //_logger.Info($"cleanedFiles.Count = {cleanedFiles.Count}");
 #endif
 
             if (!except.IsNullOrEmpty())
@@ -222,13 +218,13 @@ namespace Deployment.Tasks.ExamplesCreator
             }
 
 #if DEBUG
-            _logger.Info($"cleanedFiles.Count (after) = {cleanedFiles.Count}");
+            //_logger.Info($"cleanedFiles.Count (after) = {cleanedFiles.Count}");
 #endif
 
             foreach (var cleanedFile in cleanedFiles)
             {
 #if DEBUG
-                _logger.Info($"cleanedFile = {cleanedFile}");
+                //_logger.Info($"cleanedFile = {cleanedFile}");
 #endif
 
                 File.Delete(cleanedFile);

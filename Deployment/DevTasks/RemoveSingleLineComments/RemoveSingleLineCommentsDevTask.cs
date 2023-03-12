@@ -13,10 +13,6 @@ namespace Deployment.DevTasks.RemoveSingleLineComments
 {
     public class RemoveSingleLineCommentsDevTask : BaseDeploymentTask
     {
-#if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
-
         public RemoveSingleLineCommentsDevTask(RemoveSingleLineCommentsDevTaskOptions options)
             : this(options, 0u)
         { 
@@ -276,7 +272,7 @@ namespace Deployment.DevTasks.RemoveSingleLineComments
 
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Remove single line comments in '{_options.TargetDir}'.");
+            sb.AppendLine($"{spaces}Removes single line comments in '{_options.TargetDir}'.");
 
             sb.Append(PrintValidation(n));
 
