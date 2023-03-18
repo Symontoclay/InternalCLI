@@ -3,6 +3,7 @@ using CommonUtils.DebugHelpers;
 using Deployment.DevTasks.RemoveSingleLineComments;
 using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.Commit;
+using Deployment.Tasks.GitTasks.CommitAllAndPush;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Deployment.DevTasks.RemoveAndCommitSingleLineComments
 
             var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
-            result.TargetDir = targetSolutions.First(p => p.Kind == KindOfProject.CoreSolution).Path;
+            result.TargetDirsList = new List<string>() { targetSolutions.First(p => p.Kind == KindOfProject.CoreSolution).Path };
 
             return result;
         }
@@ -46,7 +47,7 @@ namespace Deployment.DevTasks.RemoveAndCommitSingleLineComments
         protected override void OnValidateOptions()
         {
             ValidateOptionsAsNonNull(_options);
-            ValidateDirectory(nameof(_options.TargetDir), _options.TargetDir);
+            ValidateList(nameof(_options.TargetDirsList), _options.TargetDirsList);
         }
 
         /// <inheritdoc/>
@@ -54,13 +55,13 @@ namespace Deployment.DevTasks.RemoveAndCommitSingleLineComments
         {
             Exec(new RemoveSingleLineCommentsDevTask(new RemoveSingleLineCommentsDevTaskOptions()
             {
-                TargetDir = _options.TargetDir,
+                TargetDirsList = _options.TargetDirsList,
             }));
 
-            Exec(new CommitTask(new CommitTaskOptions()
+            Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {
-                RepositoryPath = _options.TargetDir,
-                Message = "Unnecessary comments have been removed"
+                Message = "Unnecessary comments have been removed",
+                RepositoryPaths = _options.TargetDirsList
             }, NextDeep));
         }
 
@@ -68,10 +69,16 @@ namespace Deployment.DevTasks.RemoveAndCommitSingleLineComments
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextNSpaces = DisplayHelper.Spaces(nextN);
 
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Removes single line comments and commits in '{_options.TargetDir}'.");
+            sb.AppendLine($"{spaces}Removes single line comments and commits in:");
+            foreach (var item in _options.TargetDirsList)
+            {
+                sb.AppendLine($"{nextNSpaces}{item}");
+            }
 
             sb.Append(PrintValidation(n));
 

@@ -30,13 +30,16 @@ namespace Deployment.DevTasks.RemoveSingleLineComments
         protected override void OnValidateOptions()
         {
             ValidateOptionsAsNonNull(_options);
-            ValidateDirectory(nameof(_options.TargetDir), _options.TargetDir);
+            ValidateList(nameof(_options.TargetDirsList), _options.TargetDirsList);
         }
 
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            ProcessDir(_options.TargetDir);
+            foreach(var targetDir in _options.TargetDirsList)
+            {
+                ProcessDir(targetDir);
+            }
         }
 
         private void ProcessDir(string dirName)
@@ -269,10 +272,16 @@ namespace Deployment.DevTasks.RemoveSingleLineComments
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextNSpaces = DisplayHelper.Spaces(nextN);
 
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Removes single line comments in '{_options.TargetDir}'.");
+            sb.AppendLine($"{spaces}Removes single line comments in:");
+            foreach (var item in _options.TargetDirsList)
+            {
+                sb.AppendLine($"{nextNSpaces}{item}");
+            }
 
             sb.Append(PrintValidation(n));
 

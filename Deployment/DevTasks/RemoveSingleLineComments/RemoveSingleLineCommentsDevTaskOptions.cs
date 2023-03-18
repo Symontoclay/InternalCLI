@@ -9,7 +9,7 @@ namespace Deployment.DevTasks.RemoveSingleLineComments
 {
     public class RemoveSingleLineCommentsDevTaskOptions : IObjectToString
     {
-        public string TargetDir { get; set; }
+        public List<string> TargetDirsList { get; set; }
         
         /// <inheritdoc/>
         public override string ToString()
@@ -29,7 +29,7 @@ namespace Deployment.DevTasks.RemoveSingleLineComments
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(TargetDir)} = {TargetDir}");
+            sb.PrintPODList(n, nameof(TargetDirsList), TargetDirsList);
 
             return sb.ToString();
         }
