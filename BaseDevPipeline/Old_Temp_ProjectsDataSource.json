@@ -11,7 +11,6 @@
     "UnityPackage"
   ],
   "RepositoryReadmeSource": "%SLN_ROOT_PATH%/__ReadmeSource.md",
-  "InternalCLIDist": "%USERPROFILE%/Documents/InternalSymOntoClayCLIDist",
   "Solutions": [
     {
       "Kind": "CoreSolution",
@@ -112,7 +111,7 @@
     },
     {
       "Kind": "CLIFolder",
-      "Path": "%USERPROFILE%/Documents/SymOntoClayCLIDist_1"
+      "Path": "%USERPROFILE%/Documents/SymOntoClayCLIDist"
     }
   ],
   "Licenses": [
