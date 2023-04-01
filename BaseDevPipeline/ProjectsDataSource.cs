@@ -27,8 +27,8 @@ namespace BaseDevPipeline
             {
                 if(_settings == null)
                 {
-                    _settings = GetSymOntoClayProjectsSettings(Path.Combine(Directory.GetCurrentDirectory(), "ProjectsDataSource.json"));
-                    //_settings = GetSymOntoClayProjectsSettings(Path.Combine(Directory.GetCurrentDirectory(), "Temp_ProjectsDataSource.json"));
+                    //_settings = GetSymOntoClayProjectsSettings(Path.Combine(Directory.GetCurrentDirectory(), "ProjectsDataSource.json"));
+                    _settings = GetSymOntoClayProjectsSettings(Path.Combine(Directory.GetCurrentDirectory(), "Temp_ProjectsDataSource.json"));
                 }
 
                 return _settings;
