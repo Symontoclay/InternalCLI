@@ -14,6 +14,25 @@ namespace BaseDevPipeline
 {
     public class ProjectsDataSource
     {
+        private static ProjectsDataSource _instance;
+        private static object _instanceLock = new object();
+
+        public static ProjectsDataSource Instance
+        {
+            get
+            { 
+                lock(_instanceLock)
+                {
+                    if(_instance == null)
+                    {
+                        _instance = new ProjectsDataSource();
+                    }
+                }
+
+                return _instance; 
+            }
+        }
+
         public ProjectsDataSource()
             : this(null)
         {
