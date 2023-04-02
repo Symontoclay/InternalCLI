@@ -9,6 +9,7 @@ namespace BaseDevPipeline.SourceData
 {
     public class SolutionSource : IObjectToString
     {
+        public string Name { get; set; }
         public string Kind { get; set; }
         public string Href { get; set; }
         public string Path { get; set; }
@@ -47,6 +48,7 @@ namespace BaseDevPipeline.SourceData
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
             sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");

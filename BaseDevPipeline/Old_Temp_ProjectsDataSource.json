@@ -13,6 +13,7 @@
   "RepositoryReadmeSource": "%SLN_ROOT_PATH%/__ReadmeSource.md",
   "Solutions": [
     {
+      "Name": "SymOntoClay",
       "Kind": "CoreSolution",
       "Href": "https://github.com/metatypeman/__SymOntoClay",
       "Path": "%BASE_PATH%/__SymOntoClay",
@@ -73,6 +74,7 @@
       ]
     },
     {
+      "Name": "symontoclay.github.io",
       "Kind": "ProjectSite",
       "Href": "https://github.com/metatypeman/__symontoclay.github.io",
       "Path": "%BASE_PATH%/__symontoclay.github.io",
@@ -86,6 +88,7 @@
       "ContributingSource": "%SLN_ROOT_PATH%/siteSource/__CONTRIBUTINGSource.md"
     },
     {
+      "Name": "SymOntoClayAsset",
       "Kind": "Unity",
       "Href": "https://github.com/metatypeman/__SymOntoClayAsset",
       "Path": "%BASE_PATH%/__SymOntoClayAsset",
@@ -94,6 +97,7 @@
       "EnableGenerateReadme": true
     },
     {
+      "Name": "ReleaseMngr",
       "Kind": "ReleaseMngrSolution",
       "Href": "https://github.com/metatypeman/__ReleaseMngr",
       "Path": "%BASE_PATH%/__ReleaseMngr",

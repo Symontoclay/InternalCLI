@@ -14,34 +14,56 @@ namespace BaseDevPipeline
 {
     public class ProjectsDataSource
     {
-        private ISymOntoClayProjectsSettings _settings;
-        private object _lockObj = new object();
+        public ProjectsDataSource()
+            : this(null)
+        {
+        }
 
+        public ProjectsDataSource(string modificationFileName) 
+        {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+            //_logger.Info($"modificationFileName = {modificationFileName}");
+#endif
+
+            _settings = GetSymOntoClayProjectsSettings(Path.Combine(Directory.GetCurrentDirectory(), "ProjectsDataSource.json"), Path.Combine(Directory.GetCurrentDirectory(), modificationFileName));
+        }
+
+        private ISymOntoClayProjectsSettings _settings;
+        
+#if DEBUG
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public ISymOntoClayProjectsSettings GetSymOntoClayProjectsSettings()
         {
-            lock(_lockObj)
-            {
-                if(_settings == null)
-                {
-                    //_settings = GetSymOntoClayProjectsSettings(Path.Combine(Directory.GetCurrentDirectory(), "ProjectsDataSource.json"));
-                    _settings = GetSymOntoClayProjectsSettings(Path.Combine(Directory.GetCurrentDirectory(), "Temp_ProjectsDataSource.json"));
-                }
-
-                return _settings;
-            }
+             return _settings;
         }
 
-        public ISymOntoClayProjectsSettings GetSymOntoClayProjectsSettings(string fileName)
+        public static ISymOntoClayProjectsSettings GetSymOntoClayProjectsSettings(string fileName, string modificationFileName)
         {
 #if DEBUG
-            _logger.Info($"fileName = {fileName}");
+            //_logger.Info($"fileName = {fileName}");
+            //_logger.Info($"modificationFileName = {modificationFileName}");
 #endif
 
-            return SymOntoClayProjectsSettingsConverter.Convert(JsonConvert.DeserializeObject<SymOntoClaySettingsSource>(File.ReadAllText(fileName)));
+            var source = ReadSymOntoClaySettingsSource(fileName);
+
+#if DEBUG
+            //_logger.Info($"source = {source}");
+#endif
+
+            var modificationSource = string.IsNullOrEmpty(modificationFileName) ? null : ReadSymOntoClaySettingsSource(modificationFileName);
+
+#if DEBUG
+            //_logger.Info($"modificationSource = {modificationSource}");
+#endif
+
+            return SymOntoClayProjectsSettingsConverter.Convert(source, modificationSource);
+        }
+
+        private static SymOntoClaySettingsSource ReadSymOntoClaySettingsSource(string fileName)
+        {
+            return JsonConvert.DeserializeObject<SymOntoClaySettingsSource>(File.ReadAllText(fileName));
         }
 
         public ISolutionSettings GetSolution(KindOfProject kind)

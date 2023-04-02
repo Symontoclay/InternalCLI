@@ -1943,6 +1943,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            ProjectsDataSourceFactory.Mode = ProjectsDataSourceMode.Test;
+
             _logger.Info($"ProjectsDataSourceFactory.Mode = {ProjectsDataSourceFactory.Mode}");
 
             var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();

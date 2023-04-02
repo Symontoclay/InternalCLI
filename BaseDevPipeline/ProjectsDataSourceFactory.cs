@@ -22,6 +22,12 @@ namespace BaseDevPipeline
                         return instance.GetSymOntoClayProjectsSettings();
                     }
 
+                case ProjectsDataSourceMode.Test:
+                    {
+                        var instance = new TestProjectsDataSource();
+                        return instance.GetSymOntoClayProjectsSettings();
+                    }
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(Mode), Mode, null);
             }

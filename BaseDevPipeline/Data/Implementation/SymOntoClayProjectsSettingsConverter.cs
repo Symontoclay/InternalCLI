@@ -18,7 +18,8 @@ namespace BaseDevPipeline.Data.Implementation
 #if DEBUG
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
-        public static ISymOntoClayProjectsSettings Convert(SymOntoClaySettingsSource source)
+
+        public static ISymOntoClayProjectsSettings Convert(SymOntoClaySettingsSource source, SymOntoClaySettingsSource modificationSource)
         {
             var result = new SymOntoClayProjectsSettings();
             result.BasePath = DetectBasePath(source.BasePaths);
@@ -52,7 +53,7 @@ namespace BaseDevPipeline.Data.Implementation
 
             FillUpLicenses(source, result, licensesDict);
             FillUpDevArtifacts(source, result);
-            FillUpSolutions(source, result, licensesDict);
+            FillUpSolutions(source, modificationSource, result, licensesDict);
 
             result.Prepare();
 
@@ -148,17 +149,31 @@ namespace BaseDevPipeline.Data.Implementation
             return result;
         }
 
-        private static void FillUpSolutions(SymOntoClaySettingsSource source, SymOntoClayProjectsSettings result, Dictionary<string, LicenseSettings> licensesDict)
+        private static void FillUpSolutions(SymOntoClaySettingsSource source, SymOntoClaySettingsSource modificationSource, SymOntoClayProjectsSettings result, Dictionary<string, LicenseSettings> licensesDict)
         {
             var soulutions = new List<SolutionSettings>();
             result.Solutions = soulutions;
 
+            var modificationSolutionsDict = modificationSource?.Solutions?.ToDictionary(p => p.Name, p => p);
+
             foreach(var solutionSource in source.Solutions)
             {
+                var name = solutionSource.Name;
+
+#if DEBUG
+                //_logger.Info($"name = {name}");
+#endif
+
+                var modificationSolution = modificationSolutionsDict == null ? null : (modificationSolutionsDict.ContainsKey(name) ? modificationSolutionsDict[name] : null);
+
+#if DEBUG
+                //_logger.Info($"modificationSolution = {modificationSolution}");
+#endif
+
                 var item = new SolutionSettings();
                 item.Kind = Enum.Parse<KindOfProject>(solutionSource.Kind);
 
-                var href = solutionSource.Href;
+                var href = string.IsNullOrEmpty(modificationSolution?.Href) ? solutionSource.Href : modificationSolution.Href;
 
                 item.Href = href;
 
@@ -177,7 +192,7 @@ namespace BaseDevPipeline.Data.Implementation
                     item.RepositoryName = hrefPath.Substring(slashPos + 1);
                 }
 
-                item.Path = PathsHelper.Normalize(solutionSource.Path);
+                item.Path = string.IsNullOrEmpty(modificationSolution?.Path) ? PathsHelper.Normalize(solutionSource.Path) : PathsHelper.Normalize(modificationSolution.Path);
 
                 EVPath.RegVar("SLN_ROOT_PATH", item.Path);
 
