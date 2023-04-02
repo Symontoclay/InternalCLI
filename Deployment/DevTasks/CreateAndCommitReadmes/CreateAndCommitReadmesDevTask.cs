@@ -47,7 +47,7 @@ namespace Deployment.DevTasks.CreateAndCommitReadmes
         {
             Exec(new CreateReadmesDevTask(NextDeep));
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions() { 
                 Message = _options.Message,

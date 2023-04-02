@@ -28,9 +28,9 @@ namespace Deployment.DevTasks.CoreToCLIFolder
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var cliProject = ProjectsDataSource.GetProject(KindOfProject.CLI);
+            var cliProject = ProjectsDataSourceFactory.GetProject(KindOfProject.CLI);
 
-            var cliFolderTargetPath = ProjectsDataSource.GetDevArtifact(KindOfArtifact.CLIFolder).Path;
+            var cliFolderTargetPath = ProjectsDataSourceFactory.GetDevArtifact(KindOfArtifact.CLIFolder).Path;
 
             Exec(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {

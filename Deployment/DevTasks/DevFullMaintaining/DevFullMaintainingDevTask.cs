@@ -28,7 +28,7 @@ namespace Deployment.DevTasks.DevFullMaintaining
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {

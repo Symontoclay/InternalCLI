@@ -26,9 +26,9 @@ namespace Deployment.DevTasks.CoreToAsset
         public CoreToAssetDevTask(uint deep)
             : this(new CoreToAssetDevTaskOptions()
             {
-                CoreCProjPath = ProjectsDataSource.GetProject(KindOfProject.CoreAssetLib).CsProjPath,
-                DestDir = ProjectsDataSource.GetSolution(KindOfProject.Unity).SourcePath,
-                Plugins = ProjectsDataSource.GetProjects(KindOfProject.CorePlugin).Select(p => p.CsProjPath).ToList()
+                CoreCProjPath = ProjectsDataSourceFactory.GetProject(KindOfProject.CoreAssetLib).CsProjPath,
+                DestDir = ProjectsDataSourceFactory.GetSolution(KindOfProject.Unity).SourcePath,
+                Plugins = ProjectsDataSourceFactory.GetProjects(KindOfProject.CorePlugin).Select(p => p.CsProjPath).ToList()
             }, deep)
         {
         }

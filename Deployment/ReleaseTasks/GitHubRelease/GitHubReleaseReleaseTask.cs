@@ -27,7 +27,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
             var repositories = new List<GitHubRepositoryInfo>();
             options.Repositories = repositories;
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
             foreach(var targetSolution in targetSolutions)
             {
@@ -85,7 +85,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
             using var cliTempDir = new TempDirectory();
             using var cliArchTempDir = new TempDirectory();
 
-            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
             var unitySolution = settings.GetSolution(KindOfProject.Unity);
 
@@ -118,7 +118,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
                 OutputPackageName = unityPackageFullPath
             }, NextDeep));
 
-            var cliProject = ProjectsDataSource.GetProject(KindOfProject.CLI);
+            var cliProject = ProjectsDataSourceFactory.GetProject(KindOfProject.CLI);
 
             Exec(new CopyAndPublishVSProjectOrSolutionDevTask(new CopyAndPublishVSProjectOrSolutionDevTaskOptions()
             {

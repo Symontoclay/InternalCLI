@@ -29,7 +29,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
 
             options.Version = futureReleaseInfo.Version;
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
             var repositories = new List<RepositoryItem>();
 

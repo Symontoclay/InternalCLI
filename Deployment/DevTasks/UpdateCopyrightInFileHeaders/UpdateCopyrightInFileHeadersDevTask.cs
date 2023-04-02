@@ -23,9 +23,9 @@ namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var license = ProjectsDataSource.GetLicense("MIT");
+            var license = ProjectsDataSourceFactory.GetLicense("MIT");
 
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             var siteSettings = new GeneralSiteBuilderSettings(new GeneralSiteBuilderSettingsOptions()
             {
@@ -36,7 +36,7 @@ namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
 
             var headerText = ContentPreprocessor.Run(license.HeaderContent, MarkdownStrategy.GenerateMarkdown, siteSettings);
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
             foreach (var targetSolution in targetSolutions)
             {

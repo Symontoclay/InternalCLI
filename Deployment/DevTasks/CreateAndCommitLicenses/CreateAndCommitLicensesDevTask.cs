@@ -46,7 +46,7 @@ namespace Deployment.DevTasks.CreateAndCommitLicenses
         {
             Exec(new CreateLicensesDevTask(NextDeep));
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {

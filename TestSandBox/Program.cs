@@ -141,7 +141,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
             _logger.Info($"targetSolution = {JsonConvert.SerializeObject(targetSolutions.Select(p => p.Path), Formatting.Indented)}");
 
@@ -430,7 +430,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             //_logger.Info($"siteSolution = {siteSolution}");
 
@@ -441,7 +441,7 @@ namespace TestSandBox
                 SiteName = siteSolution.RepositoryName,
             });
 
-            var license = ProjectsDataSource.GetLicense("MIT");
+            var license = ProjectsDataSourceFactory.GetLicense("MIT");
 
             _logger.Info($"license.HeaderContent = {license.HeaderContent}");
 
@@ -473,7 +473,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             //_logger.Info($"siteSolution = {siteSolution}");
 
@@ -515,7 +515,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             //_logger.Info($"siteSolution = {siteSolution}");
 
@@ -751,7 +751,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
             var siteSolution = settings.GetSolution(KindOfProject.ProjectSite);
 
@@ -776,11 +776,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             _logger.Info($"siteSolution = {siteSolution}");
 
-            //var repository = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects().First();
+            //var repository = ProjectsDataSourceFactory.GetSolutionsWithMaintainedVersionsInCSharpProjects().First();
 
             var repository = siteSolution;
 
@@ -805,7 +805,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var unityExamplesSolutionsList = ProjectsDataSource.GetUnityExampleSolutions();
+            var unityExamplesSolutionsList = ProjectsDataSourceFactory.GetUnityExampleSolutions();
 
             foreach (var unityExamplesSolution in unityExamplesSolutionsList)
             {
@@ -1191,7 +1191,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var unityExeInstances = ProjectsDataSource.GetSymOntoClayProjectsSettings().UtityExeInstances;
+            var unityExeInstances = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings().UtityExeInstances;
 
             _logger.Info($"unityExeInstances = {JsonConvert.SerializeObject(unityExeInstances, Formatting.Indented)}");
 
@@ -1199,7 +1199,7 @@ namespace TestSandBox
 
             _logger.Info($"unityExeFilePath = {unityExeFilePath}");
 
-            var unitySolution = ProjectsDataSource.GetSolution(KindOfProject.Unity);
+            var unitySolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.Unity);
 
             //_logger.Info($"unitySolution = {unitySolution}");
 
@@ -1277,7 +1277,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
             var targetSolution = targetSolutions.FirstOrDefault();
 
@@ -1314,7 +1314,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             _logger.Info($"siteSolution = {siteSolution}");
 
@@ -1509,7 +1509,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             var currentBranchName = GitRepositoryHelper.GetCurrentBranchName(siteSolution.Path);
 
@@ -1898,7 +1898,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             _logger.Info($"siteSolution = {siteSolution}");
 
@@ -1943,7 +1943,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
             //_logger.Info($"settings = {settings}");
 

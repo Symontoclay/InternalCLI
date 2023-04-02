@@ -45,7 +45,7 @@ namespace Deployment.DevTasks.DevSiteFullBuild
 
         private void CheckMasterBranch(KindOfProject kind)
         {
-            var solution = ProjectsDataSource.GetSolution(kind);
+            var solution = ProjectsDataSourceFactory.GetSolution(kind);
 
             if (GitRepositoryHelper.IsCurrentBranchMaster(solution.Path))
             {

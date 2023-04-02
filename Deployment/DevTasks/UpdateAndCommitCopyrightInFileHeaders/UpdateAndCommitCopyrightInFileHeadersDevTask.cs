@@ -28,7 +28,7 @@ namespace Deployment.DevTasks.UpdateAndCommitCopyrightInFileHeaders
         {
             Exec(new UpdateCopyrightInFileHeadersDevTask(NextDeep));
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {

@@ -27,7 +27,7 @@ namespace Deployment.DevTasks.CreateContributings
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
             var siteSolution = settings.GetSolution(KindOfProject.ProjectSite);
 

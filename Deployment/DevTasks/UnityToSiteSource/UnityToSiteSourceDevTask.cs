@@ -23,9 +23,9 @@ namespace Deployment.DevTasks.UnityToSiteSource
         {
             var result = new UnityToSiteSourceDevTaskOptions();
 
-            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
-            result.UnitySlnPath = ProjectsDataSource.GetSolution(KindOfProject.Unity).Path;
-            result.SiteSourceDir = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).SourcePath;
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
+            result.UnitySlnPath = ProjectsDataSourceFactory.GetSolution(KindOfProject.Unity).Path;
+            result.SiteSourceDir = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite).SourcePath;
 
             var targetUnityVersion = UnityHelper.GetTargetUnityVersion(result.UnitySlnPath);
 

@@ -14,7 +14,7 @@ namespace MakeRelease
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
 #if DEBUG
-            ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 #endif
 
             Console.WriteLine("This app will release future version. Are you sure?");

@@ -18,7 +18,7 @@ namespace Deployment.DevTasks.RemoveAndCommitSingleLineComments
         {
             var result = new RemoveAndCommitSingleLineCommentsOptions();
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
             result.TargetDirsList = new List<string>() { targetSolutions.First(p => p.Kind == KindOfProject.CoreSolution).Path };
 

@@ -12,7 +12,7 @@ namespace Deployment.Helpers
     {
         public static string BuildReleaseNotesPath()
         {
-            return BuildReleaseNotesPath(ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).SourcePath);
+            return BuildReleaseNotesPath(ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite).SourcePath);
         }
 
         public static string BuildReleaseNotesPath(string basePath)

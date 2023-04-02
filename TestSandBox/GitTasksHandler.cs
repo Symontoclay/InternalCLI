@@ -58,7 +58,7 @@ namespace TestSandBox
 
         private void Case11()
         {
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             _logger.Info($"siteSolution = {siteSolution}");
 
@@ -73,7 +73,7 @@ namespace TestSandBox
 
         private void Case10()
         {
-            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
             _logger.Info($"settings = {settings}");
 

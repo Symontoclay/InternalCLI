@@ -25,7 +25,7 @@ namespace Deployment.DevTasks.PullSolutionsWithMaintainedReleases
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
             foreach(var targetSolution in targetSolutions)
             {

@@ -23,9 +23,9 @@ namespace Deployment.DevTasks.DevSiteBuild
         public DevSiteBuildTask(uint deep)
             : this(new DevSiteBuildTaskOptions() 
             { 
-                SiteName = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).RepositoryName,
-                SourcePath = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).SourcePath,
-                DestPath = ProjectsDataSource.GetDevArtifact(KindOfArtifact.ProjectSite).Path
+                SiteName = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite).RepositoryName,
+                SourcePath = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite).SourcePath,
+                DestPath = ProjectsDataSourceFactory.GetDevArtifact(KindOfArtifact.ProjectSite).Path
             }, deep)
         {
         }

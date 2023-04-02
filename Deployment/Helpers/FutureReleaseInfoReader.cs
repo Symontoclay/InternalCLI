@@ -16,7 +16,7 @@ namespace Deployment.Helpers
     {
         public static FutureReleaseInfo Read()
         {
-            return Read(ProjectsDataSource.GetSolution(KindOfProject.ReleaseMngrSolution).Path);
+            return Read(ProjectsDataSourceFactory.GetSolution(KindOfProject.ReleaseMngrSolution).Path);
         }
 
         public static FutureReleaseInfo Read(string baseRepositoryPath)
@@ -46,7 +46,7 @@ namespace Deployment.Helpers
 
         public static FutureReleaseInfoSource ReadSource()
         {
-            return ReadSource(ProjectsDataSource.GetSolution(KindOfProject.ReleaseMngrSolution).Path);
+            return ReadSource(ProjectsDataSourceFactory.GetSolution(KindOfProject.ReleaseMngrSolution).Path);
         }
 
         public static FutureReleaseInfoSource ReadSource(string baseRepositoryPath)

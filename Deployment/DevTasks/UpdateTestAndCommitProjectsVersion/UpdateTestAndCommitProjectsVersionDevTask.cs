@@ -30,14 +30,14 @@ namespace Deployment.DevTasks.UpdateTestAndCommitProjectsVersion
         {
             Exec(new UpdateProjectsVersionDevTask(NextDeep));
 
-            var coreSolution = ProjectsDataSource.GetSolution(KindOfProject.CoreSolution);
+            var coreSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.CoreSolution);
 
             Exec(new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
             {
                 ProjectOrSoutionFileName = coreSolution.SlnPath
             }, NextDeep));
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {

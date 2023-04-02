@@ -27,7 +27,7 @@ namespace Deployment.ReleaseTasks.ProdSiteBuild
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             using var tempDir = new TempDirectory();
 

@@ -29,7 +29,7 @@ namespace Deployment.DevTasks.DevSiteFullBuildAndCommit
         {
             Exec(new DevSiteFullBuildTask(NextDeep));
 
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {

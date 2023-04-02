@@ -33,7 +33,7 @@ namespace Deployment.DevTasks.UpdateProjectsVersion
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
             var releaseMngrRepositoryPath = settings.GetSolution(KindOfProject.ReleaseMngrSolution).Path;
 

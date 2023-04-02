@@ -26,9 +26,9 @@ namespace Deployment.DevTasks.CoreToInternalCLIDist
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
-            var cliProject = ProjectsDataSource.GetProject(KindOfProject.CLI);
+            var cliProject = ProjectsDataSourceFactory.GetProject(KindOfProject.CLI);
 
             var cliFolderTargetPath = settings.InternalCLIDist;
 

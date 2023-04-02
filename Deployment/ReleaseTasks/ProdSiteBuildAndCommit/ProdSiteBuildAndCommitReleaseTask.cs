@@ -23,7 +23,7 @@ namespace Deployment.ReleaseTasks.ProdSiteBuildAndCommit
         {
             Exec(new ProdSiteBuildReleaseTask(NextDeep));
 
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {

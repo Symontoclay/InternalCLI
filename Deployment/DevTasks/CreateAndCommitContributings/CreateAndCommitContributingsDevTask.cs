@@ -46,7 +46,7 @@ namespace Deployment.DevTasks.CreateAndCommitContributings
         {
             Exec(new CreateContributingsDevTask(NextDeep));
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {

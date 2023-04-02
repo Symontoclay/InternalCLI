@@ -93,7 +93,7 @@ namespace TestSandBox
 
         private void Case15()
         {
-            var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             _logger.Info($"siteSolution = {siteSolution}");
 
@@ -171,11 +171,11 @@ namespace TestSandBox
 
         private void Case11()
         {
-            //var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+            //var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             //_logger.Info($"siteSolution = {siteSolution}");
 
-            //var coreAssetLibProject = ProjectsDataSource.GetProject(KindOfProject.CoreAssetLib);
+            //var coreAssetLibProject = ProjectsDataSourceFactory.GetProject(KindOfProject.CoreAssetLib);
 
             //_logger.Info($"coreAssetLibProject = {coreAssetLibProject}");
 
@@ -195,7 +195,7 @@ namespace TestSandBox
         {
             var deploymentPipeline = new DeploymentPipeline();
 
-            var coreSolution = ProjectsDataSource.GetSolution(KindOfProject.CoreSolution);
+            var coreSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.CoreSolution);
 
             _logger.Info($"coreSolution.SlnPath = {coreSolution.SlnPath}");
 
@@ -218,9 +218,9 @@ namespace TestSandBox
         {
             var deploymentPipeline = new DeploymentPipeline();
 
-            var license = ProjectsDataSource.GetLicense("MIT");
+            var license = ProjectsDataSourceFactory.GetLicense("MIT");
 
-            var coreProject = ProjectsDataSource.GetProject(KindOfProject.CoreLib);
+            var coreProject = ProjectsDataSourceFactory.GetProject(KindOfProject.CoreLib);
 
             _logger.Info($"coreProject.Path = {coreProject.Path}");
 
@@ -239,9 +239,9 @@ namespace TestSandBox
         {
             var deploymentPipeline = new DeploymentPipeline();
 
-            var license = ProjectsDataSource.GetLicense("MIT");
+            var license = ProjectsDataSourceFactory.GetLicense("MIT");
 
-            var unitySolution = ProjectsDataSource.GetSolution(KindOfProject.Unity);
+            var unitySolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.Unity);
 
             deploymentPipeline.Add(new UpdateCopyrightInFileHeadersInFolderTask(new UpdateCopyrightInFileHeadersInFolderTaskOptions() {
                 Text = license.HeaderContent,
@@ -265,7 +265,7 @@ namespace TestSandBox
 
             targetFilesList = targetFilesList.Select(p => PathsHelper.Normalize(p)).ToList();
 
-            var license = ProjectsDataSource.GetLicense("MIT");
+            var license = ProjectsDataSourceFactory.GetLicense("MIT");
 
             deploymentPipeline.Add(new UpdateCopyrightInFileHeadersTask(new UpdateCopyrightInFileHeadersTaskOptions() { 
                 Text = license.HeaderContent,
@@ -285,7 +285,7 @@ namespace TestSandBox
 
                 var deploymentPipeline = new DeploymentPipeline();
 
-                var siteSolution = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite);
+                var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
                 _logger.Info($"siteSolution = {siteSolution}");
 

@@ -53,7 +53,7 @@ namespace Deployment.ReleaseTasks.StartNewVersion
 
             var versionBranchName = _options.Version;
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
             var isVersionBranchExisting = false;
 

@@ -27,8 +27,8 @@ namespace Deployment.DevTasks.CoreToSiteSource
         public CoreToSiteSourceDevTask(uint deep)
             : this(new CoreToSiteSourceDevTaskOptions() 
             {
-                CoreCProjPath = ProjectsDataSource.GetProject(KindOfProject.CoreAssetLib).CsProjPath,
-                SiteSourceDir = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).SourcePath
+                CoreCProjPath = ProjectsDataSourceFactory.GetProject(KindOfProject.CoreAssetLib).CsProjPath,
+                SiteSourceDir = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite).SourcePath
             }, deep)
         {
         }

@@ -23,10 +23,10 @@ namespace Deployment.DevTasks.UpdateReleaseNotes
         public UpdateReleaseNotesDevTask(uint deep)
             : this(new UpdateReleaseNotesDevTaskOptions() 
             {
-                ReleaseMngrRepositoryPath = ProjectsDataSource.GetSolution(KindOfProject.ReleaseMngrSolution).Path,
-                ArtifactsForDeployment = ProjectsDataSource.GetSolution(KindOfProject.ProjectSite).ArtifactsForDeployment.ToList(),
+                ReleaseMngrRepositoryPath = ProjectsDataSourceFactory.GetSolution(KindOfProject.ReleaseMngrSolution).Path,
+                ArtifactsForDeployment = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite).ArtifactsForDeployment.ToList(),
                 ReleaseNotesFilePath = CommonFileNamesHelper.BuildReleaseNotesPath(),
-                BaseHref = ProjectsDataSource.GetSolution(KindOfProject.CoreSolution).Href
+                BaseHref = ProjectsDataSourceFactory.GetSolution(KindOfProject.CoreSolution).Href
             }, deep)
         {
         }

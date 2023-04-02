@@ -56,7 +56,7 @@ namespace Deployment.ReleaseTasks.MakeRelease
 
             var versionBranchName = futureReleaseInfo.Version;
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
             //Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             //{
@@ -96,7 +96,7 @@ namespace Deployment.ReleaseTasks.MakeRelease
 
         private bool CheckGitHubToken()
         {
-            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
             var token = settings.GetSecret("GitHub");
 

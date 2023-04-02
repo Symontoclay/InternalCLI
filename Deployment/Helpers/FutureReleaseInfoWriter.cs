@@ -15,7 +15,7 @@ namespace Deployment.Helpers
     {
         public static void WriteSource(FutureReleaseInfoSource futureReleaseInfoSource)
         {
-            WriteSource(futureReleaseInfoSource, ProjectsDataSource.GetSolution(KindOfProject.ReleaseMngrSolution).Path);
+            WriteSource(futureReleaseInfoSource, ProjectsDataSourceFactory.GetSolution(KindOfProject.ReleaseMngrSolution).Path);
         }
 
         public static void WriteSource(FutureReleaseInfoSource futureReleaseInfoSource, string baseRepositoryPath)
@@ -27,7 +27,7 @@ namespace Deployment.Helpers
             deploymentPipeline.Add(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {
                 Message = "Set release as completed",
-                RepositoryPaths = new List<string>() { ProjectsDataSource.GetSolution(KindOfProject.ReleaseMngrSolution).Path }
+                RepositoryPaths = new List<string>() { ProjectsDataSourceFactory.GetSolution(KindOfProject.ReleaseMngrSolution).Path }
             }));
 
             deploymentPipeline.Run();

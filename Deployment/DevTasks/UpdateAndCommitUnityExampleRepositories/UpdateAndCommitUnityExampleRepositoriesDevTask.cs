@@ -31,7 +31,7 @@ namespace Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var settings = ProjectsDataSource.GetSymOntoClayProjectsSettings();
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
             var unitySolution = settings.GetSolution(KindOfProject.Unity);
 

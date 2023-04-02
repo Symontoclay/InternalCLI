@@ -46,7 +46,7 @@ namespace Deployment.DevTasks.CreateAndCommitCodeOfConducts
         {
             Exec(new CreateCodeOfConductsDevTask(NextDeep));
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedReleases();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {

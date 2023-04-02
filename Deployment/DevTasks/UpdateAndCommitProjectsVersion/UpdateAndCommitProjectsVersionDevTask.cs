@@ -28,7 +28,7 @@ namespace Deployment.DevTasks.UpdateAndCommitProjectsVersion
         {
             Exec(new UpdateProjectsVersionDevTask(NextDeep));
 
-            var targetSolutions = ProjectsDataSource.GetSolutionsWithMaintainedVersionsInCSharpProjects();
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {
