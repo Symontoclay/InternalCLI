@@ -14,7 +14,17 @@ namespace BaseDevPipeline
 
         public static ISymOntoClayProjectsSettings GetSymOntoClayProjectsSettings()
         {
-            throw new NotImplementedException();
+            switch(Mode)
+            {
+                case ProjectsDataSourceMode.Prod:
+                    {
+                        var instance = new ProjectsDataSource();
+                        return instance.GetSymOntoClayProjectsSettings();
+                    }
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(Mode), Mode, null);
+            }
         }
 
         public static ISolutionSettings GetSolution(KindOfProject kind)

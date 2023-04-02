@@ -70,7 +70,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstRemoveSingleLineCommentsDevTaskHandler();
+            //TstRemoveSingleLineCommentsDevTaskHandler();
             //TstRemoveLogCommentsFromCSFile();
             //TstExampleCache();
             //TstMd5Hash();
@@ -124,7 +124,7 @@ namespace TestSandBox
             //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
-            //TstProjectsDataSource();
+            TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
@@ -1943,9 +1943,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            _logger.Info($"ProjectsDataSourceFactory.Mode = {ProjectsDataSourceFactory.Mode}");
+
             var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
-            //_logger.Info($"settings = {settings}");
+            _logger.Info($"settings = {settings}");
 
             //var unitySolution = ProjectsDataSource.GetSolution(KindOfProject.Unity);
 
