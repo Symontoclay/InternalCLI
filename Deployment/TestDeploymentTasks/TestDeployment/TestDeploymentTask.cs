@@ -1,5 +1,7 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using BaseDevPipeline;
+using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
+using Deployment.TestDeploymentTasks.ResetTestRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,8 @@ namespace Deployment.TestDeploymentTasks.TestDeployment
         /// <inheritdoc/>
         protected override void OnRun()
         {
+            Exec(new ResetTestRepositoriesTask(NextDeep));
+
             throw new NotImplementedException();
         }
 
