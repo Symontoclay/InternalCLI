@@ -1,6 +1,7 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
+using Deployment.TestDeploymentTasks.CopyAndCommitFromProdToTestRepositories;
 using Deployment.TestDeploymentTasks.ResetTestRepositories;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,7 @@ namespace Deployment.TestDeploymentTasks.TestDeployment
         protected override void OnRun()
         {
             Exec(new ResetTestRepositoriesTask(NextDeep));
-
-            throw new NotImplementedException();
+            Exec(new CopyAndCommitFromProdToTestRepositoriesTask(NextDeep));
         }
 
         /// <inheritdoc/>
