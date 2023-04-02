@@ -10,6 +10,7 @@ namespace BaseDevPipeline.Data.Implementation
 {
     public class SolutionSettings: ISolutionSettings
     {
+        public string Name { get; set; }
         public KindOfProject Kind { get; set; }
         public string Href { get; set; }
         public string GitFileHref { get; set; }
@@ -85,6 +86,7 @@ namespace BaseDevPipeline.Data.Implementation
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
             sb.AppendLine($"{spaces}{nameof(GitFileHref)} = {GitFileHref}");

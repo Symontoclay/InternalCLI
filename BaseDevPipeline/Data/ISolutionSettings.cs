@@ -9,6 +9,7 @@ namespace BaseDevPipeline.Data
 {
     public interface ISolutionSettings : IObjectToString
     {
+        string Name { get; }
         KindOfProject Kind { get; }
         string Href { get; }
         string GitFileHref { get; }

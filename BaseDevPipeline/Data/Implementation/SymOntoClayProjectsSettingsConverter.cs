@@ -171,6 +171,7 @@ namespace BaseDevPipeline.Data.Implementation
 #endif
 
                 var item = new SolutionSettings();
+                item.Name = name;
                 item.Kind = Enum.Parse<KindOfProject>(solutionSource.Kind);
 
                 var href = string.IsNullOrEmpty(modificationSolution?.Href) ? solutionSource.Href : modificationSolution.Href;

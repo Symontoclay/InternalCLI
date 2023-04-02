@@ -27,11 +27,13 @@ namespace Deployment.TestDeploymentTasks.CopyAndCommitFromProdToTestRepositories
             var testSettings = TestProjectsDataSource.Instance.GetSymOntoClayProjectsSettings();
 
             var prodTargetSolutions = prodSettings.GetSolutionsWithMaintainedReleases();
-            //var testTargetSolutionsDict = testSettings.GetSolutionsWithMaintainedReleases().ToDictionary(p => );
+            var testTargetSolutionsDict = testSettings.GetSolutionsWithMaintainedReleases().ToDictionary(p => p.Name, p => p);
 
-            foreach()
+            foreach(var prodSolution in prodTargetSolutions)
             {
-
+#if DEBUG
+                _logger.Info($"prodSolution.Name = {prodSolution.Name}");
+#endif
             }
         }
 
