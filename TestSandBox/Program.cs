@@ -35,6 +35,7 @@ using Deployment.Tasks.ExamplesCreator;
 using Deployment.Tasks.GitTasks.Clone;
 using Deployment.Tasks.GitTasks.SetUpRepository;
 using Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution;
+using Deployment.TestDeploymentTasks.TestDeployment;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
 using NLog;
@@ -70,6 +71,7 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            TstTestDeploymentTask();
             //TstRemoveSingleLineCommentsDevTaskHandler();
             //TstRemoveLogCommentsFromCSFile();
             //TstExampleCache();
@@ -124,7 +126,7 @@ namespace TestSandBox
             //TstSiteSettings();
             //TstFutureReleaseInfo();
             //TstFutureReleaseInfoSource();
-            TstProjectsDataSource();
+            //TstProjectsDataSource();
             //TstGetEnvironmentVariables();
             //TstReleaseItemsHandler();
             //TstLessHandler();
@@ -135,6 +137,21 @@ namespace TestSandBox
             //TstSimplifyFullNameOfType();
             //TstCreateCSharpApiOptionsFile();
             //TstReadXMLDoc();
+        }
+
+        private static void TstTestDeploymentTask()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            deploymentPipeline.Add(new TestDeploymentTask());
+
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstRemoveSingleLineCommentsDevTaskHandler()
