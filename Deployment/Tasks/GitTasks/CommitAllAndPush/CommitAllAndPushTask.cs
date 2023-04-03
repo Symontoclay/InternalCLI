@@ -4,6 +4,7 @@ using Deployment.Tasks.GitTasks.Add;
 using Deployment.Tasks.GitTasks.Commit;
 using Deployment.Tasks.GitTasks.Pull;
 using Deployment.Tasks.GitTasks.Push;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,10 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
                     continue;
                 }
 
+#if DEBUG
+                //_logger.Info($"filesList = {JsonConvert.SerializeObject(filesList, Formatting.Indented)}");
+#endif
+
                 reposForCommit.Add(repositoryPath);
 
                 var untrackedFilesList = filesList.Where(p => p.Status == GitRepositoryFileStatus.Untracked);
@@ -61,6 +66,10 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
                     }, NextDeep));
                 }
             }
+
+#if DEBUG
+            //_logger.Info($"reposForCommit = {JsonConvert.SerializeObject(reposForCommit, Formatting.Indented)}");
+#endif
 
             foreach (var repositoryPath in reposForCommit)
             {

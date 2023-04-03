@@ -1,6 +1,9 @@
 ﻿using BaseDevPipeline;
+using BaseDevPipeline.Data;
 using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
+using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
+using Deployment.Tasks.GitTasks.CommitAllAndPush;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,14 +30,37 @@ namespace Deployment.TestDeploymentTasks.CopyAndCommitFromProdToTestRepositories
             var testSettings = TestProjectsDataSource.Instance.GetSymOntoClayProjectsSettings();
 
             var prodTargetSolutions = prodSettings.GetSolutionsWithMaintainedReleases();
-            var testTargetSolutionsDict = testSettings.GetSolutionsWithMaintainedReleases().ToDictionary(p => p.Name, p => p);
+            var testTargetSolutions = testSettings.GetSolutionsWithMaintainedReleases();
+            var testTargetSolutionsDict = testTargetSolutions.ToDictionary(p => p.Name, p => p);
 
             foreach(var prodSolution in prodTargetSolutions)
             {
 #if DEBUG
-                _logger.Info($"prodSolution.Name = {prodSolution.Name}");
+                //_logger.Info($"prodSolution.Name = {prodSolution.Name}");
 #endif
+
+                if(!testTargetSolutionsDict.TryGetValue(prodSolution.Name, out ISolutionSettings testSolution))
+                {
+                    throw new Exception($"Absent test repository for {prodSolution.Name}");
+                }
+
+#if DEBUG
+                //_logger.Info($"prodSolution.Path = {prodSolution.Path}");
+                //_logger.Info($"testSolution.Path = {testSolution.Path}");
+#endif
+
+                Exec(new CopySourceFilesOfVSSolutionTask(new CopySourceFilesOfVSSolutionTaskOptions()
+                {
+                    SourceDir = prodSolution.Path,
+                    DestDir = testSolution.Path,
+                }, NextDeep));
             }
+
+            Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
+            {
+                RepositoryPaths = testTargetSolutions.Select(p => p.Path).ToList(),
+                Message = "Commit uncommited changes"
+            }, NextDeep));
         }
 
         /// <inheritdoc/>

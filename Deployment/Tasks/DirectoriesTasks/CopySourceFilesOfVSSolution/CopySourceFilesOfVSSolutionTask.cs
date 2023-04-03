@@ -45,6 +45,11 @@ namespace Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject
                 return;
             }
 
+            if (dir.EndsWith(".github"))
+            {
+                return;
+            }
+
             if (dir.EndsWith(".vs"))
             {
                 return;

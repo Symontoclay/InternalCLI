@@ -27,7 +27,12 @@ namespace Deployment.TestDeploymentTasks.TestDeployment
         protected override void OnRun()
         {
             Exec(new ResetTestRepositoriesTask(NextDeep));
+
+            throw new NotImplementedException();
+
             Exec(new CopyAndCommitFromProdToTestRepositoriesTask(NextDeep));
+
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc/>

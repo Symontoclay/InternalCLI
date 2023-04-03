@@ -44,7 +44,7 @@ namespace BaseDevPipeline
             //_logger.Info($"modificationFileName = {modificationFileName}");
 #endif
 
-            _settings = GetSymOntoClayProjectsSettings(Path.Combine(Directory.GetCurrentDirectory(), "ProjectsDataSource.json"), Path.Combine(Directory.GetCurrentDirectory(), modificationFileName));
+            _settings = GetSymOntoClayProjectsSettings(GetFullFileName("ProjectsDataSource.json"), GetFullFileName(modificationFileName));
         }
 
         private ISymOntoClayProjectsSettings _settings;
@@ -56,6 +56,16 @@ namespace BaseDevPipeline
         public ISymOntoClayProjectsSettings GetSymOntoClayProjectsSettings()
         {
              return _settings;
+        }
+
+        public static string GetFullFileName(string fileName)
+        {
+            if(string.IsNullOrWhiteSpace(fileName))
+            {
+                return fileName;
+            }
+
+            return Path.Combine(Directory.GetCurrentDirectory(), fileName);
         }
 
         public static ISymOntoClayProjectsSettings GetSymOntoClayProjectsSettings(string fileName, string modificationFileName)
