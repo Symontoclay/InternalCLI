@@ -38,7 +38,7 @@ namespace BaseDevPipeline.Data.Implementation
             }
             else
             {
-                result.ArtifactsForDeployment = artifactsForDeployment.Select(p => Enum.Parse<KindOfArtifact>(p)).Distinct().ToList();
+                result.ArtifactsForDeployment = artifactsForDeployment.Select(Enum.Parse<KindOfArtifact>).Distinct().ToList();
             }
 
             result.RepositoryReadmeSource = source.RepositoryReadmeSource;
@@ -47,7 +47,7 @@ namespace BaseDevPipeline.Data.Implementation
             result.InternalCLIDist = PathsHelper.Normalize(source.InternalCLIDist);
             result.SocExePath = Path.Combine(result.InternalCLIDist, "soc.exe");
 
-            result.Copyright = source.Copyright;
+            result.Copyright = source.Copyright?.Replace("<curr_year/>", DateTime.Today.Year.ToString());
 
             var licensesDict = new Dictionary<string, LicenseSettings>();
 
