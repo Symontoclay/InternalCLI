@@ -2,6 +2,7 @@
 using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
 using Deployment.TestDeploymentTasks.CopyAndCommitFromProdToTestRepositories;
+using Deployment.TestDeploymentTasks.RemoveReleasesFromTestRepositories;
 using Deployment.TestDeploymentTasks.ResetTestRepositories;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace Deployment.TestDeploymentTasks.TestDeployment
         {
             Exec(new ResetTestRepositoriesTask(NextDeep));
 
-            throw new NotImplementedException();
+            Exec(new RemoveReleasesFromTestRepositoriesTask(NextDeep));
 
             Exec(new CopyAndCommitFromProdToTestRepositoriesTask(NextDeep));
 
