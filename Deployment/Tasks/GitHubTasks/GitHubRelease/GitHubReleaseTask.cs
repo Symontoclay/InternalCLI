@@ -74,8 +74,6 @@ namespace Deployment.Tasks.GitHubTasks.GitHubRelease
 
             var resultTask = client.Repository.Release.Create(_options.RepositoryOwner, _options.RepositoryName, newRelease);
 
-            resultTask.Wait();
-
             var result = resultTask.Result;
 
             var releaseTask = client.Repository.Release.Get(_options.RepositoryOwner, _options.RepositoryName, result.Id);

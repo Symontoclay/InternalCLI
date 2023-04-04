@@ -1,5 +1,7 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using BaseDevPipeline;
+using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
+using Octokit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +25,56 @@ namespace Deployment.TestDeploymentTasks.RemoveReleasesFromTestRepositories
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            throw new NotImplementedException();
+            var testSettings = TestProjectsDataSource.Instance.GetSymOntoClayProjectsSettings();
+            var testTargetSolutions = testSettings.GetSolutionsWithMaintainedReleases();
+
+            var client = new GitHubClient(new ProductHeaderValue("SymOntoClay-InternalCLI"));
+
+            var token = testSettings.GetSecret("GitHub");
+
+            var tokenAuth = new Credentials(token.Value);
+            client.Credentials = tokenAuth;
+
+#if DEBUG
+            //_logger.Info($"testTargetSolutions.Count = {testTargetSolutions.Count}");
+#endif
+
+            foreach (var testTargetSolution in testTargetSolutions)
+            {
+#if DEBUG
+                //_logger.Info($"testTargetSolution.OwnerName = {testTargetSolution.OwnerName}");
+                //_logger.Info($"testTargetSolution.RepositoryName = {testTargetSolution.RepositoryName}");
+#endif
+
+                var releasesListTask = client.Repository.Release.GetAll(testTargetSolution.OwnerName, testTargetSolution.RepositoryName);
+
+                var releasesList = releasesListTask.Result;
+
+#if DEBUG
+                //_logger.Info($"releasesList.Count = {releasesList.Count}");
+#endif
+
+//                foreach (var release in releasesList)
+//                {
+//#if DEBUG
+//                    _logger.Info($"release.Id = {release.Id}");
+//                    _logger.Info($"release.Name = {release.Name}");
+//                    _logger.Info($"release.TagName = {release.TagName}");
+//#endif
+//                }
+
+                var releasesIdList = releasesList.Select(p => p.Id).ToList();
+
+                foreach(var releaseId in releasesIdList)
+                {
+#if DEBUG
+                    //_logger.Info($"releaseId = {releaseId}");
+#endif
+
+                    var task = client.Repository.Release.Delete(testTargetSolution.OwnerName, testTargetSolution.RepositoryName, releaseId);
+                    task.Wait();
+                }
+            }
         }
 
         /// <inheritdoc/>
