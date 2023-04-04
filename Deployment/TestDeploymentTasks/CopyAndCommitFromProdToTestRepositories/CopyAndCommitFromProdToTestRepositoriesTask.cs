@@ -24,13 +24,14 @@ namespace Deployment.TestDeploymentTasks.CopyAndCommitFromProdToTestRepositories
         {
         }
 
+        /// <inheritdoc/>
         protected override void OnRun()
         {
             var prodSettings = ProjectsDataSource.Instance.GetSymOntoClayProjectsSettings();
             var testSettings = TestProjectsDataSource.Instance.GetSymOntoClayProjectsSettings();
 
-            var prodTargetSolutions = prodSettings.GetSolutionsWithMaintainedReleases();
-            var testTargetSolutions = testSettings.GetSolutionsWithMaintainedReleases();
+            var prodTargetSolutions = prodSettings.Solutions;//.GetSolutionsWithMaintainedReleases();
+            var testTargetSolutions = testSettings.Solutions;//.GetSolutionsWithMaintainedReleases();
             var testTargetSolutionsDict = testTargetSolutions.ToDictionary(p => p.Name, p => p);
 
             foreach(var prodSolution in prodTargetSolutions)
