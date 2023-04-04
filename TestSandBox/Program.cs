@@ -36,6 +36,7 @@ using Deployment.Tasks.GitTasks.Clone;
 using Deployment.Tasks.GitTasks.SetUpRepository;
 using Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution;
 using Deployment.TestDeploymentTasks.CopyAndCommitFromProdToTestRepositories;
+using Deployment.TestDeploymentTasks.CreateAndPushVersionBranchInTestRepositories;
 using Deployment.TestDeploymentTasks.RemoveReleasesFromTestRepositories;
 using Deployment.TestDeploymentTasks.ResetTestRepositories;
 using Deployment.TestDeploymentTasks.TestDeployment;
@@ -148,10 +149,11 @@ namespace TestSandBox
 
             var deploymentPipeline = new DeploymentPipeline();
 
-            //deploymentPipeline.Add(new TestDeploymentTask());
+            deploymentPipeline.Add(new TestDeploymentTask());
             //deploymentPipeline.Add(new ResetTestRepositoriesTask());
             //deploymentPipeline.Add(new CopyAndCommitFromProdToTestRepositoriesTask());
-            deploymentPipeline.Add(new RemoveReleasesFromTestRepositoriesTask());
+            //deploymentPipeline.Add(new RemoveReleasesFromTestRepositoriesTask());
+            //deploymentPipeline.Add(new CreateAndPushVersionBranchInTestRepositoriesTask());
 
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");
 

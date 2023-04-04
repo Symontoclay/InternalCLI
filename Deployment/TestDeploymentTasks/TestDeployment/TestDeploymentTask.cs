@@ -2,6 +2,7 @@
 using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
 using Deployment.TestDeploymentTasks.CopyAndCommitFromProdToTestRepositories;
+using Deployment.TestDeploymentTasks.CreateAndPushVersionBranchInTestRepositories;
 using Deployment.TestDeploymentTasks.RemoveReleasesFromTestRepositories;
 using Deployment.TestDeploymentTasks.ResetTestRepositories;
 using System;
@@ -33,7 +34,7 @@ namespace Deployment.TestDeploymentTasks.TestDeployment
 
             Exec(new CopyAndCommitFromProdToTestRepositoriesTask(NextDeep));
 
-            throw new NotImplementedException();
+            Exec(new CreateAndPushVersionBranchInTestRepositoriesTask(NextDeep));
         }
 
         /// <inheritdoc/>
