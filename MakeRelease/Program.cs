@@ -1,6 +1,7 @@
 ﻿using BaseDevPipeline;
 using Deployment.Helpers;
 using Deployment.ReleaseTasks.MakeRelease;
+using Deployment.TestDeploymentTasks.TestDeployment;
 using Newtonsoft.Json;
 using NLog;
 using System;
@@ -17,40 +18,55 @@ namespace MakeRelease
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-#if DEBUG
-            _logger.Info($"args = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
-            ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
-#endif
-
             var runMode = GetParseRunModeFromArgs(args);
 
-#if DEBUG
-            _logger.Info($"runMode = {JsonConvert.SerializeObject(runMode, Formatting.Indented)}");
-#endif
-
             var version = FutureReleaseInfoReader.GetFutureVersion();
-
-#if DEBUG
-            _logger.Info($"version = {JsonConvert.SerializeObject(version, Formatting.Indented)}");
-#endif
 
             switch(runMode)
             {
                 case RunMode.TestFirstProdNext:
                     {
-                        throw new NotImplementedException();
+                        Console.WriteLine($"This app will release future version {version}.");
+                        Console.WriteLine("First this deployment of the release will be tested on test repositories.");
+                        Console.WriteLine("Next the release will be deployed into PROD.");
+
+                        if(!StartReleaseQuestion())
+                        {
+                            return;
+                        }
+
+                        MakeReleaseOnTest();
+
+                        Console.WriteLine($"Version {version} has been successfully released into test repositories.");
+                        Console.WriteLine("Release into prod repositories has been started.");
+
+                        MakeReleaseOnProd();
                     }
                     break;
 
                 case RunMode.Test:
                     {
-                        throw new NotImplementedException();
+                        Console.WriteLine($"This app will release future version {version} on test repositories.");
+
+                        if (!StartReleaseQuestion())
+                        {
+                            return;
+                        }
+
+                        MakeReleaseOnTest();
                     }
                     break;
 
                 case RunMode.Prod:
                     {
-                        throw new NotImplementedException();
+                        Console.WriteLine($"This app will release future version {version} directly into PROD. Are you sure?");
+
+                        if (!StartReleaseQuestion())
+                        {
+                            return;
+                        }
+
+                        MakeReleaseOnProd();
                     }
                     break;
 
@@ -58,23 +74,61 @@ namespace MakeRelease
                     throw new ArgumentOutOfRangeException(nameof(runMode), runMode, null);
             }
 
-            Console.WriteLine($"This app will release future version {version}. Are you sure?");
+            //Console.WriteLine($"This app will release future version {version}. Are you sure?");
+            //Console.WriteLine("Press 'y' or 'Y' for release or other else key for cancel release.");
+            //Console.WriteLine("After your choise press enter.");
+
+            //var key = Console.ReadLine();
+
+            //if(key != "y" && key != "Y")
+            //{
+            //    Console.WriteLine("Release has been cancelled.");
+
+            //    return;
+            //}
+
+            //Console.WriteLine("Release has been started.");
+
+            //var task = new MakeReleaseReleaseTask();
+            //task.Run();
+        }
+
+        private static void MakeReleaseOnTest()
+        {
+            var prepareTask = new TestDeploymentTask();
+            prepareTask.Run();
+
+            ProjectsDataSourceFactory.Mode = ProjectsDataSourceMode.Test;
+
+            var task = new MakeReleaseReleaseTask();
+            task.Run();
+        }
+
+        private static void MakeReleaseOnProd()
+        {
+            ProjectsDataSourceFactory.Mode = ProjectsDataSourceMode.Prod;
+
+            var task = new MakeReleaseReleaseTask();
+            task.Run();
+        }
+
+        private static bool StartReleaseQuestion()
+        {
             Console.WriteLine("Press 'y' or 'Y' for release or other else key for cancel release.");
             Console.WriteLine("After your choise press enter.");
 
             var key = Console.ReadLine();
 
-            if(key != "y" && key != "Y")
+            if (key != "y" && key != "Y")
             {
                 Console.WriteLine("Release has been cancelled.");
 
-                return;
+                return false;
             }
 
             Console.WriteLine("Release has been started.");
 
-            //var task = new MakeReleaseReleaseTask();
-            //task.Run();
+            return true;
         }
 
         private enum RunMode
@@ -91,6 +145,21 @@ namespace MakeRelease
             if(!args.Any())
             {
                 return DEFAULT_RUN_MODE;
+            }
+
+            if(args.Contains("test") && args.Contains("prod"))
+            {
+                throw new Exception("Option 'test' can not be used with option 'prod'.");
+            }
+
+            if(args.Any(p => p == "test"))
+            {
+                return RunMode.Test;
+            }
+
+            if(args.Any(p => p == "prod"))
+            {
+                return RunMode.Prod;
             }
 
             throw new NotImplementedException();
