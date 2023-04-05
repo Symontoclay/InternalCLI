@@ -14,6 +14,11 @@ namespace Deployment.Helpers
 {
     public static class FutureReleaseInfoReader
     {
+        public static string GetFutureVersion()
+        {
+            return Read().Version;
+        }
+
         public static FutureReleaseInfo Read()
         {
             return Read(ProjectsDataSourceFactory.GetSolution(KindOfProject.ReleaseMngrSolution).Path);

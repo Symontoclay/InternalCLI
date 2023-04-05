@@ -1,11 +1,15 @@
 {
   "profiles": {
-    "WSL": {
-      "commandName": "WSL2",
-      "distributionName": ""
-    },
     "MakeRelease": {
       "commandName": "Project"
+    },
+    "Test": {
+      "commandName": "Project",
+      "commandLineArgs": "test"
+    },
+    "Prod": {
+      "commandName": "Project",
+      "commandLineArgs": "prod"
     }
   }
 }
