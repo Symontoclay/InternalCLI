@@ -1,7 +1,7 @@
 ﻿using BaseDevPipeline;
 using Deployment.Helpers;
 using Deployment.ReleaseTasks.MakeRelease;
-using Deployment.TestDeploymentTasks.TestDeployment;
+using Deployment.TestDeploymentTasks.PrepareTestDeployment;
 using Newtonsoft.Json;
 using NLog;
 using System;
@@ -95,7 +95,7 @@ namespace MakeRelease
 
         private static void MakeReleaseOnTest()
         {
-            var prepareTask = new TestDeploymentTask();
+            var prepareTask = new PrepareTestDeploymentTask();
             prepareTask.Run();
 
             ProjectsDataSourceFactory.Mode = ProjectsDataSourceMode.Test;

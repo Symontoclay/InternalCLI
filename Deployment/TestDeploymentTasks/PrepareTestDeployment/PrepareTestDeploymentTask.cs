@@ -11,16 +11,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deployment.TestDeploymentTasks.TestDeployment
+namespace Deployment.TestDeploymentTasks.PrepareTestDeployment
 {
-    public class TestDeploymentTask : BaseDeploymentTask
+    public class PrepareTestDeploymentTask : BaseDeploymentTask
     {
-        public TestDeploymentTask()
+        public PrepareTestDeploymentTask()
             : this(0u)
         {
         }
 
-        public TestDeploymentTask(uint deep)
+        public PrepareTestDeploymentTask(uint deep)
             : base(null, deep)
         {
         }

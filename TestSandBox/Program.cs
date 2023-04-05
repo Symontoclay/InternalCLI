@@ -39,7 +39,7 @@ using Deployment.TestDeploymentTasks.CopyAndCommitFromProdToTestRepositories;
 using Deployment.TestDeploymentTasks.CreateAndPushVersionBranchInTestRepositories;
 using Deployment.TestDeploymentTasks.RemoveReleasesFromTestRepositories;
 using Deployment.TestDeploymentTasks.ResetTestRepositories;
-using Deployment.TestDeploymentTasks.TestDeployment;
+using Deployment.TestDeploymentTasks.PrepareTestDeployment;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
 using NLog;
@@ -149,7 +149,7 @@ namespace TestSandBox
 
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new TestDeploymentTask());
+            deploymentPipeline.Add(new PrepareTestDeploymentTask());
             //deploymentPipeline.Add(new ResetTestRepositoriesTask());
             //deploymentPipeline.Add(new CopyAndCommitFromProdToTestRepositoriesTask());
             //deploymentPipeline.Add(new RemoveReleasesFromTestRepositoriesTask());
