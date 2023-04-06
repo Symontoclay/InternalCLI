@@ -95,6 +95,8 @@ namespace MakeRelease
 
         private static void MakeReleaseOnTest()
         {
+            _logger.Info("Begin release into test repositories.");
+
             var prepareTask = new PrepareTestDeploymentTask();
             prepareTask.Run();
 
@@ -102,14 +104,20 @@ namespace MakeRelease
 
             var task = new MakeReleaseReleaseTask();
             task.Run();
+
+            _logger.Info("Finish release into test repositories.");
         }
 
         private static void MakeReleaseOnProd()
         {
+            _logger.Info("Begin release into PROD repositories.");
+
             ProjectsDataSourceFactory.Mode = ProjectsDataSourceMode.Prod;
 
             var task = new MakeReleaseReleaseTask();
             task.Run();
+
+            _logger.Info("Finish release into PROD repositories.");
         }
 
         private static bool StartReleaseQuestion()

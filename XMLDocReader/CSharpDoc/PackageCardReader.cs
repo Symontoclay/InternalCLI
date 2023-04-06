@@ -31,7 +31,7 @@ namespace XMLDocReader.CSharpDoc
         {
             var packageCard = new PackageCard();
 
-            var targetAssembly = Assembly.LoadFrom(settings.AssemblyFileName);
+            var targetAssembly = GetAssembly(settings.AssemblyFileName);
             packageCard.AssemblyName = targetAssembly.GetName().Name;
 
             var typesDict = new Dictionary<string, Type>();
@@ -221,6 +221,21 @@ namespace XMLDocReader.CSharpDoc
             packageCard.XMLCardsWithoutTypeList = cardsOfMembersList.Where(p => !p.IsBuiltTypeOrMemberCard).ToList();
 
             return packageCard;
+        }
+
+        private static Dictionary<string, Assembly> _assemblyCache = new Dictionary<string, Assembly>();
+
+        private static Assembly GetAssembly(string assemblyFile)
+        {
+            if(_assemblyCache.ContainsKey(assemblyFile))
+            {
+                return _assemblyCache[assemblyFile];
+            }
+
+            var assembly = Assembly.LoadFrom(assemblyFile);
+            _assemblyCache[assemblyFile] = assembly;
+
+            return assembly;
         }
 
         private static void FillUpNamespacesList(int n, PackageCard packageCard, List<NamespaceCard> namespacesList, Dictionary<string, NamespaceCard> namespacesDict, Dictionary<string, ClassCard> classesDict, Dictionary<string, ClassCard> interfacesDict, List<string> fullNamesList)
