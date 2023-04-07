@@ -16,7 +16,7 @@ namespace BaseDevPipeline.Data.Implementation
     public static class SymOntoClayProjectsSettingsConverter
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static ISymOntoClayProjectsSettings Convert(SymOntoClaySettingsSource source, SymOntoClaySettingsSource modificationSource)
@@ -295,9 +295,18 @@ namespace BaseDevPipeline.Data.Implementation
                     return string.Empty;
                 }
 
+#if DEBUG
+                _logger.Info($"sourceSlnPath = {sourceSlnPath}");
+                _logger.Info($"path = {path}");
+#endif
+
                 var slnFiles = Directory.GetFiles(path, "*.sln").Select(p => PathsHelper.Normalize(p));
 
-                if(!slnFiles.Any())
+#if DEBUG
+                _logger.Info($"slnFiles = {JsonConvert.SerializeObject(slnFiles, Formatting.Indented)}");
+#endif
+
+                if (!slnFiles.Any())
                 {
                     return string.Empty;
                 }
@@ -305,6 +314,11 @@ namespace BaseDevPipeline.Data.Implementation
                 if(slnFiles.Count() == 1)
                 {
                     return slnFiles.Single();
+                }
+
+                if(slnFiles.Count() == 2)
+                {
+                    return slnFiles.Last();
                 }
 
                 throw new NotImplementedException();
