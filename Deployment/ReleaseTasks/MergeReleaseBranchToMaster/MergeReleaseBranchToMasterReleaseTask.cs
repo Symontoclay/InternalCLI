@@ -167,19 +167,19 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                     IsOrigin = false
                 }, NextDeep));
 
-                Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
-                {
-                    RepositoryPath = repository.RepositoryPath,
-                    BranchName = versionBranchName,
-                    IsOrigin = false
-                }, NextDeep));
+                //Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
+                //{
+                //    RepositoryPath = repository.RepositoryPath,
+                //    BranchName = versionBranchName,
+                //    IsOrigin = false
+                //}, NextDeep));
 
-                Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
-                {
-                    RepositoryPath = repository.RepositoryPath,
-                    BranchName = versionBranchName,
-                    IsOrigin = true
-                }, NextDeep));
+                //Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
+                //{
+                //    RepositoryPath = repository.RepositoryPath,
+                //    BranchName = versionBranchName,
+                //    IsOrigin = true
+                //}, NextDeep));
             }
         }
 

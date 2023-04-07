@@ -2,6 +2,7 @@
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -227,13 +228,24 @@ namespace XMLDocReader.CSharpDoc
 
         private static Assembly GetAssembly(string assemblyFile)
         {
-            if(_assemblyCache.ContainsKey(assemblyFile))
+#if DEBUG
+            _logger.Info($"assemblyFile = {assemblyFile}");
+            _logger.Info($"_assemblyCache.Keys = {JsonConvert.SerializeObject(_assemblyCache.Keys.ToList(), Formatting.Indented)}");
+#endif
+
+            var name = new FileInfo(assemblyFile).Name;
+
+#if DEBUG
+            _logger.Info($"name = {name}");
+#endif
+
+            if (_assemblyCache.ContainsKey(name))
             {
-                return _assemblyCache[assemblyFile];
+                return _assemblyCache[name];
             }
 
             var assembly = Assembly.LoadFrom(assemblyFile);
-            _assemblyCache[assemblyFile] = assembly;
+            _assemblyCache[name] = assembly;
 
             return assembly;
         }

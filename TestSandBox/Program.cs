@@ -64,6 +64,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using TestSandBox.XMLDoc;
 using XMLDocReader.CSharpDoc;
+using System.Reflection.Metadata;
 
 namespace TestSandBox
 {
@@ -75,72 +76,105 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstTestDeploymentTask();
-            //TstRemoveSingleLineCommentsDevTaskHandler();
-            //TstRemoveLogCommentsFromCSFile();
-            //TstExampleCache();
-            //TstMd5Hash();
-            //TstCreateExtendedDocFileDevTask();
-            //TstBson();
-            //TstBuildExamplesDevTask();
-            //TstCoreToInternalCLIDistDevTask();
-            //TstPrepareLicenses();
-            //TstExternalExit();
-            //TstBuildExamplesTask();
-            //TstBuildExamples();
-            //TstSetUpRepositoryTask();
-            //TstIniFile();
-            //TstPrepareUnityCSProjAndSolutionTask();
-            //TstExecuteMethod();
-            //TstUpdateAndCommitUnityExampleRepositoriesDevTask();
-            //TstCloneRepository();
-            //TstUpdateUnityExampleRepository();
-            //TstCopyAndBuild();
-            //TstCopyAndTest();
-            //TstBuildContributingTask();
-            //TstBuildLicense();
-            //TstUnityExampleSolutions();
-            //TstBuildChangeLog();
-            //TstEnumerateAssetsFiles();
-            //TstCopyProjectSource();
-            //TstSetXmlDocFileNameToCsProj();
-            //TstRemoveDir();
-            //TstRemoveDir();
-            //TstFinishRelease0_3_6_p();
-            //TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
-            //TstFinishRelease0_3_2();
-            //TstRestoreSlnInUnityProject();
-            //TstTesting();
-            //TstCreateReadme();//<==
-            //TstInitCreateReadme();
-            //TstCreateMyUnityPackageManifest();
-            //TstChangeVersionInUnityPackageManifestModel();
-            //TstUnityPackageManifestModel();
-            //TstGetCurrrentBranch();
-            //TstDeployedItemsFactory();
-            //TstAddReleaseNote();
-            //TstReadAndReSaveReleaseNotes();
-            //TstOctokit();
-            //TstSecrets();
-            //TstGitHubAPICreateRelease();
-            //TstGitHubAPIGet();
-            //TstTempDirectory();
-            //TstCoreToAssetTask();
-            //TstReadRepositoryFiles();
-            //TstSiteSettings();
-            //TstFutureReleaseInfo();
-            //TstFutureReleaseInfoSource();
-            //TstProjectsDataSource();
-            //TstGetEnvironmentVariables();
-            //TstReleaseItemsHandler();
-            //TstLessHandler();
-            //TstRoadMap();
-            //TstReleaseTaskHandler();//<==
-            //TstGitTasksHandler();
-            //TstDeploymentTaskBasedBuildHandler();
-            //TstSimplifyFullNameOfType();
-            //TstCreateCSharpApiOptionsFile();
-            //TstReadXMLDoc();
+            try
+            {
+                TstGetAssembly();
+                //TstTestDeploymentTask();
+                //TstRemoveSingleLineCommentsDevTaskHandler();
+                //TstRemoveLogCommentsFromCSFile();
+                //TstExampleCache();
+                //TstMd5Hash();
+                //TstCreateExtendedDocFileDevTask();
+                //TstBson();
+                //TstBuildExamplesDevTask();
+                //TstCoreToInternalCLIDistDevTask();
+                //TstPrepareLicenses();
+                //TstExternalExit();
+                //TstBuildExamplesTask();
+                //TstBuildExamples();
+                //TstSetUpRepositoryTask();
+                //TstIniFile();
+                //TstPrepareUnityCSProjAndSolutionTask();
+                //TstExecuteMethod();
+                //TstUpdateAndCommitUnityExampleRepositoriesDevTask();
+                //TstCloneRepository();
+                //TstUpdateUnityExampleRepository();
+                //TstCopyAndBuild();
+                //TstCopyAndTest();
+                //TstBuildContributingTask();
+                //TstBuildLicense();
+                //TstUnityExampleSolutions();
+                //TstBuildChangeLog();
+                //TstEnumerateAssetsFiles();
+                //TstCopyProjectSource();
+                //TstSetXmlDocFileNameToCsProj();
+                //TstRemoveDir();
+                //TstRemoveDir();
+                //TstFinishRelease0_3_6_p();
+                //TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
+                //TstFinishRelease0_3_2();
+                //TstRestoreSlnInUnityProject();
+                //TstTesting();
+                //TstCreateReadme();//<==
+                //TstInitCreateReadme();
+                //TstCreateMyUnityPackageManifest();
+                //TstChangeVersionInUnityPackageManifestModel();
+                //TstUnityPackageManifestModel();
+                //TstGetCurrrentBranch();
+                //TstDeployedItemsFactory();
+                //TstAddReleaseNote();
+                //TstReadAndReSaveReleaseNotes();
+                //TstOctokit();
+                //TstSecrets();
+                //TstGitHubAPICreateRelease();
+                //TstGitHubAPIGet();
+                //TstTempDirectory();
+                //TstCoreToAssetTask();
+                //TstReadRepositoryFiles();
+                //TstSiteSettings();
+                //TstFutureReleaseInfo();
+                //TstFutureReleaseInfoSource();
+                //TstProjectsDataSource();
+                //TstGetEnvironmentVariables();
+                //TstReleaseItemsHandler();
+                //TstLessHandler();
+                //TstRoadMap();
+                //TstReleaseTaskHandler();//<==
+                //TstGitTasksHandler();
+                //TstDeploymentTaskBasedBuildHandler();
+                //TstSimplifyFullNameOfType();
+                //TstCreateCSharpApiOptionsFile();
+                //TstReadXMLDoc();
+            }
+            catch (Exception e)
+            {
+                _logger.Info(e);
+            }
+        }
+
+        private static void TstGetAssembly()
+        {
+            _logger.Info("Begin");
+
+            var path = EVPath.Normalize(@"%USERPROFILE%\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\NLog.dll");
+            //var path = Path.Combine(Directory.GetCurrentDirectory(), "MailKit.dll");
+
+            _logger.Info($"path = {path}");
+
+            var fileInfo = new FileInfo(path);
+            _logger.Info($"fileInfo.Name = {fileInfo.Name}");
+
+            var assembly = Assembly.LoadFrom(path);
+
+            _logger.Info("NEXT");
+
+            var path_2 = EVPath.Normalize(@"%USERPROFILE%\source\repos\SymOntoClay\DictionaryGenerator\bin\Debug\net7.0\NLog.dll");
+
+            _logger.Info($"path_2 = {path_2}");
+
+            var assembly_2 = Assembly.LoadFrom(path_2);
+
+            _logger.Info("End");
         }
 
         private static void TstTestDeploymentTask()
