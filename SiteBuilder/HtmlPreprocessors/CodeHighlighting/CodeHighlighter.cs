@@ -36,9 +36,9 @@ namespace SiteBuilder.HtmlPreprocessors.CodeHighlighting
         {
             "app", "class", "world", "lib", "is", "on",  "select", "insert", "not", "set", "linvar", "for", "range", "terms", "constraints", "inheritance",
             "relation", "inh", "rel", "null", "fun", "string", "fuzzy", "number", "error", "try", "catch", "where", "else", "ensure", "action", "actions", 
-            "op", "complete", "break", "await", "wait", "alias", "repeat", "while", "continue", "return", "if", "elif", "true", "false", "var", "default", "state",
+            "op", "complete", "completed", "break", "await", "wait", "alias", "repeat", "while", "continue", "return", "if", "elif", "true", "false", "var", "default", "state",
             "enter", "leave", "states", "as", "private", "protected", "public", "down", "duration", "add", "fact", "reject", "exec", "synonym", "idle", "with",
-            "priority", "import", "ctor", "new"
+            "priority", "import", "ctor", "new", "cancel", "canceled", "weak"
         };
 
         private static List<string> _symOntoClayLargeSpaceMarksList = new List<string>()
