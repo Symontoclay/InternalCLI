@@ -189,6 +189,7 @@ namespace SiteBuilder
 
             AppendLine("</head>");
             AppendLine("<body>");
+
             AppendLine("<div class='container main-container'>");
             AppendLine("<div class='row justify-content-center'>");
             AppendLine("<div class='col col-md-10'>");
@@ -396,6 +397,8 @@ namespace SiteBuilder
 
         private void GenerateHeader()
         {
+            PrintUkrainianFlag();
+
             Append("<p>");
 
             if (!string.IsNullOrWhiteSpace(_generalSiteBuilderSettings.SiteSettings.Logo))
@@ -416,6 +419,16 @@ namespace SiteBuilder
             Append("is game AI experimental open source engine.");
             Append("</span>");
             AppendLine("</p>");
+        }
+
+        private void PrintUkrainianFlag()
+        {
+            Append("<div style='background-color: #005BBB;'>");
+            Append("&nbsp;");
+            AppendLine("</div>");
+            Append("<div style='background-color: #FFD500;'>");
+            Append("&nbsp;");
+            AppendLine("</div>");
         }
 
         private void GenerateMainMenu()
