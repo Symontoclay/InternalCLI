@@ -57,6 +57,10 @@
           "Path": "SymOntoClayPlacesHardTests"
         },
         {
+          "Kind": "IntegrationTest",
+          "Path": "SymOntoClayActionsHardTests"
+        },
+        {
           "Kind": "AdditionalApp",
           "Path": "TestSandbox"
         },
