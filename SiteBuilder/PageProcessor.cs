@@ -211,6 +211,8 @@ namespace SiteBuilder
             AppendLine("<div class='row justify-content-center'>");
             AppendLine("<div class='col col-md-10'>");
 
+            GenerateDisclaimer();
+
             if (_siteElement.AdditionalMenu == null)
             {
                 GenerateArticle();
@@ -244,6 +246,16 @@ namespace SiteBuilder
 #endif
 
             //throw new NotImplementedException();
+        }
+
+        private void GenerateDisclaimer()
+        {
+            AppendLine("<div style='background-color: #FEBE0A;'>");
+            AppendLine("<img src='icons8-warning-48.png' width='48px' height='48px' alt='Warning logo'/>");
+            AppendLine("<span><b>Disclaimer:</b>&nbsp;Please read the <a href='you-need-to-know.html'>page</a> before starting</span>");
+            AppendLine("</div>");
+
+            //<a target="_blank" href="https://icons8.com/icon/EggHJUeUuU6C/general-warning-sign">Warning</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
         }
 
         private void GenerateFooter()
