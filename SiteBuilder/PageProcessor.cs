@@ -185,7 +185,7 @@ namespace SiteBuilder
                 AppendLine("<script src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>");
             }
 
-            GenerateGoogleAnalytics();
+            //GenerateGoogleAnalytics();
 
             AppendLine("</head>");
             AppendLine("<body>");
@@ -200,7 +200,8 @@ namespace SiteBuilder
             AppendLine("<nav role='navigation'>");
             GenerateMainMenu();
             AppendLine("</nav>");
-            AppendLine("<hr style='border-bottom-color: #e2e2e2;'>");
+            GenerateMainSeparatorLine();
+            
             AppendLine("<nav class='bread-crumb-nav'>");
             GenerateBreadcrumbs();
             AppendLine("</nav>");
@@ -232,6 +233,22 @@ namespace SiteBuilder
             AppendLine("</div>");
             AppendLine("</div>");
 
+            GenerateMainSeparatorLine();
+            GenerateFooter();
+
+            AppendLine("</body>");
+            AppendLine("</html>");
+
+#if DEBUG
+            //_logger.Info($" = {}");
+#endif
+
+            //throw new NotImplementedException();
+        }
+
+        private void GenerateFooter()
+        {
+            AppendLine("</br>");
             AppendLine("<footer class='container' role='contentinfo'>");
             AppendLine("<div class='row justify-content-center'>");
             AppendLine("<div class='col col-md-10'>");
@@ -251,15 +268,11 @@ namespace SiteBuilder
             AppendLine("</div>");
             AppendLine("</div>");
             AppendLine("</footer>");
+        }
 
-            AppendLine("</body>");
-            AppendLine("</html>");
-
-#if DEBUG
-            //_logger.Info($" = {}");
-#endif
-
-            //throw new NotImplementedException();
+        private void GenerateMainSeparatorLine()
+        {
+            AppendLine("<hr style='border-bottom-color: #e2e2e2;'>");
         }
 
         private void GenerateCommonLinks()
