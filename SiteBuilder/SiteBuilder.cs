@@ -251,11 +251,9 @@ namespace SiteBuilder
             //NLog.LogManager.GetCurrentClassLogger().Info($"PredictionProcessingOfConcreteDir newPath = {newPath}");
 #endif
 
-            using (var tmpTextWriter = new StreamWriter(newPath, false, new UTF8Encoding(true)))
-            {
-                tmpTextWriter.Write(sb.ToString());
-                tmpTextWriter.Flush();
-            }
+            using var tmpTextWriter = new StreamWriter(newPath, false, new UTF8Encoding(true));
+            tmpTextWriter.Write(sb.ToString());
+            tmpTextWriter.Flush();
         }
 
         private void ProcessSiteElementsList(List<SiteElementInfo> siteElementsList)

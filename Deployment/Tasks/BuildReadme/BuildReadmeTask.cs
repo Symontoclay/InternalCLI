@@ -54,6 +54,8 @@ namespace Deployment.Tasks.BuildReadme
 
             content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
 
+            content = HrefsNormalizer.FillAppDomainNameInHrefs(content, siteSettings);
+
             File.WriteAllText(_options.TargetReadmeFileName, content);
         }
 

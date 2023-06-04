@@ -125,13 +125,11 @@ namespace SiteBuilder
         {
             mResult = new StringBuilder();
             GenerateText();
-            var content = FillAppDomainNameInHrefs(mResult.ToString());
+            var content = HrefsNormalizer.FillAppDomainNameInHrefs(mResult.ToString(), _siteElement, _generalSiteBuilderSettings);
 
-            using (var textWriter = new StreamWriter(_siteElement.TargetFullFileName, false, new UTF8Encoding(false)))
-            {
-                textWriter.Write(content);
-                textWriter.Flush();
-            }
+            using var textWriter = new StreamWriter(_siteElement.TargetFullFileName, false, new UTF8Encoding(false));
+            textWriter.Write(content);
+            textWriter.Flush();
 
 #if DEBUG
             //_logger.Info($"_siteElement.TargetFullFileName = {_siteElement.TargetFullFileName}");
@@ -250,7 +248,9 @@ namespace SiteBuilder
 
         private void GenerateDisclaimer()
         {
-            AppendLine("<div style='background-color: #FFF9F3;'>");
+            AppendLine(ShortTagsPreparation.GetDisclaimerHtml());
+
+            /*AppendLine("<div style='background-color: #FFF9F3;'>");
             AppendLine("<table>");
             AppendLine("<tbody>");
             AppendLine("<tr>");
@@ -267,7 +267,7 @@ namespace SiteBuilder
             AppendLine("</tr>");
             AppendLine("</tbody>");
             AppendLine("</table>");
-            AppendLine("</div>");
+            AppendLine("</div>");*/
 
             //<a target="_blank" href="https://icons8.com/icon/EggHJUeUuU6C/general-warning-sign">Warning</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
         }
@@ -711,99 +711,6 @@ namespace SiteBuilder
             }
 
             return sb.ToString().Trim();
-        }
-
-        private string FillAppDomainNameInHrefs(string content)
-        {
-            var doc = new HtmlDocument();
-            doc.LoadHtml(content);
-
-            FillAppDomainNameInHrefs(doc.DocumentNode);
-
-            var strWriter = new StringWriter();
-            doc.Save(strWriter);
-
-            return strWriter.ToString();
-        }
-
-        private void FillAppDomainNameInHrefs(HtmlNode rootNode)
-        {
-#if DEBUG
-            //_logger.Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
-#endif
-
-            var href = rootNode.GetAttributeValue("href", null);
-
-            if(!string.IsNullOrWhiteSpace(href))
-            {
-                if (!href.StartsWith("https://") && !href.StartsWith("http://") && !href.StartsWith("file://"))
-                {
-#if DEBUG
-                    //_logger.Info($"href = {href}");
-#endif
-
-                    if (href.StartsWith("#"))
-                    {
-                        href = $"{_siteElement.Href}{href}";
-                    }
-                    else
-                    {
-                        if (href.StartsWith("/"))
-                        {
-                            href = $"{_generalSiteBuilderSettings.SiteHref}{href}";
-                        }
-                        else
-                        {
-                            href = $"{_generalSiteBuilderSettings.SiteHref}/{href}";
-                        }
-                    }
-
-#if DEBUG
-                    //_logger.Info($"href (after) = {href}");
-#endif
-
-                    rootNode.SetAttributeValue("href", href);
-                }
-            }
-
-            var src = rootNode.GetAttributeValue("src", null);
-
-            if (!string.IsNullOrWhiteSpace(src))
-            {
-                if(!src.StartsWith("https://") && !src.StartsWith("http://") && !src.StartsWith("file://"))
-                {
-#if DEBUG
-                    //_logger.Info($"src = {src}");
-#endif
-
-                    if (src.StartsWith("#"))
-                    {
-                        src = $"{_siteElement.Href}{src}";
-                    }
-                    else
-                    {
-                        if (src.StartsWith("/"))
-                        {
-                            src = $"{_generalSiteBuilderSettings.SiteHref}{src}";
-                        }
-                        else
-                        {
-                            src = $"{_generalSiteBuilderSettings.SiteHref}/{src}";
-                        }
-                    }
-
-#if DEBUG
-                    //_logger.Info($"src (after) = {src}");
-#endif
-
-                    rootNode.SetAttributeValue("src", src);
-                }
-            }
-
-            foreach(var child in rootNode.ChildNodes.ToList())
-            {
-                FillAppDomainNameInHrefs(child);
-            }
         }
     }
 }

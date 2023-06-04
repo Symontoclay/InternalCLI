@@ -175,6 +175,18 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 return;
             }
 
+            if(rootNode.Name == "disclaimer")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                newNode.InnerHtml = GetDisclaimerHtml();
+
+                return;
+            }
+
             if (rootNode.Name == "dsl_preview_content")
             {
                 var newNode = doc.CreateElement("div");
@@ -799,6 +811,32 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             {
                 DiscoverGistNodes(node, result);
             }
+        }
+
+        public static string GetDisclaimerHtml()
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("<div style='background-color: #FFF9F3;'>");
+            sb.AppendLine("<table>");
+            sb.AppendLine("<tbody>");
+            sb.AppendLine("<tr>");
+            sb.AppendLine("<td style='background-color: #FEBE0A;'>");
+            sb.AppendLine("&nbsp;");
+            sb.AppendLine("</td>");
+            sb.AppendLine("<td>");
+            sb.AppendLine("<img src='icons8-warning-48.png' width='48px' height='48px' alt='Warning logo'/>");
+            sb.AppendLine("</td>");
+            sb.AppendLine("<td>");
+            sb.AppendLine("<b>Purely experimental and very unstable project developed by only one person</b></br>");
+            sb.AppendLine("Please read the <a href='you-need-to-know.html'>page</a> before starting");
+            sb.AppendLine("</td>");
+            sb.AppendLine("</tr>");
+            sb.AppendLine("</tbody>");
+            sb.AppendLine("</table>");
+            sb.AppendLine("</div>");
+
+            return sb.ToString();
         }
     }
 }

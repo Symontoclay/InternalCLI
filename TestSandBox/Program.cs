@@ -78,7 +78,7 @@ namespace TestSandBox
 
             try
             {
-                TstGetAssembly();
+                //TstGetAssembly();
                 //TstTestDeploymentTask();
                 //TstRemoveSingleLineCommentsDevTaskHandler();
                 //TstRemoveLogCommentsFromCSFile();
@@ -115,7 +115,7 @@ namespace TestSandBox
                 //TstFinishRelease0_3_2();
                 //TstRestoreSlnInUnityProject();
                 //TstTesting();
-                //TstCreateReadme();//<==
+                TstCreateReadme();//<==
                 //TstInitCreateReadme();
                 //TstCreateMyUnityPackageManifest();
                 //TstChangeVersionInUnityPackageManifestModel();
@@ -1344,7 +1344,7 @@ namespace TestSandBox
 
             var sourceReadmePath = Path.Combine(targetSolution.Path, "README.md");
 
-            //_logger.Info($"sourceReadmePath = {sourceReadmePath}");
+            _logger.Info($"sourceReadmePath = {sourceReadmePath}");
 
             var deploymentPipeline = new DeploymentPipeline();
 
