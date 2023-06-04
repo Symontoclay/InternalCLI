@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace SiteBuilder.SiteData
@@ -18,6 +19,7 @@ namespace SiteBuilder.SiteData
         public bool EnableMathML { get; set; }
         public bool UseMarkdown { get; set; }
         public bool IsReady { get; set; }
+        public bool? ShowDisclaimer { get; set; }
         public MicroDataInfo Microdata { get; set; }
 
         /// <inheritdoc/>
@@ -47,6 +49,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(EnableMathML)} = {EnableMathML}");
             sb.AppendLine($"{spaces}{nameof(UseMarkdown)} = {UseMarkdown}");
             sb.AppendLine($"{spaces}{nameof(IsReady)} = {IsReady}");
+            sb.AppendLine($"{spaces}{nameof(ShowDisclaimer)} = {ShowDisclaimer}");
 
             sb.PrintObjProp(n, nameof(Microdata), Microdata);
 

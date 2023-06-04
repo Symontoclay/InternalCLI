@@ -248,26 +248,10 @@ namespace SiteBuilder
 
         private void GenerateDisclaimer()
         {
-            AppendLine(ShortTagsPreparation.GetDisclaimerHtml());
-
-            /*AppendLine("<div style='background-color: #FFF9F3;'>");
-            AppendLine("<table>");
-            AppendLine("<tbody>");
-            AppendLine("<tr>");
-            AppendLine("<td style='background-color: #FEBE0A;'>");
-            AppendLine("&nbsp;");
-            AppendLine("</td>");
-            AppendLine("<td>");
-            AppendLine("<img src='icons8-warning-48.png' width='48px' height='48px' alt='Warning logo'/>");
-            AppendLine("</td>");
-            AppendLine("<td>");
-            AppendLine("<b>Purely experimental and very unstable project developed by only one person</b></br>");
-            AppendLine("Please read the <a href='you-need-to-know.html'>page</a> before starting");
-            AppendLine("</td>");
-            AppendLine("</tr>");
-            AppendLine("</tbody>");
-            AppendLine("</table>");
-            AppendLine("</div>");*/
+            if (_siteElement.SitePageInfo.ShowDisclaimer ?? true)
+            {
+                AppendLine(ShortTagsPreparation.GetDisclaimerHtml());
+            }            
 
             //<a target="_blank" href="https://icons8.com/icon/EggHJUeUuU6C/general-warning-sign">Warning</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
         }
