@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using NLog;
 using SiteBuilder.SiteData;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,10 @@ namespace SiteBuilder
 {
     public static class HrefsNormalizer
     {
+#if DEBUG
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
+
         public static string FillAppDomainNameInHrefs(string content, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             return FillAppDomainNameInHrefs(content, null, generalSiteBuilderSettings);

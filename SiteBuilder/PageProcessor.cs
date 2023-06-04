@@ -23,7 +23,7 @@ namespace SiteBuilder
     public class PageProcessor
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static readonly List<string> _commonCssLinksList = new List<string>();
