@@ -163,6 +163,18 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 return;
             }
 
+            if (rootNode.Name == "project_reason_content")
+            {
+                var newNode = doc.CreateElement("div");
+                var parentNode = rootNode.ParentNode;
+
+                parentNode.ReplaceChild(newNode, rootNode);
+
+                newNode.InnerHtml = "<include path='CommonFragments/project_reason_content.thtml'/>";
+
+                return;
+            }
+
             if (rootNode.Name == "aim_content")
             {
                 var newNode = doc.CreateElement("div");
