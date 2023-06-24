@@ -424,7 +424,7 @@ namespace SiteBuilder
 
         private void GenerateHeader()
         {
-            PrintUkrainianFlag();
+            //PrintUkrainianFlag();
 
             Append("<p>");
 

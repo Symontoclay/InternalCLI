@@ -1,6 +1,4 @@
-﻿Glory to Ukraine!
-
-MIT License
+﻿MIT License
 
 Copyright (c) 2020 - <curr_year/> Sergiy Tolkachov
 
