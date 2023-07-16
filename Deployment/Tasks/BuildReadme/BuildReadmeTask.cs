@@ -53,19 +53,19 @@ namespace Deployment.Tasks.BuildReadme
             var content = File.ReadAllText(_options.CommonReadmeFileName);
 
 #if DEBUG
-            _logger.Info($"content (1) = {content}");
+            //_logger.Info($"content (1) = {content}");
 #endif
 
             content = GeneralReadmeContentPreprocessor.Run(content, _options.CommonBadgesFileName, _options.RepositorySpecificBadgesFileName, _options.RepositorySpecificReadmeFileName);
 
 #if DEBUG
-            _logger.Info($"content (2) = {content}");
+            //_logger.Info($"content (2) = {content}");
 #endif
 
             content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
 
 #if DEBUG
-            _logger.Info($"content (3) = {content}");
+            //_logger.Info($"content (3) = {content}");
 #endif
 
             content = HrefsNormalizer.FillAppDomainNameInHrefs(content, siteSettings);
@@ -74,7 +74,7 @@ namespace Deployment.Tasks.BuildReadme
             content = converter.Convert(content);
 
 #if DEBUG
-            _logger.Info($"content (4) = {content}");
+            //_logger.Info($"content (4) = {content}");
 #endif
 
             File.WriteAllText(_options.TargetReadmeFileName, content);
