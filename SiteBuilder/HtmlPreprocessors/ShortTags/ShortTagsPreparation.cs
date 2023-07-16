@@ -194,7 +194,14 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
                 parentNode.ReplaceChild(newNode, rootNode);
 
-                newNode.InnerHtml = GetDisclaimerHtml();
+                if(markdownStrategy == MarkdownStrategy.GenerateMarkdown)
+                {
+                    newNode.InnerHtml = GetDisclaimerMd();
+                }
+                else
+                {
+                    newNode.InnerHtml = GetDisclaimerHtml();
+                }                
 
                 return;
             }
@@ -823,6 +830,11 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             {
                 DiscoverGistNodes(node, result);
             }
+        }
+
+        private static string GetDisclaimerMd()
+        {
+            return $"> :warning: **Purely experimental and very unstable project developed by only one person.** Please read the [page](https://symontoclay.github.io/you-need-to-know.html) before starting";
         }
 
         public static string GetDisclaimerHtml()
