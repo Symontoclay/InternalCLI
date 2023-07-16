@@ -129,7 +129,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if(rootNode.Name == "license_info")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -141,7 +141,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if(rootNode.Name == "general_description_content")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -153,7 +153,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if (rootNode.Name == "name_meaning_and_pronunciation_content")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -165,7 +165,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if (rootNode.Name == "project_reason_content")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -177,7 +177,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if (rootNode.Name == "aim_content")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -189,7 +189,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if(rootNode.Name == "disclaimer")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -201,7 +201,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if (rootNode.Name == "dsl_preview_content")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -213,7 +213,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if (rootNode.Name == "project_status_content")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -225,7 +225,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if (rootNode.Name == "contributing_preview_content")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -249,7 +249,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if (rootNode.Name == "key_features_content")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -261,7 +261,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if(rootNode.Name == "key_features_preview")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -297,7 +297,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 //_logger.Info($"path (after) = '{path}'");
 #endif
 
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -537,7 +537,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if (rootNode.Name == "cli_requirements_content")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -549,7 +549,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if (rootNode.Name == "unity_requirements_content")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -561,7 +561,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
             if (rootNode.Name == "requirements_content")
             {
-                var newNode = doc.CreateElement("div");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
