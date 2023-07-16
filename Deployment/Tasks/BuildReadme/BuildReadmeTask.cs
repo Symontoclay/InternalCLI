@@ -1,6 +1,7 @@
 ﻿using CommonUtils.DebugHelpers;
 using Deployment.Helpers;
 using NLog;
+using NLog.Fluent;
 using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
 using System;
@@ -50,9 +51,21 @@ namespace Deployment.Tasks.BuildReadme
 
             var content = File.ReadAllText(_options.CommonReadmeFileName);
 
+#if DEBUG
+            _logger.Info($"content (1) = {content}");
+#endif
+
             content = GeneralReadmeContentPreprocessor.Run(content, _options.CommonBadgesFileName, _options.RepositorySpecificBadgesFileName, _options.RepositorySpecificReadmeFileName);
 
+#if DEBUG
+            _logger.Info($"content (2) = {content}");
+#endif
+
             content = ContentPreprocessor.Run(content, MarkdownStrategy.GenerateMarkdown, siteSettings);
+
+#if DEBUG
+            _logger.Info($"content (3) = {content}");
+#endif
 
             content = HrefsNormalizer.FillAppDomainNameInHrefs(content, siteSettings);
 
