@@ -64,7 +64,7 @@ namespace Deployment.Helpers
 
             if(rootNode.Name == "gen_badges")
             {
-                var newNode = doc.CreateElement("span");
+                var newNode = doc.CreateTextNode();
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);
@@ -81,7 +81,7 @@ namespace Deployment.Helpers
 
             if (rootNode.Name == "spec_badges")
             {
-                var newNode = doc.CreateElement("span");
+                var newNode = doc.CreateTextNode(); 
                 var parentNode = rootNode.ParentNode;
 
                 parentNode.ReplaceChild(newNode, rootNode);

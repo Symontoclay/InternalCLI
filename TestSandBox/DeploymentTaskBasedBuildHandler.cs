@@ -95,7 +95,7 @@ namespace TestSandBox
         {
             var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
-            _logger.Info($"siteSolution = {siteSolution}");
+            //_logger.Info($"siteSolution = {siteSolution}");
 
             var commonBadgesFileName = Path.Combine(Directory.GetCurrentDirectory(), "__common_BADGES.md");
 
