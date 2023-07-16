@@ -1,5 +1,6 @@
 ﻿using CommonUtils.DebugHelpers;
 using Deployment.Helpers;
+using Html2Markdown;
 using NLog;
 using NLog.Fluent;
 using SiteBuilder;
@@ -68,6 +69,13 @@ namespace Deployment.Tasks.BuildReadme
 #endif
 
             content = HrefsNormalizer.FillAppDomainNameInHrefs(content, siteSettings);
+
+            var converter = new Converter();
+            content = converter.Convert(content);
+
+#if DEBUG
+            _logger.Info($"content (4) = {content}");
+#endif
 
             File.WriteAllText(_options.TargetReadmeFileName, content);
         }
