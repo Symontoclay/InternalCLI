@@ -41,6 +41,26 @@
           "Path": "SymOntoClayDefaultCLIEnvironment"
         },
         {
+          "Kind": "Library",
+          "Path": "SymOntoClay.Monitor"
+        },
+        {
+          "Kind": "Library",
+          "Path": "SymOntoClay.Monitor.Common"
+        },
+        {
+          "Kind": "Library",
+          "Path": "SymOntoClay.Monitor.Common.Data"
+        },
+        {
+          "Kind": "Library",
+          "Path": "SymOntoClay.Monitor.LogFileBuilder"
+        },
+        {
+          "Kind": "Library",
+          "Path": "SymOntoClay.Monitor.NLog"
+        },
+        {
           "Kind": "CLI",
           "Path": "SymOntoClayCLI"
         },
