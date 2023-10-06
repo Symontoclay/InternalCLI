@@ -41,7 +41,7 @@
           "Path": "SymOntoClayDefaultCLIEnvironment"
         },
         {
-          "Kind": "Library",
+          "Kind": "CorePlugin",
           "Path": "SymOntoClay.Monitor"
         },
         {
