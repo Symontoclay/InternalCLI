@@ -17,6 +17,7 @@
       "Name": "SymOntoClay",
       "Kind": "CoreSolution",
       "Href": "https://github.com/Symontoclay/SymOntoClay",
+      "GitFileHref": "git@github.com:Symontoclay/SymOntoClay.git",
       "Path": "%BASE_PATH%/SymOntoClay",
       "License": "MIT",
       "Projects": [
@@ -106,6 +107,7 @@
       "Name": "symontoclay.github.io",
       "Kind": "ProjectSite",
       "Href": "https://github.com/Symontoclay/symontoclay.github.io",
+      "GitFileHref": "git@github.com:Symontoclay/symontoclay.github.io.git",
       "Path": "%BASE_PATH%/symontoclay.github.io",
       "SourcePath": "%SLN_ROOT_PATH%/siteSource/",
       "License": "CCBYSA4_0",
@@ -120,6 +122,7 @@
       "Name": "SymOntoClayAsset",
       "Kind": "Unity",
       "Href": "https://github.com/Symontoclay/SymOntoClayAsset",
+      "GitFileHref": "git@github.com:Symontoclay/SymOntoClayAsset.git",
       "Path": "%BASE_PATH%/SymOntoClayAsset",
       "License": "MIT",
       "SourcePath": "%SLN_ROOT_PATH%/Assets/SymOntoClay",
@@ -129,6 +132,7 @@
       "Name": "ReleaseMngr",
       "Kind": "ReleaseMngrSolution",
       "Href": "https://github.com/Symontoclay/ReleaseMngr",
+      "GitFileHref": "git@github.com:Symontoclay/ReleaseMngr.git",
       "Path": "%BASE_PATH%/ReleaseMngr",
       "License": "MIT"
     }

@@ -12,6 +12,7 @@ namespace BaseDevPipeline.SourceData
         public string Name { get; set; }
         public string Kind { get; set; }
         public string Href { get; set; }
+        public string GitFileHref { get; set; }
         public string Path { get; set; }
         /// <summary>
         /// This filed should be used if Sln has non standard name and can not be detected automatically.
@@ -51,6 +52,7 @@ namespace BaseDevPipeline.SourceData
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Href)} = {Href}");
+            sb.AppendLine($"{spaces}{nameof(GitFileHref)} = {GitFileHref}");
             sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
             sb.AppendLine($"{spaces}{nameof(SlnPath)} = {SlnPath}");
             sb.AppendLine($"{spaces}{nameof(License)} = {License}");

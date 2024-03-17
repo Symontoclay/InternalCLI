@@ -180,7 +180,7 @@ namespace BaseDevPipeline.Data.Implementation
 
                 if(!string.IsNullOrWhiteSpace(href))
                 {
-                    item.GitFileHref = $"{href}.git";
+                    item.GitFileHref = solutionSource.GitFileHref;
 
                     var uri = new Uri(href);
 
