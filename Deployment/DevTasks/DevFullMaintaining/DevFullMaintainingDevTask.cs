@@ -40,7 +40,7 @@ namespace Deployment.DevTasks.DevFullMaintaining
 
             Exec(new UpdateAndCommitCopyrightInFileHeadersDevTask(NextDeep));
 
-            Exec(new RemoveAndCommitSingleLineCommentsDevTask(NextDeep));
+            //Exec(new RemoveAndCommitSingleLineCommentsDevTask(NextDeep));
         }
 
         /// <inheritdoc/>
