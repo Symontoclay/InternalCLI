@@ -25,10 +25,10 @@ namespace TestSandBox.RestoredDeploymentTasks
 
             var itemsList = new List<string>() { "1://someDir", "2://someDir", "3://someDir" };
 
-            foreach(var item in itemsList)
+            Exec(new NewDeploymentTasksGroup("709E865B-124A-4C10-96C0-2FB0D1ED0B95", false, _context, this)
             {
-                Exec(new SubItemNewDeploymentTask(new SubItemNewDeploymentTaskOptions() { DirectoryName = item }, _context, this));
-            }
+                SubItems = itemsList.Select(item => new SubItemNewDeploymentTask(new SubItemNewDeploymentTaskOptions() { DirectoryName = item }, _context, this))
+            });
 
             _logger.Info("End");
         }

@@ -6,19 +6,31 @@ using System.Threading.Tasks;
 
 namespace TestSandBox.RestoredDeploymentTasks
 {
-    //public class NewDeploymentTasksGroup : NewBaseDeploymentTask
-    //{
-    //    public NewDeploymentTasksGroup(string key, INewDeploymentPipelineContext context, INewDeploymentTask parentTask)
-    //        : base(context, key, null, parentTask)
-    //    {
-    //    }
+    public class NewDeploymentTasksGroup : NewBaseDeploymentTask
+    {
+        public NewDeploymentTasksGroup(string key, bool shouldBeSkeepedDuringRestoring, INewDeploymentPipelineContext context, INewDeploymentTask parentTask)
+            : this(key, shouldBeSkeepedDuringRestoring, context, parentTask, null)
+        {
+        }
 
-    //    /// <inheritdoc/>
-    //    protected override void OnRun()
-    //    {
-    //        _logger.Info("Being");
+        public NewDeploymentTasksGroup(string key, bool shouldBeSkeepedDuringRestoring, INewDeploymentPipelineContext context, INewDeploymentTask parentTask, List<INewDeploymentTask> subItems)
+            : base(context, key, shouldBeSkeepedDuringRestoring, null, parentTask)
+        {
+        }
 
-    //        _logger.Info("End");
-    //    }
-    //}
+        public IEnumerable<INewDeploymentTask> SubItems { get; set; }
+
+        /// <inheritdoc/>
+        protected override void OnRun()
+        {
+            _logger.Info("Being");
+
+            foreach(var subItem in SubItems ?? Enumerable.Empty<INewDeploymentTask>())
+            {
+                Exec(subItem);
+            }
+
+            _logger.Info("End");
+        }
+    }
 }
