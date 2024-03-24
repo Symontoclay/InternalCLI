@@ -16,9 +16,23 @@ namespace TestSandBox.RestoredDeploymentTasks
             Context = context;
         }
 
-        public NewDeploymentPipeline()
+        public NewDeploymentPipeline(NewDeploymentPipelineOptions options = null)
         {
-            Context = new NewDeploymentPipelineContext();
+#if DEBUG
+            _logger.Info($"options = {options}");
+#endif
+
+            options ??= new NewDeploymentPipelineOptions();
+
+#if DEBUG
+            _logger.Info($"options (after) = {options}");
+#endif
+
+            Context = new NewDeploymentPipelineContext(options);
+
+#if DEBUG
+            _logger.Info($"Context = {Context}");
+#endif
         }
 
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
