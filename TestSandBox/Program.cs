@@ -65,6 +65,7 @@ using System.Xml.Linq;
 using TestSandBox.XMLDoc;
 using XMLDocReader.CSharpDoc;
 using System.Reflection.Metadata;
+using TestSandBox.RestoredDeploymentTasks;
 
 namespace TestSandBox
 {
@@ -78,6 +79,7 @@ namespace TestSandBox
 
             try
             {
+                TstRestoredDeploymentTasks();
                 //TstGetAssembly();
                 //TstTestDeploymentTask();
                 //TstRemoveSingleLineCommentsDevTaskHandler();
@@ -141,7 +143,7 @@ namespace TestSandBox
                 //TstRoadMap();
                 //TstReleaseTaskHandler();//<==
                 //TstGitTasksHandler();
-                TstDeploymentTaskBasedBuildHandler();
+                //TstDeploymentTaskBasedBuildHandler();
                 //TstSimplifyFullNameOfType();
                 //TstCreateCSharpApiOptionsFile();
                 //TstReadXMLDoc();
@@ -150,6 +152,19 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstRestoredDeploymentTasks()
+        {
+            _logger.Info("Begin");
+
+            var deploymentPipeline = new NewDeploymentPipeline();
+
+            deploymentPipeline.Add(new TopLevelNewDeploymentTask(new TopLevelNewDeploymentTaskOptions(), deploymentPipeline));
+
+            deploymentPipeline.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstGetAssembly()
