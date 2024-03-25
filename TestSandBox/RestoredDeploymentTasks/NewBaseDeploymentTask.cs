@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestSandBox.RestoredDeploymentTasks.Serialization;
 
 namespace TestSandBox.RestoredDeploymentTasks
 {
@@ -16,18 +17,30 @@ namespace TestSandBox.RestoredDeploymentTasks
     {
         protected NewBaseDeploymentTask(INewDeploymentPipelineContext context, string key, bool shouldBeSkeepedDuringRestoring, IObjectToString options, INewDeploymentTask parentTask)
         {
+#if DEBUG
+            _logger.Info($"key = '{key}'");
+            _logger.Info($"shouldBeSkeepedDuringRestoring = {shouldBeSkeepedDuringRestoring}");
+#endif
+
             _context = context;
+            _key = key;
+            _shouldBeSkeepedDuringRestoring = shouldBeSkeepedDuringRestoring;
             _options = options;
+            _parentTask = parentTask;
             _deep = parentTask?.NextDeep ?? 0u;
         }
 
         protected readonly INewDeploymentPipelineContext _context;
+        private readonly string _key;
+        private readonly bool _shouldBeSkeepedDuringRestoring;
         private readonly IObjectToString _options;
+        private readonly INewDeploymentTask _parentTask;
         private readonly uint _deep;
         protected readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private bool? _isValid;
         private List<string> _validationMessages = new List<string>();
+        private NewDeploymentTaskRunInfo _currentDeploymentTaskRunInfo;
 
         /// <inheritdoc/>
         public uint Deep => _deep;
@@ -60,6 +73,8 @@ namespace TestSandBox.RestoredDeploymentTasks
 
             try
             {
+                _currentDeploymentTaskRunInfo = _context.GetDeploymentTaskRunInfo(_key, _parentTask);
+
                 _logger.Info($"{spaces}{GetType().Name} started.");
                 if (_options != null)
                 {

@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,30 @@ namespace TestSandBox.RestoredDeploymentTasks
                     Directory.CreateDirectory(_directoryForAutorestoring);
                 }
 
-                
+                _pipelineInfoFileFullName = Path.Combine(_directoryForAutorestoring, _pipelineInfoFileName);
+
+#if DEBUG
+                _logger.Info($"_pipelineInfoFileFullName = {_pipelineInfoFileFullName}");
+#endif
+
+                if(File.Exists(_pipelineInfoFileFullName))
+                {
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    _currentRunInfoFileFullName = Path.Combine(_directoryForAutorestoring, _currentRunInfoFileName);
+
+                    _pipelineInfo = new NewPipelineInfo()
+                    {
+                        IsFinished = false,
+                        LastRunInfo = _currentRunInfoFileFullName
+                    };
+
+                    //SavePipelineInfo();
+
+                    _rootDeploymentTaskRunInfoList = new List<NewDeploymentTaskRunInfo>();
+                }
             }
         }
 
@@ -44,7 +68,51 @@ namespace TestSandBox.RestoredDeploymentTasks
         private readonly string _directoryForAutorestoring;
         private readonly string _pipelineInfoFileName = "pipelineInfoName.json";
         private readonly string _pipelineInfoFileFullName;
+        private readonly string _currentRunInfoFileName = "tmpRunInfo.json";
+        private readonly string _currentRunInfoFileFullName;
         private readonly NewPipelineInfo _pipelineInfo;
+        private readonly List<NewDeploymentTaskRunInfo> _rootDeploymentTaskRunInfoList;
+
+        private void SavePipelineInfo()
+        {
+            File.WriteAllText(_pipelineInfoFileFullName, JsonConvert.SerializeObject(_pipelineInfo, Formatting.Indented));
+        }
+
+        /// <inheritdoc/>
+        public NewDeploymentTaskRunInfo GetDeploymentTaskRunInfo(string key, INewDeploymentTask parentTask)
+        {
+#if DEBUG
+            _logger.Info($"key = {key}");
+            _logger.Info($"parentTask = {parentTask}");
+#endif
+
+            if(parentTask == null)
+            {
+                var item = _rootDeploymentTaskRunInfoList.SingleOrDefault(p => p.Key == key);
+
+                if (item == null)
+                {
+                    item = new NewDeploymentTaskRunInfo()
+                    {
+                        Key = key,
+                        IsFinished = false,
+                        SubTaks = new List<NewDeploymentTaskRunInfo>()
+                    };
+
+                    _rootDeploymentTaskRunInfoList.Add(item);
+                }
+
+#if DEBUG
+                _logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
+#endif
+
+                return item;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         /// <inheritdoc/>
         public override string ToString()

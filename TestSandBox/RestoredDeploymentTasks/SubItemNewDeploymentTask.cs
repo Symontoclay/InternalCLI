@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommonUtils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace TestSandBox.RestoredDeploymentTasks
         }
 
         public SubItemNewDeploymentTask(SubItemNewDeploymentTaskOptions options, INewDeploymentPipelineContext context, INewDeploymentTask parentTask)
-            : base(context, "AD2EEDF6-7850-4590-98BB-CC4E32791D0B", false, options, parentTask)
+            : base(context, MD5Helper.GetHash(options.DirectoryName), false, options, parentTask)
         {
             _options = options;
         }
