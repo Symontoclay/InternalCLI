@@ -32,7 +32,7 @@ namespace TestSandBox.RestoredDeploymentTasks.Serialization
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
             sb.AppendLine($"{spaces}{nameof(IsFinished)} = {IsFinished}");
-            sb.PrintPODList(n, nameof(SubTaks), SubTaks);
+            sb.PrintObjListProp(n, nameof(SubTaks), SubTaks);
             return sb.ToString();
         }
     }

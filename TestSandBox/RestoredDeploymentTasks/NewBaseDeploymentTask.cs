@@ -43,6 +43,18 @@ namespace TestSandBox.RestoredDeploymentTasks
         private NewDeploymentTaskRunInfo _currentDeploymentTaskRunInfo;
 
         /// <inheritdoc/>
+        public NewDeploymentTaskRunInfo GetChildDeploymentTaskRunInfo(string key)
+        {
+            return _currentDeploymentTaskRunInfo?.SubTaks.FirstOrDefault(p => p.Key == key);
+        }
+
+        /// <inheritdoc/>
+        public void AddChildDeploymentTaskRunInfo(NewDeploymentTaskRunInfo item)
+        {
+            _currentDeploymentTaskRunInfo?.SubTaks.Add(item);
+        }
+
+        /// <inheritdoc/>
         public uint Deep => _deep;
 
         /// <inheritdoc/>
@@ -84,6 +96,9 @@ namespace TestSandBox.RestoredDeploymentTasks
                 CheckValidationOptions();
 
                 OnRun();
+
+                _currentDeploymentTaskRunInfo.IsFinished = true;
+                _context.SaveDeploymentTaskRunInfo();
 
                 _logger.Info($"{spaces}{GetType().Name} finished");
             }

@@ -43,6 +43,8 @@ namespace TestSandBox.RestoredDeploymentTasks
 
                 if(File.Exists(_pipelineInfoFileFullName))
                 {
+
+
                     throw new NotImplementedException();
                 }
                 else
@@ -55,9 +57,11 @@ namespace TestSandBox.RestoredDeploymentTasks
                         LastRunInfo = _currentRunInfoFileFullName
                     };
 
-                    //SavePipelineInfo();
+                    SavePipelineInfo();
 
                     _rootDeploymentTaskRunInfoList = new List<NewDeploymentTaskRunInfo>();
+
+                    SaveDeploymentTaskRunInfo();
                 }
             }
         }
@@ -79,12 +83,28 @@ namespace TestSandBox.RestoredDeploymentTasks
         }
 
         /// <inheritdoc/>
+        public void SaveDeploymentTaskRunInfo()
+        {
+            File.WriteAllText(_currentRunInfoFileFullName, JsonConvert.SerializeObject(_rootDeploymentTaskRunInfoList, Formatting.Indented));
+        }
+
+        /// <inheritdoc/>
         public NewDeploymentTaskRunInfo GetDeploymentTaskRunInfo(string key, INewDeploymentTask parentTask)
         {
 #if DEBUG
             _logger.Info($"key = {key}");
             _logger.Info($"parentTask = {parentTask}");
 #endif
+
+            if(!_useAutorestoring)
+            {
+                return new NewDeploymentTaskRunInfo()
+                {
+                    Key = key,
+                    IsFinished = false,
+                    SubTaks = new List<NewDeploymentTaskRunInfo>()
+                };
+            }
 
             if(parentTask == null)
             {
@@ -110,7 +130,25 @@ namespace TestSandBox.RestoredDeploymentTasks
             }
             else
             {
-                throw new NotImplementedException();
+                var item = parentTask.GetChildDeploymentTaskRunInfo(key);
+
+                if (item == null)
+                {
+                    item = new NewDeploymentTaskRunInfo()
+                    {
+                        Key = key,
+                        IsFinished = false,
+                        SubTaks = new List<NewDeploymentTaskRunInfo>()
+                    };
+
+                    parentTask.AddChildDeploymentTaskRunInfo(item);
+                }
+
+#if DEBUG
+                _logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
+#endif
+
+                return item;
             }
         }
 

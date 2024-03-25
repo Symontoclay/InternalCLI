@@ -11,5 +11,6 @@ namespace TestSandBox.RestoredDeploymentTasks
     public interface INewDeploymentPipelineContext : IObjectToString
     {
         NewDeploymentTaskRunInfo GetDeploymentTaskRunInfo(string key, INewDeploymentTask parentTask);
+        void SaveDeploymentTaskRunInfo();
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestSandBox.RestoredDeploymentTasks.Serialization;
 
 namespace TestSandBox.RestoredDeploymentTasks
 {
@@ -15,5 +16,7 @@ namespace TestSandBox.RestoredDeploymentTasks
         void Run();
         uint Deep { get; }
         uint NextDeep { get; }
+        NewDeploymentTaskRunInfo GetChildDeploymentTaskRunInfo(string key);
+        void AddChildDeploymentTaskRunInfo(NewDeploymentTaskRunInfo item);
     }
 }
