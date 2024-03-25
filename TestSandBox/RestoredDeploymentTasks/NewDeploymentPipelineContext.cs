@@ -43,7 +43,11 @@ namespace TestSandBox.RestoredDeploymentTasks
 
                 if(File.Exists(_pipelineInfoFileFullName))
                 {
+                    _pipelineInfo = JsonConvert.DeserializeObject<NewPipelineInfo>(File.ReadAllText(_pipelineInfoFileFullName));
 
+#if DEBUG
+                    _logger.Info($"_pipelineInfo = {_pipelineInfo}");
+#endif
 
                     throw new NotImplementedException();
                 }
@@ -86,6 +90,13 @@ namespace TestSandBox.RestoredDeploymentTasks
         public void SaveDeploymentTaskRunInfo()
         {
             File.WriteAllText(_currentRunInfoFileFullName, JsonConvert.SerializeObject(_rootDeploymentTaskRunInfoList, Formatting.Indented));
+
+            if(_rootDeploymentTaskRunInfoList.All(p => p.IsFinished ?? false))
+            {
+                _pipelineInfo.IsFinished = true;
+
+                SavePipelineInfo();
+            }
         }
 
         /// <inheritdoc/>
