@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using TestSandBox.RestoredDeploymentTasks.Serialization;
 
 namespace TestSandBox.RestoredDeploymentTasks
@@ -49,23 +48,18 @@ namespace TestSandBox.RestoredDeploymentTasks
                     _logger.Info($"_pipelineInfo = {_pipelineInfo}");
 #endif
 
-                    throw new NotImplementedException();
+                    if(_pipelineInfo.IsFinished ?? false)
+                    {
+                        InitNewSession();
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
                 }
                 else
                 {
-                    _currentRunInfoFileFullName = Path.Combine(_directoryForAutorestoring, _currentRunInfoFileName);
-
-                    _pipelineInfo = new NewPipelineInfo()
-                    {
-                        IsFinished = false,
-                        LastRunInfo = _currentRunInfoFileFullName
-                    };
-
-                    SavePipelineInfo();
-
-                    _rootDeploymentTaskRunInfoList = new List<NewDeploymentTaskRunInfo>();
-
-                    SaveDeploymentTaskRunInfo();
+                    InitNewSession();
                 }
             }
         }
@@ -77,9 +71,26 @@ namespace TestSandBox.RestoredDeploymentTasks
         private readonly string _pipelineInfoFileName = "pipelineInfoName.json";
         private readonly string _pipelineInfoFileFullName;
         private readonly string _currentRunInfoFileName = "tmpRunInfo.json";
-        private readonly string _currentRunInfoFileFullName;
-        private readonly NewPipelineInfo _pipelineInfo;
-        private readonly List<NewDeploymentTaskRunInfo> _rootDeploymentTaskRunInfoList;
+        private string _currentRunInfoFileFullName;
+        private NewPipelineInfo _pipelineInfo;
+        private List<NewDeploymentTaskRunInfo> _rootDeploymentTaskRunInfoList;
+
+        private void InitNewSession()
+        {
+            _currentRunInfoFileFullName = Path.Combine(_directoryForAutorestoring, _currentRunInfoFileName);
+
+            _pipelineInfo = new NewPipelineInfo()
+            {
+                IsFinished = false,
+                LastRunInfo = _currentRunInfoFileFullName
+            };
+
+            SavePipelineInfo();
+
+            _rootDeploymentTaskRunInfoList = new List<NewDeploymentTaskRunInfo>();
+
+            SaveDeploymentTaskRunInfo();
+        }
 
         private void SavePipelineInfo()
         {
