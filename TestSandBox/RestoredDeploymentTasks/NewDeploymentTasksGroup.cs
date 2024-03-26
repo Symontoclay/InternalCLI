@@ -27,6 +27,7 @@ namespace TestSandBox.RestoredDeploymentTasks
 
             foreach(var subItem in SubItems ?? Enumerable.Empty<INewDeploymentTask>())
             {
+                subItem.SetParentTask(this);
                 Exec(subItem);
             }
 

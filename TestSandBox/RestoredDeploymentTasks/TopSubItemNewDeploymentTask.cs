@@ -9,12 +9,12 @@ namespace TestSandBox.RestoredDeploymentTasks
     public class TopSubItemNewDeploymentTask : NewBaseDeploymentTask
     {
         public TopSubItemNewDeploymentTask(TopSubItemNewDeploymentTaskOptions options)
-            : this(options, null, null)
+            : this(options, string.Empty, null, null)
         {
         }
 
-        public TopSubItemNewDeploymentTask(TopSubItemNewDeploymentTaskOptions options, INewDeploymentPipelineContext context, INewDeploymentTask parentTask)
-            : base(context, "FCD75A10-189C-4F44-815E-0FD6F8AB9A93", true, options, parentTask)
+        public TopSubItemNewDeploymentTask(TopSubItemNewDeploymentTaskOptions options, string key, INewDeploymentPipelineContext context, INewDeploymentTask parentTask)
+            : base(context, key, true, options, parentTask)
         {
         }
 

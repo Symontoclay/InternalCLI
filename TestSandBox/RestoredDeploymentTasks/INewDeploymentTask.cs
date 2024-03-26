@@ -10,6 +10,7 @@ namespace TestSandBox.RestoredDeploymentTasks
 {
     public interface INewDeploymentTask : IObjectToString
     {
+        void SetParentTask(INewDeploymentTask parentTask);
         bool? IsValid { get; }
         IReadOnlyList<string> ValidationMessages { get; }
         void ValidateOptions();

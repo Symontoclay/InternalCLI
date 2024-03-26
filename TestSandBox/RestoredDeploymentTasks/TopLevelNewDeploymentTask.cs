@@ -28,8 +28,8 @@ namespace TestSandBox.RestoredDeploymentTasks
         {
             _logger.Info("Being");
 
-            Exec(new TopSubItemNewDeploymentTask(new TopSubItemNewDeploymentTaskOptions(), _context, this));
-            Exec(new TopSubItemNewDeploymentTask(new TopSubItemNewDeploymentTaskOptions(), _context, this));
+            Exec(new TopSubItemNewDeploymentTask(new TopSubItemNewDeploymentTaskOptions(), "FCD75A10-189C-4F44-815E-0FD6F8AB9A93", _context, this));
+            Exec(new TopSubItemNewDeploymentTask(new TopSubItemNewDeploymentTaskOptions(), "143DEB1D-97E5-44B0-B1FF-5CA85A6A0818", _context, this));
 
             _logger.Info("End");
         }

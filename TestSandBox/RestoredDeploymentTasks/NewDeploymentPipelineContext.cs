@@ -54,7 +54,13 @@ namespace TestSandBox.RestoredDeploymentTasks
                     }
                     else
                     {
-                        throw new NotImplementedException();
+                        _currentRunInfoFileFullName = _pipelineInfo.LastRunInfo;
+
+#if DEBUG
+                        _logger.Info($"_currentRunInfoFileFullName = {_currentRunInfoFileFullName}");
+#endif
+
+                        _rootDeploymentTaskRunInfoList = JsonConvert.DeserializeObject<List<NewDeploymentTaskRunInfo>>(File.ReadAllText(_currentRunInfoFileFullName));
                     }
                 }
                 else
@@ -102,12 +108,21 @@ namespace TestSandBox.RestoredDeploymentTasks
         {
             File.WriteAllText(_currentRunInfoFileFullName, JsonConvert.SerializeObject(_rootDeploymentTaskRunInfoList, Formatting.Indented));
 
-            if(_rootDeploymentTaskRunInfoList.All(p => p.IsFinished ?? false))
+#if DEBUG
+            //_logger.Info($"_rootDeploymentTaskRunInfoList.All(p => p.IsFinished ?? false) = {_rootDeploymentTaskRunInfoList.All(p => p.IsFinished ?? false)}");
+            //_logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
+#endif
+
+            if (_rootDeploymentTaskRunInfoList.Any() && _rootDeploymentTaskRunInfoList.All(p => p.IsFinished ?? false))
             {
                 _pipelineInfo.IsFinished = true;
 
                 SavePipelineInfo();
             }
+
+#if DEBUG
+            //_logger.Info($"_pipelineInfo = {_pipelineInfo}");
+#endif
         }
 
         /// <inheritdoc/>

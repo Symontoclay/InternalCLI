@@ -34,7 +34,7 @@ namespace TestSandBox.RestoredDeploymentTasks
         private readonly string _key;
         private readonly bool _shouldBeSkeepedDuringRestoring;
         private readonly IObjectToString _options;
-        private readonly INewDeploymentTask _parentTask;
+        private INewDeploymentTask _parentTask;
         private readonly uint _deep;
         protected readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -42,10 +42,15 @@ namespace TestSandBox.RestoredDeploymentTasks
         private List<string> _validationMessages = new List<string>();
         private NewDeploymentTaskRunInfo _currentDeploymentTaskRunInfo;
 
+        public void SetParentTask(INewDeploymentTask parentTask)
+        {
+            _parentTask = parentTask;
+        }
+
         /// <inheritdoc/>
         public NewDeploymentTaskRunInfo GetChildDeploymentTaskRunInfo(string key)
         {
-            return _currentDeploymentTaskRunInfo?.SubTaks.FirstOrDefault(p => p.Key == key);
+            return _currentDeploymentTaskRunInfo?.SubTaks.SingleOrDefault(p => p.Key == key);
         }
 
         /// <inheritdoc/>
@@ -86,6 +91,28 @@ namespace TestSandBox.RestoredDeploymentTasks
             try
             {
                 _currentDeploymentTaskRunInfo = _context.GetDeploymentTaskRunInfo(_key, _parentTask);
+
+#if DEBUG
+                _logger.Info($"_currentDeploymentTaskRunInfo = {_currentDeploymentTaskRunInfo}");
+#endif
+
+                if (_currentDeploymentTaskRunInfo.IsFinished ?? false)
+                {
+#if DEBUG
+                    _logger.Info($"_shouldBeSkeepedDuringRestoring = {_shouldBeSkeepedDuringRestoring}");
+#endif
+
+                    if (_shouldBeSkeepedDuringRestoring)
+                    {
+                        _logger.Info($"{spaces}{GetType().Name} is skeeped.");
+                        if (_options != null)
+                        {
+                            _logger.Info($"{_options.ToString(n + 4)}");
+                        }
+
+                        return;
+                    }
+                }
 
                 _logger.Info($"{spaces}{GetType().Name} started.");
                 if (_options != null)

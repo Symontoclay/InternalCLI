@@ -29,10 +29,10 @@ namespace TestSandBox.RestoredDeploymentTasks
             _logger.Info($"_options.DirectoryName = {_options.DirectoryName}");
             _n++;
             _logger.Info($"_n = {_n}");
-            //if(_n == 5)
-            //{
-            //    throw new NotImplementedException();
-            //}
+            if (_n == 5)
+            {
+                //throw new NotImplementedException();
+            }
             _logger.Info("End");
         }
 
