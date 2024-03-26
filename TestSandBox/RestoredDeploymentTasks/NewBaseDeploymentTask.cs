@@ -42,6 +42,10 @@ namespace TestSandBox.RestoredDeploymentTasks
         private List<string> _validationMessages = new List<string>();
         private NewDeploymentTaskRunInfo _currentDeploymentTaskRunInfo;
 
+        /// <inheritdoc/>
+        public string Key => _key;
+
+        /// <inheritdoc/>
         public void SetParentTask(INewDeploymentTask parentTask)
         {
             _parentTask = parentTask;
@@ -51,6 +55,12 @@ namespace TestSandBox.RestoredDeploymentTasks
         public NewDeploymentTaskRunInfo GetChildDeploymentTaskRunInfo(string key)
         {
             return _currentDeploymentTaskRunInfo?.SubTaks.SingleOrDefault(p => p.Key == key);
+        }
+
+        /// <inheritdoc/>
+        public bool ContainsChild(string key)
+        {
+            return _currentDeploymentTaskRunInfo?.SubTaks.Any(p => p.Key == key) ?? false;
         }
 
         /// <inheritdoc/>

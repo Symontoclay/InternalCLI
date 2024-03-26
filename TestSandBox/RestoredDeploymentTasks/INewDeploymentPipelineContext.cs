@@ -12,5 +12,6 @@ namespace TestSandBox.RestoredDeploymentTasks
     {
         NewDeploymentTaskRunInfo GetDeploymentTaskRunInfo(string key, INewDeploymentTask parentTask);
         void SaveDeploymentTaskRunInfo();
+        bool IsNewSession { get; }
     }
 }

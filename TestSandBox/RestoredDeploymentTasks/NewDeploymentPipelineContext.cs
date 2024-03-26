@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using dotless.Core.Parser.Functions;
 using Newtonsoft.Json;
 using NLog;
 using System;
@@ -80,9 +81,15 @@ namespace TestSandBox.RestoredDeploymentTasks
         private string _currentRunInfoFileFullName;
         private NewPipelineInfo _pipelineInfo;
         private List<NewDeploymentTaskRunInfo> _rootDeploymentTaskRunInfoList;
+        private bool _isNewSession;
+
+        /// <inheritdoc/>
+        public bool IsNewSession => _isNewSession;
 
         private void InitNewSession()
         {
+            _isNewSession = true;
+
             _currentRunInfoFileFullName = Path.Combine(_directoryForAutorestoring, _currentRunInfoFileName);
 
             _pipelineInfo = new NewPipelineInfo()
@@ -145,11 +152,14 @@ namespace TestSandBox.RestoredDeploymentTasks
 
             if(parentTask == null)
             {
-                var item = _rootDeploymentTaskRunInfoList.SingleOrDefault(p => p.Key == key);
-
-                if (item == null)
+                if(_isNewSession)
                 {
-                    item = new NewDeploymentTaskRunInfo()
+                    if(_rootDeploymentTaskRunInfoList.Any(p => p.Key == key))
+                    {
+                        throw new Exception($"The key '{key}' already exists in root list.");
+                    }
+
+                    var item = new NewDeploymentTaskRunInfo()
                     {
                         Key = key,
                         IsFinished = false,
@@ -157,21 +167,46 @@ namespace TestSandBox.RestoredDeploymentTasks
                     };
 
                     _rootDeploymentTaskRunInfoList.Add(item);
-                }
 
 #if DEBUG
-                _logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
+                    _logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
 #endif
 
-                return item;
+                    return item;
+                }
+                else
+                {
+                    var item = _rootDeploymentTaskRunInfoList.SingleOrDefault(p => p.Key == key);
+
+                    if (item == null)
+                    {
+                        item = new NewDeploymentTaskRunInfo()
+                        {
+                            Key = key,
+                            IsFinished = false,
+                            SubTaks = new List<NewDeploymentTaskRunInfo>()
+                        };
+
+                        _rootDeploymentTaskRunInfoList.Add(item);
+                    }
+
+#if DEBUG
+                    _logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
+#endif
+
+                    return item;
+                }
             }
             else
             {
-                var item = parentTask.GetChildDeploymentTaskRunInfo(key);
-
-                if (item == null)
+                if (_isNewSession)
                 {
-                    item = new NewDeploymentTaskRunInfo()
+                    if(parentTask.ContainsChild(key))
+                    {
+                        throw new Exception($"The key '{key}' already exists in parent task with key '{parentTask.Key}'.");
+                    }
+
+                    var item = new NewDeploymentTaskRunInfo()
                     {
                         Key = key,
                         IsFinished = false,
@@ -179,13 +214,35 @@ namespace TestSandBox.RestoredDeploymentTasks
                     };
 
                     parentTask.AddChildDeploymentTaskRunInfo(item);
-                }
 
 #if DEBUG
-                _logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
+                    _logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
 #endif
 
-                return item;
+                    return item;
+                }
+                else
+                {
+                    var item = parentTask.GetChildDeploymentTaskRunInfo(key);
+
+                    if (item == null)
+                    {
+                        item = new NewDeploymentTaskRunInfo()
+                        {
+                            Key = key,
+                            IsFinished = false,
+                            SubTaks = new List<NewDeploymentTaskRunInfo>()
+                        };
+
+                        parentTask.AddChildDeploymentTaskRunInfo(item);
+                    }
+
+#if DEBUG
+                    _logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
+#endif
+
+                    return item;
+                }
             }
         }
 

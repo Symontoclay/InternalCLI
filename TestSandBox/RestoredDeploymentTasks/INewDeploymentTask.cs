@@ -17,7 +17,9 @@ namespace TestSandBox.RestoredDeploymentTasks
         void Run();
         uint Deep { get; }
         uint NextDeep { get; }
+        string Key { get; }
         NewDeploymentTaskRunInfo GetChildDeploymentTaskRunInfo(string key);
+        bool ContainsChild(string key);
         void AddChildDeploymentTaskRunInfo(NewDeploymentTaskRunInfo item);
     }
 }
