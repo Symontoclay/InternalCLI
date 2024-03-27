@@ -55,13 +55,20 @@ namespace TestSandBox.RestoredDeploymentTasks
                     }
                     else
                     {
-                        _currentRunInfoFileFullName = _pipelineInfo.LastRunInfo;
+                        if(options.StartFromBeginning)
+                        {
+                            InitNewSession();
+                        }
+                        else
+                        {
+                            _currentRunInfoFileFullName = _pipelineInfo.LastRunInfo;
 
 #if DEBUG
-                        _logger.Info($"_currentRunInfoFileFullName = {_currentRunInfoFileFullName}");
+                            _logger.Info($"_currentRunInfoFileFullName = {_currentRunInfoFileFullName}");
 #endif
 
-                        _rootDeploymentTaskRunInfoList = JsonConvert.DeserializeObject<List<NewDeploymentTaskRunInfo>>(File.ReadAllText(_currentRunInfoFileFullName));
+                            _rootDeploymentTaskRunInfoList = JsonConvert.DeserializeObject<List<NewDeploymentTaskRunInfo>>(File.ReadAllText(_currentRunInfoFileFullName));
+                        }
                     }
                 }
                 else
