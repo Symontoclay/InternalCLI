@@ -161,7 +161,8 @@ namespace TestSandBox
             var deploymentPipeline = new NewDeploymentPipeline(new NewDeploymentPipelineOptions()
             {
                 UseAutorestoring = true,
-                StartFromBeginning = true
+                Prefix = "Hi"
+                //StartFromBeginning = true
             });
 
             deploymentPipeline.Add(new TopLevelNewDeploymentTask(new TopLevelNewDeploymentTaskOptions(), deploymentPipeline));

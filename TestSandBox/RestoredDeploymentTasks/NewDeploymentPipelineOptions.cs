@@ -13,6 +13,7 @@ namespace TestSandBox.RestoredDeploymentTasks
         public bool UseAutorestoring { get; set; }
         public string DirectoryForAutorestoring { get; set; }
         public bool StartFromBeginning { get; set; }
+        public string Prefix { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -34,6 +35,7 @@ namespace TestSandBox.RestoredDeploymentTasks
             sb.AppendLine($"{spaces}{nameof(UseAutorestoring)} = {UseAutorestoring}");
             sb.AppendLine($"{spaces}{nameof(DirectoryForAutorestoring)} = {DirectoryForAutorestoring}");
             sb.AppendLine($"{spaces}{nameof(StartFromBeginning)} = {StartFromBeginning}");
+            sb.AppendLine($"{spaces}{nameof(Prefix)} = {Prefix}");
             return sb.ToString();
         }
     }

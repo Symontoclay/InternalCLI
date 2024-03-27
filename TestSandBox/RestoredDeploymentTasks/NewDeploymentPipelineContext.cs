@@ -24,6 +24,17 @@ namespace TestSandBox.RestoredDeploymentTasks
 
             if(_useAutorestoring)
             {
+                if(string.IsNullOrWhiteSpace(options.Prefix))
+                {
+                    _pipelineInfoFileName = _pipelineInfoInitialFileName;
+                    _currentRunInfoFileName = _currentRunInfoInitialFileName;
+                }
+                else
+                {
+                    _pipelineInfoFileName = $"{options.Prefix}_{_pipelineInfoInitialFileName}";
+                    _currentRunInfoFileName = $"{options.Prefix}_{_currentRunInfoInitialFileName}";
+                }
+
                 _directoryForAutorestoring = EVPath.Normalize(options.DirectoryForAutorestoring);
 
                 if(string.IsNullOrWhiteSpace(_directoryForAutorestoring))
@@ -82,9 +93,11 @@ namespace TestSandBox.RestoredDeploymentTasks
 
         private readonly bool _useAutorestoring;
         private readonly string _directoryForAutorestoring;
-        private readonly string _pipelineInfoFileName = "pipelineInfoName.json";
+        private readonly string _pipelineInfoInitialFileName = "pipelineInfo.json";
+        private readonly string _pipelineInfoFileName;
         private readonly string _pipelineInfoFileFullName;
-        private readonly string _currentRunInfoFileName = "tmpRunInfo.json";
+        private readonly string _currentRunInfoInitialFileName = "pipelineCurentRunInfo.json";
+        private readonly string _currentRunInfoFileName;
         private string _currentRunInfoFileFullName;
         private NewPipelineInfo _pipelineInfo;
         private List<NewDeploymentTaskRunInfo> _rootDeploymentTaskRunInfoList;
