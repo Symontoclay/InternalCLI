@@ -23,7 +23,7 @@ namespace TestSandBox.RestoredDeploymentTasks
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            _logger.Info("Being");
+            //_logger.Info("Being");
 
             foreach(var subItem in SubItems ?? Enumerable.Empty<INewDeploymentTask>())
             {
@@ -31,7 +31,7 @@ namespace TestSandBox.RestoredDeploymentTasks
                 Exec(subItem);
             }
 
-            _logger.Info("End");
+            //_logger.Info("End");
         }
     }
 }

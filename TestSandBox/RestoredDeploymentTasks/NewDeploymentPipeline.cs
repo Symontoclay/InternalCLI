@@ -19,19 +19,19 @@ namespace TestSandBox.RestoredDeploymentTasks
         public NewDeploymentPipeline(NewDeploymentPipelineOptions options = null)
         {
 #if DEBUG
-            _logger.Info($"options = {options}");
+            //_logger.Info($"options = {options}");
 #endif
 
             options ??= new NewDeploymentPipelineOptions();
 
 #if DEBUG
-            _logger.Info($"options (after) = {options}");
+            //_logger.Info($"options (after) = {options}");
 #endif
 
             Context = new NewDeploymentPipelineContext(options);
 
 #if DEBUG
-            _logger.Info($"Context = {Context}");
+            //_logger.Info($"Context = {Context}");
 #endif
         }
 

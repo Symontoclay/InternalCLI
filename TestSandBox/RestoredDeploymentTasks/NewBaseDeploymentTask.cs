@@ -18,8 +18,8 @@ namespace TestSandBox.RestoredDeploymentTasks
         protected NewBaseDeploymentTask(INewDeploymentPipelineContext context, string key, bool shouldBeSkeepedDuringRestoring, IObjectToString options, INewDeploymentTask parentTask)
         {
 #if DEBUG
-            _logger.Info($"key = '{key}'");
-            _logger.Info($"shouldBeSkeepedDuringRestoring = {shouldBeSkeepedDuringRestoring}");
+            //_logger.Info($"key = '{key}'");
+            //_logger.Info($"shouldBeSkeepedDuringRestoring = {shouldBeSkeepedDuringRestoring}");
 #endif
 
             _context = context;
@@ -103,18 +103,18 @@ namespace TestSandBox.RestoredDeploymentTasks
                 _currentDeploymentTaskRunInfo = _context.GetDeploymentTaskRunInfo(_key, _parentTask);
 
 #if DEBUG
-                _logger.Info($"_currentDeploymentTaskRunInfo = {_currentDeploymentTaskRunInfo}");
+                //_logger.Info($"_currentDeploymentTaskRunInfo = {_currentDeploymentTaskRunInfo}");
 #endif
 
                 if (_currentDeploymentTaskRunInfo.IsFinished ?? false)
                 {
 #if DEBUG
-                    _logger.Info($"_shouldBeSkeepedDuringRestoring = {_shouldBeSkeepedDuringRestoring}");
+                    //_logger.Info($"_shouldBeSkeepedDuringRestoring = {_shouldBeSkeepedDuringRestoring}");
 #endif
 
                     if (_shouldBeSkeepedDuringRestoring)
                     {
-                        _logger.Info($"{spaces}{GetType().Name} is skeeped.");
+                        _logger.Info($"{spaces}{GetType().Name} (Key: '{_key}') is skeeped.");
                         if (_options != null)
                         {
                             _logger.Info($"{_options.ToString(n + 4)}");
@@ -124,7 +124,7 @@ namespace TestSandBox.RestoredDeploymentTasks
                     }
                 }
 
-                _logger.Info($"{spaces}{GetType().Name} started.");
+                _logger.Info($"{spaces}{GetType().Name} (Key: '{_key}') started.");
                 if (_options != null)
                 {
                     _logger.Info($"{_options.ToString(n + 4)}");
@@ -137,11 +137,11 @@ namespace TestSandBox.RestoredDeploymentTasks
                 _currentDeploymentTaskRunInfo.IsFinished = true;
                 _context.SaveDeploymentTaskRunInfo();
 
-                _logger.Info($"{spaces}{GetType().Name} finished");
+                _logger.Info($"{spaces}{GetType().Name} (Key: '{_key}') finished");
             }
             catch (Exception e)
             {
-                _logger.Info($"{spaces}Error in {GetType().Name} with options:");
+                _logger.Info($"{spaces}Error in {GetType().Name} (Key: '{_key}') with options:");
                 _logger.Info(_options?.ToString(n + 4));
                 _logger.Info(e);
 

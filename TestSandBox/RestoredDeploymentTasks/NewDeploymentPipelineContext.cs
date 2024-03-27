@@ -17,7 +17,7 @@ namespace TestSandBox.RestoredDeploymentTasks
         public NewDeploymentPipelineContext(NewDeploymentPipelineOptions options)
         {
 #if DEBUG
-            _logger.Info($"options = {options}");
+            //_logger.Info($"options = {options}");
 #endif
 
             _useAutorestoring = options.UseAutorestoring;
@@ -49,7 +49,7 @@ namespace TestSandBox.RestoredDeploymentTasks
                 _pipelineInfoFileFullName = Path.Combine(_directoryForAutorestoring, _pipelineInfoFileName);
 
 #if DEBUG
-                _logger.Info($"_pipelineInfoFileFullName = {_pipelineInfoFileFullName}");
+                //_logger.Info($"_pipelineInfoFileFullName = {_pipelineInfoFileFullName}");
 #endif
 
                 if(File.Exists(_pipelineInfoFileFullName))
@@ -57,7 +57,7 @@ namespace TestSandBox.RestoredDeploymentTasks
                     _pipelineInfo = JsonConvert.DeserializeObject<NewPipelineInfo>(File.ReadAllText(_pipelineInfoFileFullName));
 
 #if DEBUG
-                    _logger.Info($"_pipelineInfo = {_pipelineInfo}");
+                    //_logger.Info($"_pipelineInfo = {_pipelineInfo}");
 #endif
 
                     if(_pipelineInfo.IsFinished ?? false)
@@ -75,7 +75,7 @@ namespace TestSandBox.RestoredDeploymentTasks
                             _currentRunInfoFileFullName = _pipelineInfo.LastRunInfo;
 
 #if DEBUG
-                            _logger.Info($"_currentRunInfoFileFullName = {_currentRunInfoFileFullName}");
+                            //_logger.Info($"_currentRunInfoFileFullName = {_currentRunInfoFileFullName}");
 #endif
 
                             _rootDeploymentTaskRunInfoList = JsonConvert.DeserializeObject<List<NewDeploymentTaskRunInfo>>(File.ReadAllText(_currentRunInfoFileFullName));
@@ -156,8 +156,8 @@ namespace TestSandBox.RestoredDeploymentTasks
         public NewDeploymentTaskRunInfo GetDeploymentTaskRunInfo(string key, INewDeploymentTask parentTask)
         {
 #if DEBUG
-            _logger.Info($"key = {key}");
-            _logger.Info($"parentTask = {parentTask}");
+            //_logger.Info($"key = {key}");
+            //_logger.Info($"parentTask = {parentTask}");
 #endif
 
             if(!_useAutorestoring)
@@ -189,7 +189,7 @@ namespace TestSandBox.RestoredDeploymentTasks
                     _rootDeploymentTaskRunInfoList.Add(item);
 
 #if DEBUG
-                    _logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
+                    //_logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
 #endif
 
                     return item;
@@ -211,7 +211,7 @@ namespace TestSandBox.RestoredDeploymentTasks
                     }
 
 #if DEBUG
-                    _logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
+                    //_logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
 #endif
 
                     return item;
@@ -236,7 +236,7 @@ namespace TestSandBox.RestoredDeploymentTasks
                     parentTask.AddChildDeploymentTaskRunInfo(item);
 
 #if DEBUG
-                    _logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
+                    //_logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
 #endif
 
                     return item;
@@ -258,7 +258,7 @@ namespace TestSandBox.RestoredDeploymentTasks
                     }
 
 #if DEBUG
-                    _logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
+                    //_logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
 #endif
 
                     return item;
