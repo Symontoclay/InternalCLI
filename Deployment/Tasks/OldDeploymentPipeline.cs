@@ -21,6 +21,7 @@ namespace Deployment.Tasks
 
         private List<IOldDeploymentTask> _deploymentTasksList = new List<IOldDeploymentTask>();
 
+        /// <inheritdoc/>
         public bool IsValid
         {
             get

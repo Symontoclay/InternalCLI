@@ -31,6 +31,7 @@ namespace Deployment.Tasks
         /// <inheritdoc/>
         public bool? IsValid => _isValid;
 
+        /// <inheritdoc/>
         public IReadOnlyList<string> ValidationMessages => _validationMessages;
 
         /// <inheritdoc/>
