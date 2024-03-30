@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CoreToAsset
 {
-    public class CoreToAssetDevTask : BaseDeploymentTask
+    public class CoreToAssetDevTask : OldBaseDeploymentTask
     {
         public CoreToAssetDevTask()
             : this(0u)
@@ -54,7 +54,7 @@ namespace Deployment.DevTasks.CoreToAsset
         {
             using var tempDir = new TempDirectory();
 
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new CopyAndBuildVSProjectOrSolutionDevTask(new CopyAndBuildVSProjectOrSolutionDevTaskOptions()
             {

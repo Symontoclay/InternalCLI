@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateAndCommitLicenses
 {
-    public class CreateAndCommitLicensesDevTask : BaseDeploymentTask
+    public class CreateAndCommitLicensesDevTask : OldBaseDeploymentTask
     {
         public CreateAndCommitLicensesDevTask()
             : this(0u)

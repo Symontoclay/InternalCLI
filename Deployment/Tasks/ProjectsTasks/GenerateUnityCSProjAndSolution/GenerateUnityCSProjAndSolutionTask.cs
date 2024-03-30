@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.GenerateUnityCSProjAndSolution
 {
-    public class GenerateUnityCSProjAndSolutionTask : BaseDeploymentTask
+    public class GenerateUnityCSProjAndSolutionTask : OldBaseDeploymentTask
     {
         public GenerateUnityCSProjAndSolutionTask(GenerateUnityCSProjAndSolutionTaskOptions options)
             : this(options, 0u)

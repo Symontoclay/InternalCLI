@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ExamplesCreator
 {
-    public class BuildExamplesTask : BaseDeploymentTask
+    public class BuildExamplesTask : OldBaseDeploymentTask
     {
         public BuildExamplesTask(BuildExamplesTaskOptions options)
             : this(options, 0u)

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.DirectoriesTasks.CreateDirectory
 {
-    public class CreateDirectoryTask: BaseDeploymentTask
+    public class CreateDirectoryTask: OldBaseDeploymentTask
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.TestDeploymentTasks.ResetTestRepositories
 {
-    public class ResetTestRepositoriesTask : BaseDeploymentTask
+    public class ResetTestRepositoriesTask : OldBaseDeploymentTask
     {
         public ResetTestRepositoriesTask()
             : this(0u)

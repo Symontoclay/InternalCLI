@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildTasks.NuGetPack
 {
-    public class NuGetPackTask : BaseDeploymentTask
+    public class NuGetPackTask : OldBaseDeploymentTask
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 

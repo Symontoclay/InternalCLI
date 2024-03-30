@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.ReleaseTasks.MarkAsCompleted
 {
-    public class MarkAsCompletedReleaseTask : BaseDeploymentTask
+    public class MarkAsCompletedReleaseTask : OldBaseDeploymentTask
     {
         public MarkAsCompletedReleaseTask()
             : this(0u)

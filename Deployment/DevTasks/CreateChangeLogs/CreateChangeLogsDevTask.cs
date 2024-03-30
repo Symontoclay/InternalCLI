@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateChangeLogs
 {
-    public class CreateChangeLogsDevTask : BaseDeploymentTask
+    public class CreateChangeLogsDevTask : OldBaseDeploymentTask
     {
         public CreateChangeLogsDevTask()
             : this(0u)

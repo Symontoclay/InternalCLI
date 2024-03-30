@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.Add
 {
-    public class AddTask : BaseDeploymentTask
+    public class AddTask : OldBaseDeploymentTask
     {
         public AddTask(AddTaskOptions options, uint deep)
             : base(options, deep)

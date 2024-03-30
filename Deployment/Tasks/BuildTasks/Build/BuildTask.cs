@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildTasks.Build
 {
-    public class BuildTask : BaseDeploymentTask
+    public class BuildTask : OldBaseDeploymentTask
     {
         public BuildTask(BuildTaskOptions options)
             : this(options, 0u)

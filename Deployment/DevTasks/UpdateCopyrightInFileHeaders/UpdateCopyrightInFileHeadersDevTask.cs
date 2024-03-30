@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
 {
-    public class UpdateCopyrightInFileHeadersDevTask : BaseDeploymentTask
+    public class UpdateCopyrightInFileHeadersDevTask : OldBaseDeploymentTask
     {
         public UpdateCopyrightInFileHeadersDevTask(uint deep)
             : base(null, deep)

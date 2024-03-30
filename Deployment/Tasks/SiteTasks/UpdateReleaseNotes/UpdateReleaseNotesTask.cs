@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
 {
-    public class UpdateReleaseNotesTask : BaseDeploymentTask
+    public class UpdateReleaseNotesTask : OldBaseDeploymentTask
     {
 #if DEBUG
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ArchTasks.Zip
 {
-    public class ZipTask : BaseDeploymentTask
+    public class ZipTask : OldBaseDeploymentTask
     {
         public ZipTask(ZipTaskOptions options)
             : this(options, 0u)

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateTestAndCommitProjectsVersion
 {
-    public class UpdateTestAndCommitProjectsVersionDevTask : BaseDeploymentTask
+    public class UpdateTestAndCommitProjectsVersionDevTask : OldBaseDeploymentTask
     {
         public UpdateTestAndCommitProjectsVersionDevTask()
             : this(0u)

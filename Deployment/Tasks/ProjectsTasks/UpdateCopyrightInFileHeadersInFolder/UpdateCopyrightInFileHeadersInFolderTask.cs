@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInFolder
 {
-    public class UpdateCopyrightInFileHeadersInFolderTask : BaseDeploymentTask
+    public class UpdateCopyrightInFileHeadersInFolderTask : OldBaseDeploymentTask
     {
         public UpdateCopyrightInFileHeadersInFolderTask(UpdateCopyrightInFileHeadersInFolderTaskOptions options)
             : this(options, 0u)

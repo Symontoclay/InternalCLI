@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.ReleaseTasks.StartNewVersion
 {
-    public class StartNewVersionReleaseTask : BaseDeploymentTask
+    public class StartNewVersionReleaseTask : OldBaseDeploymentTask
     {
         public StartNewVersionReleaseTask(StartNewVersionReleaseTaskOptions options)
             : this(options, 0u)

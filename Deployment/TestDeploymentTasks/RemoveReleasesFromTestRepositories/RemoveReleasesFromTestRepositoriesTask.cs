@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.TestDeploymentTasks.RemoveReleasesFromTestRepositories
 {
-    public class RemoveReleasesFromTestRepositoriesTask : BaseDeploymentTask
+    public class RemoveReleasesFromTestRepositoriesTask : OldBaseDeploymentTask
     {
         public RemoveReleasesFromTestRepositoriesTask()
             : this(0u)

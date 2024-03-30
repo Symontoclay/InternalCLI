@@ -26,7 +26,7 @@ namespace Deployment.Helpers
 
         public static FutureReleaseInfo Read(string baseRepositoryPath)
         {
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new PullTask(new PullTaskOptions()
             {
@@ -56,7 +56,7 @@ namespace Deployment.Helpers
 
         public static FutureReleaseInfoSource ReadSource(string baseRepositoryPath)
         {
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new PullTask(new PullTaskOptions()
             {

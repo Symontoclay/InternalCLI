@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CopyAndBuildVSProjectOrSolution
 {
-    public class CopyAndBuildVSProjectOrSolutionDevTask : BaseDeploymentTask
+    public class CopyAndBuildVSProjectOrSolutionDevTask : OldBaseDeploymentTask
     {
         public CopyAndBuildVSProjectOrSolutionDevTask(CopyAndBuildVSProjectOrSolutionDevTaskOptions options)
             : this(options, 0u)
@@ -44,7 +44,7 @@ namespace Deployment.DevTasks.CopyAndBuildVSProjectOrSolution
 
             var tempProjectOrSoutionFileName = PathsHelper.Normalize(_options.ProjectOrSoutionFileName).Replace(PathsHelper.Normalize(slnFolder), PathsHelper.Normalize(tempDir.FullName));
 
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new CopySourceFilesOfVSSolutionTask(new CopySourceFilesOfVSSolutionTaskOptions()
             {

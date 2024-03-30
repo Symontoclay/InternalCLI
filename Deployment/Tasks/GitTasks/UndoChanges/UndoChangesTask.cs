@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.UndoChanges
 {
-    public class UndoChangesTask : BaseDeploymentTask
+    public class UndoChangesTask : OldBaseDeploymentTask
     {
         public UndoChangesTask(UndoChangesTaskOptions options)
             : this(options, 0u)

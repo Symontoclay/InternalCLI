@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.DevSiteFullBuild
 {
-    public class DevSiteFullBuildTask : BaseDeploymentTask
+    public class DevSiteFullBuildTask : OldBaseDeploymentTask
     {
         public DevSiteFullBuildTask()
             : this(0u)

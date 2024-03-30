@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateCodeOfConducts
 {
-    public class CreateCodeOfConductsDevTask : BaseDeploymentTask
+    public class CreateCodeOfConductsDevTask : OldBaseDeploymentTask
     {
         public CreateCodeOfConductsDevTask()
             : this(0u)

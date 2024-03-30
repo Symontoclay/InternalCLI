@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitHubTasks.GitHubRelease
 {
-    public class GitHubReleaseTask : BaseDeploymentTask
+    public class GitHubReleaseTask : OldBaseDeploymentTask
     {
         public GitHubReleaseTask(GitHubReleaseTaskOptions options)
             : this(options, 0u)

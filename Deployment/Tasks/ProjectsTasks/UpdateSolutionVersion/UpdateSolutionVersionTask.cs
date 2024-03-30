@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateSolutionVersion
 {
-    public class UpdateSolutionVersionTask : BaseDeploymentTask
+    public class UpdateSolutionVersionTask : OldBaseDeploymentTask
     {
         public UpdateSolutionVersionTask(UpdateSolutionVersionTaskOptions options)
             : this(options, 0u)

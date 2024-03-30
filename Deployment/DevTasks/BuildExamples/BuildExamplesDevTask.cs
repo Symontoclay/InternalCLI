@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.BuildExamples
 {
-    public class BuildExamplesDevTask : BaseDeploymentTask
+    public class BuildExamplesDevTask : OldBaseDeploymentTask
     {
         public BuildExamplesDevTask()
             : this(0u)

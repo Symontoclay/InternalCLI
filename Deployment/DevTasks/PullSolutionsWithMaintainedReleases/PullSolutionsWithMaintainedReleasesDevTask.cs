@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.PullSolutionsWithMaintainedReleases
 {
-    public class PullSolutionsWithMaintainedReleasesDevTask : BaseDeploymentTask
+    public class PullSolutionsWithMaintainedReleasesDevTask : OldBaseDeploymentTask
     {
         public PullSolutionsWithMaintainedReleasesDevTask()
             : this(0u)

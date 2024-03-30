@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CoreToSiteSource
 {
-    public class CoreToSiteSourceDevTask : BaseDeploymentTask
+    public class CoreToSiteSourceDevTask : OldBaseDeploymentTask
     {
         public CoreToSiteSourceDevTask()
             : this(0u)
@@ -56,7 +56,7 @@ namespace Deployment.DevTasks.CoreToSiteSource
             var destDir = Path.Combine(_options.SiteSourceDir, "CSharpApiFiles");
 
             using var tempDir = new TempDirectory();
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new CopyAndBuildVSProjectOrSolutionDevTask(new CopyAndBuildVSProjectOrSolutionDevTaskOptions()
             {

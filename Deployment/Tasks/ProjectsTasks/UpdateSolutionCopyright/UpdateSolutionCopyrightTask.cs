@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateSolutionCopyright
 {
-    public class UpdateSolutionCopyrightTask : BaseDeploymentTask
+    public class UpdateSolutionCopyrightTask : OldBaseDeploymentTask
     {
         public UpdateSolutionCopyrightTask(UpdateSolutionCopyrightTaskOptions options)
             : this(options, 0u)

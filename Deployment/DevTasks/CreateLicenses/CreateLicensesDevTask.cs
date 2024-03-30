@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateLicenses
 {
-    public class CreateLicensesDevTask : BaseDeploymentTask
+    public class CreateLicensesDevTask : OldBaseDeploymentTask
     {
         public CreateLicensesDevTask()
             : this(0u)

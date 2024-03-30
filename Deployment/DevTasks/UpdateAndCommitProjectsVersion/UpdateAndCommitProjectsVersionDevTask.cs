@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateAndCommitProjectsVersion
 {
-    public class UpdateAndCommitProjectsVersionDevTask : BaseDeploymentTask
+    public class UpdateAndCommitProjectsVersionDevTask : OldBaseDeploymentTask
     {
         public UpdateAndCommitProjectsVersionDevTask()
             : this(0u)

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.TestDeploymentTasks.CreateAndPushVersionBranchInTestRepositories
 {
-    public class CreateAndPushVersionBranchInTestRepositoriesTask : BaseDeploymentTask
+    public class CreateAndPushVersionBranchInTestRepositoriesTask : OldBaseDeploymentTask
     {
         public CreateAndPushVersionBranchInTestRepositoriesTask()
             : this(0u)

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildChangeLog
 {
-    public class BuildChangeLogTask : BaseDeploymentTask
+    public class BuildChangeLogTask : OldBaseDeploymentTask
     {
         public BuildChangeLogTask(BuildChangeLogTaskOptions options)
             : this(options, 0u)

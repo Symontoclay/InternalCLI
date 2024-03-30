@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateAndCommitCodeOfConducts
 {
-    public class CreateAndCommitCodeOfConductsDevTask : BaseDeploymentTask
+    public class CreateAndCommitCodeOfConductsDevTask : OldBaseDeploymentTask
     {
         public CreateAndCommitCodeOfConductsDevTask()
             : this(0u)

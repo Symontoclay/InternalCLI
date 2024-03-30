@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
 {
-    public class CopyTargetFilesTask : BaseDeploymentTask
+    public class CopyTargetFilesTask : OldBaseDeploymentTask
     {
         public CopyTargetFilesTask(CopyTargetFilesTaskOptions options, uint deep)
             : base(options, deep)

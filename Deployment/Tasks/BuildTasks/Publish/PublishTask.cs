@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildTasks.Publish
 {
-    public class PublishTask : BaseDeploymentTask
+    public class PublishTask : OldBaseDeploymentTask
     {
         public PublishTask(PublishTaskOptions options)
             : this(options, 0u)

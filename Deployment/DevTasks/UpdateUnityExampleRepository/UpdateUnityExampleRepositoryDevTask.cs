@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateUnityExampleRepository
 {
-    public class UpdateUnityExampleRepositoryDevTask : BaseDeploymentTask
+    public class UpdateUnityExampleRepositoryDevTask : OldBaseDeploymentTask
     {
 #if DEBUG
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();

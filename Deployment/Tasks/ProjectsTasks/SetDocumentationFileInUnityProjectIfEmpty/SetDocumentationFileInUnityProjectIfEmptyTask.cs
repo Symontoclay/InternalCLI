@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.SetDocumentationFileInUnityProjectIfEmpty
 {
-    public class SetDocumentationFileInUnityProjectIfEmptyTask : BaseDeploymentTask
+    public class SetDocumentationFileInUnityProjectIfEmptyTask : OldBaseDeploymentTask
     {
 #if DEBUG
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();

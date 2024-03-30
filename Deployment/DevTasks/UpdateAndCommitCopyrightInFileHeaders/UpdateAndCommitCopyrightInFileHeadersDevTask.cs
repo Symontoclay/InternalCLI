@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateAndCommitCopyrightInFileHeaders
 {
-    public class UpdateAndCommitCopyrightInFileHeadersDevTask : BaseDeploymentTask
+    public class UpdateAndCommitCopyrightInFileHeadersDevTask : OldBaseDeploymentTask
     {
         public UpdateAndCommitCopyrightInFileHeadersDevTask()
             : this(0u)

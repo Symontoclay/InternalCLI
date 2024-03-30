@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject
 {
-    public class CopySourceFilesOfVSSolutionTask : BaseDeploymentTask
+    public class CopySourceFilesOfVSSolutionTask : OldBaseDeploymentTask
     {
         public CopySourceFilesOfVSSolutionTask(CopySourceFilesOfVSSolutionTaskOptions options)
             : this(options, 0u)

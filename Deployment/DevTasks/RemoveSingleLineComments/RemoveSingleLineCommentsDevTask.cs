@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.RemoveSingleLineComments
 {
-    public class RemoveSingleLineCommentsDevTask : BaseDeploymentTask
+    public class RemoveSingleLineCommentsDevTask : OldBaseDeploymentTask
     {
         public RemoveSingleLineCommentsDevTask(RemoveSingleLineCommentsDevTaskOptions options)
             : this(options, 0u)

@@ -62,7 +62,7 @@ namespace TestSandBox
 
             _logger.Info($"siteSolution = {siteSolution}");
 
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new UpdateReleaseNotesDevTask());
 
@@ -98,7 +98,7 @@ namespace TestSandBox
 
             _logger.Info($"packageFilePath = {packageFilePath}");
 
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new GitHubReleaseTask(new GitHubReleaseTaskOptions() {
                 Token = token.Value,
@@ -125,7 +125,7 @@ namespace TestSandBox
 
         private void Case9()
         {
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new DeleteBranchTask(new DeleteBranchTaskOptions() {
                 RepositoryPath = _reposPath,
@@ -140,7 +140,7 @@ namespace TestSandBox
 
         private void Case8()
         {
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new CheckoutTask(new CheckoutTaskOptions()
             {
@@ -160,7 +160,7 @@ namespace TestSandBox
 
         private void Case7()
         {
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new PullTask(new PullTaskOptions() {
                 RepositoryPath = _reposPath
@@ -173,7 +173,7 @@ namespace TestSandBox
 
         private void Case6()
         {
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new PushTask(new PushTaskOptions() {
                 RepositoryPath = _reposPath
@@ -186,7 +186,7 @@ namespace TestSandBox
 
         private void Case5()
         {
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new CommitTask(new CommitTaskOptions() {
                 RepositoryPath = _reposPath,
@@ -200,7 +200,7 @@ namespace TestSandBox
 
         private void Case4()
         {
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new UndoChangesTask(new UndoChangesTaskOptions() {
                 RepositoryPath = _reposPath,
@@ -214,7 +214,7 @@ namespace TestSandBox
 
         private void Case3()
         {
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new PushNewBranchToOriginTask(new PushNewBranchToOriginTaskOptions() {
                 RepositoryPath = _reposPath,
@@ -228,7 +228,7 @@ namespace TestSandBox
 
         private void Case2()
         {
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new CheckoutTask(new CheckoutTaskOptions()
             {
@@ -250,7 +250,7 @@ namespace TestSandBox
                 return;
             }
 
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new CreateBranchTask(new CreateBranchTaskOptions()
             {

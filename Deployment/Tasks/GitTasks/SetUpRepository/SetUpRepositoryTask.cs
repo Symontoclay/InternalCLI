@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.SetUpRepository
 {
-    public class SetUpRepositoryTask : BaseDeploymentTask
+    public class SetUpRepositoryTask : OldBaseDeploymentTask
     {
         public SetUpRepositoryTask(SetUpRepositoryTaskOptions options)
             : this(options, 0u)

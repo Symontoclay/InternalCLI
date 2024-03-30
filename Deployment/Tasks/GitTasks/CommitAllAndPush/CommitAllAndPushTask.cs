@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.CommitAllAndPush
 {
-    public class CommitAllAndPushTask : BaseDeploymentTask
+    public class CommitAllAndPushTask : OldBaseDeploymentTask
     {
         public CommitAllAndPushTask(CommitAllAndPushTaskOptions options)
             : this(options, 0u)

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateAndCommitChangeLogs
 {
-    public class CreateAndCommitChangeLogsDevTask : BaseDeploymentTask
+    public class CreateAndCommitChangeLogsDevTask : OldBaseDeploymentTask
     {
         public CreateAndCommitChangeLogsDevTask()
             : this(0u)

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.UnityTasks.ExecuteMethod
 {
-    public class ExecuteMethodTask : BaseDeploymentTask
+    public class ExecuteMethodTask : OldBaseDeploymentTask
     {
         public ExecuteMethodTask(ExecuteMethodTaskOptions options)
             : this(options, 0u)

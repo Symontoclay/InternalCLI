@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
 {
-    public class CopyAllFromDirectoryTask : BaseDeploymentTask
+    public class CopyAllFromDirectoryTask : OldBaseDeploymentTask
     {
         public CopyAllFromDirectoryTask(CopyAllFromDirectoryTaskOptions options)
             : this(options, 0u)

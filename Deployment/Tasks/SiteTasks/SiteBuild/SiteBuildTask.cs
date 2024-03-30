@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.SiteTasks.SiteBuild
 {
-    public class SiteBuildTask: BaseDeploymentTask
+    public class SiteBuildTask: OldBaseDeploymentTask
     {
 #if DEBUG
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();

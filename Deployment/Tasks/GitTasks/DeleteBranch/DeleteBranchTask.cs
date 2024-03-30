@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.DeleteBranch
 {
-    public class DeleteBranchTask : BaseDeploymentTask
+    public class DeleteBranchTask : OldBaseDeploymentTask
     {
         public DeleteBranchTask(DeleteBranchTaskOptions options)
             : this(options, 0u)

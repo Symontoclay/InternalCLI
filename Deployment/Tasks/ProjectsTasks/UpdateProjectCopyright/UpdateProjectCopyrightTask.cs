@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateProjectCopyright
 {
-    public class UpdateProjectCopyrightTask : BaseDeploymentTask
+    public class UpdateProjectCopyrightTask : OldBaseDeploymentTask
     {
         public UpdateProjectCopyrightTask(UpdateProjectCopyrightTaskOptions options, uint deep)
             : base(options, deep)

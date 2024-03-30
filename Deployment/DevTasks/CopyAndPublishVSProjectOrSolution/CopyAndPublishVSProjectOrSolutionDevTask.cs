@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CopyAndPublishVSProjectOrSolution
 {
-    public class CopyAndPublishVSProjectOrSolutionDevTask : BaseDeploymentTask
+    public class CopyAndPublishVSProjectOrSolutionDevTask : OldBaseDeploymentTask
     {
 #if DEBUG
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -59,7 +59,7 @@ namespace Deployment.DevTasks.CopyAndPublishVSProjectOrSolution
             //_logger.Info($"tempProjectOrSoutionFileName = {tempProjectOrSoutionFileName}");
 #endif
 
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new CopySourceFilesOfVSSolutionTask(new CopySourceFilesOfVSSolutionTaskOptions()
             {

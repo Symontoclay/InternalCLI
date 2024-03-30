@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.TestDeploymentTasks.PrepareTestDeployment
 {
-    public class PrepareTestDeploymentTask : BaseDeploymentTask
+    public class PrepareTestDeploymentTask : OldBaseDeploymentTask
     {
         public PrepareTestDeploymentTask()
             : this(0u)

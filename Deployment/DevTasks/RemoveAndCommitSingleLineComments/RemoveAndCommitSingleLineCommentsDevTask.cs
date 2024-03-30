@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.RemoveAndCommitSingleLineComments
 {
-    public class RemoveAndCommitSingleLineCommentsDevTask : BaseDeploymentTask
+    public class RemoveAndCommitSingleLineCommentsDevTask : OldBaseDeploymentTask
     {
         private static RemoveAndCommitSingleLineCommentsOptions CreateDefaultOptions()
         {

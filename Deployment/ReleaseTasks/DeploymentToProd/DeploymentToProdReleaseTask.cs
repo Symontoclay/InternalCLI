@@ -19,7 +19,7 @@ using System.Text;
 
 namespace Deployment.ReleaseTasks.DeploymentToProd
 {
-    public class DeploymentToProdReleaseTask : BaseDeploymentTask
+    public class DeploymentToProdReleaseTask : OldBaseDeploymentTask
     {
         public DeploymentToProdReleaseTask()
             : this(0u)

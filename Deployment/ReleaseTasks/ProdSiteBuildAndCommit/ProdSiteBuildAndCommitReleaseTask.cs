@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.ReleaseTasks.ProdSiteBuildAndCommit
 {
-    public class ProdSiteBuildAndCommitReleaseTask : BaseDeploymentTask
+    public class ProdSiteBuildAndCommitReleaseTask : OldBaseDeploymentTask
     {
         public ProdSiteBuildAndCommitReleaseTask(uint deep)
             : base(null, deep)

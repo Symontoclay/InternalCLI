@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.PushNewBranchToOrigin
 {
-    public class PushNewBranchToOriginTask : BaseDeploymentTask
+    public class PushNewBranchToOriginTask : OldBaseDeploymentTask
     {
         public PushNewBranchToOriginTask(PushNewBranchToOriginTaskOptions options)
             : this(options, 0u)

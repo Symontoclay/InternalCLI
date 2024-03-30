@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildTasks.Test
 {
-    public class TestTask : BaseDeploymentTask
+    public class TestTask : OldBaseDeploymentTask
     {
         public TestTask(TestTaskOptions options)
             : this(options, 0u)

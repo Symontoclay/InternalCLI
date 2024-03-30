@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateUnityPackageVersion
 {
-    public class UpdateUnityPackageVersionTask : BaseDeploymentTask
+    public class UpdateUnityPackageVersionTask : OldBaseDeploymentTask
     {
         public UpdateUnityPackageVersionTask(UpdateUnityPackageVersionTaskOptions options)
             : this(options, 0u)

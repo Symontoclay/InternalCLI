@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.Pull
 {
-    public class PullTask : BaseDeploymentTask
+    public class PullTask : OldBaseDeploymentTask
     {
         public PullTask(PullTaskOptions options)
             : this(options, 0u)

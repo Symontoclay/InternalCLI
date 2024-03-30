@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.Checkout
 {
-    public class CheckoutTask : BaseDeploymentTask
+    public class CheckoutTask : OldBaseDeploymentTask
     {
         public CheckoutTask(CheckoutTaskOptions options)
             : this(options, 0u)

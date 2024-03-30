@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.UnityTasks.ExportPackage
 {
-    public class ExportPackageTask : BaseDeploymentTask
+    public class ExportPackageTask : OldBaseDeploymentTask
     {
         public ExportPackageTask(ExportPackageTaskOptions options)
             : this(options, 0u)

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.Commit
 {
-    public class CommitTask : BaseDeploymentTask
+    public class CommitTask : OldBaseDeploymentTask
     {
         public CommitTask(CommitTaskOptions options)
             : this(options, 0u)

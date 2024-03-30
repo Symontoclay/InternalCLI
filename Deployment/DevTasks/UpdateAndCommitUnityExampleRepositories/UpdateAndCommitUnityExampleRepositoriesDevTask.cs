@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories
 {
-    public class UpdateAndCommitUnityExampleRepositoriesDevTask : BaseDeploymentTask
+    public class UpdateAndCommitUnityExampleRepositoriesDevTask : OldBaseDeploymentTask
     {
         public UpdateAndCommitUnityExampleRepositoriesDevTask()
             : this(0u)

@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UnityToSiteSource
 {
-    public class UnityToSiteSourceDevTask : BaseDeploymentTask
+    public class UnityToSiteSourceDevTask : OldBaseDeploymentTask
     {
         private static UnityToSiteSourceDevTaskOptions CreateDefaultOptions()
         {
@@ -70,7 +70,7 @@ namespace Deployment.DevTasks.UnityToSiteSource
             var destDir = Path.Combine(_options.SiteSourceDir, "CSharpApiFiles");
 
             using var tempDir = new TempDirectory();
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new PrepareUnityCSProjAndSolutionTask(new PrepareUnityCSProjAndSolutionTaskOptions()
             {

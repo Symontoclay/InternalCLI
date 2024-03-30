@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.DevSiteBuild
 {
-    public class DevSiteBuildTask: BaseDeploymentTask
+    public class DevSiteBuildTask: OldBaseDeploymentTask
     {
         public DevSiteBuildTask()
             : this(0u)
@@ -51,7 +51,7 @@ namespace Deployment.DevTasks.DevSiteBuild
         protected override void OnRun()
         {
             using var tempDir = new TempDirectory();
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {

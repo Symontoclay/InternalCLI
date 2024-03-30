@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateContributings
 {
-    public class CreateContributingsDevTask : BaseDeploymentTask
+    public class CreateContributingsDevTask : OldBaseDeploymentTask
     {
         public CreateContributingsDevTask()
             : this(0u)

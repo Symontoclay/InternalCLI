@@ -9,9 +9,10 @@ using System.Text;
 
 namespace Deployment.Tasks
 {
-    public abstract class BaseDeploymentTask : IDeploymentTask
+    [Obsolete("It should be removed", true)]
+    public abstract class OldBaseDeploymentTask : IOldDeploymentTask
     {
-        protected BaseDeploymentTask(IObjectToString options, uint deep)
+        protected OldBaseDeploymentTask(IObjectToString options, uint deep)
         {
             _options = options;
             _deep = deep;
@@ -190,9 +191,9 @@ namespace Deployment.Tasks
             return sb.ToString();
         }
 
-        protected void Exec(IDeploymentTask deploymentTask)
+        protected void Exec(IOldDeploymentTask deploymentTask)
         {
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(deploymentTask);
 

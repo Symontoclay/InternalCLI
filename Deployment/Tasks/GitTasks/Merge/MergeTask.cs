@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.Merge
 {
-    public class MergeTask : BaseDeploymentTask
+    public class MergeTask : OldBaseDeploymentTask
     {
         public MergeTask(MergeTaskOptions options)
             : this(options, 0u)

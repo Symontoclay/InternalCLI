@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.TestDeploymentTasks.CopyAndCommitFromProdToTestRepositories
 {
-    public class CopyAndCommitFromProdToTestRepositoriesTask : BaseDeploymentTask
+    public class CopyAndCommitFromProdToTestRepositoriesTask : OldBaseDeploymentTask
     {
         public CopyAndCommitFromProdToTestRepositoriesTask()
             : this(0u)

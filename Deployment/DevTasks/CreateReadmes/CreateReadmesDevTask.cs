@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateReadmes
 {
-    public class CreateReadmesDevTask : BaseDeploymentTask
+    public class CreateReadmesDevTask : OldBaseDeploymentTask
     {
         public CreateReadmesDevTask()
             : this(0u)

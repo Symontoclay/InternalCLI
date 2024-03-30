@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildReadme
 {
-    public class BuildReadmeTask : BaseDeploymentTask
+    public class BuildReadmeTask : OldBaseDeploymentTask
     {
         public BuildReadmeTask(BuildReadmeTaskOptions options)
             : this(options, 0u)

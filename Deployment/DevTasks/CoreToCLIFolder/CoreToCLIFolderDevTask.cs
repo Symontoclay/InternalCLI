@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CoreToCLIFolder
 {
-    public class CoreToCLIFolderDevTask : BaseDeploymentTask
+    public class CoreToCLIFolderDevTask : OldBaseDeploymentTask
     {
         public CoreToCLIFolderDevTask()
             : this(0u)

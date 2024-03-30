@@ -22,7 +22,7 @@ namespace Deployment.Helpers
         {
             FutureReleaseInfoSource.SaveFile(Path.Combine(baseRepositoryPath, "FutureReleaseInfo.json"), futureReleaseInfoSource);
 
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new OldDeploymentPipeline();
 
             deploymentPipeline.Add(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {

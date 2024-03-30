@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateReleaseNotes
 {
-    public class UpdateReleaseNotesDevTask: BaseDeploymentTask
+    public class UpdateReleaseNotesDevTask: OldBaseDeploymentTask
     {
         public UpdateReleaseNotesDevTask()
             : this(0u)

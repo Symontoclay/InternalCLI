@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildCodeOfConduct
 {
-    public class BuildCodeOfConductTask : BaseDeploymentTask
+    public class BuildCodeOfConductTask : OldBaseDeploymentTask
     {
         public BuildCodeOfConductTask(BuildCodeOfConductTaskOptions options)
             : this(options, 0u)

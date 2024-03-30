@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.DevExportPackage
 {
-    public class DevExportPackageDevTask : BaseDeploymentTask
+    public class DevExportPackageDevTask : OldBaseDeploymentTask
     {
         public DevExportPackageDevTask()
             : this(0u)

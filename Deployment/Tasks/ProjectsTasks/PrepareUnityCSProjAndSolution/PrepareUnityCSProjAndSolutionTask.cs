@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution
 {
-    public class PrepareUnityCSProjAndSolutionTask : BaseDeploymentTask
+    public class PrepareUnityCSProjAndSolutionTask : OldBaseDeploymentTask
     {
         public PrepareUnityCSProjAndSolutionTask(PrepareUnityCSProjAndSolutionTaskOptions options)
             : this(options, 0u)

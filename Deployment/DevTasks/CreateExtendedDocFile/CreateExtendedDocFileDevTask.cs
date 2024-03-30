@@ -11,7 +11,7 @@ using XMLDocReader.CSharpDoc;
 
 namespace Deployment.DevTasks.CreateExtendedDocFile
 {
-    public class CreateExtendedDocFileDevTask : BaseDeploymentTask
+    public class CreateExtendedDocFileDevTask : OldBaseDeploymentTask
     {
         public CreateExtendedDocFileDevTask(CreateExtendedDocFileDevTaskOptions options)
             : this(options, 0u)

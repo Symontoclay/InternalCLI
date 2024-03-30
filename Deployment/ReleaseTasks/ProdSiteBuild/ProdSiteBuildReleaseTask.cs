@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.ReleaseTasks.ProdSiteBuild
 {
-    public class ProdSiteBuildReleaseTask : BaseDeploymentTask
+    public class ProdSiteBuildReleaseTask : OldBaseDeploymentTask
     {
         public ProdSiteBuildReleaseTask()
             : this(0u)

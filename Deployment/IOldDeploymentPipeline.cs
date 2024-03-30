@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace Deployment
 {
-    public interface IDeploymentPipeline : IObjectToString
+    [Obsolete("It should be removed", true)]
+    public interface IOldDeploymentPipeline : IObjectToString
     {
-        void Add(IDeploymentTask deploymentTask);
+        void Add(IOldDeploymentTask deploymentTask);
         bool IsValid { get; }
         void Run();
     }

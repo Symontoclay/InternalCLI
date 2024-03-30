@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildLicense
 {
-    public class BuildLicenseTask : BaseDeploymentTask
+    public class BuildLicenseTask : OldBaseDeploymentTask
     {
         public BuildLicenseTask(BuildLicenseTaskOptions options)
             : this(options, 0u)

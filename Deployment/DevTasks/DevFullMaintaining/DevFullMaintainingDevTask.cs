@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.DevFullMaintaining
 {
-    public class DevFullMaintainingDevTask : BaseDeploymentTask
+    public class DevFullMaintainingDevTask : OldBaseDeploymentTask
     {
         public DevFullMaintainingDevTask()
             : this(0u)

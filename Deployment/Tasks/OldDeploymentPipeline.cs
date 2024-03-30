@@ -8,17 +8,18 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks
 {
-    public class DeploymentPipeline: IDeploymentPipeline
+    [Obsolete("It should be removed", true)]
+    public class OldDeploymentPipeline: IOldDeploymentPipeline
     {
         /// <inheritdoc/>
-        public void Add(IDeploymentTask deploymentTask)
+        public void Add(IOldDeploymentTask deploymentTask)
         {
             deploymentTask.ValidateOptions();
 
             _deploymentTasksList.Add(deploymentTask);
         }
 
-        private List<IDeploymentTask> _deploymentTasksList = new List<IDeploymentTask>();
+        private List<IOldDeploymentTask> _deploymentTasksList = new List<IOldDeploymentTask>();
 
         public bool IsValid
         {

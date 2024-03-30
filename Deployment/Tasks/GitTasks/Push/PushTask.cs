@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.Push
 {
-    public class PushTask : BaseDeploymentTask
+    public class PushTask : OldBaseDeploymentTask
     {
         public PushTask(PushTaskOptions options)
             : this(options, 0u)

@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
 {
-    public class MergeReleaseBranchToMasterReleaseTask : BaseDeploymentTask
+    public class MergeReleaseBranchToMasterReleaseTask : OldBaseDeploymentTask
     {
         private static MergeReleaseBranchToMasterReleaseTaskOptions CreateOptions()
         {

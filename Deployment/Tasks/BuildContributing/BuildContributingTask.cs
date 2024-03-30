@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildContributing
 {
-    public class BuildContributingTask : BaseDeploymentTask
+    public class BuildContributingTask : OldBaseDeploymentTask
     {
         public BuildContributingTask(BuildContributingTaskOptions options)
             : this(options, 0u)

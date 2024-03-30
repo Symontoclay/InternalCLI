@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CoreToInternalCLIDist
 {
-    public class CoreToInternalCLIDistDevTask : BaseDeploymentTask
+    public class CoreToInternalCLIDistDevTask : OldBaseDeploymentTask
     {
         public CoreToInternalCLIDistDevTask()
             : this(0u)

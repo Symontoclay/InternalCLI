@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.Clone
 {
-    public class CloneTask : BaseDeploymentTask
+    public class CloneTask : OldBaseDeploymentTask
     {
         public CloneTask(CloneTaskOptions options)
             : this(options, 0u)

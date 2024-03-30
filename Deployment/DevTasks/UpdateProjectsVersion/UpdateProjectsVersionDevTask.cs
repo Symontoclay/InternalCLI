@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateProjectsVersion
 {
-    public class UpdateProjectsVersionDevTask : BaseDeploymentTask
+    public class UpdateProjectsVersionDevTask : OldBaseDeploymentTask
     {
 #if DEBUG
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();

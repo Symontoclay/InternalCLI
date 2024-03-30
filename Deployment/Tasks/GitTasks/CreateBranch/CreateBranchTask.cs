@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.CreateBranch
 {
-    public class CreateBranchTask : BaseDeploymentTask
+    public class CreateBranchTask : OldBaseDeploymentTask
     {
         public CreateBranchTask(CreateBranchTaskOptions options)
             : this(options, 0u)

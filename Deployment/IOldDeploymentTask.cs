@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Deployment
 {
-    public interface IDeploymentTask: IObjectToString
+    [Obsolete("It should be removed", true)]
+    public interface IOldDeploymentTask: IObjectToString
     {
         bool? IsValid { get; }
         IReadOnlyList<string> ValidationMessages { get; }

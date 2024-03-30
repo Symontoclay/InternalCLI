@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeaders
 {
-    public class UpdateCopyrightInFileHeadersTask : BaseDeploymentTask
+    public class UpdateCopyrightInFileHeadersTask : OldBaseDeploymentTask
     {
 #if DEBUG
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();

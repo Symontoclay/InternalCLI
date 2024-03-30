@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateProjectVersion
 {
-    public class UpdateProjectVersionTask : BaseDeploymentTask
+    public class UpdateProjectVersionTask : OldBaseDeploymentTask
     {
         public UpdateProjectVersionTask(UpdateProjectVersionTaskOptions options, uint deep)
             : base(options, deep)

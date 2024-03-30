@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.DevSiteFullBuildAndCommit
 {
-    public class DevSiteFullBuildAndCommitTask : BaseDeploymentTask
+    public class DevSiteFullBuildAndCommitTask : OldBaseDeploymentTask
     {
         public DevSiteFullBuildAndCommitTask()
             : this(0u)

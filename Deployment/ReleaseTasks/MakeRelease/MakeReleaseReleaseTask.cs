@@ -23,7 +23,7 @@ namespace Deployment.ReleaseTasks.MakeRelease
     /// It is the task that makes relese and closes version development!
     /// Be careful during using the task.
     /// </summary>
-    public class MakeReleaseReleaseTask : BaseDeploymentTask
+    public class MakeReleaseReleaseTask : OldBaseDeploymentTask
     {
         public MakeReleaseReleaseTask()
             : this(0u)
