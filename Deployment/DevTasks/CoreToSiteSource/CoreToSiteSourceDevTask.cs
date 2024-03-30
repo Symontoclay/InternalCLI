@@ -1,5 +1,7 @@
 ﻿using BaseDevPipeline;
+using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
 using Deployment.DevTasks.CreateExtendedDocFile;
 using Deployment.Tasks;
@@ -56,7 +58,7 @@ namespace Deployment.DevTasks.CoreToSiteSource
             var destDir = Path.Combine(_options.SiteSourceDir, "CSharpApiFiles");
 
             using var tempDir = new TempDirectory();
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CopyAndBuildVSProjectOrSolutionDevTask(new CopyAndBuildVSProjectOrSolutionDevTaskOptions()
             {

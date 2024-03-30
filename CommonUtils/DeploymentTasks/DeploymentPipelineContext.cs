@@ -87,7 +87,7 @@ namespace CommonUtils.DeploymentTasks
             }
         }
 
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly bool _useAutorestoring;
         private readonly string _directoryForAutorestoring;

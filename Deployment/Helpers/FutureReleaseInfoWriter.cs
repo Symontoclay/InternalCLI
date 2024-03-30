@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using BaseDevPipeline.SourceData;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
 using System;
@@ -22,7 +23,7 @@ namespace Deployment.Helpers
         {
             FutureReleaseInfoSource.SaveFile(Path.Combine(baseRepositoryPath, "FutureReleaseInfo.json"), futureReleaseInfoSource);
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {

@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Publish;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
@@ -59,7 +60,7 @@ namespace Deployment.DevTasks.CopyAndPublishVSProjectOrSolution
             //_logger.Info($"tempProjectOrSoutionFileName = {tempProjectOrSoutionFileName}");
 #endif
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CopySourceFilesOfVSSolutionTask(new CopySourceFilesOfVSSolutionTaskOptions()
             {

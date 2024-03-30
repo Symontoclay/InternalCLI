@@ -202,7 +202,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new PrepareTestDeploymentTask());
             //deploymentPipeline.Add(new ResetTestRepositoriesTask());
@@ -433,7 +433,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CreateExtendedDocFileDevTask(new CreateExtendedDocFileDevTaskOptions()
             {
@@ -480,7 +480,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new BuildExamplesDevTask());
 
@@ -495,7 +495,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CoreToInternalCLIDistDevTask());
 
@@ -576,7 +576,7 @@ namespace TestSandBox
 
             var lngExamplesPagesList = siteSettings.SiteSettings.LngExamplesPages;
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new BuildExamplesTask(new BuildExamplesTaskOptions() {
                 LngExamplesPages = lngExamplesPagesList,
@@ -664,7 +664,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new SetUpRepositoryTask(new SetUpRepositoryTaskOptions() {
                 RepositoryPath = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\__symontoclay.github.io")
@@ -708,7 +708,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new PrepareUnityCSProjAndSolutionTask(new PrepareUnityCSProjAndSolutionTaskOptions() {
                 UnityExeFilePath = @"c:\Program Files\Unity\Hub\Editor\2022.2.8f1\Editor\Unity.exe",
@@ -740,7 +740,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new UpdateAndCommitUnityExampleRepositoriesDevTask());
 
@@ -755,7 +755,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CloneTask(new CloneTaskOptions() {
                 RepositoryHref = "https://github.com/metatypeman/a1.git",
@@ -773,7 +773,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new UpdateUnityExampleRepositoryDevTask(new UpdateUnityExampleRepositoryDevTaskOptions() {
                 SourceRepository = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClayAsset"),
@@ -791,7 +791,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {
@@ -815,7 +815,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
             {
@@ -837,7 +837,7 @@ namespace TestSandBox
 
             _logger.Info($"siteSolution = {siteSolution}");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new BuildContributingTask(new BuildContributingTaskOptions() {
                 SiteSourcePath = siteSolution.SourcePath,
@@ -866,7 +866,7 @@ namespace TestSandBox
 
             _logger.Info($"repository = {repository}");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new BuildLicenseTask(new BuildLicenseTaskOptions() {
                 SiteSourcePath = siteSolution.SourcePath,
@@ -899,7 +899,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new BuildChangeLogTask(new BuildChangeLogTaskOptions() {
                 TargetChangeLogFileName = Path.Combine(Directory.GetCurrentDirectory(), "CHANGELOG.md"),
@@ -1012,7 +1012,7 @@ namespace TestSandBox
 
             _logger.Info($"targetFolder = {targetFolder}");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CopySourceFilesOfVSSolutionTask(new CopySourceFilesOfVSSolutionTaskOptions() {
                 SourceDir = slnFolder,
@@ -1206,7 +1206,7 @@ namespace TestSandBox
 
         private static void TstFinishRelease0_3_6_p()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             //Readmies
             deploymentPipeline.Add(new CreateAndCommitReadmesDevTask());
@@ -1237,7 +1237,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new DeploymentToProdReleaseTask());
 
@@ -1254,7 +1254,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new GitHubReleaseReleaseTask());
 
@@ -1367,7 +1367,7 @@ namespace TestSandBox
 
             _logger.Info($"sourceReadmePath = {sourceReadmePath}");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CreateReadmesDevTask());
 

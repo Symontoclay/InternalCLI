@@ -1,5 +1,7 @@
 ﻿using BaseDevPipeline;
+using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using CSharpUtils;
 using Deployment.DevTasks.CreateExtendedDocFile;
 using Deployment.Tasks;
@@ -70,7 +72,7 @@ namespace Deployment.DevTasks.UnityToSiteSource
             var destDir = Path.Combine(_options.SiteSourceDir, "CSharpApiFiles");
 
             using var tempDir = new TempDirectory();
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new PrepareUnityCSProjAndSolutionTask(new PrepareUnityCSProjAndSolutionTaskOptions()
             {

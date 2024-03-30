@@ -1,6 +1,8 @@
 ﻿using BaseDevPipeline;
 using CollectionsHelpers.CollectionsHelpers;
+using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Build;
@@ -54,7 +56,7 @@ namespace Deployment.DevTasks.CoreToAsset
         {
             using var tempDir = new TempDirectory();
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CopyAndBuildVSProjectOrSolutionDevTask(new CopyAndBuildVSProjectOrSolutionDevTaskOptions()
             {

@@ -1,5 +1,7 @@
 ﻿using BaseDevPipeline;
+using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using Deployment.Tasks.SiteTasks.SiteBuild;
@@ -51,7 +53,7 @@ namespace Deployment.DevTasks.DevSiteBuild
         protected override void OnRun()
         {
             using var tempDir = new TempDirectory();
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {

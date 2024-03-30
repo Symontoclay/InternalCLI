@@ -35,6 +35,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommonUtils.DeploymentTasks;
 
 namespace TestSandBox
 {
@@ -71,7 +72,7 @@ namespace TestSandBox
 
         private void Case17()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CreateAndCommitReadmesDevTask());
 
@@ -82,7 +83,7 @@ namespace TestSandBox
 
         private void Case16()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CreateReadmesDevTask());
 
@@ -117,7 +118,7 @@ namespace TestSandBox
 
             _logger.Info($"targetReadmeFileName = {targetReadmeFileName}");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new BuildReadmeTask(new BuildReadmeTaskOptions() {
                 SiteSourcePath = siteSolution.SourcePath,
@@ -137,7 +138,7 @@ namespace TestSandBox
 
         private void Case14()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             var version = "0.3.2";
 
@@ -160,7 +161,7 @@ namespace TestSandBox
 
         private void Case12()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new DevSiteBuildTask());
 
@@ -179,7 +180,7 @@ namespace TestSandBox
 
             //_logger.Info($"coreAssetLibProject = {coreAssetLibProject}");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CoreToSiteSourceDevTask(/*new CoreToSiteSourceDevTaskOptions() { 
                 CoreCProjPath = coreAssetLibProject.CsProjPath,
@@ -193,7 +194,7 @@ namespace TestSandBox
 
         private void Case10()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             var coreSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.CoreSolution);
 
@@ -216,7 +217,7 @@ namespace TestSandBox
 
         private void Case9()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             var license = ProjectsDataSourceFactory.GetLicense("MIT");
 
@@ -237,7 +238,7 @@ namespace TestSandBox
 
         private void Case8()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             var license = ProjectsDataSourceFactory.GetLicense("MIT");
 
@@ -255,7 +256,7 @@ namespace TestSandBox
 
         private void Case7()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             var targetFilesList = new List<string>() 
             {
@@ -283,7 +284,7 @@ namespace TestSandBox
             {
                 _logger.Info($"tempDir.FullName = {tempDir.FullName}");
 
-                var deploymentPipeline = new OldDeploymentPipeline();
+                var deploymentPipeline = new DeploymentPipeline();
 
                 var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
@@ -318,7 +319,7 @@ namespace TestSandBox
 
             _logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
 
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new UpdateReleaseNotesTask(new UpdateReleaseNotesTaskOptions() { 
                 FutureReleaseInfo = futureReleaseInfo,
@@ -339,7 +340,7 @@ namespace TestSandBox
 
         private void Case4()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {
@@ -367,7 +368,7 @@ namespace TestSandBox
 
         private void Case3()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {
@@ -389,7 +390,7 @@ namespace TestSandBox
 
         private void Case2()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions() {
                 TargetDir = "a", 
@@ -443,7 +444,7 @@ namespace TestSandBox
 
         private void Case1()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions() {
                 TargetDir = "a",

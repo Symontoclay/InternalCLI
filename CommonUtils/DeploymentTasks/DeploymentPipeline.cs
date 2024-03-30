@@ -33,7 +33,7 @@ namespace CommonUtils.DeploymentTasks
 #endif
         }
 
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <inheritdoc/>
         public IDeploymentPipelineContext Context { get; }

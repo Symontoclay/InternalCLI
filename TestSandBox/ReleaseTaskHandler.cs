@@ -1,4 +1,5 @@
 ﻿using CommonUtils;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.DevFullMaintaining;
 using Deployment.DevTasks.UpdateAndCommitCopyrightInFileHeaders;
 using Deployment.Helpers;
@@ -38,7 +39,7 @@ namespace TestSandBox
 
         private void Case8()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new GitHubReleaseReleaseTask(new GitHubReleaseReleaseTaskOptions() { 
                  Repositories = new List<GitHubRepositoryInfo>()
@@ -58,7 +59,7 @@ namespace TestSandBox
 
         private void Case7()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new ProdSiteBuildReleaseTask());
 
@@ -69,7 +70,7 @@ namespace TestSandBox
 
         private void Case6()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new MarkAsCompletedReleaseTask());
 
@@ -87,7 +88,7 @@ namespace TestSandBox
 
         private void Case4()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new UpdateAndCommitCopyrightInFileHeadersDevTask());
 
@@ -98,7 +99,7 @@ namespace TestSandBox
 
         private void Case3()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new DevFullMaintainingDevTask());
 
@@ -109,7 +110,7 @@ namespace TestSandBox
 
         private void Case2()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             //deploymentPipeline.Add(new MergeReleaseBranchToMasterReleaseTask());
 
@@ -120,7 +121,7 @@ namespace TestSandBox
 
         private void Case1()
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new MergeReleaseBranchToMasterReleaseTask(new MergeReleaseBranchToMasterReleaseTaskOptions() { 
                 Version = "0.3.2",

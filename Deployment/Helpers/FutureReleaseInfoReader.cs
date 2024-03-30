@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using BaseDevPipeline.SourceData;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.Pull;
 using NLog;
@@ -26,7 +27,7 @@ namespace Deployment.Helpers
 
         public static FutureReleaseInfo Read(string baseRepositoryPath)
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new PullTask(new PullTaskOptions()
             {
@@ -56,7 +57,7 @@ namespace Deployment.Helpers
 
         public static FutureReleaseInfoSource ReadSource(string baseRepositoryPath)
         {
-            var deploymentPipeline = new OldDeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new PullTask(new PullTaskOptions()
             {
