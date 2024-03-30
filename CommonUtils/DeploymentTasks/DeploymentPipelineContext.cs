@@ -1,6 +1,5 @@
-﻿using CommonUtils;
-using CommonUtils.DebugHelpers;
-using dotless.Core.Parser.Functions;
+﻿using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks.Serialization;
 using Newtonsoft.Json;
 using NLog;
 using System;
@@ -8,13 +7,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using TestSandBox.RestoredDeploymentTasks.Serialization;
 
-namespace TestSandBox.RestoredDeploymentTasks
+namespace CommonUtils.DeploymentTasks
 {
-    public class NewDeploymentPipelineContext: INewDeploymentPipelineContext
+    public class DeploymentPipelineContext : IDeploymentPipelineContext
     {
-        public NewDeploymentPipelineContext(NewDeploymentPipelineOptions options)
+        public DeploymentPipelineContext(DeploymentPipelineOptions options)
         {
 #if DEBUG
             //_logger.Info($"options = {options}");
@@ -22,9 +20,9 @@ namespace TestSandBox.RestoredDeploymentTasks
 
             _useAutorestoring = options.UseAutorestoring;
 
-            if(_useAutorestoring)
+            if (_useAutorestoring)
             {
-                if(string.IsNullOrWhiteSpace(options.Prefix))
+                if (string.IsNullOrWhiteSpace(options.Prefix))
                 {
                     _pipelineInfoFileName = _pipelineInfoInitialFileName;
                     _currentRunInfoFileName = _currentRunInfoInitialFileName;
@@ -37,7 +35,7 @@ namespace TestSandBox.RestoredDeploymentTasks
 
                 _directoryForAutorestoring = EVPath.Normalize(options.DirectoryForAutorestoring);
 
-                if(string.IsNullOrWhiteSpace(_directoryForAutorestoring))
+                if (string.IsNullOrWhiteSpace(_directoryForAutorestoring))
                 {
                     _directoryForAutorestoring = Directory.GetCurrentDirectory();
                 }
@@ -52,21 +50,21 @@ namespace TestSandBox.RestoredDeploymentTasks
                 //_logger.Info($"_pipelineInfoFileFullName = {_pipelineInfoFileFullName}");
 #endif
 
-                if(File.Exists(_pipelineInfoFileFullName))
+                if (File.Exists(_pipelineInfoFileFullName))
                 {
-                    _pipelineInfo = JsonConvert.DeserializeObject<NewPipelineInfo>(File.ReadAllText(_pipelineInfoFileFullName));
+                    _pipelineInfo = JsonConvert.DeserializeObject<PipelineInfo>(File.ReadAllText(_pipelineInfoFileFullName));
 
 #if DEBUG
                     //_logger.Info($"_pipelineInfo = {_pipelineInfo}");
 #endif
 
-                    if(_pipelineInfo.IsFinished ?? false)
+                    if (_pipelineInfo.IsFinished ?? false)
                     {
                         InitNewSession();
                     }
                     else
                     {
-                        if(options.StartFromBeginning)
+                        if (options.StartFromBeginning)
                         {
                             InitNewSession();
                         }
@@ -78,7 +76,7 @@ namespace TestSandBox.RestoredDeploymentTasks
                             //_logger.Info($"_currentRunInfoFileFullName = {_currentRunInfoFileFullName}");
 #endif
 
-                            _rootDeploymentTaskRunInfoList = JsonConvert.DeserializeObject<List<NewDeploymentTaskRunInfo>>(File.ReadAllText(_currentRunInfoFileFullName));
+                            _rootDeploymentTaskRunInfoList = JsonConvert.DeserializeObject<List<DeploymentTaskRunInfo>>(File.ReadAllText(_currentRunInfoFileFullName));
                         }
                     }
                 }
@@ -99,8 +97,8 @@ namespace TestSandBox.RestoredDeploymentTasks
         private readonly string _currentRunInfoInitialFileName = "pipelineCurentRunInfo.json";
         private readonly string _currentRunInfoFileName;
         private string _currentRunInfoFileFullName;
-        private NewPipelineInfo _pipelineInfo;
-        private List<NewDeploymentTaskRunInfo> _rootDeploymentTaskRunInfoList;
+        private PipelineInfo _pipelineInfo;
+        private List<DeploymentTaskRunInfo> _rootDeploymentTaskRunInfoList;
         private bool _isNewSession;
 
         /// <inheritdoc/>
@@ -112,7 +110,7 @@ namespace TestSandBox.RestoredDeploymentTasks
 
             _currentRunInfoFileFullName = Path.Combine(_directoryForAutorestoring, _currentRunInfoFileName);
 
-            _pipelineInfo = new NewPipelineInfo()
+            _pipelineInfo = new PipelineInfo()
             {
                 IsFinished = false,
                 LastRunInfo = _currentRunInfoFileFullName
@@ -120,7 +118,7 @@ namespace TestSandBox.RestoredDeploymentTasks
 
             SavePipelineInfo();
 
-            _rootDeploymentTaskRunInfoList = new List<NewDeploymentTaskRunInfo>();
+            _rootDeploymentTaskRunInfoList = new List<DeploymentTaskRunInfo>();
 
             SaveDeploymentTaskRunInfo();
         }
@@ -153,37 +151,37 @@ namespace TestSandBox.RestoredDeploymentTasks
         }
 
         /// <inheritdoc/>
-        public NewDeploymentTaskRunInfo GetDeploymentTaskRunInfo(string key, INewDeploymentTask parentTask)
+        public DeploymentTaskRunInfo GetDeploymentTaskRunInfo(string key, IDeploymentTask parentTask)
         {
 #if DEBUG
             //_logger.Info($"key = {key}");
             //_logger.Info($"parentTask = {parentTask}");
 #endif
 
-            if(!_useAutorestoring)
+            if (!_useAutorestoring)
             {
-                return new NewDeploymentTaskRunInfo()
+                return new DeploymentTaskRunInfo()
                 {
                     Key = key,
                     IsFinished = false,
-                    SubTaks = new List<NewDeploymentTaskRunInfo>()
+                    SubTaks = new List<DeploymentTaskRunInfo>()
                 };
             }
 
-            if(parentTask == null)
+            if (parentTask == null)
             {
-                if(_isNewSession)
+                if (_isNewSession)
                 {
-                    if(_rootDeploymentTaskRunInfoList.Any(p => p.Key == key))
+                    if (_rootDeploymentTaskRunInfoList.Any(p => p.Key == key))
                     {
                         throw new Exception($"The key '{key}' already exists in root list.");
                     }
 
-                    var item = new NewDeploymentTaskRunInfo()
+                    var item = new DeploymentTaskRunInfo()
                     {
                         Key = key,
                         IsFinished = false,
-                        SubTaks = new List<NewDeploymentTaskRunInfo>()
+                        SubTaks = new List<DeploymentTaskRunInfo>()
                     };
 
                     _rootDeploymentTaskRunInfoList.Add(item);
@@ -200,11 +198,11 @@ namespace TestSandBox.RestoredDeploymentTasks
 
                     if (item == null)
                     {
-                        item = new NewDeploymentTaskRunInfo()
+                        item = new DeploymentTaskRunInfo()
                         {
                             Key = key,
                             IsFinished = false,
-                            SubTaks = new List<NewDeploymentTaskRunInfo>()
+                            SubTaks = new List<DeploymentTaskRunInfo>()
                         };
 
                         _rootDeploymentTaskRunInfoList.Add(item);
@@ -221,16 +219,16 @@ namespace TestSandBox.RestoredDeploymentTasks
             {
                 if (_isNewSession)
                 {
-                    if(parentTask.ContainsChild(key))
+                    if (parentTask.ContainsChild(key))
                     {
                         throw new Exception($"The key '{key}' already exists in parent task with key '{parentTask.Key}'.");
                     }
 
-                    var item = new NewDeploymentTaskRunInfo()
+                    var item = new DeploymentTaskRunInfo()
                     {
                         Key = key,
                         IsFinished = false,
-                        SubTaks = new List<NewDeploymentTaskRunInfo>()
+                        SubTaks = new List<DeploymentTaskRunInfo>()
                     };
 
                     parentTask.AddChildDeploymentTaskRunInfo(item);
@@ -247,11 +245,11 @@ namespace TestSandBox.RestoredDeploymentTasks
 
                     if (item == null)
                     {
-                        item = new NewDeploymentTaskRunInfo()
+                        item = new DeploymentTaskRunInfo()
                         {
                             Key = key,
                             IsFinished = false,
-                            SubTaks = new List<NewDeploymentTaskRunInfo>()
+                            SubTaks = new List<DeploymentTaskRunInfo>()
                         };
 
                         parentTask.AddChildDeploymentTaskRunInfo(item);

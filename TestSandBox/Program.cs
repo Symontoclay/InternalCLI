@@ -66,6 +66,7 @@ using TestSandBox.XMLDoc;
 using XMLDocReader.CSharpDoc;
 using System.Reflection.Metadata;
 using TestSandBox.RestoredDeploymentTasks;
+using CommonUtils.DeploymentTasks;
 
 namespace TestSandBox
 {
@@ -158,7 +159,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new NewDeploymentPipeline(new NewDeploymentPipelineOptions()
+            var deploymentPipeline = new DeploymentPipeline(new DeploymentPipelineOptions()
             {
                 UseAutorestoring = true,
                 Prefix = "Hi"

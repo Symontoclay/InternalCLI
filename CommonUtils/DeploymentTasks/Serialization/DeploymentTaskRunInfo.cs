@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestSandBox.RestoredDeploymentTasks.Serialization
+namespace CommonUtils.DeploymentTasks.Serialization
 {
-    public class NewPipelineInfo : IObjectToString
+    public class DeploymentTaskRunInfo : IObjectToString
     {
+        public string Key { get; set; }
         public bool? IsFinished { get; set; }
-        public string LastRunInfo { get; set; }
+        public List<DeploymentTaskRunInfo> SubTaks { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -29,8 +30,9 @@ namespace TestSandBox.RestoredDeploymentTasks.Serialization
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
             sb.AppendLine($"{spaces}{nameof(IsFinished)} = {IsFinished}");
-            sb.AppendLine($"{spaces}{nameof(LastRunInfo)} = {LastRunInfo}");
+            sb.PrintObjListProp(n, nameof(SubTaks), SubTaks);
             return sb.ToString();
         }
     }

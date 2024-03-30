@@ -1,4 +1,5 @@
 ﻿using CommonUtils;
+using CommonUtils.DeploymentTasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace TestSandBox.RestoredDeploymentTasks
 {
-    public class SubItemNewDeploymentTask : NewBaseDeploymentTask
+    public class SubItemNewDeploymentTask : BaseDeploymentTask
     {
         public SubItemNewDeploymentTask(SubItemNewDeploymentTaskOptions options)
             : this(options, null, null)
         {
         }
 
-        public SubItemNewDeploymentTask(SubItemNewDeploymentTaskOptions options, INewDeploymentPipelineContext context, INewDeploymentTask parentTask)
+        public SubItemNewDeploymentTask(SubItemNewDeploymentTaskOptions options, IDeploymentPipelineContext context, IDeploymentTask parentTask)
             : base(context, MD5Helper.GetHash(options.DirectoryName), false, options, parentTask)
         {
             _options = options;

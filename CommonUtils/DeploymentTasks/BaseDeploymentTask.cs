@@ -1,21 +1,18 @@
 ﻿using CollectionsHelpers.CollectionsHelpers;
 using CommonUtils.DebugHelpers;
-using Deployment;
-using Deployment.Tasks;
-using dotless.Core.Parser.Infrastructure;
+using CommonUtils.DeploymentTasks.Serialization;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestSandBox.RestoredDeploymentTasks.Serialization;
 
-namespace TestSandBox.RestoredDeploymentTasks
+namespace CommonUtils.DeploymentTasks
 {
-    public abstract class NewBaseDeploymentTask : INewDeploymentTask
+    public abstract class BaseDeploymentTask : IDeploymentTask
     {
-        protected NewBaseDeploymentTask(INewDeploymentPipelineContext context, string key, bool shouldBeSkeepedDuringRestoring, IObjectToString options, INewDeploymentTask parentTask)
+        protected BaseDeploymentTask(IDeploymentPipelineContext context, string key, bool shouldBeSkeepedDuringRestoring, IObjectToString options, IDeploymentTask parentTask)
         {
 #if DEBUG
             //_logger.Info($"key = '{key}'");
@@ -30,29 +27,29 @@ namespace TestSandBox.RestoredDeploymentTasks
             _deep = parentTask?.NextDeep ?? 0u;
         }
 
-        protected readonly INewDeploymentPipelineContext _context;
+        protected readonly IDeploymentPipelineContext _context;
         private readonly string _key;
         private readonly bool _shouldBeSkeepedDuringRestoring;
         private readonly IObjectToString _options;
-        private INewDeploymentTask _parentTask;
+        private IDeploymentTask _parentTask;
         private readonly uint _deep;
         protected readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private bool? _isValid;
         private List<string> _validationMessages = new List<string>();
-        private NewDeploymentTaskRunInfo _currentDeploymentTaskRunInfo;
+        private DeploymentTaskRunInfo _currentDeploymentTaskRunInfo;
 
         /// <inheritdoc/>
         public string Key => _key;
 
         /// <inheritdoc/>
-        public void SetParentTask(INewDeploymentTask parentTask)
+        public void SetParentTask(IDeploymentTask parentTask)
         {
             _parentTask = parentTask;
         }
 
         /// <inheritdoc/>
-        public NewDeploymentTaskRunInfo GetChildDeploymentTaskRunInfo(string key)
+        public DeploymentTaskRunInfo GetChildDeploymentTaskRunInfo(string key)
         {
             return _currentDeploymentTaskRunInfo?.SubTaks.SingleOrDefault(p => p.Key == key);
         }
@@ -64,7 +61,7 @@ namespace TestSandBox.RestoredDeploymentTasks
         }
 
         /// <inheritdoc/>
-        public void AddChildDeploymentTaskRunInfo(NewDeploymentTaskRunInfo item)
+        public void AddChildDeploymentTaskRunInfo(DeploymentTaskRunInfo item)
         {
             _currentDeploymentTaskRunInfo?.SubTaks.Add(item);
         }
@@ -258,9 +255,9 @@ namespace TestSandBox.RestoredDeploymentTasks
             return sb.ToString();
         }
 
-        protected void Exec(INewDeploymentTask deploymentTask)
+        protected void Exec(IDeploymentTask deploymentTask)
         {
-            var deploymentPipeline = new NewDeploymentPipeline(_context);
+            var deploymentPipeline = new DeploymentPipeline(_context);
 
             deploymentPipeline.Add(deploymentTask);
 

@@ -1,34 +1,32 @@
 ﻿using CommonUtils.DebugHelpers;
-using Deployment;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace TestSandBox.RestoredDeploymentTasks
+namespace CommonUtils.DeploymentTasks
 {
-    public class NewDeploymentPipeline: INewDeploymentPipeline
+    public class DeploymentPipeline : IDeploymentPipeline
     {
-        public NewDeploymentPipeline(INewDeploymentPipelineContext context)
+        public DeploymentPipeline(IDeploymentPipelineContext context)
         {
             Context = context;
         }
 
-        public NewDeploymentPipeline(NewDeploymentPipelineOptions options = null)
+        public DeploymentPipeline(DeploymentPipelineOptions options = null)
         {
 #if DEBUG
             //_logger.Info($"options = {options}");
 #endif
 
-            options ??= new NewDeploymentPipelineOptions();
+            options ??= new DeploymentPipelineOptions();
 
 #if DEBUG
             //_logger.Info($"options (after) = {options}");
 #endif
 
-            Context = new NewDeploymentPipelineContext(options);
+            Context = new DeploymentPipelineContext(options);
 
 #if DEBUG
             //_logger.Info($"Context = {Context}");
@@ -38,17 +36,17 @@ namespace TestSandBox.RestoredDeploymentTasks
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <inheritdoc/>
-        public INewDeploymentPipelineContext Context { get; }
+        public IDeploymentPipelineContext Context { get; }
 
         /// <inheritdoc/>
-        public void Add(INewDeploymentTask deploymentTask)
+        public void Add(IDeploymentTask deploymentTask)
         {
             deploymentTask.ValidateOptions();
 
             _deploymentTasksList.Add(deploymentTask);
         }
 
-        private List<INewDeploymentTask> _deploymentTasksList = new List<INewDeploymentTask>();
+        private List<IDeploymentTask> _deploymentTasksList = new List<IDeploymentTask>();
 
         /// <inheritdoc/>
         public bool IsValid

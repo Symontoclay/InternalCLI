@@ -1,15 +1,10 @@
-﻿using CommonUtils;
-using NLog;
+﻿using NLog;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Deployment
+namespace CommonUtils
 {
-    public class TempDirectory: Disposable
+    public class TempDirectory : Disposable
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -37,11 +32,12 @@ namespace Deployment
                 try
                 {
                     Directory.Delete(_dir, true);
-                }catch
+                }
+                catch
                 {
                     _logger.Info($"Directory '{_dir}' has not been deleted.");
                 }
-            }            
+            }
         }
     }
 }

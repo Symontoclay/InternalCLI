@@ -1,14 +1,13 @@
 ﻿using CommonUtils.DebugHelpers;
 using System;
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestSandBox.RestoredDeploymentTasks
+namespace CommonUtils.DeploymentTasks
 {
-    public class NewDeploymentPipelineOptions : IObjectToString
+    public class DeploymentPipelineOptions : IObjectToString
     {
         public bool UseAutorestoring { get; set; }
         public string DirectoryForAutorestoring { get; set; }
