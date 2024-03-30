@@ -41,6 +41,7 @@ namespace CommonUtils.DeploymentTasks
         /// <inheritdoc/>
         public void Add(IDeploymentTask deploymentTask)
         {
+            deploymentTask.SetContext(Context);
             deploymentTask.ValidateOptions();
 
             _deploymentTasksList.Add(deploymentTask);

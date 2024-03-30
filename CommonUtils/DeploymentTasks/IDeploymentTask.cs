@@ -6,6 +6,7 @@ namespace CommonUtils.DeploymentTasks
 {
     public interface IDeploymentTask : IObjectToString
     {
+        void SetContext(IDeploymentPipelineContext context);
         void SetParentTask(IDeploymentTask parentTask);
         bool? IsValid { get; }
         IReadOnlyList<string> ValidationMessages { get; }

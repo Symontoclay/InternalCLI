@@ -11,12 +11,12 @@ namespace TestSandBox.RestoredDeploymentTasks
     public class SubItemNewDeploymentTask : BaseDeploymentTask
     {
         public SubItemNewDeploymentTask(SubItemNewDeploymentTaskOptions options)
-            : this(options, null, null)
+            : this(options, null)
         {
         }
 
-        public SubItemNewDeploymentTask(SubItemNewDeploymentTaskOptions options, IDeploymentPipelineContext context, IDeploymentTask parentTask)
-            : base(context, MD5Helper.GetHash(options.DirectoryName), false, options, parentTask)
+        public SubItemNewDeploymentTask(SubItemNewDeploymentTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.DirectoryName), false, options, parentTask)
         {
             _options = options;
         }

@@ -12,14 +12,13 @@ namespace CommonUtils.DeploymentTasks
 {
     public abstract class BaseDeploymentTask : IDeploymentTask
     {
-        protected BaseDeploymentTask(IDeploymentPipelineContext context, string key, bool shouldBeSkeepedDuringRestoring, IObjectToString options, IDeploymentTask parentTask)
+        protected BaseDeploymentTask(string key, bool shouldBeSkeepedDuringRestoring, IObjectToString options, IDeploymentTask parentTask)
         {
 #if DEBUG
             //_logger.Info($"key = '{key}'");
             //_logger.Info($"shouldBeSkeepedDuringRestoring = {shouldBeSkeepedDuringRestoring}");
 #endif
 
-            _context = context;
             _key = key;
             _shouldBeSkeepedDuringRestoring = shouldBeSkeepedDuringRestoring;
             _options = options;
@@ -27,7 +26,7 @@ namespace CommonUtils.DeploymentTasks
             _deep = parentTask?.NextDeep ?? 0u;
         }
 
-        protected readonly IDeploymentPipelineContext _context;
+        protected IDeploymentPipelineContext _context;
         private readonly string _key;
         private readonly bool _shouldBeSkeepedDuringRestoring;
         private readonly IObjectToString _options;
@@ -41,6 +40,12 @@ namespace CommonUtils.DeploymentTasks
 
         /// <inheritdoc/>
         public string Key => _key;
+
+        /// <inheritdoc/>
+        public void SetContext(IDeploymentPipelineContext context)
+        {
+            _context = context;
+        }
 
         /// <inheritdoc/>
         public void SetParentTask(IDeploymentTask parentTask)
