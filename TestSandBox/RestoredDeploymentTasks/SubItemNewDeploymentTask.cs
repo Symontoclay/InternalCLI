@@ -1,4 +1,5 @@
 ﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
 using System;
 using System.Collections.Generic;
@@ -38,5 +39,18 @@ namespace TestSandBox.RestoredDeploymentTasks
         }
 
         private static int _n;
+
+        /// <inheritdoc/>
+        protected override string PropertiesToString(uint n)
+        {
+            var spaces = DisplayHelper.Spaces(n);
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"{spaces}Do something with '{_options.DirectoryName}'.");
+
+            sb.Append(PrintValidation(n));
+
+            return sb.ToString();
+        }
     }
 }

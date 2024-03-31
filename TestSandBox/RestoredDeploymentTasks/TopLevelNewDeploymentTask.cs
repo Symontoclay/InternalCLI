@@ -1,4 +1,5 @@
-﻿using CommonUtils.DeploymentTasks;
+﻿using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,19 @@ namespace TestSandBox.RestoredDeploymentTasks
             Exec(new TopSubItemNewDeploymentTask(new TopSubItemNewDeploymentTaskOptions(), "143DEB1D-97E5-44B0-B1FF-5CA85A6A0818", this));
 
             _logger.Info("End");
+        }
+
+        /// <inheritdoc/>
+        protected override string PropertiesToString(uint n)
+        {
+            var spaces = DisplayHelper.Spaces(n);
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"{spaces}Do someting.");
+
+            sb.Append(PrintValidation(n));
+
+            return sb.ToString();
         }
     }
 }

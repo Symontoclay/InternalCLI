@@ -1,4 +1,5 @@
-﻿using CommonUtils.DeploymentTasks;
+﻿using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,19 @@ namespace TestSandBox.RestoredDeploymentTasks
             });
 
             _logger.Info("End");
+        }
+
+        /// <inheritdoc/>
+        protected override string PropertiesToString(uint n)
+        {
+            var spaces = DisplayHelper.Spaces(n);
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"{spaces}Do someting.");
+
+            sb.Append(PrintValidation(n));
+
+            return sb.ToString();
         }
     }
 }

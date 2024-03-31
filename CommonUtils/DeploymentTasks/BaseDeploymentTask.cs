@@ -231,6 +231,12 @@ namespace CommonUtils.DeploymentTasks
             return this.GetDefaultToStringInformation(n);
         }
 
+        /// <inheritdoc/>
+        string IObjectToString.PropertiesToString(uint n)
+        {
+            return PropertiesToString(n);
+        }
+
         protected abstract string PropertiesToString(uint n);
 
         protected string PrintValidation(uint n)

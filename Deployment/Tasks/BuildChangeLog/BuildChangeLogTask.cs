@@ -1,4 +1,6 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Newtonsoft.Json;
 using NLog;
 using SiteBuilder.SiteData;
@@ -11,15 +13,15 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildChangeLog
 {
-    public class BuildChangeLogTask : OldBaseDeploymentTask
+    public class BuildChangeLogTask : BaseDeploymentTask
     {
         public BuildChangeLogTask(BuildChangeLogTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public BuildChangeLogTask(BuildChangeLogTaskOptions options, uint deep)
-            : base(options, deep)
+        public BuildChangeLogTask(BuildChangeLogTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.TargetChangeLogFileName), false, options, parentTask)
         {
             _options = options;
         }

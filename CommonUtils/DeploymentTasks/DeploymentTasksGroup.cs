@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using CommonUtils.DebugHelpers;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace CommonUtils.DeploymentTasks
 {
@@ -29,6 +31,23 @@ namespace CommonUtils.DeploymentTasks
             }
 
             //_logger.Info("End");
+        }
+
+        /// <inheritdoc/>
+        protected override string PropertiesToString(uint n)
+        {
+            var spaces = DisplayHelper.Spaces(n);
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"{spaces}Executes eash of SubItems:");
+            //foreach (var subItem in SubItems ?? Enumerable.Empty<IDeploymentTask>())
+            //{
+
+            //}
+
+            sb.Append(PrintValidation(n));
+
+            return sb.ToString();
         }
     }
 }
