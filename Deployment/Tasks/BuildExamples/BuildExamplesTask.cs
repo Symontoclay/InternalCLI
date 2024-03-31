@@ -1,28 +1,26 @@
 ﻿using CollectionsHelpers.CollectionsHelpers;
 using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Deployment.Tasks.BuildExamples;
-using NLog;
 using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ExamplesCreator
 {
-    public class BuildExamplesTask : OldBaseDeploymentTask
+    public class BuildExamplesTask : BaseDeploymentTask
     {
         public BuildExamplesTask(BuildExamplesTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public BuildExamplesTask(BuildExamplesTaskOptions options, uint deep)
-            : base(options, deep)
+        public BuildExamplesTask(BuildExamplesTaskOptions options, IDeploymentTask parentTask)
+            : base("740B1C0A-D30A-4081-9986-0EF9BB9C9F4A", true, options, parentTask)
         {
             _options = options;
         }

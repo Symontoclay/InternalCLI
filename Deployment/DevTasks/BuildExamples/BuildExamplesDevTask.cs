@@ -1,25 +1,21 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.ExamplesCreator;
 using SiteBuilder;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.BuildExamples
 {
-    public class BuildExamplesDevTask : OldBaseDeploymentTask
+    public class BuildExamplesDevTask : BaseDeploymentTask
     {
         public BuildExamplesDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public BuildExamplesDevTask(uint deep)
-            : base(null, deep)
+        public BuildExamplesDevTask(IDeploymentTask parentTask)
+            : base("7D323BB6-2957-4A01-B93B-75904A866E9B", true, null, parentTask)
         {
         }
 
@@ -45,7 +41,7 @@ namespace Deployment.DevTasks.BuildExamples
                 DestDir = siteSettings.SiteSettings.LngExamplesPath,
                 SocExePath = settings.SocExePath,
                 CacheDir = siteSettings.SiteSettings.LngExamplesCachePath
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

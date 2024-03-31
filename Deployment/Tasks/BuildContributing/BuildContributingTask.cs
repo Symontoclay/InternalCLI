@@ -1,24 +1,22 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildContributing
 {
-    public class BuildContributingTask : OldBaseDeploymentTask
+    public class BuildContributingTask : BaseDeploymentTask
     {
         public BuildContributingTask(BuildContributingTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public BuildContributingTask(BuildContributingTaskOptions options, uint deep)
-            : base(options, deep)
+        public BuildContributingTask(BuildContributingTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.TargetFileName), false, options, parentTask)
         {
             _options = options;
         }
