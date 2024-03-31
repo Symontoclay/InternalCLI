@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.Checkout
 {
-    public class CheckoutTask : OldBaseDeploymentTask
+    public class CheckoutTask : BaseDeploymentTask
     {
         public CheckoutTask(CheckoutTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public CheckoutTask(CheckoutTaskOptions options, uint deep)
-            : base(options, deep)
+        public CheckoutTask(CheckoutTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.RepositoryPath), false, options, parentTask)
         {
             _options = options;
         }

@@ -1,29 +1,21 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
-using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Test;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
-using dotless.Core.Parser.Infrastructure;
-using NLog;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CopyAndTest
 {
-    public class CopyAndTestDevTask : OldBaseDeploymentTask
+    public class CopyAndTestDevTask : BaseDeploymentTask
     {
         public CopyAndTestDevTask(CopyAndTestDevTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public CopyAndTestDevTask(CopyAndTestDevTaskOptions options, uint deep)
-             : base(options, deep)
+        public CopyAndTestDevTask(CopyAndTestDevTaskOptions options, IDeploymentTask parentTask)
+             : base(MD5Helper.GetHash(options.ProjectOrSoutionFileName), false, options, parentTask)
         {
             _options = options;
         }
@@ -52,7 +44,7 @@ namespace Deployment.DevTasks.CopyAndTest
             {
                 SourceDir = slnFolder,
                 DestDir = tempDir.FullName
-            }, NextDeep));
+            }, this));
 
             deploymentPipeline.Add(new TestTask(new TestTaskOptions()
             {
@@ -61,7 +53,7 @@ namespace Deployment.DevTasks.CopyAndTest
                 OutputDir = _options.OutputDir,
                 NoLogo = _options.NoLogo,
                 RuntimeIdentifier = _options.RuntimeIdentifier
-            }, NextDeep));
+            }, this));
 
             deploymentPipeline.Run();
         }

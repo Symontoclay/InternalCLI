@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -10,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.CreateBranch
 {
-    public class CreateBranchTask : OldBaseDeploymentTask
+    public class CreateBranchTask : BaseDeploymentTask
     {
         public CreateBranchTask(CreateBranchTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public CreateBranchTask(CreateBranchTaskOptions options, uint deep)
-            : base(options, deep)
+        public CreateBranchTask(CreateBranchTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.RepositoryPath), true, options, parentTask)
         {
             _options = options;
         }

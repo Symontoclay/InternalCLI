@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -10,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.SetUpRepository
 {
-    public class SetUpRepositoryTask : OldBaseDeploymentTask
+    public class SetUpRepositoryTask : BaseDeploymentTask
     {
         public SetUpRepositoryTask(SetUpRepositoryTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public SetUpRepositoryTask(SetUpRepositoryTaskOptions options, uint deep)
-            : base(options, deep)
+        public SetUpRepositoryTask(SetUpRepositoryTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.RepositoryPath), false, options, parentTask)
         {
             _options = options;
         }

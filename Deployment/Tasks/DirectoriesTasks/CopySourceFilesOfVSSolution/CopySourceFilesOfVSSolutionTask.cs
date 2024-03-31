@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject
 {
-    public class CopySourceFilesOfVSSolutionTask : OldBaseDeploymentTask
+    public class CopySourceFilesOfVSSolutionTask : BaseDeploymentTask
     {
         public CopySourceFilesOfVSSolutionTask(CopySourceFilesOfVSSolutionTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public CopySourceFilesOfVSSolutionTask(CopySourceFilesOfVSSolutionTaskOptions options, uint deep)
-            : base(options, deep)
+        public CopySourceFilesOfVSSolutionTask(CopySourceFilesOfVSSolutionTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.SourceDir), false, options, parentTask)
         {
             _options = options;
         }

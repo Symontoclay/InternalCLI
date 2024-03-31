@@ -1,25 +1,22 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CopyAndTest;
 using Deployment.Helpers;
-using Deployment.Tasks;
-using Deployment.Tasks.BuildTasks.Test;
 using Deployment.Tasks.GitTasks.Checkout;
 using Deployment.Tasks.GitTasks.CreateBranch;
 using Deployment.Tasks.GitTasks.DeleteBranch;
 using Deployment.Tasks.GitTasks.Merge;
 using Deployment.Tasks.GitTasks.Push;
-using Newtonsoft.Json;
-using NLog;
+using Octokit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
 {
-    public class MergeReleaseBranchToMasterReleaseTask : OldBaseDeploymentTask
+    public class MergeReleaseBranchToMasterReleaseTask : BaseDeploymentTask
     {
         private static MergeReleaseBranchToMasterReleaseTaskOptions CreateOptions()
         {
@@ -48,17 +45,17 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
         }
 
         public MergeReleaseBranchToMasterReleaseTask(MergeReleaseBranchToMasterReleaseTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public MergeReleaseBranchToMasterReleaseTask(uint deep)
-            : this(CreateOptions(), deep)
+        public MergeReleaseBranchToMasterReleaseTask(IDeploymentTask parentTask)
+            : this(CreateOptions(), parentTask)
         {
         }
 
-        public MergeReleaseBranchToMasterReleaseTask(MergeReleaseBranchToMasterReleaseTaskOptions options, uint deep)
-            : base(options, deep)
+        public MergeReleaseBranchToMasterReleaseTask(MergeReleaseBranchToMasterReleaseTaskOptions options, IDeploymentTask parentTask)
+            : base("FA1ACB62-22B4-4C61-BD33-89AABA8D9A07", true, options, parentTask)
         {
             _options = options;
         }
@@ -87,22 +84,44 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
             {
                 CheckOut(versionBranchName);
 
-                foreach(var projPath in projectsForTesting)
+                Exec(new DeploymentTasksGroup("2E48A168-7C39-4BB7-A41F-480ED56E6AA7", false, this)
                 {
-                    Exec(new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
+                    SubItems = projectsForTesting.Select(projPath => new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
                     {
                         ProjectOrSoutionFileName = projPath
-                    }, NextDeep));
-                }
+                    }, this))
+                });
             }
-
-            CheckOut(_masterBranchName);
 
             var masterBackupBranchName = $"master_backup_before_{_options.Version}_{DateTime.Now:yyyy_MM_dd_HH_mm}";
 
-            CreateBranch(masterBackupBranchName);
+            Exec(new DeploymentTasksGroup("1EE1DE7F-CDFD-4E1B-AD97-A38B592448B4", true, this)
+            {
+                SubItems = new List<IDeploymentTask>()
+                {
+                    new DeploymentTasksGroup("8FF3698D-0F48-4A74-816F-C24A5D2E4D81", true, this)
+                    {
+                        SubItems = CreateCheckOutTasks(_masterBranchName)
+                    },
+                    new DeploymentTasksGroup("52B83F28-444F-47F7-875F-770155E2584E", true, this)
+                    {
+                        SubItems = CreateBranchTasks(masterBackupBranchName)
+                    }
+                }
+            });
 
             var releaseBranchName = $"release_{_options.Version}_{DateTime.Now:yyyy_MM_dd_HH_mm}";
+
+            Exec(new DeploymentTasksGroup()
+            {
+                SubItems = new List<IDeploymentTask>()
+                {
+                    new DeploymentTasksGroup(),
+                    new DeploymentTasksGroup(),
+                    new DeploymentTasksGroup(),
+                    new DeploymentTasksGroup()
+                }
+            });
 
             CreateBranch(releaseBranchName);
 
@@ -127,6 +146,8 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                     }, NextDeep));
                 }
             }
+
+            Exec(new DeploymentTasksGroup());
 
             CheckOut(_masterBranchName);
 
@@ -158,6 +179,8 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                 }, NextDeep));
             }
 
+            Exec(new DeploymentTasksGroup());
+
             foreach (var repository in _options.Repositories)
             {
                 Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
@@ -183,27 +206,37 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
             }
         }
 
+        private IEnumerable<IDeploymentTask> CreateCheckOutTasks(string branchName)
+        {
+            return _options.Repositories.Select(repository => new CheckoutTask(new CheckoutTaskOptions()
+            {
+                RepositoryPath = repository.RepositoryPath,
+                BranchName = branchName
+            }, this));
+        }
+
         private void CheckOut(string branchName)
         {
-            foreach (var repository in _options.Repositories)
+            foreach (var task in CreateCheckOutTasks(branchName))
             {
-                Exec(new CheckoutTask(new CheckoutTaskOptions()
-                {
-                    RepositoryPath = repository.RepositoryPath,
-                    BranchName = branchName
-                }, NextDeep));
+                Exec(task);
             }
+        }
+
+        private IEnumerable<IDeploymentTask> CreateBranchTasks(string branchName)
+        {
+            return _options.Repositories.Select(repository => new CreateBranchTask(new CreateBranchTaskOptions()
+            {
+                RepositoryPath = repository.RepositoryPath,
+                BranchName = branchName
+            }, this));
         }
 
         private void CreateBranch(string branchName)
         {
-            foreach (var repository in _options.Repositories)
+            foreach (var task in CreateBranchTasks(branchName))
             {
-                Exec(new CreateBranchTask(new CreateBranchTaskOptions()
-                {
-                    RepositoryPath = repository.RepositoryPath,
-                    BranchName = branchName
-                }, NextDeep));
+                Exec(task);
             }
         }
 

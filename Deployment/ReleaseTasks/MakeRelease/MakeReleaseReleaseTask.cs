@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.DevFullMaintaining;
 using Deployment.DevTasks.DevSiteFullBuildAndCommit;
 using Deployment.Helpers;
@@ -23,15 +24,15 @@ namespace Deployment.ReleaseTasks.MakeRelease
     /// It is the task that makes relese and closes version development!
     /// Be careful during using the task.
     /// </summary>
-    public class MakeReleaseReleaseTask : OldBaseDeploymentTask
+    public class MakeReleaseReleaseTask : BaseDeploymentTask
     {
         public MakeReleaseReleaseTask()
-            : this(0u)
+            : this(null)
         {
         }
         
-        public MakeReleaseReleaseTask(uint deep)
-            : base(null, deep)
+        public MakeReleaseReleaseTask(IDeploymentTask parentTask)
+            : base("E791FF7A-6A23-4B01-9069-21A3A1870112", true, null, parentTask)
         {
         }
 
@@ -69,7 +70,7 @@ namespace Deployment.ReleaseTasks.MakeRelease
                 Exec(new SetUpRepositoryTask(new SetUpRepositoryTaskOptions()
                 {
                     RepositoryPath = repository.Path
-                }, NextDeep));
+                }, this));
             }
 
             foreach (var repository in targetSolutions)
@@ -78,7 +79,7 @@ namespace Deployment.ReleaseTasks.MakeRelease
                 {
                     RepositoryPath = repository.Path,
                     BranchName = versionBranchName
-                }, NextDeep));
+                }, this));
             }
 
 
@@ -87,9 +88,9 @@ namespace Deployment.ReleaseTasks.MakeRelease
 
             Exec(new DevSiteFullBuildAndCommitTask(NextDeep));
 
-            Exec(new MergeReleaseBranchToMasterReleaseTask(NextDeep));
+            Exec(new MergeReleaseBranchToMasterReleaseTask(this));
 
-            Exec(new DeploymentToProdReleaseTask(NextDeep));
+            Exec(new DeploymentToProdReleaseTask(this));
 
             Exec(new MarkAsCompletedReleaseTask(NextDeep));
         }
