@@ -1,24 +1,20 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
-using Newtonsoft.Json;
-using NLog;
+using CommonUtils.DeploymentTasks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.UnityTasks.ExportPackage
 {
-    public class ExportPackageTask : OldBaseDeploymentTask
+    public class ExportPackageTask : BaseDeploymentTask
     {
         public ExportPackageTask(ExportPackageTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public ExportPackageTask(ExportPackageTaskOptions options, uint deep)
-            : base(options, deep)
+        public ExportPackageTask(ExportPackageTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.OutputPackageName), false, options, parentTask)
         {
             _options = options;
         }

@@ -20,7 +20,7 @@ namespace Deployment.Tasks.ExamplesCreator
         }
 
         public BuildExamplesTask(BuildExamplesTaskOptions options, IDeploymentTask parentTask)
-            : base("740B1C0A-D30A-4081-9986-0EF9BB9C9F4A", true, options, parentTask)
+            : base("740B1C0A-D30A-4081-9986-0EF9BB9C9F4A", false, options, parentTask)
         {
             _options = options;
         }

@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.Add
 {
-    public class AddTask : OldBaseDeploymentTask
+    public class AddTask : BaseDeploymentTask
     {
-        public AddTask(AddTaskOptions options, uint deep)
-            : base(options, deep)
+        public AddTask(AddTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.RepositoryPath), false, options, parentTask)
         {
             _options = options;
         }

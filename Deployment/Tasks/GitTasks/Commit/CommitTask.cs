@@ -1,23 +1,22 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.Commit
 {
-    public class CommitTask : OldBaseDeploymentTask
+    public class CommitTask : BaseDeploymentTask
     {
         public CommitTask(CommitTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public CommitTask(CommitTaskOptions options, uint deep)
-            : base(options, deep)
+        public CommitTask(CommitTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.RepositoryPath), false, options, parentTask)
         {
             _options = options;
         }

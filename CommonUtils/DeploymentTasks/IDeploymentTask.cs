@@ -6,6 +6,7 @@ namespace CommonUtils.DeploymentTasks
 {
     public interface IDeploymentTask : IObjectToString
     {
+        IDeploymentPipelineContext Context { get; }
         void SetContext(IDeploymentPipelineContext context);
         void SetParentTask(IDeploymentTask parentTask);
         bool? IsValid { get; }

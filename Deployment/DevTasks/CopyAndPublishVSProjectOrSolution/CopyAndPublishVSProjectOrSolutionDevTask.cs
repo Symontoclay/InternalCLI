@@ -1,31 +1,25 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
-using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Publish;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
-using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CopyAndPublishVSProjectOrSolution
 {
-    public class CopyAndPublishVSProjectOrSolutionDevTask : OldBaseDeploymentTask
+    public class CopyAndPublishVSProjectOrSolutionDevTask : BaseDeploymentTask
     {
 #if DEBUG
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public CopyAndPublishVSProjectOrSolutionDevTask(CopyAndPublishVSProjectOrSolutionDevTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public CopyAndPublishVSProjectOrSolutionDevTask(CopyAndPublishVSProjectOrSolutionDevTaskOptions options, uint deep)
-            : base(options, deep)
+        public CopyAndPublishVSProjectOrSolutionDevTask(CopyAndPublishVSProjectOrSolutionDevTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.ProjectOrSoutionFileName), false, options, parentTask)
         {
             _options = options;
         }
@@ -60,7 +54,7 @@ namespace Deployment.DevTasks.CopyAndPublishVSProjectOrSolution
             //_logger.Info($"tempProjectOrSoutionFileName = {tempProjectOrSoutionFileName}");
 #endif
 
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline(_context);
 
             deploymentPipeline.Add(new CopySourceFilesOfVSSolutionTask(new CopySourceFilesOfVSSolutionTaskOptions()
             {

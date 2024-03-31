@@ -8,6 +8,7 @@ using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Build;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
+using dotless.Core.Parser.Infrastructure;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -56,7 +57,7 @@ namespace Deployment.DevTasks.CoreToAsset
         {
             using var tempDir = new TempDirectory();
 
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline(_context);
 
             deploymentPipeline.Add(new CopyAndBuildVSProjectOrSolutionDevTask(new CopyAndBuildVSProjectOrSolutionDevTaskOptions()
             {

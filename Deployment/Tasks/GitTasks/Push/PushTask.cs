@@ -1,23 +1,21 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.Push
 {
-    public class PushTask : OldBaseDeploymentTask
+    public class PushTask : BaseDeploymentTask
     {
         public PushTask(PushTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public PushTask(PushTaskOptions options, uint deep)
-            : base(options, deep)
+        public PushTask(PushTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.RepositoryPath), false, options, parentTask)
         {
             _options = options;
         }

@@ -10,6 +10,7 @@ using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution;
 using Deployment.Tasks.ProjectsTasks.SetDocumentationFileInUnityProjectIfEmpty;
+using dotless.Core.Parser.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -72,7 +73,7 @@ namespace Deployment.DevTasks.UnityToSiteSource
             var destDir = Path.Combine(_options.SiteSourceDir, "CSharpApiFiles");
 
             using var tempDir = new TempDirectory();
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline(_context);
 
             deploymentPipeline.Add(new PrepareUnityCSProjAndSolutionTask(new PrepareUnityCSProjAndSolutionTaskOptions()
             {

@@ -8,6 +8,7 @@ using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Build;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
+using dotless.Core.Parser.Infrastructure;
 using NLog;
 using SiteBuilder;
 using System;
@@ -58,7 +59,7 @@ namespace Deployment.DevTasks.CoreToSiteSource
             var destDir = Path.Combine(_options.SiteSourceDir, "CSharpApiFiles");
 
             using var tempDir = new TempDirectory();
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline(_context);
 
             deploymentPipeline.Add(new CopyAndBuildVSProjectOrSolutionDevTask(new CopyAndBuildVSProjectOrSolutionDevTaskOptions()
             {

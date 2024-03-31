@@ -1,4 +1,6 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using NLog;
 using Octokit;
 using System;
@@ -10,15 +12,15 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitHubTasks.GitHubRelease
 {
-    public class GitHubReleaseTask : OldBaseDeploymentTask
+    public class GitHubReleaseTask : BaseDeploymentTask
     {
         public GitHubReleaseTask(GitHubReleaseTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public GitHubReleaseTask(GitHubReleaseTaskOptions options, uint deep)
-            : base(options, deep)
+        public GitHubReleaseTask(GitHubReleaseTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.RepositoryName), true, options, parentTask)
         {
             _options = options;
         }

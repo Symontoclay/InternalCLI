@@ -5,6 +5,7 @@ using CommonUtils.DeploymentTasks;
 using Deployment.Tasks;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using Deployment.Tasks.SiteTasks.SiteBuild;
+using dotless.Core.Parser.Infrastructure;
 using NLog;
 using SiteBuilder;
 using System;
@@ -53,7 +54,7 @@ namespace Deployment.DevTasks.DevSiteBuild
         protected override void OnRun()
         {
             using var tempDir = new TempDirectory();
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline(_context);
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {

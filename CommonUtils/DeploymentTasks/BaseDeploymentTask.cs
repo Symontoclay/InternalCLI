@@ -42,6 +42,9 @@ namespace CommonUtils.DeploymentTasks
         public string Key => _key;
 
         /// <inheritdoc/>
+        public IDeploymentPipelineContext Context => _context;
+
+        /// <inheritdoc/>
         public void SetContext(IDeploymentPipelineContext context)
         {
             _context = context;

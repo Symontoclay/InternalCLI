@@ -1,25 +1,21 @@
 ﻿using BaseDevPipeline;
 using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using CSharpUtils;
 using Deployment.DevTasks.CopyAndPublishVSProjectOrSolution;
 using Deployment.Helpers;
-using Deployment.Tasks;
 using Deployment.Tasks.ArchTasks.Zip;
-using Deployment.Tasks.BuildTasks.Publish;
 using Deployment.Tasks.GitHubTasks.GitHubRelease;
 using Deployment.Tasks.UnityTasks.ExportPackage;
-using NLog;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.ReleaseTasks.GitHubRelease
 {
-    public class GitHubReleaseReleaseTask : OldBaseDeploymentTask
+    public class GitHubReleaseReleaseTask : BaseDeploymentTask
     {
         private static GitHubReleaseReleaseTaskOptions CreateOptions()
         {
@@ -44,22 +40,22 @@ namespace Deployment.ReleaseTasks.GitHubRelease
         }
 
         public GitHubReleaseReleaseTask(GitHubReleaseReleaseTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
         public GitHubReleaseReleaseTask()
-            : this(0u)
+            : this(parentTask: null)
         {
         }
 
-        public GitHubReleaseReleaseTask(uint deep)
-            : this(CreateOptions(), deep)
+        public GitHubReleaseReleaseTask(IDeploymentTask parentTask)
+            : this(CreateOptions(), parentTask)
         {
         }
 
-        public GitHubReleaseReleaseTask(GitHubReleaseReleaseTaskOptions options, uint deep)
-            : base(options, deep)
+        public GitHubReleaseReleaseTask(GitHubReleaseReleaseTaskOptions options, IDeploymentTask parentTask)
+            : base("5157C4AC-A3CF-4D2B-A443-DBD76A67BDC3", true, options, parentTask)
         {
             _options = options;
         }
@@ -117,7 +113,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
                 RootDir = unitySolution.Path,
                 SourceDir = sourceDir,
                 OutputPackageName = unityPackageFullPath
-            }, NextDeep));
+            }, this));
 
             var cliProject = ProjectsDataSourceFactory.GetProject(KindOfProject.CLI);
 
@@ -126,7 +122,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
                 ProjectOrSoutionFileName = cliProject.CsProjPath,
                 OutputDir = cliTempDir.FullName,
                 NoLogo = true
-            }, NextDeep));
+            }, this));
 
             var cliArchName = DeployedItemsFactory.GetCLIArchName(version);
 
@@ -136,13 +132,14 @@ namespace Deployment.ReleaseTasks.GitHubRelease
             {
                 SourceDir = cliTempDir.FullName,
                 OutputFilePath = cliArchFullPath
-            }, NextDeep));
+            }, this));
 
             var token = settings.GetSecret("GitHub");
 
-            foreach(var repository in _options.Repositories)
+            Exec(new DeploymentTasksGroup("73C35B3E-6FBC-4999-A17A-A9880AD7E31F", true, this)
             {
-                Exec(new GitHubReleaseTask(new GitHubReleaseTaskOptions() {
+                SubItems = _options.Repositories.Select(repository => new GitHubReleaseTask(new GitHubReleaseTaskOptions()
+                {
                     Token = token.Value,
                     RepositoryOwner = repository.RepositoryOwner,
                     RepositoryName = repository.RepositoryName,
@@ -163,8 +160,8 @@ namespace Deployment.ReleaseTasks.GitHubRelease
                             UploadedFilePath = cliArchFullPath
                         }
                     }
-                }, NextDeep));
-            }
+                }, this))
+            });
         }
 
         /// <inheritdoc/>

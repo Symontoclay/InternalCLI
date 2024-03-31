@@ -4,6 +4,7 @@ using CommonUtils.DeploymentTasks;
 using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Test;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
+using dotless.Core.Parser.Infrastructure;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace Deployment.DevTasks.CopyAndTest
 
             var tempProjectOrSoutionFileName = PathsHelper.Normalize(_options.ProjectOrSoutionFileName).Replace(PathsHelper.Normalize(slnFolder), PathsHelper.Normalize(tempDir.FullName));
 
-            var deploymentPipeline = new DeploymentPipeline();
+            var deploymentPipeline = new DeploymentPipeline(_context);
 
             deploymentPipeline.Add(new CopySourceFilesOfVSSolutionTask(new CopySourceFilesOfVSSolutionTaskOptions()
             {

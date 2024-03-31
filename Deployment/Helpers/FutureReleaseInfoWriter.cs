@@ -1,14 +1,9 @@
 ﻿using BaseDevPipeline;
 using BaseDevPipeline.SourceData;
 using CommonUtils.DeploymentTasks;
-using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Helpers
 {

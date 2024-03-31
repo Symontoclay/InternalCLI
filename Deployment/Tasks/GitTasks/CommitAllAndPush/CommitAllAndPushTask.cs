@@ -1,4 +1,6 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Deployment.Tasks.GitTasks.Add;
 using Deployment.Tasks.GitTasks.Commit;
@@ -13,15 +15,15 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.CommitAllAndPush
 {
-    public class CommitAllAndPushTask : OldBaseDeploymentTask
+    public class CommitAllAndPushTask : BaseDeploymentTask
     {
         public CommitAllAndPushTask(CommitAllAndPushTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public CommitAllAndPushTask(CommitAllAndPushTaskOptions options, uint deep)
-            : base(options, deep)
+        public CommitAllAndPushTask(CommitAllAndPushTaskOptions options, IDeploymentTask parentTask)
+            : base("D1AD64B9-E795-4B13-A306-3E407E8B700A", false, options, parentTask)
         {
             _options = options;
         }
@@ -63,7 +65,7 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
                     Exec(new AddTask(new AddTaskOptions() { 
                         RepositoryPath = repositoryPath,
                         RelativeFileName = untrackedFile.RelativePath
-                    }, NextDeep));
+                    }, this));
                 }
             }
 
@@ -77,7 +79,7 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
                 {
                     RepositoryPath = repositoryPath,
                     Message = _options.Message
-                }, NextDeep));
+                }, this));
             }
 
             foreach (var repositoryPath in _options.RepositoryPaths)
@@ -85,7 +87,7 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
                 Exec(new PullTask(new PullTaskOptions()
                 {
                     RepositoryPath = repositoryPath
-                }, NextDeep));
+                }, this));
             }
 
             foreach (var repositoryPath in _options.RepositoryPaths)
@@ -93,7 +95,7 @@ namespace Deployment.Tasks.GitTasks.CommitAllAndPush
                 Exec(new PushTask(new PushTaskOptions()
                 {
                     RepositoryPath = repositoryPath
-                }, NextDeep));
+                }, this));
             }
         }
 
