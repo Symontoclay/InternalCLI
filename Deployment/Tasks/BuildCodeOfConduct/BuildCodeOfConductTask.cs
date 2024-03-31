@@ -1,4 +1,6 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
 using System;
@@ -10,15 +12,15 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildCodeOfConduct
 {
-    public class BuildCodeOfConductTask : OldBaseDeploymentTask
+    public class BuildCodeOfConductTask : BaseDeploymentTask
     {
         public BuildCodeOfConductTask(BuildCodeOfConductTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public BuildCodeOfConductTask(BuildCodeOfConductTaskOptions options, uint deep)
-            : base(options, deep)
+        public BuildCodeOfConductTask(BuildCodeOfConductTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.TargetFileName), false, options, parentTask)
         {
             _options = options;
         }
