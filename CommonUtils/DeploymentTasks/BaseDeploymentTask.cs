@@ -231,8 +231,9 @@ namespace CommonUtils.DeploymentTasks
             return this.GetDefaultToStringInformation(n);
         }
 
-        /// <inheritdoc/>
-        string IObjectToString.PropertiesToString(uint n)
+        protected abstract string PropertiesToString(uint n);
+
+        protected string PrintValidation(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
             var next_N = n + 4;

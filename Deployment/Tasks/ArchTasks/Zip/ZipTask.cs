@@ -1,4 +1,6 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using System;
 using System.Collections.Generic;
 using System.IO.Compression;
@@ -8,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ArchTasks.Zip
 {
-    public class ZipTask : OldBaseDeploymentTask
+    public class ZipTask : BaseDeploymentTask
     {
         public ZipTask(ZipTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public ZipTask(ZipTaskOptions options, uint deep)
-            : base(options, deep)
+        public ZipTask(ZipTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.SourceDir), false, options, parentTask)
         {
             _options = options;
         }
