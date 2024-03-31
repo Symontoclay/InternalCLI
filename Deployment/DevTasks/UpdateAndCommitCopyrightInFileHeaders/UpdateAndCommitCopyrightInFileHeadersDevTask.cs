@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.UpdateCopyrightInFileHeaders;
 using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
@@ -11,22 +12,22 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateAndCommitCopyrightInFileHeaders
 {
-    public class UpdateAndCommitCopyrightInFileHeadersDevTask : OldBaseDeploymentTask
+    public class UpdateAndCommitCopyrightInFileHeadersDevTask : BaseDeploymentTask
     {
         public UpdateAndCommitCopyrightInFileHeadersDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public UpdateAndCommitCopyrightInFileHeadersDevTask(uint deep)
-            : base(null, deep)
+        public UpdateAndCommitCopyrightInFileHeadersDevTask(IDeploymentTask parentTask)
+            : base("1C627CC1-F693-460E-AF83-30E264D18B4A", false, null, parentTask)
         {
         }
 
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new UpdateCopyrightInFileHeadersDevTask(NextDeep));
+            Exec(new UpdateCopyrightInFileHeadersDevTask(this));
 
             var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
@@ -34,7 +35,7 @@ namespace Deployment.DevTasks.UpdateAndCommitCopyrightInFileHeaders
             {
                 Message = "File headers has been updated",
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

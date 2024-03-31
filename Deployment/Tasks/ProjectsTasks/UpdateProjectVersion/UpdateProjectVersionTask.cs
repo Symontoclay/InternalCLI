@@ -1,17 +1,15 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using CSharpUtils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateProjectVersion
 {
-    public class UpdateProjectVersionTask : OldBaseDeploymentTask
+    public class UpdateProjectVersionTask : BaseDeploymentTask
     {
-        public UpdateProjectVersionTask(UpdateProjectVersionTaskOptions options, uint deep)
-            : base(options, deep)
+        public UpdateProjectVersionTask(UpdateProjectVersionTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.ProjectFilePath), false, options, parentTask)
         {
             _options = options;
         }

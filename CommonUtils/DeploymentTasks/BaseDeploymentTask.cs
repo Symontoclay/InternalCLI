@@ -19,7 +19,7 @@ namespace CommonUtils.DeploymentTasks
             //_logger.Info($"shouldBeSkeepedDuringRestoring = {shouldBeSkeepedDuringRestoring}");
 #endif
 
-            _key = key;
+            _key = $"{GetType().Name}_{key}";
             _shouldBeSkeepedDuringRestoring = shouldBeSkeepedDuringRestoring;
             _options = options;
             _parentTask = parentTask;

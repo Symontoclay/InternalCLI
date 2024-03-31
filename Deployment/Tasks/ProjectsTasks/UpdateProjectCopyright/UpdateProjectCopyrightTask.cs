@@ -1,17 +1,15 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using CSharpUtils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateProjectCopyright
 {
-    public class UpdateProjectCopyrightTask : OldBaseDeploymentTask
+    public class UpdateProjectCopyrightTask : BaseDeploymentTask
     {
-        public UpdateProjectCopyrightTask(UpdateProjectCopyrightTaskOptions options, uint deep)
-            : base(options, deep)
+        public UpdateProjectCopyrightTask(UpdateProjectCopyrightTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.ProjectFilePath), false, options, parentTask)
         {
             _options = options;
         }

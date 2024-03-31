@@ -1,24 +1,22 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using CSharpUtils;
 using Deployment.Tasks.ProjectsTasks.UpdateProjectVersion;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateSolutionVersion
 {
-    public class UpdateSolutionVersionTask : OldBaseDeploymentTask
+    public class UpdateSolutionVersionTask : BaseDeploymentTask
     {
         public UpdateSolutionVersionTask(UpdateSolutionVersionTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public UpdateSolutionVersionTask(UpdateSolutionVersionTaskOptions options, uint deep)
-            : base(options, deep)
+        public UpdateSolutionVersionTask(UpdateSolutionVersionTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.SolutionFilePath), false, options, parentTask)
         {
             _options = options;
         }
@@ -45,7 +43,7 @@ namespace Deployment.Tasks.ProjectsTasks.UpdateSolutionVersion
                 Exec(new UpdateProjectVersionTask(new UpdateProjectVersionTaskOptions() { 
                    ProjectFilePath = projectName,
                    Version = _options.Version
-                }, NextDeep));
+                }, this));
             }
         }
 

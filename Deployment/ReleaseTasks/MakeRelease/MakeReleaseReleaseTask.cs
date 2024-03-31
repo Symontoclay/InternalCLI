@@ -12,6 +12,7 @@ using Deployment.Tasks.GitTasks.Checkout;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
 using Deployment.Tasks.GitTasks.SetUpRepository;
 using NLog;
+using Octokit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,40 +60,48 @@ namespace Deployment.ReleaseTasks.MakeRelease
 
             var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
+            Exec(new DeploymentTasksGroup("F25F27AF-AAFC-4357-AE06-3F55C933B633", true, this)
+            {
+                SubItems = new List<IDeploymentTask>()
+                {
+                    new DeploymentTasksGroup("BC98393A-ECF0-479C-A8A4-D36873CF5DDB", true, this)
+                    {
+                        SubItems = targetSolutions.Select(repository => new SetUpRepositoryTask(new SetUpRepositoryTaskOptions()
+                        {
+                            RepositoryPath = repository.Path
+                        }, this))
+                    },
+                    new DeploymentTasksGroup("A9989DE4-927B-4D1A-A87B-FE3B43A7DB9D", false, this)
+                    {
+                        SubItems = targetSolutions.Select(repository => new CheckoutTask(new CheckoutTaskOptions()
+                        {
+                            RepositoryPath = repository.Path,
+                            BranchName = versionBranchName
+                        }, this))
+                    }
+                }
+            });
+
             //Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             //{
             //    Message = "snapshot",
             //    RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
             //}, NextDeep));
 
-            foreach (var repository in targetSolutions)
+            Exec(new DeploymentTasksGroup("543A0B7C-95E8-41C1-94E7-665B694BE95F", true, this)
             {
-                Exec(new SetUpRepositoryTask(new SetUpRepositoryTaskOptions()
+                SubItems = new List<IDeploymentTask>()
                 {
-                    RepositoryPath = repository.Path
-                }, this));
-            }
-
-            foreach (var repository in targetSolutions)
-            {
-                Exec(new CheckoutTask(new CheckoutTaskOptions()
-                {
-                    RepositoryPath = repository.Path,
-                    BranchName = versionBranchName
-                }, this));
-            }
-
-
-
-            Exec(new DevFullMaintainingDevTask(NextDeep));
-
-            Exec(new DevSiteFullBuildAndCommitTask(NextDeep));
+                    new DevFullMaintainingDevTask(this),
+                    new DevSiteFullBuildAndCommitTask(this)
+                }
+            });
 
             Exec(new MergeReleaseBranchToMasterReleaseTask(this));
 
             Exec(new DeploymentToProdReleaseTask(this));
 
-            Exec(new MarkAsCompletedReleaseTask(NextDeep));
+            Exec(new MarkAsCompletedReleaseTask(this));
         }
 
         private bool CheckGitHubToken()

@@ -1,32 +1,29 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.UpdateProjectsVersion;
-using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateAndCommitProjectsVersion
 {
-    public class UpdateAndCommitProjectsVersionDevTask : OldBaseDeploymentTask
+    public class UpdateAndCommitProjectsVersionDevTask : BaseDeploymentTask
     {
         public UpdateAndCommitProjectsVersionDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public UpdateAndCommitProjectsVersionDevTask(uint deep)
-            : base(null, deep)
+        public UpdateAndCommitProjectsVersionDevTask(IDeploymentTask parentTask)
+            : base("70448859-54D0-4738-AC88-9ECCE0AE3354", false, null, parentTask)
         {
         }
 
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new UpdateProjectsVersionDevTask(NextDeep));
+            Exec(new UpdateProjectsVersionDevTask(this));
 
             var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
@@ -34,7 +31,7 @@ namespace Deployment.DevTasks.UpdateAndCommitProjectsVersion
             {
                 Message = "Version has been updated",
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

@@ -82,14 +82,22 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
 
             if(projectsForTesting.Any())
             {
-                CheckOut(versionBranchName);
-
-                Exec(new DeploymentTasksGroup("2E48A168-7C39-4BB7-A41F-480ED56E6AA7", false, this)
+                Exec(new DeploymentTasksGroup("FBF387D5-D1C9-4164-B2D2-5CE82DCFCE8A", true, this)
                 {
-                    SubItems = projectsForTesting.Select(projPath => new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
+                    SubItems = new List<IDeploymentTask>()
                     {
-                        ProjectOrSoutionFileName = projPath
-                    }, this))
+                        new DeploymentTasksGroup("64922EF9-3184-48CC-9E36-0FA922F2337A", false, this)
+                        {
+                            SubItems = CreateCheckOutTasks(versionBranchName)
+                        },
+                        new DeploymentTasksGroup("2E48A168-7C39-4BB7-A41F-480ED56E6AA7", false, this)
+                        {
+                            SubItems = projectsForTesting.Select(projPath => new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
+                            {
+                                ProjectOrSoutionFileName = projPath
+                            }, this))
+                        }
+                    }
                 });
             }
 
@@ -112,98 +120,97 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
 
             var releaseBranchName = $"release_{_options.Version}_{DateTime.Now:yyyy_MM_dd_HH_mm}";
 
-            Exec(new DeploymentTasksGroup()
+            Exec(new DeploymentTasksGroup("4DBD490A-CF92-4193-9436-7B59C81C6862", true, this)
             {
                 SubItems = new List<IDeploymentTask>()
                 {
-                    new DeploymentTasksGroup(),
-                    new DeploymentTasksGroup(),
-                    new DeploymentTasksGroup(),
-                    new DeploymentTasksGroup()
+                    new DeploymentTasksGroup("5818B9BB-5CD0-421D-B618-466322B03AB1", true, this)
+                    {
+                        SubItems = CreateBranchTasks(releaseBranchName)
+                    },
+                    new DeploymentTasksGroup("73AD9821-5017-44F1-AA81-394861F9CB68", true, this)
+                    {
+                        SubItems = CreateCheckOutTasks(releaseBranchName)
+                    },
+                    new DeploymentTasksGroup("1F8A602C-DFEA-48CD-9DC9-1C7BF939AA86", true, this)
+                    {
+                        SubItems = _options.Repositories.Select(repository => new MergeTask(new MergeTaskOptions()
+                        {
+                            RepositoryPath = repository.RepositoryPath,
+                            BranchName = versionBranchName
+                        }, this))
+                    },
+                    new DeploymentTasksGroup("851C90A8-D7B6-4520-9867-18BBFF595539", false, this)
+                    {
+                        SubItems = projectsForTesting.Select(projPath => new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
+                        {
+                            ProjectOrSoutionFileName = projPath
+                        }, this))
+                    }
                 }
             });
 
-            CreateBranch(releaseBranchName);
-
-            CheckOut(releaseBranchName);
-
-            foreach (var repository in _options.Repositories)
+            Exec(new DeploymentTasksGroup("E6B96BCD-9B54-4D32-8B5F-7CF5AAE014D5", true, this)
             {
-                Exec(new MergeTask(new MergeTaskOptions()
+                SubItems = new List<IDeploymentTask>()
                 {
-                    RepositoryPath = repository.RepositoryPath,
-                    BranchName = versionBranchName
-                }, NextDeep));
-            }
-
-            if (projectsForTesting.Any())
-            {
-                foreach (var projPath in projectsForTesting)
-                {
-                    Exec(new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
+                    new DeploymentTasksGroup("46AC1A34-6437-4D5C-8A97-C9670F39EFCC", true, this)
                     {
-                        ProjectOrSoutionFileName = projPath
-                    }, NextDeep));
-                }
-            }
-
-            Exec(new DeploymentTasksGroup());
-
-            CheckOut(_masterBranchName);
-
-            foreach (var repository in _options.Repositories)
-            {
-                Exec(new MergeTask(new MergeTaskOptions()
-                {
-                    RepositoryPath = repository.RepositoryPath,
-                    BranchName = releaseBranchName
-                }, NextDeep));
-            }
-
-            if (projectsForTesting.Any())
-            {
-                foreach (var projPath in projectsForTesting)
-                {
-                    Exec(new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
+                        SubItems = CreateCheckOutTasks(_masterBranchName)
+                    },
+                    new DeploymentTasksGroup("17723B45-4E0E-49D3-8C9B-4EE84A0B1A58", true, this)
                     {
-                        ProjectOrSoutionFileName = projPath
-                    }, NextDeep));
+                        SubItems = _options.Repositories.Select(repository => new MergeTask(new MergeTaskOptions()
+                        {
+                            RepositoryPath = repository.RepositoryPath,
+                            BranchName = releaseBranchName
+                        }, this))
+                    },
+                    new DeploymentTasksGroup("DCDFE8E8-2711-4093-92CD-FC945A5EC16B", false, this)
+                    {
+                        SubItems = projectsForTesting.Select(projPath => new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
+                        {
+                            ProjectOrSoutionFileName = projPath
+                        }, this))
+                    },
+                    new DeploymentTasksGroup("D7273B46-A7D7-4109-8ED7-8CDEE9E14E6C", false, this)
+                    {
+                        SubItems = _options.Repositories.Select(repository => new PushTask(new PushTaskOptions()
+                        {
+                            RepositoryPath = repository.RepositoryPath
+                        }, this))
+                    }
                 }
-            }
+            });
 
-            foreach (var repository in _options.Repositories)
+            Exec(new DeploymentTasksGroup("3584C4BD-D86C-4437-8F34-5F11D932B1CD", true, this)
             {
-                Exec(new PushTask(new PushTaskOptions()
-                {
-                    RepositoryPath = repository.RepositoryPath
-                }, NextDeep));
-            }
-
-            Exec(new DeploymentTasksGroup());
-
-            foreach (var repository in _options.Repositories)
-            {
-                Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
+                SubItems = _options.Repositories.Select(repository => new DeleteBranchTask(new DeleteBranchTaskOptions()
                 {
                     RepositoryPath = repository.RepositoryPath,
                     BranchName = releaseBranchName,
                     IsOrigin = false
-                }, NextDeep));
+                }, this))
+            });
+
+            //foreach (var repository in _options.Repositories)
+            //{
+                //Exec();
 
                 //Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
                 //{
                 //    RepositoryPath = repository.RepositoryPath,
                 //    BranchName = versionBranchName,
                 //    IsOrigin = false
-                //}, NextDeep));
+                //}, this));
 
                 //Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
                 //{
                 //    RepositoryPath = repository.RepositoryPath,
                 //    BranchName = versionBranchName,
                 //    IsOrigin = true
-                //}, NextDeep));
-            }
+                //}, this));
+            //}
         }
 
         private IEnumerable<IDeploymentTask> CreateCheckOutTasks(string branchName)
@@ -215,14 +222,6 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
             }, this));
         }
 
-        private void CheckOut(string branchName)
-        {
-            foreach (var task in CreateCheckOutTasks(branchName))
-            {
-                Exec(task);
-            }
-        }
-
         private IEnumerable<IDeploymentTask> CreateBranchTasks(string branchName)
         {
             return _options.Repositories.Select(repository => new CreateBranchTask(new CreateBranchTaskOptions()
@@ -232,14 +231,6 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
             }, this));
         }
 
-        private void CreateBranch(string branchName)
-        {
-            foreach (var task in CreateBranchTasks(branchName))
-            {
-                Exec(task);
-            }
-        }
-
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
         {
@@ -247,7 +238,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
 
             var sb = new StringBuilder();
 
-            //sb.AppendLine($"{spaces}Builds README '{_options.TargetReadmeFileName}'.");
+            sb.AppendLine($"{spaces}Merges release branch to master branch.");
             sb.Append(PrintValidation(n));
 
             return sb.ToString();

@@ -1,24 +1,21 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
-using NLog;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateUnityPackageVersion
 {
-    public class UpdateUnityPackageVersionTask : OldBaseDeploymentTask
+    public class UpdateUnityPackageVersionTask : BaseDeploymentTask
     {
         public UpdateUnityPackageVersionTask(UpdateUnityPackageVersionTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public UpdateUnityPackageVersionTask(UpdateUnityPackageVersionTaskOptions options, uint deep)
-            : base(options, deep)
+        public UpdateUnityPackageVersionTask(UpdateUnityPackageVersionTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.PackageSourcePath), false, options, parentTask)
         {
             _options = options;
         }

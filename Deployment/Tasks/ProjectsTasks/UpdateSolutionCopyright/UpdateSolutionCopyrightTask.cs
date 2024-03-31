@@ -1,24 +1,22 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using CSharpUtils;
 using Deployment.Tasks.ProjectsTasks.UpdateProjectCopyright;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateSolutionCopyright
 {
-    public class UpdateSolutionCopyrightTask : OldBaseDeploymentTask
+    public class UpdateSolutionCopyrightTask : BaseDeploymentTask
     {
         public UpdateSolutionCopyrightTask(UpdateSolutionCopyrightTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public UpdateSolutionCopyrightTask(UpdateSolutionCopyrightTaskOptions options, uint deep)
-            : base(options, deep)
+        public UpdateSolutionCopyrightTask(UpdateSolutionCopyrightTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.SolutionFilePath), false, options, parentTask)
         {
             _options = options;
         }
@@ -44,7 +42,7 @@ namespace Deployment.Tasks.ProjectsTasks.UpdateSolutionCopyright
                 Exec(new UpdateProjectCopyrightTask(new UpdateProjectCopyrightTaskOptions() {
                     ProjectFilePath = projectName,
                     Copyright = _options.Copyright
-                }, NextDeep));
+                }, this));
             }
         }
 

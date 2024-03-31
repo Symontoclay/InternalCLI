@@ -1,27 +1,23 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
-using Deployment.DevTasks.RemoveAndCommitSingleLineComments;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.UpdateAndCommitCopyrightInFileHeaders;
 using Deployment.DevTasks.UpdateAndCommitProjectsVersion;
-using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.DevFullMaintaining
 {
-    public class DevFullMaintainingDevTask : OldBaseDeploymentTask
+    public class DevFullMaintainingDevTask : BaseDeploymentTask
     {
         public DevFullMaintainingDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public DevFullMaintainingDevTask(uint deep)
-            : base(null, deep)
+        public DevFullMaintainingDevTask(IDeploymentTask parentTask)
+            : base("FFE8EE43-A4B0-4657-A18A-F97F061ECCD6", false, null, parentTask)
         {
         }
 
@@ -34,13 +30,13 @@ namespace Deployment.DevTasks.DevFullMaintaining
             {
                 Message = "snapshot",
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            }, NextDeep));
+            }, this));
 
-            Exec(new UpdateAndCommitProjectsVersionDevTask(NextDeep));
+            Exec(new UpdateAndCommitProjectsVersionDevTask(this));
 
-            Exec(new UpdateAndCommitCopyrightInFileHeadersDevTask(NextDeep));
+            Exec(new UpdateAndCommitCopyrightInFileHeadersDevTask(this));
 
-            //Exec(new RemoveAndCommitSingleLineCommentsDevTask(NextDeep));
+            //Exec(new RemoveAndCommitSingleLineCommentsDevTask(this));
         }
 
         /// <inheritdoc/>

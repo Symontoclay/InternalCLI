@@ -1,23 +1,21 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.DeleteBranch
 {
-    public class DeleteBranchTask : OldBaseDeploymentTask
+    public class DeleteBranchTask : BaseDeploymentTask
     {
         public DeleteBranchTask(DeleteBranchTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public DeleteBranchTask(DeleteBranchTaskOptions options, uint deep)
-            : base(options, deep)
+        public DeleteBranchTask(DeleteBranchTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.RepositoryPath), true, options, parentTask)
         {
             _options = options;
         }

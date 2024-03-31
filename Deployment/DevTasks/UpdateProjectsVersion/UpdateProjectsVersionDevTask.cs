@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Deployment.Tasks;
 using Deployment.Tasks.ProjectsTasks.UpdateSolutionCopyright;
@@ -14,19 +15,15 @@ using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateProjectsVersion
 {
-    public class UpdateProjectsVersionDevTask : OldBaseDeploymentTask
+    public class UpdateProjectsVersionDevTask : BaseDeploymentTask
     {
-#if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
-
         public UpdateProjectsVersionDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public UpdateProjectsVersionDevTask(uint deep)
-            : base(null, deep)
+        public UpdateProjectsVersionDevTask(IDeploymentTask parentTask)
+            : base("3351A477-F764-4A89-8BCC-82CC91861ED7", false, null, parentTask)
         {
         }
 
@@ -48,7 +45,7 @@ namespace Deployment.DevTasks.UpdateProjectsVersion
             foreach (var targetSolution in targetSolutions)
             {
 #if DEBUG
-                _logger.Info($"targetSolution = {targetSolution}");
+                //_logger.Info($"targetSolution = {targetSolution}");
 #endif
 
                 var kind = targetSolution.Kind;
@@ -60,13 +57,13 @@ namespace Deployment.DevTasks.UpdateProjectsVersion
                         {
                             SolutionFilePath = targetSolution.SlnPath,
                             Version = version
-                        }, NextDeep));
+                        }, this));
 
                         Exec(new UpdateSolutionCopyrightTask(new UpdateSolutionCopyrightTaskOptions()
                         {
                             SolutionFilePath = targetSolution.SlnPath,
                             Copyright = copyright
-                        }, NextDeep));
+                        }, this));
                         break;
 
                     case KindOfProject.Unity:
@@ -76,7 +73,7 @@ namespace Deployment.DevTasks.UpdateProjectsVersion
                             Version = version,
                             UnityVersion = targetSolution.UnityVersion,
                             UnityRelease = targetSolution.UnityRelease
-                        }, NextDeep));
+                        }, this));
                         break;
 
                     default:
