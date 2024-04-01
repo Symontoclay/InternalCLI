@@ -44,7 +44,7 @@ namespace Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories
                     Exec(new PullTask(new PullTaskOptions()
                     {
                         RepositoryPath = unityExampleSolution.Path
-                    }, NextDeep));
+                    }, this));
                 }
                 else
                 {
@@ -54,7 +54,7 @@ namespace Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories
                     {
                         RepositoryHref = unityExampleSolution.GitFileHref,
                         RepositoryPath = baseReposPath
-                    }, NextDeep));
+                    }, this));
 
                     unityExampleSolution.RereadUnityVersion();
                 }
@@ -63,13 +63,13 @@ namespace Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories
                 {
                     SourceRepository = unitySolution.Path,
                     DestinationRepository = unityExampleSolution.Path
-                }, NextDeep));
+                }, this));
 
                 Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
                 {
                     Message = "SymOntoClay version has been updated",
                     RepositoryPaths = new List<string> { unityExampleSolution.Path }
-                }, NextDeep));
+                }, this));
             }
         }
 

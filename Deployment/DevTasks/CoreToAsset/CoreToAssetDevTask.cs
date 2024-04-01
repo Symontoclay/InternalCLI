@@ -65,7 +65,7 @@ namespace Deployment.DevTasks.CoreToAsset
                 //BuildConfiguration = KindOfBuildConfiguration.Release,
                 OutputDir = tempDir.FullName,
                 NoLogo = true
-            }, NextDeep));
+            }, this));
 
             deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
             {
@@ -74,7 +74,7 @@ namespace Deployment.DevTasks.CoreToAsset
                 SaveSubDirs = false,
                 OnlyFileExts = new List<string>() { "dll" },
                 FileNameShouldContain = new List<string>() { "SymOntoClay." }
-            }, NextDeep));
+            }, this));
 
             if(!_options.Plugins.IsNullOrEmpty())
             {
@@ -88,7 +88,7 @@ namespace Deployment.DevTasks.CoreToAsset
                         //BuildConfiguration = KindOfBuildConfiguration.Release,
                         OutputDir = tempDir_2.FullName,
                         NoLogo = true
-                    }, NextDeep));
+                    }, this));
 
                     deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
                     {
@@ -97,7 +97,7 @@ namespace Deployment.DevTasks.CoreToAsset
                         SaveSubDirs = false,
                         OnlyFileExts = new List<string>() { "dll" },
                         FileNameShouldContain = new List<string>() { "SymOntoClay." }
-                    }, NextDeep));
+                    }, this));
                 }
             }
 

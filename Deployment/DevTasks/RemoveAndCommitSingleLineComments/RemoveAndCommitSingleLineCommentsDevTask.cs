@@ -56,13 +56,13 @@ namespace Deployment.DevTasks.RemoveAndCommitSingleLineComments
             Exec(new RemoveSingleLineCommentsDevTask(new RemoveSingleLineCommentsDevTaskOptions()
             {
                 TargetDirsList = _options.TargetDirsList,
-            }));
+            }, this));
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {
                 Message = "Unnecessary comments have been removed",
                 RepositoryPaths = _options.TargetDirsList
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

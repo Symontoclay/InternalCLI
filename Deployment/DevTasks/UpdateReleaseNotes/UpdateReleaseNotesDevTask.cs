@@ -1,38 +1,33 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
-using Deployment.Tasks;
 using Deployment.Tasks.SiteTasks.UpdateReleaseNotes;
-using NLog;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateReleaseNotes
 {
-    public class UpdateReleaseNotesDevTask: OldBaseDeploymentTask
+    public class UpdateReleaseNotesDevTask: BaseDeploymentTask
     {
         public UpdateReleaseNotesDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public UpdateReleaseNotesDevTask(uint deep)
+        public UpdateReleaseNotesDevTask(IDeploymentTask parentTask)
             : this(new UpdateReleaseNotesDevTaskOptions() 
             {
                 ReleaseMngrRepositoryPath = ProjectsDataSourceFactory.GetSolution(KindOfProject.ReleaseMngrSolution).Path,
                 ArtifactsForDeployment = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite).ArtifactsForDeployment.ToList(),
                 ReleaseNotesFilePath = CommonFileNamesHelper.BuildReleaseNotesPath(),
                 BaseHref = ProjectsDataSourceFactory.GetSolution(KindOfProject.CoreSolution).Href
-            }, deep)
+            }, parentTask)
         {
         }
 
-        public UpdateReleaseNotesDevTask(UpdateReleaseNotesDevTaskOptions options, uint deep)
-            : base(options, deep)
+        public UpdateReleaseNotesDevTask(UpdateReleaseNotesDevTaskOptions options, IDeploymentTask parentTask)
+            : base("D50BA290-8F96-4310-82DB-30190559F253", false, options, parentTask)
         {
             _options = options;
         }
@@ -60,7 +55,7 @@ namespace Deployment.DevTasks.UpdateReleaseNotes
                 ArtifactsForDeployment = _options.ArtifactsForDeployment,
                 ReleaseNotesFilePath = _options.ReleaseNotesFilePath,
                 BaseHref = _options.BaseHref
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

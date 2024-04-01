@@ -28,14 +28,14 @@ namespace Deployment.DevTasks.UpdateTestAndCommitProjectsVersion
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new UpdateProjectsVersionDevTask(NextDeep));
+            Exec(new UpdateProjectsVersionDevTask(this));
 
             var coreSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.CoreSolution);
 
             Exec(new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
             {
                 ProjectOrSoutionFileName = coreSolution.SlnPath
-            }, NextDeep));
+            }, this));
 
             var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedVersionsInCSharpProjects();
 
@@ -43,7 +43,7 @@ namespace Deployment.DevTasks.UpdateTestAndCommitProjectsVersion
             {
                 Message = "Version has been updated",
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

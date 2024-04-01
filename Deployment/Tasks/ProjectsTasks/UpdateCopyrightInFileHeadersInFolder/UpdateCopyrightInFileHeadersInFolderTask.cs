@@ -1,25 +1,23 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeaders;
-using Newtonsoft.Json;
-using NLog;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInFolder
 {
-    public class UpdateCopyrightInFileHeadersInFolderTask : OldBaseDeploymentTask
+    public class UpdateCopyrightInFileHeadersInFolderTask : BaseDeploymentTask
     {
         public UpdateCopyrightInFileHeadersInFolderTask(UpdateCopyrightInFileHeadersInFolderTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public UpdateCopyrightInFileHeadersInFolderTask(UpdateCopyrightInFileHeadersInFolderTaskOptions options, uint deep)
-            : base(options, deep)
+        public UpdateCopyrightInFileHeadersInFolderTask(UpdateCopyrightInFileHeadersInFolderTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.SourceDir), false, options, parentTask)
         {
             _options = options;
         }
@@ -57,7 +55,7 @@ namespace Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInFolder
             {
                 Text = _options.Text,
                 TargetFiles = sourceFullFileNamesList
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

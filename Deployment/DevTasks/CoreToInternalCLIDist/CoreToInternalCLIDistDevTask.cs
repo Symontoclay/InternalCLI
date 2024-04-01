@@ -36,14 +36,14 @@ namespace Deployment.DevTasks.CoreToInternalCLIDist
             {
                 TargetDir = cliFolderTargetPath,
                 SkipExistingFilesInTargetDir = false
-            }, NextDeep));
+            }, this));
 
             Exec(new CopyAndPublishVSProjectOrSolutionDevTask(new CopyAndPublishVSProjectOrSolutionDevTaskOptions()
             {
                 ProjectOrSoutionFileName = cliProject.CsProjPath,
                 OutputDir = cliFolderTargetPath,
                 NoLogo = true
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

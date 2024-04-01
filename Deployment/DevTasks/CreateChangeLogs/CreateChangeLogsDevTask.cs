@@ -54,7 +54,7 @@ namespace Deployment.DevTasks.CreateChangeLogs
                 {
                     ReleaseNotesFilePath = CommonFileNamesHelper.BuildReleaseNotesPath(),
                     TargetChangeLogFileName = targetChangeLogFileName
-                }, NextDeep));
+                }, this));
 
                 switch (targetSolution.Kind)
                 {
@@ -65,7 +65,7 @@ namespace Deployment.DevTasks.CreateChangeLogs
                             DestDir = targetSolution.Path,
                             SaveSubDirs = false,
                             TargetFiles = new List<string>() { targetChangeLogFileName }
-                        }, NextDeep));
+                        }, this));
                         break;
                 }
             }

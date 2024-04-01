@@ -45,14 +45,14 @@ namespace Deployment.DevTasks.CreateAndCommitReadmes
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new CreateReadmesDevTask(NextDeep));
+            Exec(new CreateReadmesDevTask(this));
 
             var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions() { 
                 Message = _options.Message,
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

@@ -60,7 +60,7 @@ namespace Deployment.DevTasks.DevSiteBuild
             {
                 TargetDir = _options.DestPath,
                 SkipExistingFilesInTargetDir = false
-            }, NextDeep));
+            }, this));
 
             deploymentPipeline.Add(new SiteBuildTask(new SiteBuildTaskOptions()
             {
@@ -69,7 +69,7 @@ namespace Deployment.DevTasks.DevSiteBuild
                 SourcePath = _options.SourcePath,
                 DestPath = _options.DestPath,
                 TempPath = tempDir.FullName
-            }, NextDeep));
+            }, this));
 
             deploymentPipeline.Run();
         }

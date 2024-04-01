@@ -1,4 +1,5 @@
 ﻿using BaseDevPipeline;
+using CommonUtils;
 using CommonUtils.DebugHelpers;
 using Deployment.Tasks;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
@@ -38,7 +39,7 @@ namespace Deployment.ReleaseTasks.ProdSiteBuild
                 SourcePath = siteSolution.SourcePath,
                 DestPath = siteSolution.Path,
                 TempPath = tempDir.FullName
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

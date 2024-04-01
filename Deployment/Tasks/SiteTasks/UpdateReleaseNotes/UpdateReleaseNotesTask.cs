@@ -1,31 +1,29 @@
-﻿using BaseDevPipeline;
-using CommonUtils.DebugHelpers;
+﻿using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Newtonsoft.Json;
-using NLog;
 using SiteBuilder.SiteData;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.SiteTasks.UpdateReleaseNotes
 {
-    public class UpdateReleaseNotesTask : OldBaseDeploymentTask
+    public class UpdateReleaseNotesTask : BaseDeploymentTask
     {
 #if DEBUG
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public UpdateReleaseNotesTask(UpdateReleaseNotesTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public UpdateReleaseNotesTask(UpdateReleaseNotesTaskOptions options, uint deep)
-            : base(options, deep)
+        public UpdateReleaseNotesTask(UpdateReleaseNotesTaskOptions options, IDeploymentTask parentTask)
+            : base("4A489A50-C0FB-4281-BC0E-CD3F25374486", false, options, parentTask)
         {
             _options = options;
         }

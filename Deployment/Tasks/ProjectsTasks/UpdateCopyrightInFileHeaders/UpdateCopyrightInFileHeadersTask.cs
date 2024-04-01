@@ -1,28 +1,24 @@
 ﻿using CollectionsHelpers.CollectionsHelpers;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using CSharpUtils;
-using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeaders
 {
-    public class UpdateCopyrightInFileHeadersTask : OldBaseDeploymentTask
+    public class UpdateCopyrightInFileHeadersTask : BaseDeploymentTask
     {
 #if DEBUG
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public UpdateCopyrightInFileHeadersTask(UpdateCopyrightInFileHeadersTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public UpdateCopyrightInFileHeadersTask(UpdateCopyrightInFileHeadersTaskOptions options, uint deep)
-            : base(options, deep)
+        public UpdateCopyrightInFileHeadersTask(UpdateCopyrightInFileHeadersTaskOptions options, IDeploymentTask parentTask)
+            : base("4EFBFEB5-D0EF-4C38-B035-8B9D5E202B32", false, options, parentTask)
         {
             _options = options;
         }

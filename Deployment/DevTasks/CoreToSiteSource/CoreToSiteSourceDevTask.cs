@@ -4,40 +4,31 @@ using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
 using Deployment.DevTasks.CreateExtendedDocFile;
-using Deployment.Tasks;
-using Deployment.Tasks.BuildTasks.Build;
-using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
-using dotless.Core.Parser.Infrastructure;
-using NLog;
-using SiteBuilder;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CoreToSiteSource
 {
-    public class CoreToSiteSourceDevTask : OldBaseDeploymentTask
+    public class CoreToSiteSourceDevTask : BaseDeploymentTask
     {
         public CoreToSiteSourceDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CoreToSiteSourceDevTask(uint deep)
+        public CoreToSiteSourceDevTask(IDeploymentTask parentTask)
             : this(new CoreToSiteSourceDevTaskOptions() 
             {
                 CoreCProjPath = ProjectsDataSourceFactory.GetProject(KindOfProject.CoreAssetLib).CsProjPath,
                 SiteSourceDir = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite).SourcePath
-            }, deep)
+            }, parentTask)
         {
         }
 
-        public CoreToSiteSourceDevTask(CoreToSiteSourceDevTaskOptions options, uint deep)
-            : base(options, deep)
+        public CoreToSiteSourceDevTask(CoreToSiteSourceDevTaskOptions options, IDeploymentTask parentTask)
+            : base("CC1F3739-4159-4706-AC08-E7E7DACD7145", false, options, parentTask)
         {
             _options = options;
         }
@@ -67,13 +58,13 @@ namespace Deployment.DevTasks.CoreToSiteSource
                 //BuildConfiguration = KindOfBuildConfiguration.Release,
                 OutputDir = tempDir.FullName,
                 NoLogo = true
-            }, NextDeep));
+            }, this));
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {
                 TargetDir = destDir,
                 SkipExistingFilesInTargetDir = false
-            }, NextDeep));
+            }, this));
 
             deploymentPipeline.Run();
 
@@ -89,7 +80,7 @@ namespace Deployment.DevTasks.CoreToSiteSource
                 {
                     XmlDocFile = xmlFileName,
                     ExtendedDocFile = destFileName
-                }));
+                }, this));
             }
         }
 

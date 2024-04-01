@@ -1,25 +1,23 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
-using System;
+using CommonUtils.DeploymentTasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using XMLDocReader;
 using XMLDocReader.CSharpDoc;
 
 namespace Deployment.DevTasks.CreateExtendedDocFile
 {
-    public class CreateExtendedDocFileDevTask : OldBaseDeploymentTask
+    public class CreateExtendedDocFileDevTask : BaseDeploymentTask
     {
         public CreateExtendedDocFileDevTask(CreateExtendedDocFileDevTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public CreateExtendedDocFileDevTask(CreateExtendedDocFileDevTaskOptions options, uint deep)
-            : base(options, deep)
+        public CreateExtendedDocFileDevTask(CreateExtendedDocFileDevTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.XmlDocFile), false, options, parentTask)
         {
             _options = options;
         }

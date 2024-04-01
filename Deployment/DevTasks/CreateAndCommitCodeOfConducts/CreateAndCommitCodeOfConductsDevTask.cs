@@ -44,7 +44,7 @@ namespace Deployment.DevTasks.CreateAndCommitCodeOfConducts
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new CreateCodeOfConductsDevTask(NextDeep));
+            Exec(new CreateCodeOfConductsDevTask(this));
 
             var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
@@ -52,7 +52,7 @@ namespace Deployment.DevTasks.CreateAndCommitCodeOfConducts
             {
                 Message = _options.Message,
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

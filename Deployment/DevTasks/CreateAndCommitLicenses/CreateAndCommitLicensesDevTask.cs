@@ -44,7 +44,7 @@ namespace Deployment.DevTasks.CreateAndCommitLicenses
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new CreateLicensesDevTask(NextDeep));
+            Exec(new CreateLicensesDevTask(this));
 
             var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
@@ -52,7 +52,7 @@ namespace Deployment.DevTasks.CreateAndCommitLicenses
             {
                 Message = _options.Message,
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

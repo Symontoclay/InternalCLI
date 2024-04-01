@@ -44,7 +44,7 @@ namespace Deployment.DevTasks.CreateAndCommitContributings
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new CreateContributingsDevTask(NextDeep));
+            Exec(new CreateContributingsDevTask(this));
 
             var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
@@ -52,7 +52,7 @@ namespace Deployment.DevTasks.CreateAndCommitContributings
             {
                 Message = _options.Message,
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

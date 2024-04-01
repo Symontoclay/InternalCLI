@@ -1,33 +1,29 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.DevSiteFullBuild;
-using Deployment.DevTasks.UpdateReleaseNotes;
-using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.DevSiteFullBuildAndCommit
 {
-    public class DevSiteFullBuildAndCommitTask : OldBaseDeploymentTask
+    public class DevSiteFullBuildAndCommitTask : BaseDeploymentTask
     {
         public DevSiteFullBuildAndCommitTask()
-            : this(0u)
+            : this(null)
         {
         }
         
-        public DevSiteFullBuildAndCommitTask(uint deep)
-            : base(null, deep)
+        public DevSiteFullBuildAndCommitTask(IDeploymentTask parentTask)
+            : base("7ADE98A6-A7DC-45C4-A242-52F334329A52", false, null, parentTask)
         {
         }
 
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new DevSiteFullBuildTask(NextDeep));
+            Exec(new DevSiteFullBuildTask(this));
 
             var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
@@ -35,7 +31,7 @@ namespace Deployment.DevTasks.DevSiteFullBuildAndCommit
             {
                 Message = "Site has been updated",
                 RepositoryPaths = new List<string>() { siteSolution.Path }
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

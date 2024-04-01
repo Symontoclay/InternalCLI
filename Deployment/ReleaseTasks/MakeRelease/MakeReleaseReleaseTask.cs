@@ -86,7 +86,7 @@ namespace Deployment.ReleaseTasks.MakeRelease
             //{
             //    Message = "snapshot",
             //    RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            //}, NextDeep));
+            //}, this));
 
             Exec(new DeploymentTasksGroup("543A0B7C-95E8-41C1-94E7-665B694BE95F", true, this)
             {

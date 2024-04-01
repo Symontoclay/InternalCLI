@@ -4,23 +4,16 @@ using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
 using CSharpUtils;
 using Deployment.DevTasks.CreateExtendedDocFile;
-using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Build;
-using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution;
-using Deployment.Tasks.ProjectsTasks.SetDocumentationFileInUnityProjectIfEmpty;
-using dotless.Core.Parser.Infrastructure;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UnityToSiteSource
 {
-    public class UnityToSiteSourceDevTask : OldBaseDeploymentTask
+    public class UnityToSiteSourceDevTask : BaseDeploymentTask
     {
         private static UnityToSiteSourceDevTaskOptions CreateDefaultOptions()
         {
@@ -40,17 +33,17 @@ namespace Deployment.DevTasks.UnityToSiteSource
         }
 
         public UnityToSiteSourceDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public UnityToSiteSourceDevTask(uint deep)
-            : this(CreateDefaultOptions(), deep)
+        public UnityToSiteSourceDevTask(IDeploymentTask parentTask)
+            : this(CreateDefaultOptions(), parentTask)
         {
         }
 
-        public UnityToSiteSourceDevTask(UnityToSiteSourceDevTaskOptions options, uint deep)
-            : base(options, deep)
+        public UnityToSiteSourceDevTask(UnityToSiteSourceDevTaskOptions options, IDeploymentTask parentTask)
+            : base("AAD7F02F-114D-49C2-AEB7-5E8412B043A3", false, options, parentTask)
         {
             _options = options;
         }
@@ -79,7 +72,7 @@ namespace Deployment.DevTasks.UnityToSiteSource
             {
                 UnityExeFilePath = _options.UnityExeFilePath,
                 RootDir = _options.UnitySlnPath
-            }));
+            }, this));
 
             var unityCsProjectPath = Path.Combine(_options.UnitySlnPath, "Assembly-CSharp.csproj");
 
@@ -89,13 +82,13 @@ namespace Deployment.DevTasks.UnityToSiteSource
                 //BuildConfiguration = KindOfBuildConfiguration.Release,
                 OutputDir = tempDir.FullName,
                 NoLogo = true
-            }, NextDeep));
+            }, this));
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {
                 TargetDir = destDir,
                 SkipExistingFilesInTargetDir = true
-            }, NextDeep));
+            }, this));
 
             deploymentPipeline.Run();
 
@@ -109,7 +102,7 @@ namespace Deployment.DevTasks.UnityToSiteSource
             {
                 XmlDocFile = xmlFileName,
                 ExtendedDocFile = destFileName
-            }));
+            }, this));
         }
 
         /// <inheritdoc/>

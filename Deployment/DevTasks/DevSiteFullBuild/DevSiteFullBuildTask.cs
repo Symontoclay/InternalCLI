@@ -1,5 +1,5 @@
 ﻿using BaseDevPipeline;
-using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.BuildExamples;
 using Deployment.DevTasks.CoreToCLIFolder;
 using Deployment.DevTasks.CoreToSiteSource;
@@ -7,24 +7,19 @@ using Deployment.DevTasks.DevSiteBuild;
 using Deployment.DevTasks.UnityToSiteSource;
 using Deployment.DevTasks.UpdateReleaseNotes;
 using Deployment.Helpers;
-using Deployment.Tasks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.DevSiteFullBuild
 {
-    public class DevSiteFullBuildTask : OldBaseDeploymentTask
+    public class DevSiteFullBuildTask : BaseDeploymentTask
     {
         public DevSiteFullBuildTask()
-            : this(0u)
+            : this(null)
         {
         }
         
-        public DevSiteFullBuildTask(uint deep)
-            : base(null, deep)
+        public DevSiteFullBuildTask(IDeploymentTask parentTask)
+            : base("E5A7E089-3913-4A26-A43F-45A0034A2C2F", false, null, parentTask)
         {
         }
 
@@ -35,12 +30,12 @@ namespace Deployment.DevTasks.DevSiteFullBuild
             CheckMasterBranch(KindOfProject.CoreSolution);
             CheckMasterBranch(KindOfProject.Unity);
 
-            Exec(new UpdateReleaseNotesDevTask(NextDeep));
-            Exec(new CoreToSiteSourceDevTask(NextDeep));
-            Exec(new UnityToSiteSourceDevTask(NextDeep));
-            Exec(new CoreToCLIFolderDevTask(NextDeep));
-            Exec(new BuildExamplesDevTask(NextDeep));
-            Exec(new DevSiteBuildTask(NextDeep));
+            Exec(new UpdateReleaseNotesDevTask(this));
+            Exec(new CoreToSiteSourceDevTask(this));
+            Exec(new UnityToSiteSourceDevTask(this));
+            Exec(new CoreToCLIFolderDevTask(this));
+            Exec(new BuildExamplesDevTask(this));
+            Exec(new DevSiteBuildTask(this));
         }
 
         private void CheckMasterBranch(KindOfProject kind)

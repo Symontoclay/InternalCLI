@@ -1,29 +1,21 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
-using Deployment.Tasks;
 using Deployment.Tasks.BuildTasks.Build;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
-using dotless.Core.Parser.Infrastructure;
-using NLog;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CopyAndBuildVSProjectOrSolution
 {
-    public class CopyAndBuildVSProjectOrSolutionDevTask : OldBaseDeploymentTask
+    public class CopyAndBuildVSProjectOrSolutionDevTask : BaseDeploymentTask
     {
         public CopyAndBuildVSProjectOrSolutionDevTask(CopyAndBuildVSProjectOrSolutionDevTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public CopyAndBuildVSProjectOrSolutionDevTask(CopyAndBuildVSProjectOrSolutionDevTaskOptions options, uint deep)
-            : base(options, deep)
+        public CopyAndBuildVSProjectOrSolutionDevTask(CopyAndBuildVSProjectOrSolutionDevTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.ProjectOrSoutionFileName), false, options, parentTask)
         {
             _options = options;
         }
@@ -52,7 +44,7 @@ namespace Deployment.DevTasks.CopyAndBuildVSProjectOrSolution
             {
                 SourceDir = slnFolder,
                 DestDir = tempDir.FullName
-            }, NextDeep));
+            }, this));
 
             deploymentPipeline.Add(new BuildTask(new BuildTaskOptions()
             {
@@ -61,7 +53,7 @@ namespace Deployment.DevTasks.CopyAndBuildVSProjectOrSolution
                 OutputDir = _options.OutputDir,
                 NoLogo = _options.NoLogo,
                 RuntimeIdentifier = _options.RuntimeIdentifier
-            }, NextDeep));
+            }, this));
 
             deploymentPipeline.Run();
         }

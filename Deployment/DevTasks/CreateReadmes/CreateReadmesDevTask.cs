@@ -60,7 +60,7 @@ namespace Deployment.DevTasks.CreateReadmes
                     RepositorySpecificBadgesFileName = targetSolution.BadgesSource,
                     RepositorySpecificReadmeFileName = targetSolution.ReadmeSource,
                     TargetReadmeFileName = targetReadmeFileName
-                }, NextDeep));
+                }, this));
 
                 switch(targetSolution.Kind)
                 {
@@ -71,7 +71,7 @@ namespace Deployment.DevTasks.CreateReadmes
                             DestDir = targetSolution.Path,
                             SaveSubDirs = false,
                             TargetFiles = new List<string>() { targetReadmeFileName }
-                        }, NextDeep));
+                        }, this));
                         break;
                 }
             }

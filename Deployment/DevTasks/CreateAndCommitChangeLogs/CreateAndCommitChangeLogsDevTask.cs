@@ -44,7 +44,7 @@ namespace Deployment.DevTasks.CreateAndCommitChangeLogs
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new CreateChangeLogsDevTask(NextDeep));
+            Exec(new CreateChangeLogsDevTask(this));
 
             var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
@@ -52,7 +52,7 @@ namespace Deployment.DevTasks.CreateAndCommitChangeLogs
             {
                 Message = _options.Message,
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

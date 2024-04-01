@@ -1,22 +1,19 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInCSProjectOrSolution;
 using Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInFolder;
 using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
 {
-    public class UpdateCopyrightInFileHeadersDevTask : OldBaseDeploymentTask
+    public class UpdateCopyrightInFileHeadersDevTask : BaseDeploymentTask
     {
-        public UpdateCopyrightInFileHeadersDevTask(uint deep)
-            : base(null, deep)
+        public UpdateCopyrightInFileHeadersDevTask(IDeploymentTask parentTask)
+            : base("0BE8B3D2-ED2C-4489-AC18-723DF1CCD311", false, null, parentTask)
         {
         }
         
@@ -49,7 +46,7 @@ namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
                         {
                             Text = headerText,
                             SourceDir = targetSolution.Path
-                        }, NextDeep));
+                        }, this));
                         break;
 
                     case KindOfProject.Unity:
@@ -57,7 +54,7 @@ namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
                         {
                             Text = headerText,
                             SourceDir = targetSolution.SourcePath
-                        }, NextDeep));
+                        }, this));
                         break;
 
                     default:

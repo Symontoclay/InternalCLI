@@ -63,7 +63,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
                 DestDir = _options.DestDir,
                 SaveSubDirs = _options.SaveSubDirs,
                 TargetFiles = sourceFullFileNamesList
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

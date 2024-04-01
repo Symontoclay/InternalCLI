@@ -1,24 +1,20 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
-using NLog;
+using CommonUtils.DeploymentTasks;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildTasks.Build
 {
-    public class BuildTask : OldBaseDeploymentTask
+    public class BuildTask : BaseDeploymentTask
     {
         public BuildTask(BuildTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public BuildTask(BuildTaskOptions options, uint deep)
-            : base(options, deep)
+        public BuildTask(BuildTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.ProjectOrSoutionFileName), false, options, parentTask)
         {
             _options = options;
         }

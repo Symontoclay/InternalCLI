@@ -1,27 +1,23 @@
-﻿using CommonUtils.DebugHelpers;
-using NLog;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.DirectoriesTasks.CreateDirectory
 {
-    public class CreateDirectoryTask: OldBaseDeploymentTask
+    public class CreateDirectoryTask: BaseDeploymentTask
     {
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
         public CreateDirectoryTask(CreateDirectoryTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public CreateDirectoryTask(CreateDirectoryTaskOptions options, uint deep)
-            : base(options, deep)
+        public CreateDirectoryTask(CreateDirectoryTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.TargetDir), false, options, parentTask)
         {
             _options = options;
         }

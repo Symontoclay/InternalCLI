@@ -56,7 +56,7 @@ namespace Deployment.DevTasks.CreateCodeOfConducts
                     SiteName = siteSolution.RepositoryName,
                     SourceFileName = settings.CodeOfConductSource,
                     TargetFileName = targetFileName
-                }, NextDeep));
+                }, this));
 
                 switch (targetSolution.Kind)
                 {
@@ -67,7 +67,7 @@ namespace Deployment.DevTasks.CreateCodeOfConducts
                             DestDir = targetSolution.Path,
                             SaveSubDirs = false,
                             TargetFiles = new List<string>() { targetFileName }
-                        }, NextDeep));
+                        }, this));
                         break;
                 }
             }

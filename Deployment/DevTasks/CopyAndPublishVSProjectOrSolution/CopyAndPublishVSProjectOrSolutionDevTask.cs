@@ -60,7 +60,7 @@ namespace Deployment.DevTasks.CopyAndPublishVSProjectOrSolution
             {
                 SourceDir = slnFolder,
                 DestDir = tempDir.FullName
-            }, NextDeep));
+            }, this));
 
             deploymentPipeline.Add(new PublishTask(new PublishTaskOptions()
             {
@@ -70,7 +70,7 @@ namespace Deployment.DevTasks.CopyAndPublishVSProjectOrSolution
                 NoLogo = _options.NoLogo,
                 RuntimeIdentifier = _options.RuntimeIdentifier,
                 SelfContained = _options.SelfContained
-            }, NextDeep));
+            }, this));
 
             deploymentPipeline.Run();
         }

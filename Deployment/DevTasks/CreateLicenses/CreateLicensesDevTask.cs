@@ -61,7 +61,7 @@ namespace Deployment.DevTasks.CreateLicenses
                     SiteName = siteSolution.RepositoryName,
                     Content = targetSolution.License.Content,
                     TargetFileName = targetFileName
-                }, NextDeep));
+                }, this));
 
                 switch (targetSolution.Kind)
                 {
@@ -72,7 +72,7 @@ namespace Deployment.DevTasks.CreateLicenses
                             DestDir = targetSolution.Path,
                             SaveSubDirs = false,
                             TargetFiles = new List<string>() { targetFileName }
-                        }, NextDeep));
+                        }, this));
                         break;
                 }
             }

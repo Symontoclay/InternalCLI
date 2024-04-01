@@ -56,7 +56,7 @@ namespace Deployment.DevTasks.CreateContributings
                     SiteName = siteSolution.RepositoryName,
                     SourceFileName = settings.ContributingSource,
                     TargetFileName = targetFileName
-                }, NextDeep));
+                }, this));
 
                 switch (targetSolution.Kind)
                 {
@@ -67,7 +67,7 @@ namespace Deployment.DevTasks.CreateContributings
                             DestDir = targetSolution.Path,
                             SaveSubDirs = false,
                             TargetFiles = new List<string>() { targetFileName }
-                        }, NextDeep));
+                        }, this));
                         break;
                 }
             }

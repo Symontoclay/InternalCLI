@@ -32,7 +32,7 @@ namespace Deployment.DevTasks.PullSolutionsWithMaintainedReleases
                 Exec(new PullTask(new PullTaskOptions()
                 {
                     RepositoryPath = targetSolution.Path
-                }, NextDeep));
+                }, this));
             }
         }
 

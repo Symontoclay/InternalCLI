@@ -1,25 +1,22 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.ProjectsTasks.GenerateUnityCSProjAndSolution;
 using Deployment.Tasks.ProjectsTasks.SetDocumentationFileInUnityProjectIfEmpty;
-using NLog;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution
 {
-    public class PrepareUnityCSProjAndSolutionTask : OldBaseDeploymentTask
+    public class PrepareUnityCSProjAndSolutionTask : BaseDeploymentTask
     {
         public PrepareUnityCSProjAndSolutionTask(PrepareUnityCSProjAndSolutionTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public PrepareUnityCSProjAndSolutionTask(PrepareUnityCSProjAndSolutionTaskOptions options, uint deep)
-            : base(options, deep)
+        public PrepareUnityCSProjAndSolutionTask(PrepareUnityCSProjAndSolutionTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.RootDir), false, options, parentTask)
         {
             _options = options;
         }
@@ -42,7 +39,7 @@ namespace Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution
             Exec(new GenerateUnityCSProjAndSolutionTask(new GenerateUnityCSProjAndSolutionTaskOptions() {
                 UnityExeFilePath = _options.UnityExeFilePath,
                 RootDir = _options.RootDir
-            }, NextDeep));
+            }, this));
 
             var unityCsProjectPath = Path.Combine(_options.RootDir, "Assembly-CSharp.csproj");
 
@@ -50,7 +47,7 @@ namespace Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution
                 new SetDocumentationFileInUnityProjectIfEmptyTaskOptions()
                 {
                     ProjectFilePath = unityCsProjectPath
-                }, NextDeep));
+                }, this));
         }
 
         private void DeleteExistingSolutions()
