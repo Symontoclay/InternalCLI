@@ -4,40 +4,32 @@ using CommonUtils;
 using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
-using Deployment.Tasks;
-using Deployment.Tasks.BuildTasks.Build;
 using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
-using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
-using dotless.Core.Parser.Infrastructure;
-using NLog;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CoreToAsset
 {
-    public class CoreToAssetDevTask : OldBaseDeploymentTask
+    public class CoreToAssetDevTask : BaseDeploymentTask
     {
         public CoreToAssetDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CoreToAssetDevTask(uint deep)
+        public CoreToAssetDevTask(IDeploymentTask parentTask)
             : this(new CoreToAssetDevTaskOptions()
             {
                 CoreCProjPath = ProjectsDataSourceFactory.GetProject(KindOfProject.CoreAssetLib).CsProjPath,
                 DestDir = ProjectsDataSourceFactory.GetSolution(KindOfProject.Unity).SourcePath,
                 Plugins = ProjectsDataSourceFactory.GetProjects(KindOfProject.CorePlugin).Select(p => p.CsProjPath).ToList()
-            }, deep)
+            }, parentTask)
         {
         }
 
-        public CoreToAssetDevTask(CoreToAssetDevTaskOptions options, uint deep)
-            : base(options, deep)
+        public CoreToAssetDevTask(CoreToAssetDevTaskOptions options, IDeploymentTask parentTask)
+            : base("3E0E19A6-2BB8-47EE-85D4-09C9F6937B45", false, options, parentTask)
         {
             _options = options;
         }

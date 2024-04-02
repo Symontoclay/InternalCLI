@@ -1,22 +1,20 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.UnityTasks.ExecuteMethod;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.GenerateUnityCSProjAndSolution
 {
-    public class GenerateUnityCSProjAndSolutionTask : OldBaseDeploymentTask
+    public class GenerateUnityCSProjAndSolutionTask : BaseDeploymentTask
     {
         public GenerateUnityCSProjAndSolutionTask(GenerateUnityCSProjAndSolutionTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public GenerateUnityCSProjAndSolutionTask(GenerateUnityCSProjAndSolutionTaskOptions options, uint deep)
-            : base(options, deep)
+        public GenerateUnityCSProjAndSolutionTask(GenerateUnityCSProjAndSolutionTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.RootDir), false, options, parentTask)
         {
             _options = options;
         }
@@ -38,7 +36,7 @@ namespace Deployment.Tasks.ProjectsTasks.GenerateUnityCSProjAndSolution
                 UnityExeFilePath = _options.UnityExeFilePath,
                 RootDir = _options.RootDir,
                 MethodName = "SymOntoClay.UnityAsset.Editors.EmptyScript.Run"
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

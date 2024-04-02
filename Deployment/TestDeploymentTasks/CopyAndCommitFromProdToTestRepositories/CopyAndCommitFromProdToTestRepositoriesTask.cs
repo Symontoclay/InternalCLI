@@ -54,14 +54,14 @@ namespace Deployment.TestDeploymentTasks.CopyAndCommitFromProdToTestRepositories
                 {
                     SourceDir = prodSolution.Path,
                     DestDir = testSolution.Path,
-                }, NextDeep));
+                }, this));
             }
 
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
             {
                 RepositoryPaths = testTargetSolutions.Select(p => p.Path).ToList(),
                 Message = "Commit uncommited changes"
-            }, NextDeep));
+            }, this));
         }
 
         /// <inheritdoc/>

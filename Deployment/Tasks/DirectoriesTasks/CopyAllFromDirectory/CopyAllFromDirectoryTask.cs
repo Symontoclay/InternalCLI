@@ -1,27 +1,23 @@
 ﻿using CollectionsHelpers.CollectionsHelpers;
+using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Deployment.Tasks.DirectoriesTasks.CopyTargetFiles;
-using Newtonsoft.Json;
-using NLog;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
 {
-    public class CopyAllFromDirectoryTask : OldBaseDeploymentTask
+    public class CopyAllFromDirectoryTask : BaseDeploymentTask
     {
         public CopyAllFromDirectoryTask(CopyAllFromDirectoryTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public CopyAllFromDirectoryTask(CopyAllFromDirectoryTaskOptions options, uint deep)
-            : base(options, deep)
+        public CopyAllFromDirectoryTask(CopyAllFromDirectoryTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.SourceDir), false, options, parentTask)
         {
             _options = options;
         }

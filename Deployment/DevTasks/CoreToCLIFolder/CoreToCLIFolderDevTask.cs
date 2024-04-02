@@ -1,27 +1,21 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CopyAndPublishVSProjectOrSolution;
-using Deployment.Tasks;
-using Deployment.Tasks.BuildTasks.Publish;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
-using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CoreToCLIFolder
 {
-    public class CoreToCLIFolderDevTask : OldBaseDeploymentTask
+    public class CoreToCLIFolderDevTask : BaseDeploymentTask
     {
         public CoreToCLIFolderDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CoreToCLIFolderDevTask(uint deep)
-            : base(null, deep)
+        public CoreToCLIFolderDevTask(IDeploymentTask parentTask)
+            : base("9AED3948-9616-46D7-A19A-DB12EDE46FAA", false, null, parentTask)
         {
         }
 

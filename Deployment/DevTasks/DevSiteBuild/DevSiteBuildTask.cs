@@ -2,39 +2,32 @@
 using CommonUtils;
 using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
-using Deployment.Tasks;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using Deployment.Tasks.SiteTasks.SiteBuild;
-using dotless.Core.Parser.Infrastructure;
-using NLog;
 using SiteBuilder;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.DevSiteBuild
 {
-    public class DevSiteBuildTask: OldBaseDeploymentTask
+    public class DevSiteBuildTask: BaseDeploymentTask
     {
         public DevSiteBuildTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public DevSiteBuildTask(uint deep)
+        public DevSiteBuildTask(IDeploymentTask parentTask)
             : this(new DevSiteBuildTaskOptions() 
             { 
                 SiteName = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite).RepositoryName,
                 SourcePath = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite).SourcePath,
                 DestPath = ProjectsDataSourceFactory.GetDevArtifact(KindOfArtifact.ProjectSite).Path
-            }, deep)
+            }, parentTask)
         {
         }
 
-        public DevSiteBuildTask(DevSiteBuildTaskOptions options, uint deep)
-            : base(options, deep)
+        public DevSiteBuildTask(DevSiteBuildTaskOptions options, IDeploymentTask parentTask)
+            : base("FF122FDF-E11E-41E3-A14D-628A6F9523FD", false, options, parentTask)
         {
             _options = options;
         }

@@ -80,31 +80,31 @@ namespace Deployment.ReleaseTasks.StartNewVersion
                 {
                     RepositoryPath = repository.Path,
                     BranchName = _masterBranchName
-                }, NextDeep));
+                }, this));
 
                 Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
                 {
                     Message = "snapshot",
                     RepositoryPaths = new List<string>() { repository.Path }
-                }, NextDeep));
+                }, this));
 
                 Exec(new CreateBranchTask(new CreateBranchTaskOptions()
                 {
                     RepositoryPath = repository.Path,
                     BranchName = versionBranchName
-                }, NextDeep));
+                }, this));
 
                 Exec(new PushNewBranchToOriginTask(new PushNewBranchToOriginTaskOptions()
                 {
                     RepositoryPath = repository.Path,
                     BranchName = versionBranchName
-                }));
+                }, this));
 
                 Exec(new CheckoutTask(new CheckoutTaskOptions()
                 {
                     RepositoryPath = repository.Path,
                     BranchName = versionBranchName
-                }, NextDeep));
+                }, this));
             }
 
             var futureReleaseInfo = FutureReleaseInfoReader.ReadSource();

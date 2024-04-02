@@ -1,27 +1,22 @@
 ﻿using BaseDevPipeline;
 using CommonUtils;
 using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
-using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.SiteTasks.SiteBuild;
 using SiteBuilder;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.ReleaseTasks.ProdSiteBuild
 {
-    public class ProdSiteBuildReleaseTask : OldBaseDeploymentTask
+    public class ProdSiteBuildReleaseTask : BaseDeploymentTask
     {
         public ProdSiteBuildReleaseTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public ProdSiteBuildReleaseTask(uint deep)
-            : base(null, deep)
+        public ProdSiteBuildReleaseTask(IDeploymentTask parentTask)
+            : base("45F89561-9558-4A34-BDBC-C08F8C4BB850", false, null, parentTask)
         {
         }
 

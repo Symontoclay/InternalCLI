@@ -1,23 +1,21 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.Clone
 {
-    public class CloneTask : OldBaseDeploymentTask
+    public class CloneTask : BaseDeploymentTask
     {
         public CloneTask(CloneTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public CloneTask(CloneTaskOptions options, uint deep)
-            : base(options, deep)
+        public CloneTask(CloneTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.RepositoryHref), false, options, parentTask)
         {
             _options = options;
         }

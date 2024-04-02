@@ -1,30 +1,25 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.UpdateUnityExampleRepository;
-using Deployment.Tasks;
-using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using Deployment.Tasks.GitTasks.Clone;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
 using Deployment.Tasks.GitTasks.Pull;
-using NLog;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories
 {
-    public class UpdateAndCommitUnityExampleRepositoriesDevTask : OldBaseDeploymentTask
+    public class UpdateAndCommitUnityExampleRepositoriesDevTask : BaseDeploymentTask
     {
         public UpdateAndCommitUnityExampleRepositoriesDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public UpdateAndCommitUnityExampleRepositoriesDevTask(uint deep)
-            : base(null, deep)
+        public UpdateAndCommitUnityExampleRepositoriesDevTask(IDeploymentTask parentTask)
+            : base("68D4C439-4465-431A-9B52-6C0B8CF9BD41", false, null, parentTask)
         {
         }
 

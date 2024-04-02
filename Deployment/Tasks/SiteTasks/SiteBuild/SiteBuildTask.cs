@@ -1,27 +1,20 @@
-﻿using CommonUtils.DebugHelpers;
-using NLog;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using SiteBuilder;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.SiteTasks.SiteBuild
 {
-    public class SiteBuildTask: OldBaseDeploymentTask
+    public class SiteBuildTask: BaseDeploymentTask
     {
-#if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
-
         public SiteBuildTask(SiteBuildTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public SiteBuildTask(SiteBuildTaskOptions options, uint deep)
-            : base(options, deep)
+        public SiteBuildTask(SiteBuildTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.SourcePath), false, options, parentTask)
         {
             _options = options;
         }

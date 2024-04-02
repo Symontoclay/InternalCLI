@@ -1,34 +1,29 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CreateReadmes;
-using Deployment.Tasks;
-using Deployment.Tasks.GitTasks.Commit;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
-using Deployment.Tasks.GitTasks.Push;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateAndCommitReadmes
 {
-    public class CreateAndCommitReadmesDevTask : OldBaseDeploymentTask
+    public class CreateAndCommitReadmesDevTask : BaseDeploymentTask
     {
         public CreateAndCommitReadmesDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CreateAndCommitReadmesDevTask(uint deep)
+        public CreateAndCommitReadmesDevTask(IDeploymentTask parentTask)
             : this(new CreateAndCommitReadmesDevTaskOptions() { 
                 Message = "README.md has been updated"
-            }, deep)
+            }, parentTask)
         {
         }
 
-        public CreateAndCommitReadmesDevTask(CreateAndCommitReadmesDevTaskOptions options, uint deep)
-            : base(options, deep)
+        public CreateAndCommitReadmesDevTask(CreateAndCommitReadmesDevTaskOptions options, IDeploymentTask parentTask)
+            : base("83CCE474-A140-4E5D-9715-BCE5D49EE0D9", false, options, parentTask)
         {
             _options = options;
         }

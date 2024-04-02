@@ -1,22 +1,19 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using CommonUtils.DeploymentTasks;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.UnityTasks.ExecuteMethod
 {
-    public class ExecuteMethodTask : OldBaseDeploymentTask
+    public class ExecuteMethodTask : BaseDeploymentTask
     {
         public ExecuteMethodTask(ExecuteMethodTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public ExecuteMethodTask(ExecuteMethodTaskOptions options, uint deep)
-            : base(options, deep)
+        public ExecuteMethodTask(ExecuteMethodTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.RootDir), false, options, parentTask)
         {
             _options = options;
         }

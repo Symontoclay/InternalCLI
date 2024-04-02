@@ -1,27 +1,24 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.ReleaseTasks.ProdSiteBuild;
-using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.ReleaseTasks.ProdSiteBuildAndCommit
 {
-    public class ProdSiteBuildAndCommitReleaseTask : OldBaseDeploymentTask
+    public class ProdSiteBuildAndCommitReleaseTask : BaseDeploymentTask
     {
-        public ProdSiteBuildAndCommitReleaseTask(uint deep)
-            : base(null, deep)
+        public ProdSiteBuildAndCommitReleaseTask(IDeploymentTask parentTask)
+            : base("8F571945-06A1-4EEA-97E0-AF85813741B6", false, null, parentTask)
         {
         }
 
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new ProdSiteBuildReleaseTask(NextDeep));
+            Exec(new ProdSiteBuildReleaseTask(this));
 
             var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
@@ -29,7 +26,7 @@ namespace Deployment.ReleaseTasks.ProdSiteBuildAndCommit
             {
                 Message = "Site has been updated",
                 RepositoryPaths = new List<string>() { siteSolution.Path }
-            }, NextDeep));
+            }, this));
         }
         
         /// <inheritdoc/>

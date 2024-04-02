@@ -1,28 +1,20 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
-using NLog;
-using System;
-using System.Collections.Generic;
+using CommonUtils.DeploymentTasks;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateUnityExampleRepository
 {
-    public class UpdateUnityExampleRepositoryDevTask : OldBaseDeploymentTask
+    public class UpdateUnityExampleRepositoryDevTask : BaseDeploymentTask
     {
-#if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
         public UpdateUnityExampleRepositoryDevTask(UpdateUnityExampleRepositoryDevTaskOptions options)
-             : this(options, 0u)
+             : this(options, null)
         {
         }
 
-        public UpdateUnityExampleRepositoryDevTask(UpdateUnityExampleRepositoryDevTaskOptions options, uint deep)
-             : base(options, deep)
+        public UpdateUnityExampleRepositoryDevTask(UpdateUnityExampleRepositoryDevTaskOptions options, IDeploymentTask parentTask)
+             : base(MD5Helper.GetHash(options.SourceRepository), false, options, parentTask)
         {
             _options = options;
         }

@@ -1,25 +1,21 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
-using Deployment.Tasks;
-using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.ReleaseTasks.MarkAsCompleted
 {
-    public class MarkAsCompletedReleaseTask : OldBaseDeploymentTask
+    public class MarkAsCompletedReleaseTask : BaseDeploymentTask
     {
         public MarkAsCompletedReleaseTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public MarkAsCompletedReleaseTask(uint deep)
-            : base(null, deep)
+        public MarkAsCompletedReleaseTask(IDeploymentTask parentTask)
+            : base("ACB8AF3C-DEC2-4411-A952-7DB067B1D524", true, null, parentTask)
         {
         }
 

@@ -1,19 +1,15 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.BuildReadme;
 using Deployment.Tasks.DirectoriesTasks.CopyTargetFiles;
-using NLog;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateReadmes
 {
-    public class CreateReadmesDevTask : OldBaseDeploymentTask
+    public class CreateReadmesDevTask : BaseDeploymentTask
     {
         public CreateReadmesDevTask()
             : this(0u)

@@ -1,20 +1,19 @@
 ﻿using CollectionsHelpers.CollectionsHelpers;
+using CommonUtils;
 using CommonUtils.DebugHelpers;
-using Newtonsoft.Json;
-using NLog;
+using CommonUtils.DeploymentTasks;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
 {
-    public class CopyTargetFilesTask : OldBaseDeploymentTask
+    public class CopyTargetFilesTask : BaseDeploymentTask
     {
-        public CopyTargetFilesTask(CopyTargetFilesTaskOptions options, uint deep)
-            : base(options, deep)
+        public CopyTargetFilesTask(CopyTargetFilesTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.DestDir), false, options, parentTask)
         {
             _options = options;
             _targetFiles = options?.TargetFiles.Select(p => p.Replace("\\", "/").Trim()).ToList();

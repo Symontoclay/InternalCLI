@@ -1,26 +1,20 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using CSharpUtils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.ProjectsTasks.SetDocumentationFileInUnityProjectIfEmpty
 {
-    public class SetDocumentationFileInUnityProjectIfEmptyTask : OldBaseDeploymentTask
+    public class SetDocumentationFileInUnityProjectIfEmptyTask : BaseDeploymentTask
     {
-#if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
-
         public SetDocumentationFileInUnityProjectIfEmptyTask(SetDocumentationFileInUnityProjectIfEmptyTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public SetDocumentationFileInUnityProjectIfEmptyTask(SetDocumentationFileInUnityProjectIfEmptyTaskOptions options, uint deep)
-            : base(options, deep)
+        public SetDocumentationFileInUnityProjectIfEmptyTask(SetDocumentationFileInUnityProjectIfEmptyTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.ProjectFilePath), false, options, parentTask)
         {
             _options = options;
         }
