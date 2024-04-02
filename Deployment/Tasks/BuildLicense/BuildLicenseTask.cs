@@ -1,24 +1,22 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildLicense
 {
-    public class BuildLicenseTask : OldBaseDeploymentTask
+    public class BuildLicenseTask : BaseDeploymentTask
     {
         public BuildLicenseTask(BuildLicenseTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public BuildLicenseTask(BuildLicenseTaskOptions options, uint deep)
-            : base(options, deep)
+        public BuildLicenseTask(BuildLicenseTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.SiteSourcePath), false, options, parentTask)
         {
             _options = options;
         }

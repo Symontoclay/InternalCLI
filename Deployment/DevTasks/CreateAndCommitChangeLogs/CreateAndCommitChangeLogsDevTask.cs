@@ -1,33 +1,30 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CreateChangeLogs;
-using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateAndCommitChangeLogs
 {
-    public class CreateAndCommitChangeLogsDevTask : OldBaseDeploymentTask
+    public class CreateAndCommitChangeLogsDevTask : BaseDeploymentTask
     {
         public CreateAndCommitChangeLogsDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CreateAndCommitChangeLogsDevTask(uint deep)
+        public CreateAndCommitChangeLogsDevTask(IDeploymentTask parentTask)
             : this(new CreateAndCommitChangeLogsDevTaskOptions()
             {
                 Message = "CHANGELOG.md has been updated"
-            }, deep)
+            }, parentTask)
         {
         }
 
-        public CreateAndCommitChangeLogsDevTask(CreateAndCommitChangeLogsDevTaskOptions options, uint deep)
-            : base(options, deep)
+        public CreateAndCommitChangeLogsDevTask(CreateAndCommitChangeLogsDevTaskOptions options, IDeploymentTask parentTask)
+            : base("F5BC338E-99FE-420B-B733-39209285BF72", false, options, parentTask)
         {
             _options = options;
         }

@@ -1,26 +1,23 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.BuildContributing;
 using Deployment.Tasks.DirectoriesTasks.CopyTargetFiles;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateContributings
 {
-    public class CreateContributingsDevTask : OldBaseDeploymentTask
+    public class CreateContributingsDevTask : BaseDeploymentTask
     {
         public CreateContributingsDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CreateContributingsDevTask(uint deep)
-            : base(null, deep)
+        public CreateContributingsDevTask(IDeploymentTask parentTask)
+            : base("55272410-E9DD-47B1-A950-53708F316AF8", false, null, parentTask)
         {
         }
 

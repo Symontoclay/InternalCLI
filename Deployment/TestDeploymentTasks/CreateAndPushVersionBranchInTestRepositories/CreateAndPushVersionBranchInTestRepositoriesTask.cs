@@ -67,37 +67,37 @@ namespace Deployment.TestDeploymentTasks.CreateAndPushVersionBranchInTestReposit
                 {
                     Message = "snapshot",
                     RepositoryPaths = new List<string>() { solution.Path }
-                }, NextDeep));
+                }, this));
 
                 Exec(new CheckoutTask(new CheckoutTaskOptions()
                 {
                     RepositoryPath = solution.Path,
                     BranchName = _masterBranchName
-                }, NextDeep));
+                }, this));
 
                 Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
                 {
                     Message = "snapshot",
                     RepositoryPaths = new List<string>() { solution.Path }
-                }, NextDeep));
+                }, this));
 
                 Exec(new CreateBranchTask(new CreateBranchTaskOptions()
                 {
                     RepositoryPath = solution.Path,
                     BranchName = versionBranchName
-                }, NextDeep));
+                }, this));
 
                 Exec(new PushNewBranchToOriginTask(new PushNewBranchToOriginTaskOptions()
                 {
                     RepositoryPath = solution.Path,
                     BranchName = versionBranchName
-                }));
+                }, this));
 
                 Exec(new CheckoutTask(new CheckoutTaskOptions()
                 {
                     RepositoryPath = solution.Path,
                     BranchName = versionBranchName
-                }, NextDeep));
+                }, this));
             }
         }
 

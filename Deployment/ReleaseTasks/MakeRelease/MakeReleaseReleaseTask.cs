@@ -7,17 +7,12 @@ using Deployment.Helpers;
 using Deployment.ReleaseTasks.DeploymentToProd;
 using Deployment.ReleaseTasks.MarkAsCompleted;
 using Deployment.ReleaseTasks.MergeReleaseBranchToMaster;
-using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.Checkout;
-using Deployment.Tasks.GitTasks.CommitAllAndPush;
 using Deployment.Tasks.GitTasks.SetUpRepository;
-using NLog;
-using Octokit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.ReleaseTasks.MakeRelease
 {

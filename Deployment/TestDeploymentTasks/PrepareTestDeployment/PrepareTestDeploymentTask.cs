@@ -28,13 +28,13 @@ namespace Deployment.TestDeploymentTasks.PrepareTestDeployment
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            Exec(new ResetTestRepositoriesTask(NextDeep));
+            Exec(new ResetTestRepositoriesTask(this));
 
-            Exec(new RemoveReleasesFromTestRepositoriesTask(NextDeep));
+            Exec(new RemoveReleasesFromTestRepositoriesTask(this));
 
-            Exec(new CopyAndCommitFromProdToTestRepositoriesTask(NextDeep));
+            Exec(new CopyAndCommitFromProdToTestRepositoriesTask(this));
 
-            Exec(new CreateAndPushVersionBranchInTestRepositoriesTask(NextDeep));
+            Exec(new CreateAndPushVersionBranchInTestRepositoriesTask(this));
         }
 
         /// <inheritdoc/>

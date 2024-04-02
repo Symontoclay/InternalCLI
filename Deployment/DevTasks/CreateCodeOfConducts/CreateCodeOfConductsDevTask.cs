@@ -1,26 +1,23 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.BuildCodeOfConduct;
 using Deployment.Tasks.DirectoriesTasks.CopyTargetFiles;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateCodeOfConducts
 {
-    public class CreateCodeOfConductsDevTask : OldBaseDeploymentTask
+    public class CreateCodeOfConductsDevTask : BaseDeploymentTask
     {
         public CreateCodeOfConductsDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CreateCodeOfConductsDevTask(uint deep)
-            : base(null, deep)
+        public CreateCodeOfConductsDevTask(IDeploymentTask parentTask)
+            : base("F7FDA734-E6B8-4A93-890C-F116B83824F5", false, null, parentTask)
         {
         }
 

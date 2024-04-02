@@ -1,33 +1,30 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CreateContributings;
-using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateAndCommitContributings
 {
-    public class CreateAndCommitContributingsDevTask : OldBaseDeploymentTask
+    public class CreateAndCommitContributingsDevTask : BaseDeploymentTask
     {
         public CreateAndCommitContributingsDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CreateAndCommitContributingsDevTask(uint deep)
+        public CreateAndCommitContributingsDevTask(IDeploymentTask parentTask)
             : this(new CreateAndCommitContributingsDevTaskOptions()
             {
                 Message = "CONTRIBUTING.md has been updated"
-            }, deep)
+            }, parentTask)
         {
         }
 
-        public CreateAndCommitContributingsDevTask(CreateAndCommitContributingsDevTaskOptions options, uint deep)
-            : base(options, deep)
+        public CreateAndCommitContributingsDevTask(CreateAndCommitContributingsDevTaskOptions options, IDeploymentTask parentTask)
+            : base("EE923867-BE01-4D9C-A001-8151EEE0C423", false, options, parentTask)
         {
             _options = options;
         }

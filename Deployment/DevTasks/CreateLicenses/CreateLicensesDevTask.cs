@@ -1,26 +1,23 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.BuildLicense;
 using Deployment.Tasks.DirectoriesTasks.CopyTargetFiles;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateLicenses
 {
-    public class CreateLicensesDevTask : OldBaseDeploymentTask
+    public class CreateLicensesDevTask : BaseDeploymentTask
     {
         public CreateLicensesDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CreateLicensesDevTask(uint deep)
-            : base(null, deep)
+        public CreateLicensesDevTask(IDeploymentTask parentTask)
+            : base("E2081DDF-2F5A-4EB7-B841-D9F867F22DC5", false, null, parentTask)
         {
         }
 

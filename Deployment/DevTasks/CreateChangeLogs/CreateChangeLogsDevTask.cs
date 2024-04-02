@@ -1,27 +1,24 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
-using Deployment.Tasks;
 using Deployment.Tasks.BuildChangeLog;
 using Deployment.Tasks.DirectoriesTasks.CopyTargetFiles;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateChangeLogs
 {
-    public class CreateChangeLogsDevTask : OldBaseDeploymentTask
+    public class CreateChangeLogsDevTask : BaseDeploymentTask
     {
         public CreateChangeLogsDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CreateChangeLogsDevTask(uint deep)
-            : base(null, deep)
+        public CreateChangeLogsDevTask(IDeploymentTask parentTask)
+            : base("18C1DD8E-38A2-4C4F-AE67-B9025BB1FEDF", false, null, parentTask)
         {
         }
 

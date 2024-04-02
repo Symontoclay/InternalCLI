@@ -1,33 +1,30 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CreateLicenses;
-using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateAndCommitLicenses
 {
-    public class CreateAndCommitLicensesDevTask : OldBaseDeploymentTask
+    public class CreateAndCommitLicensesDevTask : BaseDeploymentTask
     {
         public CreateAndCommitLicensesDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CreateAndCommitLicensesDevTask(uint deep)
+        public CreateAndCommitLicensesDevTask(IDeploymentTask parentTask)
             : this(new CreateAndCommitLicensesDevTaskOptions()
             {
                 Message = "LICENSE has been updated"
-            }, deep)
+            }, parentTask)
         {
         }
 
-        public CreateAndCommitLicensesDevTask(CreateAndCommitLicensesDevTaskOptions options, uint deep)
-            : base(options, deep)
+        public CreateAndCommitLicensesDevTask(CreateAndCommitLicensesDevTaskOptions options, IDeploymentTask parentTask)
+            : base("E26C3B5B-A37C-4F8D-BCC3-AA2864CA04D1", false, options, parentTask)
         {
             _options = options;
         }

@@ -1,33 +1,30 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CreateCodeOfConducts;
-using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CreateAndCommitCodeOfConducts
 {
-    public class CreateAndCommitCodeOfConductsDevTask : OldBaseDeploymentTask
+    public class CreateAndCommitCodeOfConductsDevTask : BaseDeploymentTask
     {
         public CreateAndCommitCodeOfConductsDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CreateAndCommitCodeOfConductsDevTask(uint deep)
+        public CreateAndCommitCodeOfConductsDevTask(IDeploymentTask parentTask)
             : this(new CreateAndCommitCodeOfConductsDevTaskOptions()
             {
                 Message = "CODE_OF_CONDUCT.md has been updated"
-            }, deep)
+            }, parentTask)
         {
         }
 
-        public CreateAndCommitCodeOfConductsDevTask(CreateAndCommitCodeOfConductsDevTaskOptions options, uint deep)
-            : base(options, deep)
+        public CreateAndCommitCodeOfConductsDevTask(CreateAndCommitCodeOfConductsDevTaskOptions options, IDeploymentTask parentTask)
+            : base("CB70C8AE-16F0-4140-A6D7-3785B66FF759", false, options, parentTask)
         {
             _options = options;
         }

@@ -1,28 +1,24 @@
-﻿using CommonUtils.DebugHelpers;
+﻿using CommonUtils;
+using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Html2Markdown;
-using NLog;
-using NLog.Fluent;
 using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildReadme
 {
-    public class BuildReadmeTask : OldBaseDeploymentTask
+    public class BuildReadmeTask : BaseDeploymentTask
     {
         public BuildReadmeTask(BuildReadmeTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public BuildReadmeTask(BuildReadmeTaskOptions options, uint deep)
-            : base(options, deep)
+        public BuildReadmeTask(BuildReadmeTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.SiteSourcePath), false, options, parentTask)
         {
             _options = options;
         }

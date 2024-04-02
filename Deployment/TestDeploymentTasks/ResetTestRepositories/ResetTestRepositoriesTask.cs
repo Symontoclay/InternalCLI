@@ -39,7 +39,7 @@ namespace Deployment.TestDeploymentTasks.ResetTestRepositories
             {
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList(),
                 Message = "Commit uncommited changes"
-            }, NextDeep));
+            }, this));
 
             foreach (var targetSolution in targetSolutions)
             {
@@ -62,21 +62,21 @@ namespace Deployment.TestDeploymentTasks.ResetTestRepositories
                 {
                     RepositoryPath = targetSolution.Path,
                     BranchName = "master"
-                }, NextDeep));
+                }, this));
 
                 Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
                 {
                     RepositoryPath = targetSolution.Path,
                     BranchName = currentBranch,
                     IsOrigin = false
-                }, NextDeep));
+                }, this));
 
                 Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
                 {
                     RepositoryPath = targetSolution.Path,
                     BranchName = currentBranch,
                     IsOrigin = true
-                }, NextDeep));
+                }, this));
             }
         }
 

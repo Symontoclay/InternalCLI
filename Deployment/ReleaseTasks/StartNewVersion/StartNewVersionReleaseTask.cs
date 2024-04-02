@@ -30,7 +30,6 @@ namespace Deployment.ReleaseTasks.StartNewVersion
         }
 
         private readonly StartNewVersionReleaseTaskOptions _options;
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <inheritdoc/>
         protected override void OnValidateOptions()
@@ -116,7 +115,7 @@ namespace Deployment.ReleaseTasks.StartNewVersion
 
             FutureReleaseInfoWriter.WriteSource(futureReleaseInfo);
 
-            Exec(new DevFullMaintainingDevTask(NextDeep));
+            Exec(new DevFullMaintainingDevTask(this));
         }
 
         /// <inheritdoc/>

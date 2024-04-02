@@ -12,12 +12,12 @@ namespace Deployment.DevTasks.CreateReadmes
     public class CreateReadmesDevTask : BaseDeploymentTask
     {
         public CreateReadmesDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CreateReadmesDevTask(uint deep)
-            : base(null, deep)
+        public CreateReadmesDevTask(IDeploymentTask parentTask)
+            : base("653DAA56-CC48-4C2D-95E2-8CFC23B9C498", false, null, parentTask)
         {
         }
 
