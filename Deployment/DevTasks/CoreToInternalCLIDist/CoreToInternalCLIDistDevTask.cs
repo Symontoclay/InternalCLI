@@ -1,25 +1,21 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CopyAndPublishVSProjectOrSolution;
-using Deployment.Tasks;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CoreToInternalCLIDist
 {
-    public class CoreToInternalCLIDistDevTask : OldBaseDeploymentTask
+    public class CoreToInternalCLIDistDevTask : BaseDeploymentTask
     {
         public CoreToInternalCLIDistDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CoreToInternalCLIDistDevTask(uint deep)
-            : base(null, deep)
+        public CoreToInternalCLIDistDevTask(IDeploymentTask parentTask)
+            : base("FDFE4391-E96E-4346-839F-BD5627417CEF", false, null, parentTask)
         {
         }
 
