@@ -1,26 +1,24 @@
 ﻿using BaseDevPipeline;
 using BaseDevPipeline.Data;
 using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.TestDeploymentTasks.CopyAndCommitFromProdToTestRepositories
 {
-    public class CopyAndCommitFromProdToTestRepositoriesTask : OldBaseDeploymentTask
+    public class CopyAndCommitFromProdToTestRepositoriesTask : BaseDeploymentTask
     {
         public CopyAndCommitFromProdToTestRepositoriesTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CopyAndCommitFromProdToTestRepositoriesTask(uint deep)
-            : base(null, deep)            
+        public CopyAndCommitFromProdToTestRepositoriesTask(IDeploymentTask parentTask)
+            : base("E89CD07C-F352-4C32-B863-248DF2E92D70", false, null, parentTask)
         {
         }
 

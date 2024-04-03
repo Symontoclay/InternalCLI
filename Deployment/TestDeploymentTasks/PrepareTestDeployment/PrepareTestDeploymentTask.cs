@@ -4,6 +4,7 @@ using Deployment.TestDeploymentTasks.CopyAndCommitFromProdToTestRepositories;
 using Deployment.TestDeploymentTasks.CreateAndPushVersionBranchInTestRepositories;
 using Deployment.TestDeploymentTasks.RemoveReleasesFromTestRepositories;
 using Deployment.TestDeploymentTasks.ResetTestRepositories;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Deployment.TestDeploymentTasks.PrepareTestDeployment
@@ -27,7 +28,13 @@ namespace Deployment.TestDeploymentTasks.PrepareTestDeployment
 
             Exec(new RemoveReleasesFromTestRepositoriesTask(this));
 
-            Exec(new CopyAndCommitFromProdToTestRepositoriesTask(this));
+            Exec(new DeploymentTasksGroup("9AFA2113-37A1-4430-86B9-E833E78EE2E7", true, this)
+            {
+                SubItems = new List<IDeploymentTask>()
+                {
+                    new CopyAndCommitFromProdToTestRepositoriesTask(this)
+                }
+            });
 
             Exec(new CreateAndPushVersionBranchInTestRepositoriesTask(this));
         }

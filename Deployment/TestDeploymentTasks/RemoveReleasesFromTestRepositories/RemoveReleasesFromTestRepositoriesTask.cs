@@ -10,12 +10,12 @@ namespace Deployment.TestDeploymentTasks.RemoveReleasesFromTestRepositories
     public class RemoveReleasesFromTestRepositoriesTask : BaseDeploymentTask
     {
         public RemoveReleasesFromTestRepositoriesTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public RemoveReleasesFromTestRepositoriesTask(uint deep)
-            : base(null, deep)
+        public RemoveReleasesFromTestRepositoriesTask(IDeploymentTask parentTask)
+            : base("A851CFDF-7356-4A4C-A5EF-6B9115A27A1C", true, null, parentTask)
         {
         }
 

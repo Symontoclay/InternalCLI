@@ -1,29 +1,27 @@
 ﻿using BaseDevPipeline;
+using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
-using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.Checkout;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
 using Deployment.Tasks.GitTasks.CreateBranch;
 using Deployment.Tasks.GitTasks.PushNewBranchToOrigin;
-using Octokit;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.TestDeploymentTasks.CreateAndPushVersionBranchInTestRepositories
 {
-    public class CreateAndPushVersionBranchInTestRepositoriesTask : OldBaseDeploymentTask
+    public class CreateAndPushVersionBranchInTestRepositoriesTask : BaseDeploymentTask
     {
         public CreateAndPushVersionBranchInTestRepositoriesTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public CreateAndPushVersionBranchInTestRepositoriesTask(uint deep)
-            : base(null, deep)
+        public CreateAndPushVersionBranchInTestRepositoriesTask(IDeploymentTask parentTask)
+            : base("75DD967D-062B-4850-B11C-A38E77D17940", true, null, parentTask)
         {
         }
 
@@ -63,41 +61,66 @@ namespace Deployment.TestDeploymentTasks.CreateAndPushVersionBranchInTestReposit
                 //_logger.Info($"solution.Path = {solution.Path}");
 #endif
 
-                Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
+                Exec(new DeploymentTasksGroup(MD5Helper.GetHash(solution.Path), true, this)
                 {
-                    Message = "snapshot",
-                    RepositoryPaths = new List<string>() { solution.Path }
-                }, this));
-
-                Exec(new CheckoutTask(new CheckoutTaskOptions()
-                {
-                    RepositoryPath = solution.Path,
-                    BranchName = _masterBranchName
-                }, this));
-
-                Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
-                {
-                    Message = "snapshot",
-                    RepositoryPaths = new List<string>() { solution.Path }
-                }, this));
-
-                Exec(new CreateBranchTask(new CreateBranchTaskOptions()
-                {
-                    RepositoryPath = solution.Path,
-                    BranchName = versionBranchName
-                }, this));
-
-                Exec(new PushNewBranchToOriginTask(new PushNewBranchToOriginTaskOptions()
-                {
-                    RepositoryPath = solution.Path,
-                    BranchName = versionBranchName
-                }, this));
-
-                Exec(new CheckoutTask(new CheckoutTaskOptions()
-                {
-                    RepositoryPath = solution.Path,
-                    BranchName = versionBranchName
-                }, this));
+                    SubItems = new List<IDeploymentTask>()
+                    {
+                        new DeploymentTasksGroup("E800C61F-B7E4-456F-974F-F2411BAA8192", true, this)
+                        {
+                            SubItems = new List<IDeploymentTask>()
+                            {
+                                new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
+                                {
+                                    Message = "snapshot",
+                                    RepositoryPaths = new List<string>() { solution.Path }
+                                }, this)
+                            }
+                        },
+                        new DeploymentTasksGroup("5EA68471-C168-4E07-BDB2-75EDBAB66FBF", true, this)
+                        {
+                            SubItems = new List<IDeploymentTask>()
+                            {
+                                new CheckoutTask(new CheckoutTaskOptions()
+                                {
+                                    RepositoryPath = solution.Path,
+                                    BranchName = _masterBranchName
+                                }, this)
+                            }
+                        },
+                        new DeploymentTasksGroup("50D01985-A996-4972-A75F-E589510841D4", true, this)
+                        {
+                            SubItems = new List<IDeploymentTask>()
+                            {
+                                new CommitAllAndPushTask(new CommitAllAndPushTaskOptions()
+                                {
+                                    Message = "snapshot",
+                                    RepositoryPaths = new List<string>() { solution.Path }
+                                }, this)
+                            }
+                        },
+                        new CreateBranchTask(new CreateBranchTaskOptions()
+                        {
+                            RepositoryPath = solution.Path,
+                            BranchName = versionBranchName
+                        }, this),
+                        new PushNewBranchToOriginTask(new PushNewBranchToOriginTaskOptions()
+                        {
+                            RepositoryPath = solution.Path,
+                            BranchName = versionBranchName
+                        }, this),
+                        new DeploymentTasksGroup("45D1B60F-859C-4166-A76B-C1C2835A0592", true, this)
+                        {
+                            SubItems = new List<IDeploymentTask>()
+                            {
+                                new CheckoutTask(new CheckoutTaskOptions()
+                                {
+                                    RepositoryPath = solution.Path,
+                                    BranchName = versionBranchName
+                                }, this)
+                            }
+                        }
+                    }
+                });
             }
         }
 

@@ -166,7 +166,7 @@ namespace TestSandBox
                 //StartFromBeginning = true
             });
 
-            deploymentPipeline.Add(new TopLevelNewDeploymentTask(new TopLevelNewDeploymentTaskOptions(), deploymentPipeline));
+            deploymentPipeline.Add(new TopLevelNewDeploymentTask(new TopLevelNewDeploymentTaskOptions()));
 
             deploymentPipeline.Run();
 
