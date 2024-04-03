@@ -1,25 +1,21 @@
-﻿using CommonUtils;
-using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
-using NLog;
-using System;
+﻿using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.RemoveSingleLineComments
 {
-    public class RemoveSingleLineCommentsDevTask : OldBaseDeploymentTask
+    public class RemoveSingleLineCommentsDevTask : BaseDeploymentTask
     {
         public RemoveSingleLineCommentsDevTask(RemoveSingleLineCommentsDevTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         { 
         }
 
-        public RemoveSingleLineCommentsDevTask(RemoveSingleLineCommentsDevTaskOptions options, uint deep)
-            : base(options, deep)
+        public RemoveSingleLineCommentsDevTask(RemoveSingleLineCommentsDevTaskOptions options, IDeploymentTask parentTask)
+            : base("ECEC71CC-5AA3-4EC1-88CE-6455586E369E", false, options, parentTask)
         {
             _options = options;
         }

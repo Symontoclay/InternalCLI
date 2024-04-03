@@ -1,24 +1,20 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
+using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.GitTasks.Pull;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.PullSolutionsWithMaintainedReleases
 {
-    public class PullSolutionsWithMaintainedReleasesDevTask : OldBaseDeploymentTask
+    public class PullSolutionsWithMaintainedReleasesDevTask : BaseDeploymentTask
     {
         public PullSolutionsWithMaintainedReleasesDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public PullSolutionsWithMaintainedReleasesDevTask(uint deep)
-            : base(null, deep)
+        public PullSolutionsWithMaintainedReleasesDevTask(IDeploymentTask parentTask)
+            : base("755804CD-B968-4555-9064-EC765E32992C", false, null, parentTask)
         {
         }
 

@@ -1,29 +1,25 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using CSharpUtils;
 using Deployment.Helpers;
-using Deployment.Tasks;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using Deployment.Tasks.UnityTasks.ExportPackage;
-using NLog;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.DevExportPackage
 {
-    public class DevExportPackageDevTask : OldBaseDeploymentTask
+    public class DevExportPackageDevTask : BaseDeploymentTask
     {
         public DevExportPackageDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public DevExportPackageDevTask(uint deep)
-            : base(null, deep)
+        public DevExportPackageDevTask(IDeploymentTask parentTask)
+            : base("3EEC06BE-5554-47B8-8E18-526D90050DD7", false, null, parentTask)
         {
         }
 

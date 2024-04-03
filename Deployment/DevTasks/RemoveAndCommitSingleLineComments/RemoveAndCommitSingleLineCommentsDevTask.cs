@@ -1,18 +1,15 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.RemoveSingleLineComments;
-using Deployment.Tasks;
-using Deployment.Tasks.GitTasks.Commit;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.RemoveAndCommitSingleLineComments
 {
-    public class RemoveAndCommitSingleLineCommentsDevTask : OldBaseDeploymentTask
+    public class RemoveAndCommitSingleLineCommentsDevTask : BaseDeploymentTask
     {
         private static RemoveAndCommitSingleLineCommentsOptions CreateDefaultOptions()
         {
@@ -26,17 +23,17 @@ namespace Deployment.DevTasks.RemoveAndCommitSingleLineComments
         }
 
         public RemoveAndCommitSingleLineCommentsDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public RemoveAndCommitSingleLineCommentsDevTask(uint deep)
-            : this(CreateDefaultOptions(), deep)
+        public RemoveAndCommitSingleLineCommentsDevTask(IDeploymentTask parentTask)
+            : this(CreateDefaultOptions(), parentTask)
         {
         }
 
-        public RemoveAndCommitSingleLineCommentsDevTask(RemoveAndCommitSingleLineCommentsOptions options, uint deep)
-            : base(options, deep)
+        public RemoveAndCommitSingleLineCommentsDevTask(RemoveAndCommitSingleLineCommentsOptions options, IDeploymentTask parentTask)
+            : base("350859E7-7A6D-4EC9-9E5B-A8C69E7ECBCE", false, options, parentTask)
         {
             _options = options;
         }
