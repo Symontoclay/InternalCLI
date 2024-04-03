@@ -1,4 +1,5 @@
-﻿using Deployment.DevTasks.DevFullMaintaining;
+﻿using CommonUtils.DeploymentTasks;
+using Deployment.DevTasks.DevFullMaintaining;
 using NLog;
 using System;
 
@@ -12,8 +13,7 @@ namespace DevFullMaintaining
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var task = new DevFullMaintainingDevTask();
-            task.Run();
+            DeploymentPipeline.Run(new DevFullMaintainingDevTask());
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -1,4 +1,5 @@
-﻿using Deployment.DevTasks.UpdateAndCommitProjectsVersion;
+﻿using CommonUtils.DeploymentTasks;
+using Deployment.DevTasks.UpdateAndCommitProjectsVersion;
 using NLog;
 using System;
 
@@ -12,8 +13,7 @@ namespace UpdateAndCommitProjectsVersion
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var task = new UpdateAndCommitProjectsVersionDevTask();
-            task.Run();
+            DeploymentPipeline.Run(new UpdateAndCommitProjectsVersionDevTask());
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

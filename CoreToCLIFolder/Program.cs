@@ -1,4 +1,5 @@
-﻿using Deployment.DevTasks.CoreToCLIFolder;
+﻿using CommonUtils.DeploymentTasks;
+using Deployment.DevTasks.CoreToCLIFolder;
 using NLog;
 using System;
 
@@ -12,8 +13,7 @@ namespace CoreToCLIFolder
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var task = new CoreToCLIFolderDevTask();
-            task.Run();
+            DeploymentPipeline.Run(new CoreToCLIFolderDevTask());
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

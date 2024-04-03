@@ -1,4 +1,5 @@
-﻿using Deployment.DevTasks.CoreToSiteSource;
+﻿using CommonUtils.DeploymentTasks;
+using Deployment.DevTasks.CoreToSiteSource;
 using NLog;
 using System;
 
@@ -12,8 +13,7 @@ namespace CoreToSiteSource
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var coreToSiteSourceDevTask = new CoreToSiteSourceDevTask();
-            coreToSiteSourceDevTask.Run();
+            DeploymentPipeline.Run(new CoreToSiteSourceDevTask());
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

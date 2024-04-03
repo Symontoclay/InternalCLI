@@ -1,4 +1,5 @@
-﻿using Deployment.DevTasks.CoreToInternalCLIDist;
+﻿using CommonUtils.DeploymentTasks;
+using Deployment.DevTasks.CoreToInternalCLIDist;
 using NLog;
 using System;
 
@@ -12,8 +13,7 @@ namespace CoreToInternalCLIDist
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var task = new CoreToInternalCLIDistDevTask();
-            task.Run();
+            DeploymentPipeline.Run(new CoreToInternalCLIDistDevTask());
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

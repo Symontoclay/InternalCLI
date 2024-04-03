@@ -155,8 +155,7 @@ namespace TestSandBox
 
         private void Case13()
         {
-            var task = new DevSiteFullBuildTask();
-            task.Run();
+            DeploymentPipeline.Run(new DevSiteFullBuildTask());
         }
 
         private void Case12()

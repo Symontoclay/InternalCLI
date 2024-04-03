@@ -1,4 +1,5 @@
 ﻿using BaseDevPipeline;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Deployment.ReleaseTasks.MakeRelease;
 using Deployment.TestDeploymentTasks.PrepareTestDeployment;
@@ -97,13 +98,11 @@ namespace MakeRelease
         {
             _logger.Info("Begin release into test repositories.");
 
-            var prepareTask = new PrepareTestDeploymentTask();
-            prepareTask.Run();
+            DeploymentPipeline.Run(new PrepareTestDeploymentTask());
 
             ProjectsDataSourceFactory.Mode = ProjectsDataSourceMode.Test;
 
-            var task = new MakeReleaseReleaseTask();
-            task.Run();
+            DeploymentPipeline.Run(new MakeReleaseReleaseTask());
 
             _logger.Info("Finish release into test repositories.");
         }
@@ -114,8 +113,7 @@ namespace MakeRelease
 
             ProjectsDataSourceFactory.Mode = ProjectsDataSourceMode.Prod;
 
-            var task = new MakeReleaseReleaseTask();
-            task.Run();
+            DeploymentPipeline.Run(new MakeReleaseReleaseTask());
 
             _logger.Info("Finish release into PROD repositories.");
         }

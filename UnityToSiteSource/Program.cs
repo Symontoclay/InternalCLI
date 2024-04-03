@@ -1,4 +1,5 @@
-﻿using Deployment.DevTasks.UnityToSiteSource;
+﻿using CommonUtils.DeploymentTasks;
+using Deployment.DevTasks.UnityToSiteSource;
 using NLog;
 using System;
 
@@ -12,8 +13,7 @@ namespace UnityToSiteSource
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var task = new UnityToSiteSourceDevTask();
-            task.Run();
+            DeploymentPipeline.Run(new UnityToSiteSourceDevTask());
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

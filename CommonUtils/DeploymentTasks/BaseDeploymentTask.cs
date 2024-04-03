@@ -97,7 +97,12 @@ namespace CommonUtils.DeploymentTasks
         }
 
         /// <inheritdoc/>
-        public virtual void Run()
+        void IDeploymentTask.Run()
+        {
+            Run();
+        }
+
+        protected virtual void Run()
         {
             var n = Deep * 4;
 

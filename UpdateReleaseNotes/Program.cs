@@ -1,4 +1,5 @@
-﻿using Deployment.DevTasks.UpdateReleaseNotes;
+﻿using CommonUtils.DeploymentTasks;
+using Deployment.DevTasks.UpdateReleaseNotes;
 using NLog;
 using System;
 
@@ -12,8 +13,7 @@ namespace UpdateReleaseNotes
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var updateReleaseNotesDevTask = new UpdateReleaseNotesDevTask();
-            updateReleaseNotesDevTask.Run();
+            DeploymentPipeline.Run(new UpdateReleaseNotesDevTask());
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

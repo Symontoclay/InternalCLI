@@ -1953,8 +1953,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var coreToAssetTask = new CoreToAssetDevTask();
-            coreToAssetTask.Run();
+            DeploymentPipeline.Run(new CoreToAssetDevTask());
 
             _logger.Info("End");
         }

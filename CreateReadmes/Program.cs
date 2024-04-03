@@ -1,4 +1,5 @@
-﻿using Deployment.DevTasks.CreateReadmes;
+﻿using CommonUtils.DeploymentTasks;
+using Deployment.DevTasks.CreateReadmes;
 using NLog;
 using System;
 
@@ -12,8 +13,7 @@ namespace CreateReadmes
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var createReadmesDevTask = new CreateReadmesDevTask();
-            createReadmesDevTask.Run();
+            DeploymentPipeline.Run(new CreateReadmesDevTask());
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

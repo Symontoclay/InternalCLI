@@ -1,4 +1,5 @@
-﻿using Deployment.DevTasks.DevSiteBuild;
+﻿using CommonUtils.DeploymentTasks;
+using Deployment.DevTasks.DevSiteBuild;
 using NLog;
 using System;
 
@@ -12,8 +13,7 @@ namespace DevSiteBuild
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var devSiteBuildTask = new DevSiteBuildTask();
-            devSiteBuildTask.Run();
+            DeploymentPipeline.Run(new DevSiteBuildTask());
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

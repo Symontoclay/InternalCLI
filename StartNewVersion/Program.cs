@@ -1,4 +1,5 @@
-﻿using Deployment.ReleaseTasks.StartNewVersion;
+﻿using CommonUtils.DeploymentTasks;
+using Deployment.ReleaseTasks.StartNewVersion;
 using Newtonsoft.Json;
 using NLog;
 using System;
@@ -67,10 +68,10 @@ namespace StartNewVersion
 
             Console.WriteLine("Starting new version is being.");
 
-            var task = new StartNewVersionReleaseTask(new StartNewVersionReleaseTaskOptions {
-                 Version = newVersion
-            });
-            task.Run();
+            DeploymentPipeline.Run(new StartNewVersionReleaseTask(new StartNewVersionReleaseTaskOptions
+            {
+                Version = newVersion
+            }));
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -83,6 +83,20 @@ namespace CommonUtils.DeploymentTasks
             }
         }
 
+        public static void Run(IDeploymentTask deploymentTask)
+        {
+            Run(deploymentTask, null);
+        }
+
+        public static void Run(IDeploymentTask deploymentTask, DeploymentPipelineOptions options)
+        {
+            var deploymentPipeline = new DeploymentPipeline(options);
+
+            deploymentPipeline.Add(deploymentTask);
+
+            deploymentPipeline.Run();
+        }
+
         /// <inheritdoc/>
         public override string ToString()
         {

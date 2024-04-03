@@ -1,4 +1,5 @@
-﻿using Deployment.DevTasks.CoreToAsset;
+﻿using CommonUtils.DeploymentTasks;
+using Deployment.DevTasks.CoreToAsset;
 using NLog;
 using System;
 
@@ -12,8 +13,7 @@ namespace CoreToAsset
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var coreToAssetTask = new CoreToAssetDevTask();
-            coreToAssetTask.Run();
+            DeploymentPipeline.Run(new CoreToAssetDevTask());
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -1,4 +1,5 @@
-﻿using Deployment.DevTasks.DevExportPackage;
+﻿using CommonUtils.DeploymentTasks;
+using Deployment.DevTasks.DevExportPackage;
 using NLog;
 using System;
 
@@ -12,8 +13,7 @@ namespace DevExportPackage
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var task = new DevExportPackageDevTask();
-            task.Run();
+            DeploymentPipeline.Run(new DevExportPackageDevTask());
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

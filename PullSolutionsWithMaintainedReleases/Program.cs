@@ -1,4 +1,5 @@
-﻿using Deployment.DevTasks.PullSolutionsWithMaintainedReleases;
+﻿using CommonUtils.DeploymentTasks;
+using Deployment.DevTasks.PullSolutionsWithMaintainedReleases;
 using NLog;
 using System;
 
@@ -12,8 +13,7 @@ namespace PullSolutionsWithMaintainedReleases
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var task = new PullSolutionsWithMaintainedReleasesDevTask();
-            task.Run();
+            DeploymentPipeline.Run(new PullSolutionsWithMaintainedReleasesDevTask());
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
