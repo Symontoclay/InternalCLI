@@ -1,30 +1,25 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
-using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.Checkout;
-using Deployment.Tasks.GitTasks.Commit;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
 using Deployment.Tasks.GitTasks.DeleteBranch;
-using NLog.Fluent;
-using Octokit;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.TestDeploymentTasks.ResetTestRepositories
 {
-    public class ResetTestRepositoriesTask : OldBaseDeploymentTask
+    public class ResetTestRepositoriesTask : BaseDeploymentTask
     {
         public ResetTestRepositoriesTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public ResetTestRepositoriesTask(uint deep)
-            : base(null, deep)
+        public ResetTestRepositoriesTask(IDeploymentTask parentTask)
+            : base("1AE67EEE-0487-4317-BD28-56C3C0548C36", true, null, parentTask)
         {
         }
 
@@ -58,25 +53,35 @@ namespace Deployment.TestDeploymentTasks.ResetTestRepositories
                     continue;
                 }
 
-                Exec(new CheckoutTask(new CheckoutTaskOptions()
+                Exec(new DeploymentTasksGroup("67DAC3C4-BBD0-4B9B-B457-524A381795B7", true, this)
                 {
-                    RepositoryPath = targetSolution.Path,
-                    BranchName = "master"
-                }, this));
-
-                Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
-                {
-                    RepositoryPath = targetSolution.Path,
-                    BranchName = currentBranch,
-                    IsOrigin = false
-                }, this));
-
-                Exec(new DeleteBranchTask(new DeleteBranchTaskOptions()
-                {
-                    RepositoryPath = targetSolution.Path,
-                    BranchName = currentBranch,
-                    IsOrigin = true
-                }, this));
+                    SubItems = new List<IDeploymentTask>()
+                    {
+                        new DeploymentTasksGroup("6FCF84AE-6D86-4958-9C70-C7D4983DC7C0", true, this)
+                        {
+                            SubItems = new List<IDeploymentTask>()
+                            {
+                                new CheckoutTask(new CheckoutTaskOptions()
+                                {
+                                    RepositoryPath = targetSolution.Path,
+                                    BranchName = "master"
+                                }, this)
+                            }
+                        },
+                        new DeleteBranchTask(new DeleteBranchTaskOptions()
+                        {
+                            RepositoryPath = targetSolution.Path,
+                            BranchName = currentBranch,
+                            IsOrigin = false
+                        }, this),
+                        new DeleteBranchTask(new DeleteBranchTaskOptions()
+                        {
+                            RepositoryPath = targetSolution.Path,
+                            BranchName = currentBranch,
+                            IsOrigin = true
+                        }, this)
+                    }
+                });
             }
         }
 

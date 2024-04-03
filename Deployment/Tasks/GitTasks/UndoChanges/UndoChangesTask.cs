@@ -1,23 +1,21 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.UndoChanges
 {
-    public class UndoChangesTask : OldBaseDeploymentTask
+    public class UndoChangesTask : BaseDeploymentTask
     {
         public UndoChangesTask(UndoChangesTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public UndoChangesTask(UndoChangesTaskOptions options, uint deep)
-            : base(options, deep)
+        public UndoChangesTask(UndoChangesTaskOptions options, IDeploymentTask parentTask)
+            : base(MD5Helper.GetHash(options.RepositoryPath), false, options, parentTask)
         {
             _options = options;
         }

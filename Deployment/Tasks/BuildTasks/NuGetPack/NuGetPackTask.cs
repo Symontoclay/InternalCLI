@@ -1,25 +1,20 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
-using NLog;
+using CommonUtils.DeploymentTasks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.BuildTasks.NuGetPack
 {
-    public class NuGetPackTask : OldBaseDeploymentTask
+    public class NuGetPackTask : BaseDeploymentTask
     {
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
         public NuGetPackTask(NuGetPackTaskOptions options)
-            : this(options, 0u)
+            : this(options, null)
         {
         }
 
-        public NuGetPackTask(NuGetPackTaskOptions options, uint deep)
-            : base(options, deep)
+        public NuGetPackTask(NuGetPackTaskOptions options, IDeploymentTask parentTask)
+            : base("67C8143B-C383-4FAB-9177-43AF4375C276", false, options, parentTask)
         {
             _options = options;
         }

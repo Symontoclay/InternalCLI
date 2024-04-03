@@ -1,27 +1,22 @@
-﻿using BaseDevPipeline;
-using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
+﻿using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.TestDeploymentTasks.CopyAndCommitFromProdToTestRepositories;
 using Deployment.TestDeploymentTasks.CreateAndPushVersionBranchInTestRepositories;
 using Deployment.TestDeploymentTasks.RemoveReleasesFromTestRepositories;
 using Deployment.TestDeploymentTasks.ResetTestRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.TestDeploymentTasks.PrepareTestDeployment
 {
-    public class PrepareTestDeploymentTask : OldBaseDeploymentTask
+    public class PrepareTestDeploymentTask : BaseDeploymentTask
     {
         public PrepareTestDeploymentTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public PrepareTestDeploymentTask(uint deep)
-            : base(null, deep)
+        public PrepareTestDeploymentTask(IDeploymentTask parentTask)
+            : base("4904247D-C33C-4827-A8EF-49A6C41BFD86", true, null, parentTask)
         {
         }
 

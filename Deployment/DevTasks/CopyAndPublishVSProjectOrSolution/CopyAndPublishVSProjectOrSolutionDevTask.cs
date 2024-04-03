@@ -9,10 +9,6 @@ namespace Deployment.DevTasks.CopyAndPublishVSProjectOrSolution
 {
     public class CopyAndPublishVSProjectOrSolutionDevTask : BaseDeploymentTask
     {
-#if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-#endif
-
         public CopyAndPublishVSProjectOrSolutionDevTask(CopyAndPublishVSProjectOrSolutionDevTaskOptions options)
             : this(options, null)
         {

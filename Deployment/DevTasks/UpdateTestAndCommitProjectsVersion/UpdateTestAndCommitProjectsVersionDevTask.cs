@@ -1,27 +1,23 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
+using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CopyAndTest;
 using Deployment.DevTasks.UpdateProjectsVersion;
-using Deployment.Tasks;
-using Deployment.Tasks.BuildTasks.Test;
 using Deployment.Tasks.GitTasks.CommitAllAndPush;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateTestAndCommitProjectsVersion
 {
-    public class UpdateTestAndCommitProjectsVersionDevTask : OldBaseDeploymentTask
+    public class UpdateTestAndCommitProjectsVersionDevTask : BaseDeploymentTask
     {
         public UpdateTestAndCommitProjectsVersionDevTask()
-            : this(0u)
+            : this(null)
         {
         }
 
-        public UpdateTestAndCommitProjectsVersionDevTask(uint deep)
-            : base(null, deep)
+        public UpdateTestAndCommitProjectsVersionDevTask(IDeploymentTask parentTask)
+            : base("9BE131BA-3F46-4241-BC36-B0434256BDCA", false, null, parentTask)
         {
         }
 

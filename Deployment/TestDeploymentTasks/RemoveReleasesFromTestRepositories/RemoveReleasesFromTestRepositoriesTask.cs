@@ -1,16 +1,13 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
-using Deployment.Tasks;
+using CommonUtils.DeploymentTasks;
 using Octokit;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.TestDeploymentTasks.RemoveReleasesFromTestRepositories
 {
-    public class RemoveReleasesFromTestRepositoriesTask : OldBaseDeploymentTask
+    public class RemoveReleasesFromTestRepositoriesTask : BaseDeploymentTask
     {
         public RemoveReleasesFromTestRepositoriesTask()
             : this(0u)
