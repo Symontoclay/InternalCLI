@@ -19,10 +19,26 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case2();
+            Case3();
+            //Case2();
             //Case1();
 
             _logger.Info("End");
+        }
+
+        private void Case3()
+        {
+            var testContext = new TaskTestContext();
+            testContext.OnMessage += (n, type, message) =>
+            {
+                _logger.Info(n);
+                _logger.Info(type.Name);
+                _logger.Info(message);
+            };
+
+            var deploymentPipeline = new DeploymentPipeline();
+            deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
+            deploymentPipeline.Run();
         }
 
         private void Case2()
