@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace PipelinesTests.Tasks
 {
-    public class SubItemTestDeploymentTaskOptions : IObjectToString
+    public class TopSubItemTestDeploymentTaskOptions : IObjectToString
     {
         public int N { get; set; }
-        public string DirectoryName { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -29,7 +28,6 @@ namespace PipelinesTests.Tasks
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(DirectoryName)} = {DirectoryName}");
             sb.AppendLine($"{spaces}{nameof(N)} = {N}");
             return sb.ToString();
         }

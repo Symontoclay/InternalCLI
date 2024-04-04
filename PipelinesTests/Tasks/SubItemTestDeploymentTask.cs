@@ -22,11 +22,9 @@ namespace PipelinesTests.Tasks
         /// <inheritdoc/>
         protected override void OnRun()
         {
-#if DEBUG
-            _logger.Info("Begin");
-#endif
-
             _testContext.EmitMessage(GetType(), "Begin");
+
+            _testContext.EmitMessage(GetType(), "End");
         }
     }
 }
