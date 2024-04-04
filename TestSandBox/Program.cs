@@ -159,16 +159,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var deploymentPipeline = new DeploymentPipeline(new DeploymentPipelineOptions()
-            {
-                UseAutorestoring = true,
-                Prefix = "Hi"
-                //StartFromBeginning = true
-            });
-
-            deploymentPipeline.Add(new TopLevelNewDeploymentTask(new TopLevelNewDeploymentTaskOptions()));
-
-            deploymentPipeline.Run();
+            var handler = new RestoredDeploymentTasksHandler();
+            handler.Run();
 
             _logger.Info("End");
         }

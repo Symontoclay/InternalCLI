@@ -125,29 +125,35 @@ namespace CommonUtils.DeploymentTasks
 
         private void SavePipelineInfo()
         {
-            File.WriteAllText(_pipelineInfoFileFullName, JsonConvert.SerializeObject(_pipelineInfo, Formatting.Indented));
+            if (_useAutorestoring)
+            {
+                File.WriteAllText(_pipelineInfoFileFullName, JsonConvert.SerializeObject(_pipelineInfo, Formatting.Indented));
+            }                
         }
 
         /// <inheritdoc/>
         public void SaveDeploymentTaskRunInfo()
         {
-            File.WriteAllText(_currentRunInfoFileFullName, JsonConvert.SerializeObject(_rootDeploymentTaskRunInfoList, Formatting.Indented));
-
-#if DEBUG
-            //_logger.Info($"_rootDeploymentTaskRunInfoList.All(p => p.IsFinished ?? false) = {_rootDeploymentTaskRunInfoList.All(p => p.IsFinished ?? false)}");
-            //_logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
-#endif
-
-            if (_rootDeploymentTaskRunInfoList.Any() && _rootDeploymentTaskRunInfoList.All(p => p.IsFinished ?? false))
+            if (_useAutorestoring)
             {
-                _pipelineInfo.IsFinished = true;
-
-                SavePipelineInfo();
-            }
+                File.WriteAllText(_currentRunInfoFileFullName, JsonConvert.SerializeObject(_rootDeploymentTaskRunInfoList, Formatting.Indented));
 
 #if DEBUG
-            //_logger.Info($"_pipelineInfo = {_pipelineInfo}");
+                //_logger.Info($"_rootDeploymentTaskRunInfoList.All(p => p.IsFinished ?? false) = {_rootDeploymentTaskRunInfoList.All(p => p.IsFinished ?? false)}");
+                //_logger.Info($"_rootDeploymentTaskRunInfoList = {_rootDeploymentTaskRunInfoList.WriteListToString()}");
 #endif
+
+                if (_rootDeploymentTaskRunInfoList.Any() && _rootDeploymentTaskRunInfoList.All(p => p.IsFinished ?? false))
+                {
+                    _pipelineInfo.IsFinished = true;
+
+                    SavePipelineInfo();
+                }
+
+#if DEBUG
+                //_logger.Info($"_pipelineInfo = {_pipelineInfo}");
+#endif
+            }
         }
 
         /// <inheritdoc/>

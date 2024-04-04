@@ -37,7 +37,7 @@ namespace TestSandBox.RestoredDeploymentTasks
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Do someting.");
+            sb.AppendLine($"{spaces}Do something.");
 
             sb.Append(PrintValidation(n));
 
