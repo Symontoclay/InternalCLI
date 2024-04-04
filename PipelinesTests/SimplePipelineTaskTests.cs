@@ -26,7 +26,7 @@ namespace PipelinesTests
                         wasRun = true;
                         Assert.That(n, Is.EqualTo(1));
                         Assert.That(type, Is.EqualTo(typeof(SimplePipelineTask)));
-                        Assert.That(message, Is.EqualTo("OnRun"));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.OnRunMesage));
                         break;
 
                     default:
@@ -56,7 +56,7 @@ namespace PipelinesTests
                         wasRun = true;
                         Assert.That(n, Is.EqualTo(1));
                         Assert.That(type, Is.EqualTo(typeof(SimplePipelineTask)));
-                        Assert.That(message, Is.EqualTo("OnRun"));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.OnRunMesage));
                         break;
 
                     default:
@@ -84,7 +84,7 @@ namespace PipelinesTests
                         wasRun = true;
                         Assert.That(n, Is.EqualTo(1));
                         Assert.That(type, Is.EqualTo(typeof(SimplePipelineTask)));
-                        Assert.That(message, Is.EqualTo("OnRun"));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.OnRunMesage));
                         break;
 
                     default:
@@ -114,7 +114,7 @@ namespace PipelinesTests
                         wasRun = true;
                         Assert.That(n, Is.EqualTo(1));
                         Assert.That(type, Is.EqualTo(typeof(SimplePipelineTask)));
-                        Assert.That(message, Is.EqualTo("OnRun"));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.OnRunMesage));
                         break;
 
                     default:
@@ -142,7 +142,7 @@ namespace PipelinesTests
                         wasRun = true;
                         Assert.That(n, Is.EqualTo(1));
                         Assert.That(type, Is.EqualTo(typeof(SimplePipelineTask)));
-                        Assert.That(message, Is.EqualTo("OnRun"));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.OnRunMesage));
                         break;
 
                     default:
@@ -175,7 +175,7 @@ namespace PipelinesTests
                         wasRun = true;
                         Assert.That(n, Is.EqualTo(1));
                         Assert.That(type, Is.EqualTo(typeof(SimplePipelineTask)));
-                        Assert.That(message, Is.EqualTo("OnRun"));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.OnRunMesage));
                         break;
 
                     default:

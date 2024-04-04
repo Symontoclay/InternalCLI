@@ -9,37 +9,19 @@ using System.Threading.Tasks;
 
 namespace PipelinesTests.Tasks
 {
-    public class SimplePipelineTask: BaseDeploymentTask
+    public class SimplePipelineTask: BaseTestDeploymentTask
     {
-        public SimplePipelineTask(ITaskTestContext testContext)
-            : base("1AAD6F4A-7DBA-4059-ACDC-3319E57F1755", false, null, null)
-        {
-            _testContext = testContext;
-        }
+        public const string OnRunMesage = "Run";
 
-        private readonly ITaskTestContext _testContext;
+        public SimplePipelineTask(ITaskTestContext testContext)
+            : base(testContext, "1AAD6F4A-7DBA-4059-ACDC-3319E57F1755", false, null, null)
+        {
+        }
 
         /// <inheritdoc/>
         protected override void OnRun()
         {
-#if DEBUG
-            _logger.Info("OnRun");
-#endif
-
-            _testContext.EmitMessage(GetType(), "OnRun");
-        }
-
-        /// <inheritdoc/>
-        protected override string PropertiesToString(uint n)
-        {
-            var spaces = DisplayHelper.Spaces(n);
-            var sb = new StringBuilder();
-
-            sb.AppendLine($"{spaces}Do something.");
-
-            sb.Append(PrintValidation(n));
-
-            return sb.ToString();
+            _testContext.EmitMessage(GetType(), OnRunMesage);
         }
     }
 }
