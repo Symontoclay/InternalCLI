@@ -41,15 +41,24 @@ namespace TestSandBox
 
             testContext.EnableFailCase1 = true;
 
-            var deploymentPipeline = new DeploymentPipeline();
-            deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
-            deploymentPipeline.Run();
+            try
+            {
+                var deploymentPipeline = new DeploymentPipeline();
+                deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
+                deploymentPipeline.Run();
+            }
+            catch (Exception ex)
+            {
+                _logger.Info(ex);
+            }
 
             testContext.EnableFailCase1 = false;
 
-            deploymentPipeline = new DeploymentPipeline();
-            deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
-            deploymentPipeline.Run();
+            {
+                var deploymentPipeline = new DeploymentPipeline();
+                deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
+                deploymentPipeline.Run();
+            }
         }
 
         private void Case4()
