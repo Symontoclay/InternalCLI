@@ -23,6 +23,12 @@ namespace PipelinesTests.Tasks
         protected override void OnRun()
         {
             _testContext.EmitMessage(GetType(), "Begin");
+            _testContext.EmitMessage(GetType(), _options.N.ToString());
+
+            if (_testContext.EnableFailCase1 && _options.N == 5)
+            {
+                throw new NotImplementedException();
+            }
 
             _testContext.EmitMessage(GetType(), "End");
         }

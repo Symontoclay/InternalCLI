@@ -10,10 +10,10 @@ namespace PipelinesTests.Common
     public class TaskTestContext: ITaskTestContext
     {
 #if DEBUG
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        public event Action<int, Type, string>? OnMessage;
+        public event Action<int, Type, string> OnMessage;
 
         private int n;
 
@@ -22,11 +22,13 @@ namespace PipelinesTests.Common
             n++;
 
 #if DEBUG
-            _logger.Info(type.Name);
-            _logger.Info(message);
+            //_logger.Info(type.Name);
+            //_logger.Info(message);
 #endif
 
             OnMessage?.Invoke(n, type, message);
         }
+
+        public bool EnableFailCase1 { get; set; }
     }
 }

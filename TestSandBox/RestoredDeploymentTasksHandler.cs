@@ -19,11 +19,55 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case3();
+            Case5();
+            //Case4();
+            //Case3();
             //Case2();
             //Case1();
 
             _logger.Info("End");
+        }
+
+        private void Case5()
+        {
+            var testContext = new TaskTestContext();
+            testContext.OnMessage += (n, type, message) =>
+            {
+                _logger.Info("--------------------------");
+                _logger.Info(n);
+                _logger.Info(type.Name);
+                _logger.Info(message);
+            };
+
+            testContext.EnableFailCase1 = true;
+
+            var deploymentPipeline = new DeploymentPipeline();
+            deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
+            deploymentPipeline.Run();
+
+            testContext.EnableFailCase1 = false;
+
+            deploymentPipeline = new DeploymentPipeline();
+            deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
+            deploymentPipeline.Run();
+        }
+
+        private void Case4()
+        {
+            var testContext = new TaskTestContext();
+            testContext.OnMessage += (n, type, message) =>
+            {
+                _logger.Info("--------------------------");
+                _logger.Info(n);
+                _logger.Info(type.Name);
+                _logger.Info(message);
+            };
+
+            testContext.EnableFailCase1 = true;
+
+            var deploymentPipeline = new DeploymentPipeline();
+            deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
+            deploymentPipeline.Run();
         }
 
         private void Case3()
@@ -31,6 +75,7 @@ namespace TestSandBox
             var testContext = new TaskTestContext();
             testContext.OnMessage += (n, type, message) =>
             {
+                _logger.Info("--------------------------");
                 _logger.Info(n);
                 _logger.Info(type.Name);
                 _logger.Info(message);
