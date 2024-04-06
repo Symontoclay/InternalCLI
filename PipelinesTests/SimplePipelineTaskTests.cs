@@ -6,11 +6,6 @@ namespace PipelinesTests
 {
     public class SimplePipelineTaskTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [Test]
         [Parallelizable]
         public void Case1()
