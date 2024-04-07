@@ -1,9 +1,11 @@
 ﻿using CommonUtils.DeploymentTasks;
+using dotless.Core.Parser.Tree;
 using NLog;
 using PipelinesTests.Common;
 using PipelinesTests.Tasks;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,13 +21,56 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            Case6();
             //Case5();
             //Case4();
-            Case3();
+            //Case3();
             //Case2();
             //Case1();
 
             _logger.Info("End");
+        }
+
+        private void Case6()
+        {
+            var testContext = new TaskTestContext();
+            testContext.OnMessage += (n, type, message) =>
+            {
+                _logger.Info("--------------------------");
+                _logger.Info(n);
+                _logger.Info(type.Name);
+                _logger.Info(message);
+            };
+
+            testContext.EnableFailCase1 = true;
+
+            try
+            {
+                var deploymentPipeline = new DeploymentPipeline(new DeploymentPipelineOptions()
+                {
+                    UseAutorestoring = true,
+                    DirectoryForAutorestoring = Directory.GetCurrentDirectory()
+                });
+                deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
+                deploymentPipeline.Run();
+            }
+            catch (Exception ex)
+            {
+                _logger.Info(ex);
+                _logger.Info(ex.GetType().Name);
+            }
+
+            testContext.EnableFailCase1 = false;
+
+            {
+                var deploymentPipeline = new DeploymentPipeline(new DeploymentPipelineOptions()
+                {
+                    UseAutorestoring = true,
+                    DirectoryForAutorestoring = Directory.GetCurrentDirectory()
+                });
+                deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
+                deploymentPipeline.Run();
+            }
         }
 
         private void Case5()

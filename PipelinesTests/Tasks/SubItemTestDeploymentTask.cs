@@ -12,7 +12,7 @@ namespace PipelinesTests.Tasks
     public class SubItemTestDeploymentTask : BaseTestDeploymentTask
     {
         public SubItemTestDeploymentTask(ITaskTestContext testContext, SubItemTestDeploymentTaskOptions options, IDeploymentTask parentTask)
-            : base(testContext, MD5Helper.GetHash(options.DirectoryName), false, options, parentTask)
+            : base(testContext, MD5Helper.GetHash(options.DirectoryName), true, options, parentTask)
         {
             _options = options;
         }
