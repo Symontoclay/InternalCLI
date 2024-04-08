@@ -4080,16 +4080,40 @@ namespace PipelinesTests
                         Assert.That(message, Is.EqualTo(SimplePipelineTask.OnRunMesage));
                         break;
 
-                    case 17:
-                        Assert.That(n, Is.EqualTo());
-                        Assert.That(type, Is.EqualTo(typeof()));
-                        Assert.That(message, Is.EqualTo(SimplePipelineTask));
+                    case 20:
+                        Assert.That(n, Is.EqualTo(20));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
                         break;
 
-                    case 17:
-                        Assert.That(n, Is.EqualTo());
-                        Assert.That(type, Is.EqualTo(typeof()));
-                        Assert.That(message, Is.EqualTo(SimplePipelineTask));
+                    case 21:
+                        Assert.That(n, Is.EqualTo(21));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 22:
+                        Assert.That(n, Is.EqualTo(22));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 23:
+                        Assert.That(n, Is.EqualTo(23));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("5"));
+                        break;
+
+                    case 24:
+                        Assert.That(n, Is.EqualTo(24));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 25:
+                        Assert.That(n, Is.EqualTo(25));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
                         break;
 
                     case 17:
@@ -4103,60 +4127,7 @@ namespace PipelinesTests
                 }
             };
 
-            /* 
-2024-04-07 17:55:11.7042 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO SimplePipelineTask (Key: 'SimplePipelineTask_1AAD6F4A-7DBA-4059-ACDC-3319E57F1755') finished 
-2024-04-07 17:55:11.7042 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO TopLevelTestDeploymentTask (Key: 'TopLevelTestDeploymentTask_CA38B73F-F095-474F-AA2D-3D93682C43EE') started. 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO -------------------------- 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO 20 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO TopLevelTestDeploymentTask 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO Begin 
-2024-04-07 17:55:11.7042 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO     DeploymentTasksGroup (Key: 'DeploymentTasksGroup_6D6F08F4-461C-4D99-9D4B-927A09389822') is skeeped. 
-2024-04-07 17:55:11.7042 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO     DeploymentTasksGroup (Key: 'DeploymentTasksGroup_A05C9D44-14A9-4444-B249-F9BEED404A88') started. 
-2024-04-07 17:55:11.7042 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO     TopSubItemTestDeploymentTask (Key: 'TopSubItemTestDeploymentTask_A4AC61E2-7C15-4ED8-8BED-07FCECA88244') started. 
-2024-04-07 17:55:11.7042 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO         Begin PipelinesTests.Tasks.TopSubItemTestDeploymentTaskOptions
-            N = 3
-        End PipelinesTests.Tasks.TopSubItemTestDeploymentTaskOptions
- 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO -------------------------- 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO 21 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO TopSubItemTestDeploymentTask 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO Begin 
-2024-04-07 17:55:11.7042 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO         DeploymentTasksGroup (Key: 'DeploymentTasksGroup_9537A2AD-3213-4F2A-BE2A-2BD03BDD59BC') started. 
-2024-04-07 17:55:11.7042 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO         SubItemTestDeploymentTask (Key: 'SubItemTestDeploymentTask_B68BAFEDB94C139E0D4DD43FCE9B26B7') is skeeped. 
-2024-04-07 17:55:11.7042 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO             Begin PipelinesTests.Tasks.SubItemTestDeploymentTaskOptions
-                DirectoryName = 1://someDir
-                N = 4
-            End PipelinesTests.Tasks.SubItemTestDeploymentTaskOptions
- 
-2024-04-07 17:55:11.7042 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO         SubItemTestDeploymentTask (Key: 'SubItemTestDeploymentTask_81362A9DF67729F90DF568E446362B12') started. 
-2024-04-07 17:55:11.7042 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO             Begin PipelinesTests.Tasks.SubItemTestDeploymentTaskOptions
-                DirectoryName = 2://someDir
-                N = 5
-            End PipelinesTests.Tasks.SubItemTestDeploymentTaskOptions
- 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO -------------------------- 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO 22 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO SubItemTestDeploymentTask 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO Begin 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO -------------------------- 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO 23 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO SubItemTestDeploymentTask 
-2024-04-07 17:55:11.7042 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO 5 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO -------------------------- 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO 24 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO SubItemTestDeploymentTask 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO End 
-2024-04-07 17:55:11.7325 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO         SubItemTestDeploymentTask (Key: 'SubItemTestDeploymentTask_81362A9DF67729F90DF568E446362B12') finished 
-2024-04-07 17:55:11.7325 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO         SubItemTestDeploymentTask (Key: 'SubItemTestDeploymentTask_AD9CC111C7577E0E6383779250D5EA2C') started. 
-2024-04-07 17:55:11.7325 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO             Begin PipelinesTests.Tasks.SubItemTestDeploymentTaskOptions
-                DirectoryName = 3://someDir
-                N = 6
-            End PipelinesTests.Tasks.SubItemTestDeploymentTaskOptions
- 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO -------------------------- 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO 25 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO SubItemTestDeploymentTask 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO Begin 
+            /*
 2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO -------------------------- 
 2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO 26 
 2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO SubItemTestDeploymentTask 
