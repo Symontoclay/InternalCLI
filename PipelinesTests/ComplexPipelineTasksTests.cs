@@ -4116,43 +4116,34 @@ namespace PipelinesTests
                         Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
                         break;
 
-                    case 17:
-                        Assert.That(n, Is.EqualTo());
-                        Assert.That(type, Is.EqualTo(typeof()));
-                        Assert.That(message, Is.EqualTo(SimplePipelineTask));
+                    case 26:
+                        Assert.That(n, Is.EqualTo(26));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("6"));
+                        break;
+
+                    case 27:
+                        Assert.That(n, Is.EqualTo(27));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 28:
+                        Assert.That(n, Is.EqualTo(28));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 29:
+                        Assert.That(n, Is.EqualTo(29));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
                         break;
 
                     default:
                         throw new ArgumentOutOfRangeException(nameof(n), n, null);
                 }
             };
-
-            /*
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO -------------------------- 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO 26 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO SubItemTestDeploymentTask 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO 6 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO -------------------------- 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO 27 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO SubItemTestDeploymentTask 
-2024-04-07 17:55:11.7325 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO End 
-2024-04-07 17:55:11.7528 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO         SubItemTestDeploymentTask (Key: 'SubItemTestDeploymentTask_AD9CC111C7577E0E6383779250D5EA2C') finished 
-2024-04-07 17:55:11.7528 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO         DeploymentTasksGroup (Key: 'DeploymentTasksGroup_9537A2AD-3213-4F2A-BE2A-2BD03BDD59BC') finished 
-2024-04-07 17:55:11.7528 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO -------------------------- 
-2024-04-07 17:55:11.7528 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO 28 
-2024-04-07 17:55:11.7528 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO TopSubItemTestDeploymentTask 
-2024-04-07 17:55:11.7528 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO End 
-2024-04-07 17:55:11.7528 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO     TopSubItemTestDeploymentTask (Key: 'TopSubItemTestDeploymentTask_A4AC61E2-7C15-4ED8-8BED-07FCECA88244') finished 
-2024-04-07 17:55:11.7528 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO     DeploymentTasksGroup (Key: 'DeploymentTasksGroup_A05C9D44-14A9-4444-B249-F9BEED404A88') finished 
-2024-04-07 17:55:11.7528 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO -------------------------- 
-2024-04-07 17:55:11.7528 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO 29 
-2024-04-07 17:55:11.7528 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO TopLevelTestDeploymentTask 
-2024-04-07 17:55:11.7528 TestSandBox.RestoredDeploymentTasksHandler+<>c.<Case7>b__2_0 INFO End 
-2024-04-07 17:55:11.7528 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO TopLevelTestDeploymentTask (Key: 'TopLevelTestDeploymentTask_CA38B73F-F095-474F-AA2D-3D93682C43EE') finished 
-2024-04-07 17:55:11.7691 TestSandBox.RestoredDeploymentTasksHandler.Run INFO End 
-2024-04-07 17:55:11.7691 TestSandBox.Program.TstRestoredDeploymentTasks INFO End 
-
-             */
 
             using var tempDir = new TempDirectory();
 
