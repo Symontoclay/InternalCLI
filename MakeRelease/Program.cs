@@ -6,6 +6,7 @@ using Deployment.TestDeploymentTasks.PrepareTestDeployment;
 using Newtonsoft.Json;
 using NLog;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 
@@ -102,7 +103,11 @@ namespace MakeRelease
 
             ProjectsDataSourceFactory.Mode = ProjectsDataSourceMode.Test;
 
-            DeploymentPipeline.Run(new MakeReleaseReleaseTask());
+            DeploymentPipeline.Run(new MakeReleaseReleaseTask(), new DeploymentPipelineOptions()
+            {
+                UseAutorestoring = true,
+                DirectoryForAutorestoring = Directory.GetCurrentDirectory()
+            });
 
             _logger.Info("Finish release into test repositories.");
         }
@@ -113,7 +118,11 @@ namespace MakeRelease
 
             ProjectsDataSourceFactory.Mode = ProjectsDataSourceMode.Prod;
 
-            DeploymentPipeline.Run(new MakeReleaseReleaseTask());
+            DeploymentPipeline.Run(new MakeReleaseReleaseTask(), new DeploymentPipelineOptions()
+            {
+                UseAutorestoring = true,
+                DirectoryForAutorestoring = Directory.GetCurrentDirectory()
+            });
 
             _logger.Info("Finish release into PROD repositories.");
         }

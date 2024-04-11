@@ -3,6 +3,7 @@ using Deployment.ReleaseTasks.StartNewVersion;
 using Newtonsoft.Json;
 using NLog;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace StartNewVersion
@@ -71,7 +72,11 @@ namespace StartNewVersion
             DeploymentPipeline.Run(new StartNewVersionReleaseTask(new StartNewVersionReleaseTaskOptions
             {
                 Version = newVersion
-            }));
+            }), new DeploymentPipelineOptions()
+            {
+                UseAutorestoring = true,
+                DirectoryForAutorestoring = Directory.GetCurrentDirectory()
+            });
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
