@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
-//using System.Management;
+using System.Runtime.InteropServices;
 
 namespace TestSandBox
 {
@@ -145,40 +141,5 @@ namespace TestSandBox
 
             return processes;
         }
-
-        //public static void remoteProcessKill(string computerName, string userName, string pword, string processName)
-        //{
-        //    var connectoptions = new ConnectionOptions();
-        //    connectoptions.Username = userName;
-        //    connectoptions.Password = pword;
-
-        //    ManagementScope scope = new ManagementScope(@"\\" + computerName + @"\root\cimv2", connectoptions);
-
-        //    // WMI query
-        //    var query = new SelectQuery("select * from Win32_process where name = '" + processName + "'");
-
-        //    using (var searcher = new ManagementObjectSearcher(scope, query))
-        //    {
-        //        foreach (ManagementObject process in searcher.Get())
-        //        {
-        //            process.InvokeMethod("Terminate", null);
-        //            process.Dispose();
-        //        }
-        //    }
-        //}
-
-        //public static void localProcessKill(string processName)
-        //{
-        //    foreach (Process p in Process.GetProcessesByName(processName))
-        //    {
-        //        p.Kill();
-        //    }
-        //}
-
-        [DllImport("kernel32.dll")]
-        public static extern bool MoveFileEx(string lpExistingFileName, string lpNewFileName, int dwFlags);
-
-        public const int MOVEFILE_DELAY_UNTIL_REBOOT = 0x4;
-
     }
 }
