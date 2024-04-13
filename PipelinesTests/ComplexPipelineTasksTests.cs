@@ -4418,5 +4418,927 @@ namespace PipelinesTests
 
             Assert.That(wasRun, Is.EqualTo(true));
         }
+
+        [Test]
+        [Parallelizable]
+        public void Case5_a()
+        {
+            var wasRun = false;
+
+            var testContext = new TaskTestContext();
+            testContext.OnMessage += (n, type, message) =>
+            {
+                switch (n)
+                {
+                    case 1:
+                        wasRun = true;
+                        Assert.That(n, Is.EqualTo(1));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 2:
+                        Assert.That(n, Is.EqualTo(2));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 3:
+                        Assert.That(n, Is.EqualTo(3));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 4:
+                        Assert.That(n, Is.EqualTo(4));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("1"));
+                        break;
+
+                    case 5:
+                        Assert.That(n, Is.EqualTo(5));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 6:
+                        Assert.That(n, Is.EqualTo(6));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 7:
+                        Assert.That(n, Is.EqualTo(7));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("2"));
+                        break;
+
+                    case 8:
+                        Assert.That(n, Is.EqualTo(8));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 9:
+                        Assert.That(n, Is.EqualTo(9));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 10:
+                        Assert.That(n, Is.EqualTo(10));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("3"));
+                        break;
+
+                    case 11:
+                        Assert.That(n, Is.EqualTo(11));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 12:
+                        Assert.That(n, Is.EqualTo(12));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 13:
+                        Assert.That(n, Is.EqualTo(13));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 14:
+                        Assert.That(n, Is.EqualTo(14));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 15:
+                        Assert.That(n, Is.EqualTo(15));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("4"));
+                        break;
+
+                    case 16:
+                        Assert.That(n, Is.EqualTo(16));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 17:
+                        Assert.That(n, Is.EqualTo(17));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 18:
+                        Assert.That(n, Is.EqualTo(18));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("5"));
+                        break;
+
+                    //Pipeline restarted
+                    case 19:
+                        Assert.That(n, Is.EqualTo(19));
+                        Assert.That(type, Is.EqualTo(typeof(SimplePipelineTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.OnRunMesage));
+                        break;
+
+                    case 20:
+                        Assert.That(n, Is.EqualTo(20));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 21:
+                        Assert.That(n, Is.EqualTo(21));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 22:
+                        Assert.That(n, Is.EqualTo(22));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 23:
+                        Assert.That(n, Is.EqualTo(23));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("5"));
+                        break;
+
+                    case 24:
+                        Assert.That(n, Is.EqualTo(24));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 25:
+                        Assert.That(n, Is.EqualTo(25));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 26:
+                        Assert.That(n, Is.EqualTo(26));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("6"));
+                        break;
+
+                    case 27:
+                        Assert.That(n, Is.EqualTo(27));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 28:
+                        Assert.That(n, Is.EqualTo(28));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 29:
+                        Assert.That(n, Is.EqualTo(29));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(n), n, null);
+                }
+            };
+
+            using var tempDir = new TempDirectory();
+
+            testContext.EnableFailCase1 = true;
+
+            try
+            {
+                DeploymentPipeline.Run(new TopLevelTestDeploymentTask(testContext), new DeploymentPipelineOptions()
+                {
+                    UseAutorestoring = true,
+                    DirectoryForAutorestoring = tempDir.FullName,
+                    Prefix = "SomePipeline"
+                });
+            }
+            catch
+            {
+            }
+
+            testContext.EnableFailCase1 = false;
+
+            DeploymentPipeline.Run(new SimplePipelineTask(testContext));
+
+            DeploymentPipeline.Run(new TopLevelTestDeploymentTask(testContext), new DeploymentPipelineOptions()
+            {
+                UseAutorestoring = true,
+                DirectoryForAutorestoring = tempDir.FullName,
+                Prefix = "SomePipeline"
+            });
+
+            Assert.That(wasRun, Is.EqualTo(true));
+        }
+
+        [Test]
+        [Parallelizable]
+        public void Case5_a_1()
+        {
+            var wasRun = false;
+
+            var testContext = new TaskTestContext();
+            testContext.OnMessage += (n, type, message) =>
+            {
+                switch (n)
+                {
+                    case 1:
+                        wasRun = true;
+                        Assert.That(n, Is.EqualTo(1));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 2:
+                        Assert.That(n, Is.EqualTo(2));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 3:
+                        Assert.That(n, Is.EqualTo(3));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 4:
+                        Assert.That(n, Is.EqualTo(4));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("1"));
+                        break;
+
+                    case 5:
+                        Assert.That(n, Is.EqualTo(5));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 6:
+                        Assert.That(n, Is.EqualTo(6));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 7:
+                        Assert.That(n, Is.EqualTo(7));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("2"));
+                        break;
+
+                    case 8:
+                        Assert.That(n, Is.EqualTo(8));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 9:
+                        Assert.That(n, Is.EqualTo(9));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 10:
+                        Assert.That(n, Is.EqualTo(10));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("3"));
+                        break;
+
+                    case 11:
+                        Assert.That(n, Is.EqualTo(11));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 12:
+                        Assert.That(n, Is.EqualTo(12));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 13:
+                        Assert.That(n, Is.EqualTo(13));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 14:
+                        Assert.That(n, Is.EqualTo(14));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 15:
+                        Assert.That(n, Is.EqualTo(15));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("4"));
+                        break;
+
+                    case 16:
+                        Assert.That(n, Is.EqualTo(16));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 17:
+                        Assert.That(n, Is.EqualTo(17));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 18:
+                        Assert.That(n, Is.EqualTo(18));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("5"));
+                        break;
+
+                    //Pipeline restarted
+                    case 19:
+                        Assert.That(n, Is.EqualTo(19));
+                        Assert.That(type, Is.EqualTo(typeof(SimplePipelineTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.OnRunMesage));
+                        break;
+
+                    case 20:
+                        Assert.That(n, Is.EqualTo(20));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 21:
+                        Assert.That(n, Is.EqualTo(21));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 22:
+                        Assert.That(n, Is.EqualTo(22));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 23:
+                        Assert.That(n, Is.EqualTo(23));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("5"));
+                        break;
+
+                    case 24:
+                        Assert.That(n, Is.EqualTo(24));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 25:
+                        Assert.That(n, Is.EqualTo(25));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 26:
+                        Assert.That(n, Is.EqualTo(26));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("6"));
+                        break;
+
+                    case 27:
+                        Assert.That(n, Is.EqualTo(27));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 28:
+                        Assert.That(n, Is.EqualTo(28));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 29:
+                        Assert.That(n, Is.EqualTo(29));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(n), n, null);
+                }
+            };
+
+            using var tempDir = new TempDirectory();
+
+            testContext.EnableFailCase1 = true;
+
+            try
+            {
+                var deploymentPipeline = new DeploymentPipeline(new DeploymentPipelineOptions()
+                {
+                    UseAutorestoring = true,
+                    DirectoryForAutorestoring = tempDir.FullName,
+                    Prefix = "SomePipeline"
+                });
+                deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
+                deploymentPipeline.Run();
+            }
+            catch
+            {
+            }
+
+            testContext.EnableFailCase1 = false;
+
+            {
+                var deploymentPipeline = new DeploymentPipeline();
+                deploymentPipeline.Add(new SimplePipelineTask(testContext));
+                deploymentPipeline.Run();
+            }
+
+            {
+                var deploymentPipeline = new DeploymentPipeline(new DeploymentPipelineOptions()
+                {
+                    UseAutorestoring = true,
+                    DirectoryForAutorestoring = tempDir.FullName,
+                    Prefix = "SomePipeline"
+                });
+                deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
+                deploymentPipeline.Run();
+            }
+
+            Assert.That(wasRun, Is.EqualTo(true));
+        }
+        
+        [Test]
+        [Parallelizable]
+        public void Case5_b()
+        {
+            var wasRun = false;
+
+            var testContext = new TaskTestContext();
+            testContext.OnMessage += (n, type, message) =>
+            {
+                switch (n)
+                {
+                    case 1:
+                        wasRun = true;
+                        Assert.That(n, Is.EqualTo(1));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 2:
+                        Assert.That(n, Is.EqualTo(2));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 3:
+                        Assert.That(n, Is.EqualTo(3));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 4:
+                        Assert.That(n, Is.EqualTo(4));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("1"));
+                        break;
+
+                    case 5:
+                        Assert.That(n, Is.EqualTo(5));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 6:
+                        Assert.That(n, Is.EqualTo(6));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 7:
+                        Assert.That(n, Is.EqualTo(7));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("2"));
+                        break;
+
+                    case 8:
+                        Assert.That(n, Is.EqualTo(8));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 9:
+                        Assert.That(n, Is.EqualTo(9));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 10:
+                        Assert.That(n, Is.EqualTo(10));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("3"));
+                        break;
+
+                    case 11:
+                        Assert.That(n, Is.EqualTo(11));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 12:
+                        Assert.That(n, Is.EqualTo(12));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 13:
+                        Assert.That(n, Is.EqualTo(13));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 14:
+                        Assert.That(n, Is.EqualTo(14));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 15:
+                        Assert.That(n, Is.EqualTo(15));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("4"));
+                        break;
+
+                    case 16:
+                        Assert.That(n, Is.EqualTo(16));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 17:
+                        Assert.That(n, Is.EqualTo(17));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 18:
+                        Assert.That(n, Is.EqualTo(18));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("5"));
+                        break;
+
+                    //Pipeline restarted
+                    case 19:
+                        Assert.That(n, Is.EqualTo(19));
+                        Assert.That(type, Is.EqualTo(typeof(SimplePipelineTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.OnRunMesage));
+                        break;
+
+                    case 20:
+                        Assert.That(n, Is.EqualTo(20));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 21:
+                        Assert.That(n, Is.EqualTo(21));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 22:
+                        Assert.That(n, Is.EqualTo(22));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 23:
+                        Assert.That(n, Is.EqualTo(23));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("5"));
+                        break;
+
+                    case 24:
+                        Assert.That(n, Is.EqualTo(24));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 25:
+                        Assert.That(n, Is.EqualTo(25));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 26:
+                        Assert.That(n, Is.EqualTo(26));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("6"));
+                        break;
+
+                    case 27:
+                        Assert.That(n, Is.EqualTo(27));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 28:
+                        Assert.That(n, Is.EqualTo(28));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 29:
+                        Assert.That(n, Is.EqualTo(29));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(n), n, null);
+                }
+            };
+
+            using var tempDir = new TempDirectory();
+            using var tempDir2 = new TempDirectory();
+
+            testContext.EnableFailCase1 = true;
+
+            try
+            {
+                DeploymentPipeline.Run(new TopLevelTestDeploymentTask(testContext), new DeploymentPipelineOptions()
+                {
+                    UseAutorestoring = true,
+                    DirectoryForAutorestoring = tempDir.FullName,
+                    Prefix = "SomePipeline"
+                });
+            }
+            catch
+            {
+            }
+
+            testContext.EnableFailCase1 = false;
+
+            DeploymentPipeline.Run(new SimplePipelineTask(testContext), new DeploymentPipelineOptions()
+            {
+                UseAutorestoring = true,
+                DirectoryForAutorestoring = tempDir2.FullName
+            });
+
+            DeploymentPipeline.Run(new TopLevelTestDeploymentTask(testContext), new DeploymentPipelineOptions()
+            {
+                UseAutorestoring = true,
+                DirectoryForAutorestoring = tempDir.FullName,
+                Prefix = "SomePipeline"
+            });
+
+            Assert.That(wasRun, Is.EqualTo(true));
+        }
+
+        [Test]
+        [Parallelizable]
+        public void Case5_b_1()
+        {
+            var wasRun = false;
+
+            var testContext = new TaskTestContext();
+            testContext.OnMessage += (n, type, message) =>
+            {
+                switch (n)
+                {
+                    case 1:
+                        wasRun = true;
+                        Assert.That(n, Is.EqualTo(1));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 2:
+                        Assert.That(n, Is.EqualTo(2));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 3:
+                        Assert.That(n, Is.EqualTo(3));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 4:
+                        Assert.That(n, Is.EqualTo(4));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("1"));
+                        break;
+
+                    case 5:
+                        Assert.That(n, Is.EqualTo(5));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 6:
+                        Assert.That(n, Is.EqualTo(6));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 7:
+                        Assert.That(n, Is.EqualTo(7));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("2"));
+                        break;
+
+                    case 8:
+                        Assert.That(n, Is.EqualTo(8));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 9:
+                        Assert.That(n, Is.EqualTo(9));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 10:
+                        Assert.That(n, Is.EqualTo(10));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("3"));
+                        break;
+
+                    case 11:
+                        Assert.That(n, Is.EqualTo(11));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 12:
+                        Assert.That(n, Is.EqualTo(12));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 13:
+                        Assert.That(n, Is.EqualTo(13));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 14:
+                        Assert.That(n, Is.EqualTo(14));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 15:
+                        Assert.That(n, Is.EqualTo(15));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("4"));
+                        break;
+
+                    case 16:
+                        Assert.That(n, Is.EqualTo(16));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 17:
+                        Assert.That(n, Is.EqualTo(17));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 18:
+                        Assert.That(n, Is.EqualTo(18));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("5"));
+                        break;
+
+                    //Pipeline restarted
+                    case 19:
+                        Assert.That(n, Is.EqualTo(19));
+                        Assert.That(type, Is.EqualTo(typeof(SimplePipelineTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.OnRunMesage));
+                        break;
+
+                    case 20:
+                        Assert.That(n, Is.EqualTo(20));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 21:
+                        Assert.That(n, Is.EqualTo(21));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 22:
+                        Assert.That(n, Is.EqualTo(22));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 23:
+                        Assert.That(n, Is.EqualTo(23));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("5"));
+                        break;
+
+                    case 24:
+                        Assert.That(n, Is.EqualTo(24));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 25:
+                        Assert.That(n, Is.EqualTo(25));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.BeginMesage));
+                        break;
+
+                    case 26:
+                        Assert.That(n, Is.EqualTo(26));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo("6"));
+                        break;
+
+                    case 27:
+                        Assert.That(n, Is.EqualTo(27));
+                        Assert.That(type, Is.EqualTo(typeof(SubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 28:
+                        Assert.That(n, Is.EqualTo(28));
+                        Assert.That(type, Is.EqualTo(typeof(TopSubItemTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    case 29:
+                        Assert.That(n, Is.EqualTo(29));
+                        Assert.That(type, Is.EqualTo(typeof(TopLevelTestDeploymentTask)));
+                        Assert.That(message, Is.EqualTo(SimplePipelineTask.EndMesage));
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(n), n, null);
+                }
+            };
+
+            using var tempDir = new TempDirectory();
+            using var tempDir2 = new TempDirectory();
+
+            testContext.EnableFailCase1 = true;
+
+            try
+            {
+                var deploymentPipeline = new DeploymentPipeline(new DeploymentPipelineOptions()
+                {
+                    UseAutorestoring = true,
+                    DirectoryForAutorestoring = tempDir.FullName,
+                    Prefix = "SomePipeline"
+                });
+                deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
+                deploymentPipeline.Run();
+            }
+            catch
+            {
+            }
+
+            testContext.EnableFailCase1 = false;
+
+            {
+                var deploymentPipeline = new DeploymentPipeline(new DeploymentPipelineOptions()
+                {
+                    UseAutorestoring = true,
+                    DirectoryForAutorestoring = tempDir2.FullName
+                });
+                deploymentPipeline.Add(new SimplePipelineTask(testContext));
+                deploymentPipeline.Run();
+            }
+
+            {
+                var deploymentPipeline = new DeploymentPipeline(new DeploymentPipelineOptions()
+                {
+                    UseAutorestoring = true,
+                    DirectoryForAutorestoring = tempDir.FullName,
+                    Prefix = "SomePipeline"
+                });
+                deploymentPipeline.Add(new TopLevelTestDeploymentTask(testContext));
+                deploymentPipeline.Run();
+            }
+
+            Assert.That(wasRun, Is.EqualTo(true));
+        }
     }
 }
