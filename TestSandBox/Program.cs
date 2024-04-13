@@ -80,7 +80,8 @@ namespace TestSandBox
 
             try
             {
-                TstRestoredDeploymentTasks();
+                TstWhoIsLocking();
+                //TstRestoredDeploymentTasks();
                 //TstGetAssembly();
                 //TstTestDeploymentTask();
                 //TstRemoveSingleLineCommentsDevTaskHandler();
@@ -111,7 +112,6 @@ namespace TestSandBox
                 //TstEnumerateAssetsFiles();
                 //TstCopyProjectSource();
                 //TstSetXmlDocFileNameToCsProj();
-                //TstRemoveDir();
                 //TstRemoveDir();
                 //TstFinishRelease0_3_6_p();
                 //TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
@@ -155,6 +155,28 @@ namespace TestSandBox
             }
         }
 
+        private static void TstWhoIsLocking()
+        {
+            _logger.Info("Begin");
+
+            //var filePath = @"c:\Users\Acer\Documents\SymOntoClayCLIDist\mscordaccore_amd64_amd64_7.0.1824.16914.dll";
+            var filePath = @"c:\Users\Acer\Documents\SymOntoClayCLIDist\soc.dll";
+
+            _logger.Info($"filePath = {filePath}");
+
+            var lstProcs = ProcessHandler.WhoIsLocking(filePath);
+
+            _logger.Info($"lstProcs.Count = {lstProcs.Count}");
+
+            foreach (var p in lstProcs)
+            {
+                _logger.Info($"p.MachineName = {p.MachineName}");
+                _logger.Info($"p.ProcessName = {p.ProcessName}");
+            }
+
+            _logger.Info("End");
+        }
+        
         private static void TstRestoredDeploymentTasks()
         {
             _logger.Info("Begin");

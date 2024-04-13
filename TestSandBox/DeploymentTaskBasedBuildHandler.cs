@@ -263,7 +263,7 @@ namespace TestSandBox
                 @"%USERPROFILE%\source\repos\SymOntoClayAsset\Assets\SymOntoClay\Thing.cs"
             };
 
-            targetFilesList = targetFilesList.Select(p => PathsHelper.Normalize(p)).ToList();
+            targetFilesList = targetFilesList.Select(PathsHelper.Normalize).ToList();
 
             var license = ProjectsDataSourceFactory.GetLicense("MIT");
 
@@ -279,37 +279,35 @@ namespace TestSandBox
 
         private void Case6()
         {
-            using (var tempDir = new TempDirectory())
+            using var tempDir = new TempDirectory();
+            _logger.Info($"tempDir.FullName = {tempDir.FullName}");
+
+            var deploymentPipeline = new DeploymentPipeline();
+
+            var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
+
+            _logger.Info($"siteSolution = {siteSolution}");
+
+            var destDir = Path.Combine(Directory.GetCurrentDirectory(), "s");
+
+            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {
-                _logger.Info($"tempDir.FullName = {tempDir.FullName}");
+                TargetDir = destDir,
+                SkipExistingFilesInTargetDir = false
+            }));
 
-                var deploymentPipeline = new DeploymentPipeline();
+            deploymentPipeline.Add(new SiteBuildTask(new SiteBuildTaskOptions()
+            {
+                KindOfTargetUrl = KindOfTargetUrl.Path,
+                SiteName = siteSolution.RepositoryName,
+                SourcePath = siteSolution.SourcePath,
+                DestPath = destDir,
+                TempPath = tempDir.FullName
+            }));
 
-                var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
+            _logger.Info($"deploymentPipeline = {deploymentPipeline}");
 
-                _logger.Info($"siteSolution = {siteSolution}");
-
-                var destDir = Path.Combine(Directory.GetCurrentDirectory(), "s");
-
-                deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
-                {
-                    TargetDir = destDir,
-                    SkipExistingFilesInTargetDir = false
-                }));
-
-                deploymentPipeline.Add(new SiteBuildTask(new SiteBuildTaskOptions()
-                {
-                    KindOfTargetUrl = KindOfTargetUrl.Path,
-                    SiteName = siteSolution.RepositoryName,
-                    SourcePath = siteSolution.SourcePath,
-                    DestPath = destDir,
-                    TempPath = tempDir.FullName
-                }));
-
-                _logger.Info($"deploymentPipeline = {deploymentPipeline}");
-
-                deploymentPipeline.Run();
-            }
+            deploymentPipeline.Run();
         }
 
         private void Case5()
