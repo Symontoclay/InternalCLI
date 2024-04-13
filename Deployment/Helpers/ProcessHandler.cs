@@ -1,9 +1,13 @@
-﻿using System;
+﻿/*
+This class has been taken from https://stackoverflow.com/questions/26741191/ioexception-the-process-cannot-access-the-file-file-path-because-it-is-being 
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace TestSandBox
+namespace Deployment.Helpers
 {
     public static class ProcessHandler
     {

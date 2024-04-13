@@ -3,12 +3,10 @@ using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Deployment.ReleaseTasks.MakeRelease;
 using Deployment.TestDeploymentTasks.PrepareTestDeployment;
-using Newtonsoft.Json;
 using NLog;
 using System;
 using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
 
 namespace MakeRelease
 {

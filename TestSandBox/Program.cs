@@ -67,6 +67,7 @@ using XMLDocReader.CSharpDoc;
 using System.Reflection.Metadata;
 using TestSandBox.RestoredDeploymentTasks;
 using CommonUtils.DeploymentTasks;
+using Deployment.Tasks.DirectoriesTasks.DeleteDirectory;
 
 namespace TestSandBox
 {
@@ -80,7 +81,8 @@ namespace TestSandBox
 
             try
             {
-                TstWhoIsLocking();
+                TstDeleteDirectoryTask();
+                //TstWhoIsLocking();
                 //TstRestoredDeploymentTasks();
                 //TstGetAssembly();
                 //TstTestDeploymentTask();
@@ -153,6 +155,22 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstDeleteDirectoryTask()
+        {
+            _logger.Info("Begin");
+
+            var targetDirectory = @"c:\Users\Acer\Documents\SymOntoClayCLIDist\";
+
+            _logger.Info($"targetDirectory = {targetDirectory}");
+
+            DeploymentPipeline.Run(new DeleteDirectoryTask(new DeleteDirectoryTaskOptions()
+            {
+                TargetDir = targetDirectory
+            }));
+
+            _logger.Info("End");
         }
 
         private static void TstWhoIsLocking()

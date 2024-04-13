@@ -1,6 +1,8 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
+using Deployment.Helpers;
+using Deployment.Tasks.DirectoriesTasks.DeleteDirectory;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -41,34 +43,11 @@ namespace Deployment.Tasks.DirectoriesTasks.CreateDirectory
             {
                 if (!_options.SkipExistingFilesInTargetDir)
                 {
-                    var n = 0;
-
-                    while(true)
+                    Exec(new DeleteDirectoryTask(new DeleteDirectoryTaskOptions()
                     {
-                        n++;
+                        TargetDir = targetDir
+                    }, this));
 
-                        try
-                        {
-                            Directory.Delete(targetDir, true);
-
-                            break;
-                        }
-                        catch(UnauthorizedAccessException e)
-                        {
-#if DEBUG
-                            _logger.Info($"n = {n}");
-                            _logger.Info($"e = {e}");
-#endif
-                        }
-
-                        Thread.Sleep(5000);
-
-                        if(n > 10)
-                        {
-                            break;
-                        }
-                    }
-                    
                     Directory.CreateDirectory(targetDir);
                 }
             }
