@@ -2,6 +2,7 @@
 using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.BuildExamples;
 using Deployment.DevTasks.CoreToAsset;
+using Deployment.DevTasks.CoreToCLIFolder;
 using Deployment.DevTasks.CoreToSiteSource;
 using Deployment.DevTasks.CreateAndCommitChangeLogs;
 using Deployment.DevTasks.CreateAndCommitCodeOfConducts;
@@ -66,7 +67,13 @@ namespace Deployment.ReleaseTasks.DeploymentToProd
                 }
             });
 
-            //Exec(new CoreToCLIFolderDevTask(this));
+            Exec(new DeploymentTasksGroup("41C0E74D-EFD8-42E0-A8A9-D9167CC0A93C", true, this)
+            {
+                SubItems = new List<IDeploymentTask>()
+                {
+                    new CoreToCLIFolderDevTask(this)
+                }
+            });
 
             Exec(new DeploymentTasksGroup("DFFB459B-97C9-4F65-9430-5A5B3393C590", true, this)
             {
