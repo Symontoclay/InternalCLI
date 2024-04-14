@@ -1,6 +1,7 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
+using Deployment.DevTasks.CoreToInternalCLIDist;
 using Deployment.DevTasks.DevFullMaintaining;
 using Deployment.DevTasks.DevSiteFullBuildAndCommit;
 using Deployment.Helpers;
@@ -82,6 +83,14 @@ namespace Deployment.ReleaseTasks.MakeRelease
             //    Message = "snapshot",
             //    RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()
             //}, this));
+
+            Exec(new DeploymentTasksGroup("F57D8666-91D6-4F59-BE35-8DC959D33A1F", true, this)
+            {
+                SubItems = new List<IDeploymentTask>()
+                {
+                    new CoreToInternalCLIDistDevTask(this)
+                }
+            });
 
             Exec(new DeploymentTasksGroup("543A0B7C-95E8-41C1-94E7-665B694BE95F", true, this)
             {
