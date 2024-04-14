@@ -12,7 +12,7 @@ namespace XMLDocReader.CSharpDoc
     public static class PackageCardReader
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static List<PackageCard> Read(List<PackageCardReaderSettings> settingsList)
@@ -229,14 +229,14 @@ namespace XMLDocReader.CSharpDoc
         private static Assembly GetAssembly(string assemblyFile)
         {
 #if DEBUG
-            _logger.Info($"assemblyFile = {assemblyFile}");
-            _logger.Info($"_assemblyCache.Keys = {JsonConvert.SerializeObject(_assemblyCache.Keys.ToList(), Formatting.Indented)}");
+            //_logger.Info($"assemblyFile = {assemblyFile}");
+            //_logger.Info($"_assemblyCache.Keys = {JsonConvert.SerializeObject(_assemblyCache.Keys.ToList(), Formatting.Indented)}");
 #endif
 
             var name = new FileInfo(assemblyFile).Name;
 
 #if DEBUG
-            _logger.Info($"name = {name}");
+            //_logger.Info($"name = {name}");
 #endif
 
             if (_assemblyCache.ContainsKey(name))
@@ -679,18 +679,32 @@ namespace XMLDocReader.CSharpDoc
 
         private static MethodInfo GetMethodInfoByTypeNames(List<MethodInfo> methodsList, XMLMemberCard memberCard)
         {
+#if DEBUG
+            //_logger.Info($"memberCard = {memberCard}");
+#endif
+
             var xmlParamsList = memberCard.Name.ParametersList;
 
             var xmlParamsCount = xmlParamsList.Count;
 
+#if DEBUG
+            //_logger.Info($"methodsList.Count = {methodsList.Count}");
+#endif
+
             foreach (var method in methodsList)
             {
 #if DEBUG
+                //_logger.Info($"method.Name = {method.Name}");
                 //_logger.Info($"method.IsGenericMethod = {method.IsGenericMethod}");
                 //_logger.Info($"method.IsGenericMethodDefinition = {method.IsGenericMethodDefinition}");
 #endif
 
                 var paramsList = method.GetParameters();
+
+#if DEBUG
+                //_logger.Info($"paramsList.Length = {paramsList.Length}");
+                //_logger.Info($"xmlParamsCount = {xmlParamsCount}");
+#endif
 
                 if (paramsList.Length != xmlParamsCount)
                 {
@@ -709,6 +723,8 @@ namespace XMLDocReader.CSharpDoc
 
 #if DEBUG
                     //_logger.Info($"param.ParameterType.FullName = '{param.ParameterType.FullName}'");
+                    //_logger.Info($"NamesHelper.SimplifyFullNameOfType(param.ParameterType.FullName) = '{NamesHelper.SimplifyFullNameOfType(param.ParameterType.FullName)}'");
+                    //_logger.Info($"currentXMLParam = '{currentXMLParam}'");
 #endif
 
                     if (NamesHelper.SimplifyFullNameOfType(param.ParameterType.FullName) != currentXMLParam)

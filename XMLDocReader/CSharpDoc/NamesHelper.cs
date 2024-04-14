@@ -55,11 +55,9 @@ namespace XMLDocReader.CSharpDoc
 
             var paramsList = DivideGenericParams(genericParamsStr);
 
-            foreach(var param in paramsList)
+            if(paramsList.Any())
             {
-                //_logger.Info($"param = '{param}'");
-
-                sb.Append(SimplifyFullNameOfType(param));
+                sb.Append(string.Join(',', paramsList.Select(SimplifyFullNameOfType)));
             }
 
             sb.Append("}");
