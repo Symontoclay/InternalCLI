@@ -33,8 +33,6 @@ namespace Deployment.ReleaseTasks.MakeRelease
         {
         }
 
-        //private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
         /// <inheritdoc/>
         protected override void OnRun()
         {
