@@ -34,14 +34,24 @@ namespace Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            DeleteExistingSolutions();
-
-            Exec(new GenerateUnityCSProjAndSolutionTask(new GenerateUnityCSProjAndSolutionTaskOptions() {
-                UnityExeFilePath = _options.UnityExeFilePath,
-                RootDir = _options.RootDir
-            }, this));
+            //DeleteExistingSolutions();
 
             var unityCsProjectPath = Path.Combine(_options.RootDir, "Assembly-CSharp.csproj");
+
+#if DEBUG
+            _logger.Info($"unityCsProjectPath = {unityCsProjectPath}");
+            _logger.Info($"File.Exists(unityCsProjectPath) = {File.Exists(unityCsProjectPath)}");
+#endif
+            if (!File.Exists(unityCsProjectPath))
+            {
+                Exec(new GenerateUnityCSProjAndSolutionTask(new GenerateUnityCSProjAndSolutionTaskOptions()
+                {
+                    UnityExeFilePath = _options.UnityExeFilePath,
+                    RootDir = _options.RootDir
+                }, this));
+            }
+
+            //var unityCsProjectPath = Path.Combine(_options.RootDir, "Assembly-CSharp.csproj");
 
             Exec(new SetDocumentationFileInUnityProjectIfEmptyTask(
                 new SetDocumentationFileInUnityProjectIfEmptyTaskOptions()

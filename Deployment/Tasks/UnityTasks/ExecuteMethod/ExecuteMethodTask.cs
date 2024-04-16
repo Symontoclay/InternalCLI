@@ -1,6 +1,7 @@
 ﻿using CommonUtils;
 using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
+using System.Drawing;
 using System.Text;
 
 namespace Deployment.Tasks.UnityTasks.ExecuteMethod
@@ -35,6 +36,8 @@ namespace Deployment.Tasks.UnityTasks.ExecuteMethod
             var execPath = $"\"{_options.UnityExeFilePath.Replace("\\", "/")}\"";
 
             var commandLine = $"-quit -batchmode -projectPath \"{_options.RootDir.Replace("\\", "/")}\" -executeMethod {_options.MethodName}";
+            //var commandLine = $"-quit -projectPath \"{_options.RootDir.Replace("\\", "/")}\" -executeMethod {_options.MethodName}";
+            //var commandLine = $"-quit -nographics -projectPath \"{_options.RootDir.Replace("\\", "/")}\" -executeMethod {_options.MethodName}";
 
             var processWrapper = new ProcessSyncWrapper(execPath, commandLine);
 

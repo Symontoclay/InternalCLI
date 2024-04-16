@@ -58,6 +58,10 @@ namespace CommonUtils
         {
             lock (_lockObj)
             {
+#if DEBUG
+                //_logger.Info($"e.Data = {e.Data}");
+#endif
+
                 if (string.IsNullOrWhiteSpace(e.Data))
                 {
                     return;
@@ -71,6 +75,10 @@ namespace CommonUtils
         {
             lock (_lockObj)
             {
+#if DEBUG
+                //_logger.Info($"e.Data = {e.Data}");
+#endif
+
                 if (string.IsNullOrWhiteSpace(e.Data))
                 {
                     return;

@@ -44,6 +44,7 @@ namespace XMLDocReader.CSharpDoc
 #if DEBUG
             _logger.Info($"settingsList = {JsonConvert.SerializeObject(settingsList, Formatting.Indented)}");
 #endif
+
             var packageCardsList = PackageCardReader.Read(settingsList);
 
             PackageCardResolver.FillUpTypeCardsPropetties(packageCardsList, options.IgnoreErrors);
