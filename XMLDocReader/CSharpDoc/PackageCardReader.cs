@@ -12,7 +12,7 @@ namespace XMLDocReader.CSharpDoc
     public static class PackageCardReader
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static List<PackageCard> Read(List<PackageCardReaderSettings> settingsList)
@@ -550,7 +550,7 @@ namespace XMLDocReader.CSharpDoc
         private static MethodCard ProcessMethod(XMLMemberCard memberCard, Type parentType)
         {
 #if DEBUG
-            _logger.Info($"memberCard = {memberCard}");
+            //_logger.Info($"memberCard = {memberCard}");
 #endif
 
             var result = new MethodCard();
@@ -565,7 +565,7 @@ namespace XMLDocReader.CSharpDoc
             }
 
 #if DEBUG
-            _logger.Info($"name = '{name}'");
+            //_logger.Info($"name = '{name}'");
 #endif
 
             var methodsList = parentType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static).Where(p => p.Name == name).ToList();
@@ -746,7 +746,7 @@ namespace XMLDocReader.CSharpDoc
         private static MethodBase GetMethodInfo(List<MethodBase> methodsList, XMLMemberCard memberCard)
         {
 #if DEBUG
-            _logger.Info($"memberCard = {memberCard}");
+            //_logger.Info($"memberCard = {memberCard}");
 #endif
 
             var xmlParamsList = memberCard.ParamsList;
@@ -754,7 +754,7 @@ namespace XMLDocReader.CSharpDoc
             var xmlParamsCount = xmlParamsList.Count;
 
 #if DEBUG
-            _logger.Info($"methodsList.Count = {methodsList.Count}");
+            //_logger.Info($"methodsList.Count = {methodsList.Count}");
 #endif
 
             foreach (var method in methodsList)
@@ -762,9 +762,9 @@ namespace XMLDocReader.CSharpDoc
                 var paramsList = method.GetParameters();
 
 #if DEBUG
-                _logger.Info($"method.Name = {method.Name}");
-                _logger.Info($"paramsList.Length = {paramsList.Length}");
-                _logger.Info($"xmlParamsCount = {xmlParamsCount}");
+                //_logger.Info($"method.Name = {method.Name}");
+                //_logger.Info($"paramsList.Length = {paramsList.Length}");
+                //_logger.Info($"xmlParamsCount = {xmlParamsCount}");
 #endif
 
                 if (paramsList.Length != xmlParamsCount)
