@@ -44,6 +44,7 @@ namespace Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution
 #endif
             if (!File.Exists(unityCsProjectPath))
             {
+                //Currently It does not work. Maybe It will be fixed in future Unity Eritor versions.
                 Exec(new GenerateUnityCSProjAndSolutionTask(new GenerateUnityCSProjAndSolutionTaskOptions()
                 {
                     UnityExeFilePath = _options.UnityExeFilePath,
