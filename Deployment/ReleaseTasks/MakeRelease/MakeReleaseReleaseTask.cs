@@ -94,8 +94,8 @@ namespace Deployment.ReleaseTasks.MakeRelease
             {
                 SubItems = new List<IDeploymentTask>()
                 {
-                    new DevFullMaintainingDevTask(this),
-                    new DevSiteFullBuildAndCommitTask(this)
+                    new DevSiteFullBuildAndCommitTask(this),
+                    new DevFullMaintainingDevTask(this)
                 }
             });
 

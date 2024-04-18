@@ -1,13 +1,13 @@
 {
   "profiles": {
-    "MakeRelease": {
+    "MakeRelease - Test NEXT Prod": {
       "commandName": "Project"
     },
-    "Test": {
+    "MakeRelease - Test": {
       "commandName": "Project",
       "commandLineArgs": "test"
     },
-    "Prod": {
+    "MakeRelease - Prod": {
       "commandName": "Project",
       "commandLineArgs": "prod"
     }
