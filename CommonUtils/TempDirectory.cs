@@ -10,7 +10,8 @@ namespace CommonUtils
 
         public TempDirectory()
         {
-            _dir = Path.Combine(Environment.GetEnvironmentVariable("TMP"), $"TempProjects_{Guid.NewGuid().ToString("D").Replace("-", string.Empty)}");
+            _dir = Path.Combine("D://", $"TempProjects_{Guid.NewGuid().ToString("D").Replace("-", string.Empty)}");
+            //_dir = Path.Combine(Environment.GetEnvironmentVariable("TMP"), $"TempProjects_{Guid.NewGuid().ToString("D").Replace("-", string.Empty)}");
 
             if (!Directory.Exists(_dir))
             {
@@ -31,7 +32,7 @@ namespace CommonUtils
             {
                 try
                 {
-                    Directory.Delete(_dir, true);
+                    //Directory.Delete(_dir, true);
                 }
                 catch
                 {
