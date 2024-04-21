@@ -116,7 +116,7 @@ namespace TestSandBox
                 //TstSetXmlDocFileNameToCsProj();
                 //TstRemoveDir();
                 //TstFinishRelease0_3_6_p();
-                TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
+                //TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
                 //TstFinishRelease0_3_2();
                 //TstRestoreSlnInUnityProject();
                 //TstTesting();
@@ -146,7 +146,7 @@ namespace TestSandBox
                 //TstRoadMap();
                 //TstReleaseTaskHandler();//<==
                 //TstGitTasksHandler();
-                //TstDeploymentTaskBasedBuildHandler();
+                TstDeploymentTaskBasedBuildHandler();
                 //TstSimplifyFullNameOfType();
                 //TstCreateCSharpApiOptionsFile();
                 //TstReadXMLDoc();

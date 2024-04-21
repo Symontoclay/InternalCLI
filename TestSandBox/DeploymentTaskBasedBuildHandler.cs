@@ -49,7 +49,7 @@ namespace TestSandBox
 
             //SCase17();
             //Case16();
-            Case15();
+            //Case15();
             //Case14();
             //Case13();
             //Case12();
@@ -61,7 +61,7 @@ namespace TestSandBox
             //Case6();//SiteBuildTask
             //Case5();
             //Case4();
-            //Case3();
+            Case3();
             //Case2();
             //Case1();
 
@@ -367,14 +367,15 @@ namespace TestSandBox
         {
             var deploymentPipeline = new DeploymentPipeline();
 
-            deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
-            {
-                TargetDir = "d",
-                SkipExistingFilesInTargetDir = false
-            }));
+            //deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
+            //{
+            //    TargetDir = "d",
+            //    SkipExistingFilesInTargetDir = false
+            //}));
 
             deploymentPipeline.Add(new ExportPackageTask(new ExportPackageTaskOptions() { 
-                UnityExeFilePath = @"c:\Program Files\Unity\Hub\Editor\2020.2.3f1\Editor\Unity.exe",
+                //UnityExeFilePath = @"c:\Program Files\Unity\Hub\Editor\2022.3.5f1\Editor\Unity.exe",
+                UnityExeFilePath = @"c:\Program Files\Unity\Hub\Editor\2023.2.19f1\Editor\Unity.exe",
                 RootDir = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClayAsset"),
                 SourceDir = @"Assets\SymOntoClay",
                 OutputPackageName = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\tmpSymOntoClay_2.unitypackage")
