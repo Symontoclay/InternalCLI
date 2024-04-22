@@ -93,7 +93,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                         new DeploymentTasksGroup("2E48A168-7C39-4BB7-A41F-480ED56E6AA7", false, this)
                         {
                             SubItems = projectsForTesting.Select(projPath => new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
-                            {
+                            {GlobalOptions.EnableTests
                                 ProjectOrSoutionFileName = projPath
                             }, this))
                         }
@@ -143,7 +143,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                     new DeploymentTasksGroup("851C90A8-D7B6-4520-9867-18BBFF595539", false, this)
                     {
                         SubItems = projectsForTesting.Select(projPath => new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
-                        {
+                        {GlobalOptions.EnableTests
                             ProjectOrSoutionFileName = projPath
                         }, this))
                     }
@@ -169,7 +169,7 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                     new DeploymentTasksGroup("DCDFE8E8-2711-4093-92CD-FC945A5EC16B", false, this)
                     {
                         SubItems = projectsForTesting.Select(projPath => new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
-                        {
+                        {GlobalOptions.EnableTests
                             ProjectOrSoutionFileName = projPath
                         }, this))
                     },
