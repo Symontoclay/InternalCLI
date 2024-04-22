@@ -104,16 +104,18 @@ namespace Deployment.ReleaseTasks.GitHubRelease
             }
 
             var unityPackageName = DeployedItemsFactory.GetUnityAssetName(version);
+            var unityPackageFullPath = Path.Combine(unityTempDir.FullName, unityPackageName);
 
-            //var unityPackageFullPath = Path.Combine(unityTempDir.FullName, unityPackageName);
-
-            //Exec(new ExportPackageTask(new ExportPackageTaskOptions()
-            //{
-            //    UnityExeFilePath = unityExePath,
-            //    RootDir = unitySolution.Path,
-            //    SourceDir = sourceDir,
-            //    OutputPackageName = unityPackageFullPath
-            //}, this));
+            if(GlobalOptions.EnableUnityPackage)
+            {
+                Exec(new ExportPackageTask(new ExportPackageTaskOptions()
+                {
+                    UnityExeFilePath = unityExePath,
+                    RootDir = unitySolution.Path,
+                    SourceDir = sourceDir,
+                    OutputPackageName = unityPackageFullPath
+                }, this));
+            }
 
             var cliProject = ProjectsDataSourceFactory.GetProject(KindOfProject.CLI);
 
@@ -136,6 +138,23 @@ namespace Deployment.ReleaseTasks.GitHubRelease
 
             var token = settings.GetSecret("GitHub");
 
+            var assets = new List<GitHubReleaseAssetOptions>();
+
+            if(GlobalOptions.EnableUnityPackage)
+            {
+                assets.Add(new GitHubReleaseAssetOptions()
+                {
+                    DisplayedName = unityPackageName,
+                    UploadedFilePath = unityPackageFullPath
+                });
+            }
+
+            assets.Add(new GitHubReleaseAssetOptions()
+            {
+                DisplayedName = cliArchName,
+                UploadedFilePath = cliArchFullPath
+            });
+
             Exec(new DeploymentTasksGroup("73C35B3E-6FBC-4999-A17A-A9880AD7E31F", true, this)
             {
                 SubItems = _options.Repositories.Select(repository => new GitHubReleaseTask(new GitHubReleaseTaskOptions()
@@ -147,19 +166,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
                     NotesText = notesText,
                     //Prerelease = true,
                     //Draft = true,
-                    Assets = new List<GitHubReleaseAssetOptions>()
-                    {
-                        //new GitHubReleaseAssetOptions()
-                        //{
-                        //    DisplayedName = unityPackageName,
-                        //    UploadedFilePath = unityPackageFullPath
-                        //},
-                        new GitHubReleaseAssetOptions()
-                        {
-                            DisplayedName = cliArchName,
-                            UploadedFilePath = cliArchFullPath
-                        }
-                    }
+                    Assets = assets
                 }, this))
             });
         }
