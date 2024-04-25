@@ -11,7 +11,7 @@ namespace CSharpUtils
     public static class CSharpProjectHelper
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static List<string> GetCSharpFileNames(string projectFileName)
@@ -83,6 +83,62 @@ namespace CSharpUtils
             }
 
             return section.Value;
+        }
+
+        public static string GetPackageVersion(string projectFileName, string packageId)
+        {
+            var packageItemResult = GetPackageElement(projectFileName, packageId);
+
+            var packageItem = packageItemResult.PackageItem;
+
+#if DEBUG
+            _logger.Info($"packageItem = {packageItem}");
+#endif
+
+            if(packageItem == null)
+            {
+                return string.Empty;
+            }
+
+            return packageItem.Attribute("Version").Value;
+        }
+
+        public static void UpdatePackageVersion(string projectFileName, string packageId, string version)
+        {
+            var packageItemResult = GetPackageElement(projectFileName, packageId);
+
+            var packageItem = packageItemResult.PackageItem;
+
+#if DEBUG
+            _logger.Info($"packageItem = {packageItem}");
+#endif
+
+            if (packageItem == null)
+            {
+                return;
+            }
+
+            packageItem.Attribute("Version").Value = version;
+
+            SaveProject(packageItemResult.Project, projectFileName);
+        }
+
+        private static (XElement PackageItem, XElement Project) GetPackageElement(string projectFileName, string packageId)
+        {
+            var project = LoadProject(projectFileName);
+
+            var itemGroup = project.Elements().FirstOrDefault(p => p.Name == "ItemGroup" && p.HasElements && p.Elements().Any(x => x.Name == "PackageReference"));
+
+#if DEBUG
+            _logger.Info($"itemGroup = {itemGroup}");
+#endif
+
+            if (itemGroup == null)
+            {
+                return (null, project);
+            }
+
+            return (itemGroup.Elements().FirstOrDefault(p => p.Name == "PackageReference" && p.HasAttributes && p.Attributes().Any(x => x.Name == "Include" && x.Value == packageId)), project);
         }
 
         public static string GetVersion(string projectFileName)

@@ -81,7 +81,8 @@ namespace TestSandBox
 
             try
             {
-                TstGetSymOntoClayCommonVersion();
+                TstIncreaseSymOntoClayCommonPkgVersion();
+                //TstGetSymOntoClayCommonVersion();
                 //TstDeleteDirectoryTask();
                 //TstWhoIsLocking();
                 //TstRestoredDeploymentTasks();
@@ -155,6 +156,53 @@ namespace TestSandBox
             catch (Exception e)
             {
                 _logger.Info(e);
+            }
+        }
+
+        private static void TstIncreaseSymOntoClayCommonPkgVersion()
+        {
+            _logger.Info("Begin");
+
+            var packageId = "SymOntoClay.Common";
+
+            var filePath = @"c:\Users\Acer\source\repos\SymOntoClay.Common\SymOntoClay.Common\SymOntoClay.Common.csproj";
+
+            _logger.Info($"filePath = {filePath}");
+
+            var versionStr = CSharpProjectHelper.GetVersion(filePath);
+
+            _logger.Info($"versionStr = {versionStr}");
+
+            var targetVersion = new Version(versionStr);
+
+            _logger.Info($"targetVersion = {targetVersion}");
+
+            var targetProjectPath = @"c:\Users\Acer\source\repos\SymOntoClay\TestSandbox\TestSandbox.csproj";
+
+            TstNIncreaseSymOntoClayCommonPkgVersion(targetProjectPath, packageId, targetVersion);
+
+            targetProjectPath = @"c:\Users\Acer\source\repos\SymOntoClay\SymOntoClayCoreHelper\SymOntoClayCoreHelper.csproj";
+
+            TstNIncreaseSymOntoClayCommonPkgVersion(targetProjectPath, packageId, targetVersion);
+
+            _logger.Info("End");
+        }
+
+        private static void TstNIncreaseSymOntoClayCommonPkgVersion(string targetProjectPath, string packageId, Version targetVersion)
+        {
+            _logger.Info($"targetProjectPath = {targetProjectPath}");
+
+            var versionStr = CSharpProjectHelper.GetPackageVersion(targetProjectPath, packageId);
+
+            _logger.Info($"versionStr = {versionStr}");
+
+            var existingVersion = new Version(versionStr);
+
+            _logger.Info($"existingVersion = {existingVersion}");
+
+            if (targetVersion > existingVersion)
+            {
+                CSharpProjectHelper.UpdatePackageVersion(targetProjectPath, packageId, targetVersion.ToString());
             }
         }
 
