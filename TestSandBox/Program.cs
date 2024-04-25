@@ -81,6 +81,7 @@ namespace TestSandBox
 
             try
             {
+                TstGetSymOntoClayCommonVersion();
                 //TstDeleteDirectoryTask();
                 //TstWhoIsLocking();
                 //TstRestoredDeploymentTasks();
@@ -146,7 +147,7 @@ namespace TestSandBox
                 //TstRoadMap();
                 //TstReleaseTaskHandler();//<==
                 //TstGitTasksHandler();
-                TstDeploymentTaskBasedBuildHandler();
+                //TstDeploymentTaskBasedBuildHandler();
                 //TstSimplifyFullNameOfType();
                 //TstCreateCSharpApiOptionsFile();
                 //TstReadXMLDoc();
@@ -155,6 +156,31 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstGetSymOntoClayCommonVersion()
+        {
+            _logger.Info("Begin");
+
+            var filePath = @"c:\Users\Acer\source\repos\SymOntoClay.Common\SymOntoClay.Common\SymOntoClay.Common.csproj";
+
+            _logger.Info($"filePath = {filePath}");
+
+            var versionStr = CSharpProjectHelper.GetVersion(filePath);
+
+            _logger.Info($"versionStr = {versionStr}");
+
+            var version = new Version(versionStr);
+
+            _logger.Info($"version = {version}");
+
+            var newVersion = new Version(version.Major, version.Minor, version.Build, version.Revision + 1);
+
+            _logger.Info($"newVersion = {newVersion}");
+
+            CSharpProjectHelper.SetVersion(filePath, newVersion.ToString());
+
+            _logger.Info("End");
         }
 
         private static void TstDeleteDirectoryTask()
