@@ -82,22 +82,28 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
 
             if(projectsForTesting.Any())
             {
+                var subItems = new List<IDeploymentTask>
+                {
+                    new DeploymentTasksGroup("64922EF9-3184-48CC-9E36-0FA922F2337A", false, this)
+                    {
+                        SubItems = CreateCheckOutTasks(versionBranchName)
+                    }
+                };
+
+                if(GlobalOptions.EnableTests)
+                {
+                    subItems.Add(new DeploymentTasksGroup("2E48A168-7C39-4BB7-A41F-480ED56E6AA7", false, this)
+                    {
+                        SubItems = projectsForTesting.Select(projPath => new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
+                        {
+                            ProjectOrSoutionFileName = projPath
+                        }, this))
+                    });
+                }
+
                 Exec(new DeploymentTasksGroup("FBF387D5-D1C9-4164-B2D2-5CE82DCFCE8A", true, this)
                 {
-                    SubItems = new List<IDeploymentTask>()
-                    {
-                        new DeploymentTasksGroup("64922EF9-3184-48CC-9E36-0FA922F2337A", false, this)
-                        {
-                            SubItems = CreateCheckOutTasks(versionBranchName)
-                        },
-                        new DeploymentTasksGroup("2E48A168-7C39-4BB7-A41F-480ED56E6AA7", false, this)
-                        {
-                            SubItems = projectsForTesting.Select(projPath => new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
-                            {GlobalOptions.EnableTests
-                                ProjectOrSoutionFileName = projPath
-                            }, this))
-                        }
-                    }
+                    SubItems = subItems
                 });
             }
 
@@ -120,9 +126,8 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
 
             var releaseBranchName = $"release_{_options.Version}_{DateTime.Now:yyyy_MM_dd_HH_mm}";
 
-            Exec(new DeploymentTasksGroup("4DBD490A-CF92-4193-9436-7B59C81C6862", true, this)
             {
-                SubItems = new List<IDeploymentTask>()
+                var subItems = new List<IDeploymentTask>
                 {
                     new DeploymentTasksGroup("5818B9BB-5CD0-421D-B618-466322B03AB1", true, this)
                     {
@@ -139,20 +144,28 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                             RepositoryPath = repository.RepositoryPath,
                             BranchName = versionBranchName
                         }, this))
-                    },
-                    new DeploymentTasksGroup("851C90A8-D7B6-4520-9867-18BBFF595539", false, this)
+                    }
+                };
+
+                if(GlobalOptions.EnableTests)
+                {
+                    subItems.Add(new DeploymentTasksGroup("851C90A8-D7B6-4520-9867-18BBFF595539", false, this)
                     {
                         SubItems = projectsForTesting.Select(projPath => new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
-                        {GlobalOptions.EnableTests
+                        {
                             ProjectOrSoutionFileName = projPath
                         }, this))
-                    }
+                    });
                 }
-            });
 
-            Exec(new DeploymentTasksGroup("E6B96BCD-9B54-4D32-8B5F-7CF5AAE014D5", true, this)
+                Exec(new DeploymentTasksGroup("4DBD490A-CF92-4193-9436-7B59C81C6862", true, this)
+                {
+                    SubItems = subItems
+                });
+            }
+
             {
-                SubItems = new List<IDeploymentTask>()
+                var subItems = new List<IDeploymentTask>
                 {
                     new DeploymentTasksGroup("46AC1A34-6437-4D5C-8A97-C9670F39EFCC", true, this)
                     {
@@ -165,23 +178,33 @@ namespace Deployment.ReleaseTasks.MergeReleaseBranchToMaster
                             RepositoryPath = repository.RepositoryPath,
                             BranchName = releaseBranchName
                         }, this))
-                    },
-                    new DeploymentTasksGroup("DCDFE8E8-2711-4093-92CD-FC945A5EC16B", false, this)
+                    }
+                };
+
+                if (GlobalOptions.EnableTests)
+                {
+                    subItems.Add(new DeploymentTasksGroup("DCDFE8E8-2711-4093-92CD-FC945A5EC16B", false, this)
                     {
                         SubItems = projectsForTesting.Select(projPath => new CopyAndTestDevTask(new CopyAndTestDevTaskOptions()
-                        {GlobalOptions.EnableTests
+                        {
                             ProjectOrSoutionFileName = projPath
                         }, this))
-                    },
-                    new DeploymentTasksGroup("D7273B46-A7D7-4109-8ED7-8CDEE9E14E6C", false, this)
-                    {
-                        SubItems = _options.Repositories.Select(repository => new PushTask(new PushTaskOptions()
-                        {
-                            RepositoryPath = repository.RepositoryPath
-                        }, this))
-                    }
+                    });
                 }
-            });
+
+                subItems.Add(new DeploymentTasksGroup("D7273B46-A7D7-4109-8ED7-8CDEE9E14E6C", false, this)
+                {
+                    SubItems = _options.Repositories.Select(repository => new PushTask(new PushTaskOptions()
+                    {
+                        RepositoryPath = repository.RepositoryPath
+                    }, this))
+                });
+
+                Exec(new DeploymentTasksGroup("E6B96BCD-9B54-4D32-8B5F-7CF5AAE014D5", true, this)
+                {
+                    SubItems = subItems
+                });
+            }
 
             Exec(new DeploymentTasksGroup("3584C4BD-D86C-4437-8F34-5F11D932B1CD", true, this)
             {
