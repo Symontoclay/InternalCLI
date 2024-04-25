@@ -185,6 +185,10 @@ namespace TestSandBox
 
             TstNIncreaseSymOntoClayCommonPkgVersion(targetProjectPath, packageId, targetVersion);
 
+            targetProjectPath = @"c:\Users\Acer\source\repos\InternalCLI\CommonUtils\CommonUtils.csproj";
+
+            TstNIncreaseSymOntoClayCommonPkgVersion(targetProjectPath, packageId, targetVersion);
+
             _logger.Info("End");
         }
 

@@ -2,6 +2,7 @@
 using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks.Serialization;
 using NLog;
+using SymOntoClay.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;

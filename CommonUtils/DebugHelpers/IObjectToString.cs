@@ -4,25 +4,25 @@ using System.Text;
 
 namespace CommonUtils.DebugHelpers
 {
-    /// <summary>
-    /// Provides methods for helping in generating debug string image.
-    /// </summary>
-    public interface IObjectToString
-    {
-        /// <summary>
-        /// Returns a string that represents the current instance.
-        /// </summary>
-        /// <param name="n">Count of spaces in the string for more comfortable representation.</param>
-        /// <returns>A string that represents the current instance.</returns>
-        string ToString(uint n);
+    ///// <summary>
+    ///// Provides methods for helping in generating debug string image.
+    ///// </summary>
+    //public interface IObjectToString
+    //{
+    //    /// <summary>
+    //    /// Returns a string that represents the current instance.
+    //    /// </summary>
+    //    /// <param name="n">Count of spaces in the string for more comfortable representation.</param>
+    //    /// <returns>A string that represents the current instance.</returns>
+    //    string ToString(uint n);
 
-        /// <summary>
-        /// Internal method which returns a string that represents the current instance without additional information, only pair name of property - value.
-        /// </summary>
-        /// <param name="n">Count of spaces in the string for more comfortable representation.</param>
-        /// <returns>A string that represents the current instance without additional information, only pair name of property - value.</returns>
-        string PropertiesToString(uint n);
-    }
+    //    /// <summary>
+    //    /// Internal method which returns a string that represents the current instance without additional information, only pair name of property - value.
+    //    /// </summary>
+    //    /// <param name="n">Count of spaces in the string for more comfortable representation.</param>
+    //    /// <returns>A string that represents the current instance without additional information, only pair name of property - value.</returns>
+    //    string PropertiesToString(uint n);
+    //}
 }
 
 /*
