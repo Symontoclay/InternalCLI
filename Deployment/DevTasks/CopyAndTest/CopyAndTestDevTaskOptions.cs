@@ -1,10 +1,7 @@
 ﻿using CommonUtils.DebugHelpers;
 using Deployment.Tasks.BuildTasks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using SymOntoClay.Common;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CopyAndTest
 {
