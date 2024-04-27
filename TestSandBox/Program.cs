@@ -81,7 +81,8 @@ namespace TestSandBox
 
             try
             {
-                TstCommonPackagesSolution();
+                TstIncreaseSymOntoClayCommonPkgVersionDevTask();
+                //TstCommonPackagesSolution();
                 //TstEnumerateProjects();
                 //TstIncreaseSymOntoClayCommonPkgVersion();
                 //TstGetSymOntoClayCommonVersion();
@@ -159,6 +160,15 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstIncreaseSymOntoClayCommonPkgVersionDevTask()
+        {
+            _logger.Info("Begin");
+
+
+
+            _logger.Info("End");
         }
 
         private static void TstCommonPackagesSolution()
