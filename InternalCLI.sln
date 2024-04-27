@@ -67,7 +67,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevBuildExamples", "DevBuil
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3898EADC-0D57-4123-B7D1-9ECC113D1BE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipelinesTests", "PipelinesTests\PipelinesTests.csproj", "{0E4A2CE3-96AE-47F7-A3F0-6B2D2BC59307}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PipelinesTests", "PipelinesTests\PipelinesTests.csproj", "{0E4A2CE3-96AE-47F7-A3F0-6B2D2BC59307}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonPackages", "CommonPackages", "{CA92B63C-3120-481B-BE10-7A9DA89DDC81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -81,7 +81,8 @@ namespace TestSandBox
 
             try
             {
-                TstIncreaseSymOntoClayCommonPkgVersion();
+                TstCommonPackagesSolution();
+                //TstIncreaseSymOntoClayCommonPkgVersion();
                 //TstGetSymOntoClayCommonVersion();
                 //TstDeleteDirectoryTask();
                 //TstWhoIsLocking();
@@ -157,6 +158,16 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+        //
+
+        private static void TstCommonPackagesSolution()
+        {
+            _logger.Info("Begin");
+
+            var commonPackageSolution = ProjectsDataSourceFactory.GetSolution();
+
+            _logger.Info("End");
         }
 
         private static void TstIncreaseSymOntoClayCommonPkgVersion()
