@@ -24,6 +24,8 @@ namespace BaseDevPipeline
         /// <summary>
         /// Describes repository with Unity example demoscene.
         /// </summary>
-        UnityExample
+        UnityExample,
+        InternalCLISolution,
+        CommonPackagesSolution
     }
 }

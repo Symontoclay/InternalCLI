@@ -54,7 +54,7 @@
           "Path": "SymOntoClay.Monitor.Common.Data"
         },
         {
-          "Kind": "Library",
+          "Kind": "AdditionalApp",
           "Path": "SymOntoClay.Monitor.LogFileBuilder"
         },
         {
@@ -135,6 +135,142 @@
       "GitFileHref": "git@github.com:Symontoclay/ReleaseMngr.git",
       "Path": "%BASE_PATH%/ReleaseMngr",
       "License": "MIT"
+    },
+    {
+      "Name": "InternalCLI",
+      "Kind": "InternalCLISolution",
+      "Href": "https://github.com/Symontoclay/InternalCLI",
+      "GitFileHref": "git@github.com:Symontoclay/InternalCLI.git",
+      "Path": "%BASE_PATH%/InternalCLI",
+      "License": "MIT",
+      "Projects": [
+        {
+          "Kind": "Library",
+          "Path": "BaseDevPipeline"
+        },
+        {
+          "Kind": "Library",
+          "Path": "CommonUtils"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "CoreToAsset"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "CoreToCLIFolder"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "CoreToInternalCLIDist"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "CoreToSiteSource"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "CreateAndCommitReadmes"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "CreateReadmes"
+        },
+        {
+          "Kind": "Library",
+          "Path": "CSharpUtils"
+        },
+        {
+          "Kind": "Library",
+          "Path": "Deployment"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "DevBuildExamples"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "DevExportPackage"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "DevFullMaintaining"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "DevSiteBuild"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "DevSiteFullBuild"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "MakeRelease"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "PageCreator"
+        },
+        {
+          "Kind": "IntegrationTest",
+          "Path": "PipelinesTests"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "PullSolutionsWithMaintainedReleases"
+        },
+        {
+          "Kind": "Library",
+          "Path": "SiteBuilder"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "StartNewVersion"
+        },
+        {
+          "Kind": "AdditionalApp",
+          "Path": "TestSandBox"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "UnityToSiteSource"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "UpdateAndCommitProjectsVersion"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "UpdateProjectsVersion"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "UpdateReleaseNotes"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "UpdateTestAndCommitProjectsVersion"
+        },
+        {
+          "Kind": "Library",
+          "Path": "XMLDocReader"
+        }
+      ]
+    },
+    {
+      "Name": "SymOntoClay.Common",
+      "Kind": "CommonPackagesSolution",
+      "Href": "https://github.com/Symontoclay/SymOntoClay.Common",
+      "GitFileHref": "git@github.com:Symontoclay/SymOntoClay.Common.git",
+      "Path": "%BASE_PATH%/SymOntoClay.Common",
+      "License": "MIT",
+      "Projects": [
+        {
+          "Kind": "Library",
+          "Path": "SymOntoClay.Common"
+        }
+      ]
     }
   ],
   "DevArtifacts": [

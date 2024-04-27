@@ -82,6 +82,7 @@ namespace TestSandBox
             try
             {
                 TstCommonPackagesSolution();
+                //TstEnumerateProjects();
                 //TstIncreaseSymOntoClayCommonPkgVersion();
                 //TstGetSymOntoClayCommonVersion();
                 //TstDeleteDirectoryTask();
@@ -159,13 +160,60 @@ namespace TestSandBox
                 _logger.Info(e);
             }
         }
-        //
 
         private static void TstCommonPackagesSolution()
         {
             _logger.Info("Begin");
 
-            var commonPackageSolution = ProjectsDataSourceFactory.GetSolution();
+            var commonPackageSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.CommonPackagesSolution);
+
+            _logger.Info($"commonPackageSolution = {commonPackageSolution}");
+
+            var internalCliSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.InternalCLISolution);
+
+            _logger.Info($"internalCliSolution = {internalCliSolution}");
+
+            _logger.Info("End");
+        }
+
+        private static void TstEnumerateProjects()
+        {
+            _logger.Info("Begin");
+
+            var slnPath = @"c:\Users\Acer\source\repos\InternalCLI\";
+
+            _logger.Info($"slnPath = {slnPath}");
+
+            var sb = new StringBuilder();
+
+            var directories = Directory.EnumerateDirectories(slnPath);
+
+            foreach (var directory in directories)
+            {
+                _logger.Info($"directory = {directory}");
+
+                var directoryInfo = new DirectoryInfo(directory);
+
+                _logger.Info($"directoryInfo.Name = {directoryInfo.Name}");
+
+                if(directoryInfo.Name == ".git" || directoryInfo.Name == ".vs")
+                {
+                    continue;
+                }
+
+                var csProjFile = Directory.EnumerateFiles(directory).SingleOrDefault(p => p.EndsWith(".csproj"));
+
+                _logger.Info($"csProjFile = {csProjFile}");
+
+                if(csProjFile == null)
+                {
+                    continue;
+                }
+
+                sb.AppendLine(directoryInfo.Name);
+            }
+
+            _logger.Info(sb);
 
             _logger.Info("End");
         }
