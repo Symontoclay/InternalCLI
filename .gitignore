@@ -65,3 +65,5 @@ PageCreator/obj
 /IncreaseSymOntoClayCommonPkgVersion/obj
 /CopySymOntoClayCommonPkgToCommonFolder/bin
 /CopySymOntoClayCommonPkgToCommonFolder/obj
+/UpdateSymOntoClayCommonPkgVersionInProjects/bin/Debug/net8.0
+/UpdateSymOntoClayCommonPkgVersionInProjects/obj
