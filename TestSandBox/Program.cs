@@ -83,7 +83,7 @@ namespace TestSandBox
 
             try
             {
-                TstSymOntoClayCommonPkgToCommonFolder();
+                TstSymOntoClayCommonPkgToCommonFolderDevTask();
                 //TstIncreaseSymOntoClayCommonPkgVersionDevTask();
                 //TstCommonPackagesSolution();
                 //TstEnumerateProjects();
@@ -166,7 +166,7 @@ namespace TestSandBox
             }
         }
 
-        private static void TstSymOntoClayCommonPkgToCommonFolder()
+        private static void TstSymOntoClayCommonPkgToCommonFolderDevTask()
         {
             _logger.Info("Begin");
 
