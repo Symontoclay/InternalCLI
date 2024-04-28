@@ -159,7 +159,7 @@ namespace CSharpUtils
             return version.Value;
         }
 
-        public static string GetMaxVersion(string solutionPath)
+        public static string GetMaxVersionOfSolution(string solutionPath)
         {
             var projectsList = SolutionHelper.GetProjectsNames(solutionPath);
 
@@ -198,12 +198,42 @@ namespace CSharpUtils
             //_logger.Info($"versionsList = {JsonConvert.SerializeObject(versionsList, Formatting.Indented)}");
 #endif
 
-            if(!versionsList.Any())
+            if(versionsList.Count == 0)
             {
                 return null;
             }
 
             return versionsList.Max().ToString();
+        }
+
+        public static bool SetVersionToSolution(string solutionPath, string targetVersion)
+        {
+            var projectsList = SolutionHelper.GetProjectsNames(solutionPath);
+
+            if (projectsList.IsNullOrEmpty())
+            {
+                return false;
+            }
+
+#if DEBUG
+            //_logger.Info($"projectsList.Count = {projectsList.Count}");
+#endif
+
+            var result = false;
+
+            foreach(var project in projectsList)
+            {
+#if DEBUG
+                //_logger.Info($"project = {project}");
+#endif
+
+                if(SetVersion(project, targetVersion))
+                {
+                    result = true;
+                }
+            }
+
+            return result;
         }
 
         public static bool SetVersion(string projectFileName, string targetVersion)

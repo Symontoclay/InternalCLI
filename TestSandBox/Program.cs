@@ -68,6 +68,7 @@ using System.Reflection.Metadata;
 using TestSandBox.RestoredDeploymentTasks;
 using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.DirectoriesTasks.DeleteDirectory;
+using Deployment.DevTasks.CommonPackages.IncreaseSymOntoClayCommonPkgVersion;
 
 namespace TestSandBox
 {
@@ -81,11 +82,11 @@ namespace TestSandBox
 
             try
             {
-                //TstIncreaseSymOntoClayCommonPkgVersionDevTask();
+                TstIncreaseSymOntoClayCommonPkgVersionDevTask();
                 //TstCommonPackagesSolution();
                 //TstEnumerateProjects();
                 //TstIncreaseSymOntoClayCommonPkgVersion();
-                TstGetSymOntoClayCommonVersionMax();
+                //TstGetSymOntoClayCommonVersionMax();
                 //TstGetSymOntoClayCommonVersion();
                 //TstDeleteDirectoryTask();
                 //TstWhoIsLocking();
@@ -167,7 +168,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-
+            DeploymentPipeline.Run(new IncreaseSymOntoClayCommonPkgVersionDevTask());
 
             _logger.Info("End");
         }
@@ -288,7 +289,7 @@ namespace TestSandBox
 
             _logger.Info($"solutionPath = {solutionPath}");
 
-            var version = CSharpProjectHelper.GetMaxVersion(solutionPath);
+            var version = CSharpProjectHelper.GetMaxVersionOfSolution(solutionPath);
 
             _logger.Info($"version = {version}");
 

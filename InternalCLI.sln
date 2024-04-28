@@ -71,6 +71,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PipelinesTests", "Pipelines
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonPackages", "CommonPackages", "{CA92B63C-3120-481B-BE10-7A9DA89DDC81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IncreaseSymOntoClayCommonPkgVersion", "IncreaseSymOntoClayCommonPkgVersion\IncreaseSymOntoClayCommonPkgVersion.csproj", "{0B74D0A9-017F-4E23-9A73-5B3F6F0557A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -189,6 +191,10 @@ Global
 		{0E4A2CE3-96AE-47F7-A3F0-6B2D2BC59307}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E4A2CE3-96AE-47F7-A3F0-6B2D2BC59307}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E4A2CE3-96AE-47F7-A3F0-6B2D2BC59307}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B74D0A9-017F-4E23-9A73-5B3F6F0557A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B74D0A9-017F-4E23-9A73-5B3F6F0557A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B74D0A9-017F-4E23-9A73-5B3F6F0557A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B74D0A9-017F-4E23-9A73-5B3F6F0557A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -216,6 +222,7 @@ Global
 		{9FA787CC-4FD6-4732-ACC1-74C0FCB492F0} = {247D30BB-7880-4F31-A862-3FB2D21FAF9A}
 		{153488FD-FD8D-4BFE-BFD8-0E202C9E5BCC} = {247D30BB-7880-4F31-A862-3FB2D21FAF9A}
 		{0E4A2CE3-96AE-47F7-A3F0-6B2D2BC59307} = {3898EADC-0D57-4123-B7D1-9ECC113D1BE1}
+		{0B74D0A9-017F-4E23-9A73-5B3F6F0557A1} = {CA92B63C-3120-481B-BE10-7A9DA89DDC81}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {06C4A77F-C5ED-463F-A718-5E248AB5CDAB}

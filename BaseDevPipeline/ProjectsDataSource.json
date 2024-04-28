@@ -253,6 +253,10 @@
           "Path": "UpdateTestAndCommitProjectsVersion"
         },
         {
+          "Kind": "CLI",
+          "Path": "IncreaseSymOntoClayCommonPkgVersion"
+        },
+        {
           "Kind": "Library",
           "Path": "XMLDocReader"
         }
