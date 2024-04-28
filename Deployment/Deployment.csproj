@@ -19,8 +19,4 @@
     <ProjectReference Include="..\SiteBuilder\SiteBuilder.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CommonPackages\" />
-  </ItemGroup>
-
 </Project>

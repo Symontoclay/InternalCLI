@@ -1,4 +1,6 @@
-﻿using NLog;
+﻿using CollectionsHelpers.CollectionsHelpers;
+using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +13,7 @@ namespace CSharpUtils
     public static class CSharpProjectHelper
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static List<string> GetCSharpFileNames(string projectFileName)
@@ -92,7 +94,7 @@ namespace CSharpUtils
             var packageItem = packageItemResult.PackageItem;
 
 #if DEBUG
-            _logger.Info($"packageItem = {packageItem}");
+            //_logger.Info($"packageItem = {packageItem}");
 #endif
 
             if(packageItem == null)
@@ -110,7 +112,7 @@ namespace CSharpUtils
             var packageItem = packageItemResult.PackageItem;
 
 #if DEBUG
-            _logger.Info($"packageItem = {packageItem}");
+            //_logger.Info($"packageItem = {packageItem}");
 #endif
 
             if (packageItem == null)
@@ -130,7 +132,7 @@ namespace CSharpUtils
             var itemGroup = project.Elements().FirstOrDefault(p => p.Name == "ItemGroup" && p.HasElements && p.Elements().Any(x => x.Name == "PackageReference"));
 
 #if DEBUG
-            _logger.Info($"itemGroup = {itemGroup}");
+            //_logger.Info($"itemGroup = {itemGroup}");
 #endif
 
             if (itemGroup == null)
@@ -155,6 +157,53 @@ namespace CSharpUtils
             }
 
             return version.Value;
+        }
+
+        public static string GetMaxVersion(string solutionPath)
+        {
+            var projectsList = SolutionHelper.GetProjectsNames(solutionPath);
+
+            if(projectsList.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+#if DEBUG
+            //_logger.Info($"projectsList.Count = {projectsList.Count}");
+#endif
+
+            var versionsList = new List<Version>();
+
+            foreach(var project in projectsList)
+            {
+#if DEBUG
+                //_logger.Info($"project = {project}");
+#endif
+
+                var versionStr = GetVersion(project);
+
+#if DEBUG
+                //_logger.Info($"versionStr = {versionStr}");
+#endif
+
+                if(string.IsNullOrEmpty(versionStr))
+                {
+                    continue;
+                }
+
+                versionsList.Add(new Version(versionStr));
+            }
+
+#if DEBUG
+            //_logger.Info($"versionsList = {JsonConvert.SerializeObject(versionsList, Formatting.Indented)}");
+#endif
+
+            if(!versionsList.Any())
+            {
+                return null;
+            }
+
+            return versionsList.Max().ToString();
         }
 
         public static bool SetVersion(string projectFileName, string targetVersion)

@@ -81,10 +81,11 @@ namespace TestSandBox
 
             try
             {
-                TstIncreaseSymOntoClayCommonPkgVersionDevTask();
+                //TstIncreaseSymOntoClayCommonPkgVersionDevTask();
                 //TstCommonPackagesSolution();
                 //TstEnumerateProjects();
                 //TstIncreaseSymOntoClayCommonPkgVersion();
+                TstGetSymOntoClayCommonVersionMax();
                 //TstGetSymOntoClayCommonVersion();
                 //TstDeleteDirectoryTask();
                 //TstWhoIsLocking();
@@ -277,6 +278,21 @@ namespace TestSandBox
             {
                 CSharpProjectHelper.UpdatePackageVersion(targetProjectPath, packageId, targetVersion.ToString());
             }
+        }
+
+        private static void TstGetSymOntoClayCommonVersionMax()
+        {
+            _logger.Info("Begin");
+
+            var solutionPath = @"c:\Users\Acer\source\repos\SymOntoClay.Common\";
+
+            _logger.Info($"solutionPath = {solutionPath}");
+
+            var version = CSharpProjectHelper.GetMaxVersion(solutionPath);
+
+            _logger.Info($"version = {version}");
+
+            _logger.Info("End");
         }
 
         private static void TstGetSymOntoClayCommonVersion()
