@@ -1,5 +1,5 @@
-﻿using CommonUtils.DebugHelpers;
-using SymOntoClay.Common;
+﻿using SymOntoClay.Common;
+using SymOntoClay.Common.DebugHelpers;
 using System.Collections.Generic;
 using System.Text;
 

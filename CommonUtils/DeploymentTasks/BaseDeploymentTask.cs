@@ -1,8 +1,8 @@
 ﻿using CollectionsHelpers.CollectionsHelpers;
-using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks.Serialization;
 using NLog;
 using SymOntoClay.Common;
+using SymOntoClay.Common.DebugHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

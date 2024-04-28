@@ -1,6 +1,6 @@
-﻿using CommonUtils.DebugHelpers;
-using Deployment.Tasks.BuildTasks;
+﻿using Deployment.Tasks.BuildTasks;
 using SymOntoClay.Common;
+using SymOntoClay.Common.DebugHelpers;
 using System.Text;
 
 namespace Deployment.DevTasks.CopyAndBuildVSProjectOrSolution

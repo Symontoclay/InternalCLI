@@ -1,7 +1,7 @@
-﻿using CommonUtils.DebugHelpers;
-using CommonUtils.DeploymentTasks;
+﻿using CommonUtils.DeploymentTasks;
 using PipelinesTests.Common;
 using SymOntoClay.Common;
+using SymOntoClay.Common.DebugHelpers;
 using System.Text;
 
 namespace PipelinesTests.Tasks

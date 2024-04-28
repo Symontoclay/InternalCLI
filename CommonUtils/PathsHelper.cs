@@ -1,10 +1,7 @@
-﻿using CommonUtils.DebugHelpers;
-using NLog;
+﻿using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Text;
 
 namespace CommonUtils
 {

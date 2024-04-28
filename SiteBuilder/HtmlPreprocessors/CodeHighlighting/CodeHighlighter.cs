@@ -1,11 +1,9 @@
 ﻿using CommonUtils;
-using CommonUtils.DebugHelpers;
 using HtmlAgilityPack;
-using Newtonsoft.Json;
 using NLog;
+using SymOntoClay.Common.DebugHelpers;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
