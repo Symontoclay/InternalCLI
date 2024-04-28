@@ -2,12 +2,8 @@
 using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
 using CSharpUtils;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFolder
 {
@@ -28,13 +24,13 @@ namespace Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFol
             var commonPackageSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.CommonPackagesSolution);
 
 #if DEBUG
-            _logger.Info($"commonPackageSolution = {commonPackageSolution}");
+            //_logger.Info($"commonPackageSolution = {commonPackageSolution}");
 #endif
 
             var destPackagesPath = Path.Combine(commonPackageSolution.Path, commonPackageSolution.BuiltNuGetPackages);
 
 #if DEBUG
-            _logger.Info($"destPackagesPath = {destPackagesPath}");
+            //_logger.Info($"destPackagesPath = {destPackagesPath}");
 #endif
 
             Directory.CreateDirectory(destPackagesPath);
@@ -42,13 +38,13 @@ namespace Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFol
             foreach (var project in commonPackageSolution.Projects)
             {
 #if DEBUG
-                _logger.Info($"project = {project}");
+                //_logger.Info($"project = {project}");
 #endif
 
                 var outputPath = Path.Combine(project.Path, "bin", "Debug");
 
 #if DEBUG
-                _logger.Info($"outputPath = {outputPath}");
+                //_logger.Info($"outputPath = {outputPath}");
 #endif
 
                 var version = CSharpProjectHelper.GetVersion(project.CsProjPath);
@@ -56,19 +52,19 @@ namespace Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFol
                 var packageName = $"{project.FolderName}.{version}.nupkg";
 
 #if DEBUG
-                _logger.Info($"packageName = {packageName}");
+                //_logger.Info($"packageName = {packageName}");
 #endif
 
                 var sourcePackageFullName = Path.Combine(outputPath, packageName);
 
 #if DEBUG
-                _logger.Info($"sourcePackageFullName = {sourcePackageFullName}");
+                //_logger.Info($"sourcePackageFullName = {sourcePackageFullName}");
 #endif
 
                 var destPackageFullName = Path.Combine(destPackagesPath, packageName);
 
 #if DEBUG
-                _logger.Info($"destPackageFullName = {destPackageFullName}");
+                //_logger.Info($"destPackageFullName = {destPackageFullName}");
 #endif
 
                 File.Copy(sourcePackageFullName, destPackageFullName, true);
