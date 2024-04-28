@@ -19,6 +19,7 @@ namespace Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFol
         {
         }
 
+        /// <inheritdoc/>
         protected override void OnRun()
         {
             var commonPackageSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.CommonPackagesSolution);
@@ -71,6 +72,7 @@ namespace Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFol
             }
         }
 
+        /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);

@@ -263,6 +263,10 @@
         {
           "Kind": "CLI",
           "Path": "CopySymOntoClayCommonPkgToCommonFolder"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "UpdateSymOntoClayCommonPkgVersionInProjects"
         }
       ]
     },

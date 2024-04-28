@@ -57,6 +57,12 @@ namespace BaseDevPipeline
             return settings.GetSolutionsWithMaintainedVersionsInCSharpProjects();
         }
 
+        public static IReadOnlyList<ISolutionSettings> GetSolutionsWhichUseCommonPakage()
+        {
+            var settings = GetSymOntoClayProjectsSettings();
+            return settings.GetSolutionsWhichUseCommonPakage();
+        }
+
         public static IReadOnlyList<ISolutionSettings> GetUnityExampleSolutions()
         {
             var settings = GetSymOntoClayProjectsSettings();

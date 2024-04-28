@@ -19,6 +19,7 @@ namespace Deployment.DevTasks.CommonPackages.IncreaseSymOntoClayCommonPkgVersion
         {
         }
 
+        /// <inheritdoc/>
         protected override void OnRun()
         {
             var commonPackagesSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.CommonPackagesSolution);
@@ -44,6 +45,7 @@ namespace Deployment.DevTasks.CommonPackages.IncreaseSymOntoClayCommonPkgVersion
             CSharpProjectHelper.SetVersionToSolution(commonPackagesSolution.Path, newVersion.ToString());
         }
 
+        /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);

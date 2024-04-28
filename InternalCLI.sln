@@ -75,6 +75,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IncreaseSymOntoClayCommonPk
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopySymOntoClayCommonPkgToCommonFolder", "CopySymOntoClayCommonPkgToCommonFolder\CopySymOntoClayCommonPkgToCommonFolder.csproj", "{4AA70A08-7419-4665-9292-833F40E4BEB5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateSymOntoClayCommonPkgVersionInProjects", "UpdateSymOntoClayCommonPkgVersionInProjects\UpdateSymOntoClayCommonPkgVersionInProjects.csproj", "{145E7F79-E07B-4A51-B3EE-FE5ED2A4B914}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -201,6 +203,10 @@ Global
 		{4AA70A08-7419-4665-9292-833F40E4BEB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AA70A08-7419-4665-9292-833F40E4BEB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AA70A08-7419-4665-9292-833F40E4BEB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{145E7F79-E07B-4A51-B3EE-FE5ED2A4B914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{145E7F79-E07B-4A51-B3EE-FE5ED2A4B914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{145E7F79-E07B-4A51-B3EE-FE5ED2A4B914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{145E7F79-E07B-4A51-B3EE-FE5ED2A4B914}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -230,6 +236,7 @@ Global
 		{0E4A2CE3-96AE-47F7-A3F0-6B2D2BC59307} = {3898EADC-0D57-4123-B7D1-9ECC113D1BE1}
 		{0B74D0A9-017F-4E23-9A73-5B3F6F0557A1} = {CA92B63C-3120-481B-BE10-7A9DA89DDC81}
 		{4AA70A08-7419-4665-9292-833F40E4BEB5} = {CA92B63C-3120-481B-BE10-7A9DA89DDC81}
+		{145E7F79-E07B-4A51-B3EE-FE5ED2A4B914} = {CA92B63C-3120-481B-BE10-7A9DA89DDC81}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {06C4A77F-C5ED-463F-A718-5E248AB5CDAB}
