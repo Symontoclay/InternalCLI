@@ -69,6 +69,7 @@ using TestSandBox.RestoredDeploymentTasks;
 using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.DirectoriesTasks.DeleteDirectory;
 using Deployment.DevTasks.CommonPackages.IncreaseSymOntoClayCommonPkgVersion;
+using Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFolder;
 
 namespace TestSandBox
 {
@@ -82,7 +83,8 @@ namespace TestSandBox
 
             try
             {
-                TstIncreaseSymOntoClayCommonPkgVersionDevTask();
+                TstSymOntoClayCommonPkgToCommonFolder();
+                //TstIncreaseSymOntoClayCommonPkgVersionDevTask();
                 //TstCommonPackagesSolution();
                 //TstEnumerateProjects();
                 //TstIncreaseSymOntoClayCommonPkgVersion();
@@ -162,6 +164,15 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstSymOntoClayCommonPkgToCommonFolder()
+        {
+            _logger.Info("Begin");
+
+            DeploymentPipeline.Run(new CopySymOntoClayCommonPkgToCommonFolderDevTask());
+
+            _logger.Info("End");
         }
 
         private static void TstIncreaseSymOntoClayCommonPkgVersionDevTask()

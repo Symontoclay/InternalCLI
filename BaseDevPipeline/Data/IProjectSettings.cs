@@ -6,6 +6,7 @@ namespace BaseDevPipeline.Data
     {
         ISolutionSettings Solution { get; }
         KindOfProject Kind { get; }
+        string FolderName { get; }
         string Path { get; }
         string CsProjPath { get; }
         string LicenseName { get; }

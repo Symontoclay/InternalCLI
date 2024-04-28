@@ -1,0 +1,215 @@
+2024-04-28 15:44:30.6751 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO CopySymOntoClayCommonPkgToCommonFolderDevTask (Key: 'CopySymOntoClayCommonPkgToCommonFolderDevTask_8639689E-6B17-404C-B291-8D8998475F8A') started. 
+2024-04-28 15:44:31.0109 CommonUtils.ProcessSyncWrapper.Run INFO C:\Program Files\Unity\Hub\Editor\2022.3.5f1\Editor\Unity.exe -version 
+2024-04-28 15:44:31.2815 CommonUtils.ProcessSyncWrapper.Run INFO ExitCode = 0 
+2024-04-28 15:44:31.2815 CommonUtils.ProcessSyncWrapper.Run INFO C:\Program Files\Unity\Hub\Editor\2023.2.19f1\Editor\Unity.exe -version 
+2024-04-28 15:44:31.6147 CommonUtils.ProcessSyncWrapper.Run INFO ExitCode = 0 
+2024-04-28 15:44:31.6716 Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFolder.CopySymOntoClayCommonPkgToCommonFolderDevTask.OnRun INFO commonPackageSolution = Begin BaseDevPipeline.Data.Implementation.SolutionSettings
+    Name = SymOntoClay.Common
+    Kind = CommonPackagesSolution
+    Href = https://github.com/Symontoclay/SymOntoClay.Common
+    GitFileHref = git@github.com:Symontoclay/SymOntoClay.Common.git
+    RepositoryName = SymOntoClay.Common
+    OwnerName = Symontoclay
+    Path = C:/Users/Acer/source/repos/SymOntoClay.Common
+    SlnPath = C:/Users/Acer/source/repos/SymOntoClay.Common/SymOntoClay.Common.sln
+    SourcePath = C:/Users/Acer/source/repos/SymOntoClay.Common
+    BuiltNuGetPackages = CommonPackages
+    Begin Projects
+        Begin BaseDevPipeline.Data.Implementation.ProjectSettings
+            Solution = Yes
+            Kind = Library
+            FolderName = SymOntoClay.Common
+            Path = C:/Users/Acer/source/repos/SymOntoClay.Common\SymOntoClay.Common
+            CsProjPath = C:/Users/Acer/source/repos/SymOntoClay.Common/SymOntoClay.Common/SymOntoClay.Common.csproj
+            LicenseName = MIT
+            Begin License
+                Begin BaseDevPipeline.Data.Implementation.LicenseSettings
+                    Name = MIT
+                    HeaderFileName = C:/Users/Acer/source/repos/InternalCLI/CopySymOntoClayCommonPkgToCommonFolder/bin/Debug/net8.0/MITLicense.txt
+                    Begin HeaderContent
+                        MIT License 
+                         
+                        Copyright (c) 2020 - <curr_year/> Sergiy Tolkachov 
+                         
+                        Permission is hereby granted, free of charge, to any person obtaining a copy 
+                        of this software and associated documentation files (the "Software"), to deal 
+                        in the Software without restriction, including without limitation the rights 
+                        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+                        copies of the Software, and to permit persons to whom the Software is 
+                        furnished to do so, subject to the following conditions: 
+                         
+                        The above copyright notice and this permission notice shall be included in all 
+                        copies or substantial portions of the Software. 
+                         
+                        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+                        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+                        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+                        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+                        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+                        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+                        SOFTWARE.
+                    End HeaderContent
+                    FileName = C:/Users/Acer/source/repos/InternalCLI/CopySymOntoClayCommonPkgToCommonFolder/bin/Debug/net8.0/MITLicense.txt
+                    Begin Content
+                        MIT License 
+                         
+                        Copyright (c) 2020 - <curr_year/> Sergiy Tolkachov 
+                         
+                        Permission is hereby granted, free of charge, to any person obtaining a copy 
+                        of this software and associated documentation files (the "Software"), to deal 
+                        in the Software without restriction, including without limitation the rights 
+                        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+                        copies of the Software, and to permit persons to whom the Software is 
+                        furnished to do so, subject to the following conditions: 
+                         
+                        The above copyright notice and this permission notice shall be included in all 
+                        copies or substantial portions of the Software. 
+                         
+                        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+                        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+                        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+                        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+                        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+                        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+                        SOFTWARE.
+                    End Content
+                End BaseDevPipeline.Data.Implementation.LicenseSettings
+            End License
+        End BaseDevPipeline.Data.Implementation.ProjectSettings
+    End Projects
+    LicenseName = MIT
+    Begin License
+        Begin BaseDevPipeline.Data.Implementation.LicenseSettings
+            Name = MIT
+            HeaderFileName = C:/Users/Acer/source/repos/InternalCLI/CopySymOntoClayCommonPkgToCommonFolder/bin/Debug/net8.0/MITLicense.txt
+            Begin HeaderContent
+                MIT License 
+                 
+                Copyright (c) 2020 - <curr_year/> Sergiy Tolkachov 
+                 
+                Permission is hereby granted, free of charge, to any person obtaining a copy 
+                of this software and associated documentation files (the "Software"), to deal 
+                in the Software without restriction, including without limitation the rights 
+                to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+                copies of the Software, and to permit persons to whom the Software is 
+                furnished to do so, subject to the following conditions: 
+                 
+                The above copyright notice and this permission notice shall be included in all 
+                copies or substantial portions of the Software. 
+                 
+                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+                IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+                FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+                AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+                LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+                OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+                SOFTWARE.
+            End HeaderContent
+            FileName = C:/Users/Acer/source/repos/InternalCLI/CopySymOntoClayCommonPkgToCommonFolder/bin/Debug/net8.0/MITLicense.txt
+            Begin Content
+                MIT License 
+                 
+                Copyright (c) 2020 - <curr_year/> Sergiy Tolkachov 
+                 
+                Permission is hereby granted, free of charge, to any person obtaining a copy 
+                of this software and associated documentation files (the "Software"), to deal 
+                in the Software without restriction, including without limitation the rights 
+                to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+                copies of the Software, and to permit persons to whom the Software is 
+                furnished to do so, subject to the following conditions: 
+                 
+                The above copyright notice and this permission notice shall be included in all 
+                copies or substantial portions of the Software. 
+                 
+                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+                IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+                FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+                AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+                LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+                OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+                SOFTWARE.
+            End Content
+        End BaseDevPipeline.Data.Implementation.LicenseSettings
+    End License
+    ArtifactsForDeployment = Begin List
+        CLIArch
+        UnityPackage
+    End List
+    EnableGenerateReadme = False
+    ReadmeSource = C:/Users/Acer/source/repos/SymOntoClay.Common/__ReadmeSource.md
+    BadgesSource = 
+    CodeOfConductSource = 
+    ContributingSource = 
+    FullUnityVersion = 
+    UnityVersion = 
+    UnityRelease = 
+End BaseDevPipeline.Data.Implementation.SolutionSettings
+ 
+2024-04-28 15:44:31.6716 Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFolder.CopySymOntoClayCommonPkgToCommonFolderDevTask.OnRun INFO destPackagesPath = C:/Users/Acer/source/repos/SymOntoClay.Common\CommonPackages 
+2024-04-28 15:44:31.6872 Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFolder.CopySymOntoClayCommonPkgToCommonFolderDevTask.OnRun INFO project = Begin BaseDevPipeline.Data.Implementation.ProjectSettings
+    Solution = Yes
+    Kind = Library
+    FolderName = SymOntoClay.Common
+    Path = C:/Users/Acer/source/repos/SymOntoClay.Common\SymOntoClay.Common
+    CsProjPath = C:/Users/Acer/source/repos/SymOntoClay.Common/SymOntoClay.Common/SymOntoClay.Common.csproj
+    LicenseName = MIT
+    Begin License
+        Begin BaseDevPipeline.Data.Implementation.LicenseSettings
+            Name = MIT
+            HeaderFileName = C:/Users/Acer/source/repos/InternalCLI/CopySymOntoClayCommonPkgToCommonFolder/bin/Debug/net8.0/MITLicense.txt
+            Begin HeaderContent
+                MIT License 
+                 
+                Copyright (c) 2020 - <curr_year/> Sergiy Tolkachov 
+                 
+                Permission is hereby granted, free of charge, to any person obtaining a copy 
+                of this software and associated documentation files (the "Software"), to deal 
+                in the Software without restriction, including without limitation the rights 
+                to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+                copies of the Software, and to permit persons to whom the Software is 
+                furnished to do so, subject to the following conditions: 
+                 
+                The above copyright notice and this permission notice shall be included in all 
+                copies or substantial portions of the Software. 
+                 
+                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+                IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+                FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+                AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+                LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+                OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+                SOFTWARE.
+            End HeaderContent
+            FileName = C:/Users/Acer/source/repos/InternalCLI/CopySymOntoClayCommonPkgToCommonFolder/bin/Debug/net8.0/MITLicense.txt
+            Begin Content
+                MIT License 
+                 
+                Copyright (c) 2020 - <curr_year/> Sergiy Tolkachov 
+                 
+                Permission is hereby granted, free of charge, to any person obtaining a copy 
+                of this software and associated documentation files (the "Software"), to deal 
+                in the Software without restriction, including without limitation the rights 
+                to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+                copies of the Software, and to permit persons to whom the Software is 
+                furnished to do so, subject to the following conditions: 
+                 
+                The above copyright notice and this permission notice shall be included in all 
+                copies or substantial portions of the Software. 
+                 
+                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+                IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+                FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+                AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+                LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+                OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+                SOFTWARE.
+            End Content
+        End BaseDevPipeline.Data.Implementation.LicenseSettings
+    End License
+End BaseDevPipeline.Data.Implementation.ProjectSettings
+ 
+2024-04-28 15:44:31.6957 Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFolder.CopySymOntoClayCommonPkgToCommonFolderDevTask.OnRun INFO outputPath = C:/Users/Acer/source/repos/SymOntoClay.Common\SymOntoClay.Common\bin\Debug 
+2024-04-28 15:44:31.7145 Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFolder.CopySymOntoClayCommonPkgToCommonFolderDevTask.OnRun INFO packageName = SymOntoClay.Common.0.5.4.3.nupkg 
+2024-04-28 15:44:31.7145 Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFolder.CopySymOntoClayCommonPkgToCommonFolderDevTask.OnRun INFO sourcePackageFullName = C:/Users/Acer/source/repos/SymOntoClay.Common\SymOntoClay.Common\bin\Debug\SymOntoClay.Common.0.5.4.3.nupkg 
+2024-04-28 15:44:31.7145 Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFolder.CopySymOntoClayCommonPkgToCommonFolderDevTask.OnRun INFO destPackageFullName = C:/Users/Acer/source/repos/SymOntoClay.Common\CommonPackages\SymOntoClay.Common.0.5.4.3.nupkg 
+2024-04-28 15:44:31.7145 CommonUtils.DeploymentTasks.BaseDeploymentTask.Run INFO CopySymOntoClayCommonPkgToCommonFolderDevTask (Key: 'CopySymOntoClayCommonPkgToCommonFolderDevTask_8639689E-6B17-404C-B291-8D8998475F8A') finished 

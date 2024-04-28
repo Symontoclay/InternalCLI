@@ -12,6 +12,8 @@ namespace BaseDevPipeline.Data.Implementation
         ISolutionSettings IProjectSettings.Solution => Solution;
 
         public KindOfProject Kind { get; set; }
+
+        public string FolderName { get; set; }
         public string Path { get; set; }
         public string CsProjPath { get; set; }
 
@@ -42,6 +44,7 @@ namespace BaseDevPipeline.Data.Implementation
 
             sb.PrintExisting(n, nameof(Solution), Solution);
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            sb.AppendLine($"{spaces}{nameof(FolderName)} = {FolderName}");
             sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
             sb.AppendLine($"{spaces}{nameof(CsProjPath)} = {CsProjPath}");
             sb.AppendLine($"{spaces}{nameof(LicenseName)} = {LicenseName}");

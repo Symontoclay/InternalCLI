@@ -1,0 +1,132 @@
+{
+  "BasePaths": [
+    "%USERPROFILE%/Documents/GitHub",
+    "%USERPROFILE%/source/repos"
+  ],
+  "SecretsFilePaths": [
+    "%USERPROFILE%/example_s.json"
+  ],
+  "ArtifactsForDeployment": [
+    "CLIArch",
+    "UnityPackage"
+  ],
+  "RepositoryReadmeSource": "%SLN_ROOT_PATH%/__ReadmeSource.md",
+  "Solutions": [
+    {
+      "Name": "SymOntoClay",
+      "Kind": "CoreSolution",
+      "Href": "https://github.com/metatypeman/__SymOntoClay",
+      "Path": "%BASE_PATH%/__SymOntoClay",
+      "License": "MIT",
+      "Projects": [
+        {
+          "Kind": "CoreLib",
+          "Path": "SymOntoClayCore"
+        },
+        {
+          "Kind": "CoreAssetLib",
+          "Path": "SymOntoClayUnityAssetCore"
+        },
+        {
+          "Kind": "Library",
+          "Path": "SymOntoClayCoreHelper"
+        },
+        {
+          "Kind": "Library",
+          "Path": "SymOntoClayProjectFiles"
+        },
+        {
+          "Kind": "Library",
+          "Path": "SymOntoClayDefaultCLIEnvironment"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "SymOntoClayCLI"
+        },
+        {
+          "Kind": "IntegrationTest",
+          "Path": "SymOntoClayUnity3DAssetTest"
+        },
+        {
+          "Kind": "IntegrationTest",
+          "Path": "SymOntoClayHardTests"
+        },
+        {
+          "Kind": "AdditionalApp",
+          "Path": "TestSandbox"
+        },
+        {
+          "Kind": "AdditionalApp",
+          "Path": "LinguisticVariableViewer"
+        },
+        {
+          "Kind": "CorePlugin",
+          "Path": "SymOntoClaySoundBuses"
+        },
+        {
+          "Kind": "CorePlugin",
+          "Path": "SymOntoClayNLP"
+        },
+        {
+          "Kind": "CorePlugin",
+          "Path": "SymOntoClayStandardFacts"
+        }
+      ]
+    },
+    {
+      "Name": "symontoclay.github.io",
+      "Kind": "ProjectSite",
+      "Href": "https://github.com/metatypeman/__symontoclay.github.io",
+      "Path": "%BASE_PATH%/__symontoclay.github.io",
+      "SourcePath": "%SLN_ROOT_PATH%/siteSource/",
+      "License": "CCBYSA4_0",
+      "IsCommonReadmeSource": true,
+      "CommonReadmeSource": "%SLN_ROOT_PATH%/siteSource/CommonReadmes/__common_README.md",
+      "CommonBadgesSource": "%SLN_ROOT_PATH%/siteSource/CommonReadmes/__common_BADGES.md",
+      "ReadmeSource": "%SLN_ROOT_PATH%/siteSource/__ReadmeSource.md",
+      "CodeOfConductSource": "%SLN_ROOT_PATH%/siteSource/__CODE_OF_CONDUCTSource.md",
+      "ContributingSource": "%SLN_ROOT_PATH%/siteSource/__CONTRIBUTINGSource.md"
+    },
+    {
+      "Name": "SymOntoClayAsset",
+      "Kind": "Unity",
+      "Href": "https://github.com/metatypeman/__SymOntoClayAsset",
+      "Path": "%BASE_PATH%/__SymOntoClayAsset",
+      "License": "MIT",
+      "SourcePath": "%SLN_ROOT_PATH%/Assets/SymOntoClay",
+      "EnableGenerateReadme": true
+    },
+    {
+      "Name": "ReleaseMngr",
+      "Kind": "ReleaseMngrSolution",
+      "Href": "https://github.com/metatypeman/__ReleaseMngr",
+      "Path": "%BASE_PATH%/__ReleaseMngr",
+      "License": "MIT"
+    }
+  ],
+  "DevArtifacts": [
+    {
+      "Kind": "ProjectSite",
+      "Path": "%USERPROFILE%/Documents/SiteDist"
+    },
+    {
+      "Kind": "UnityPackage",
+      "Path": "%USERPROFILE%/Documents/SymOntoClayPakageDist"
+    },
+    {
+      "Kind": "CLIFolder",
+      "Path": "%USERPROFILE%/Documents/SymOntoClayCLIDist"
+    }
+  ],
+  "Licenses": [
+    {
+      "Name": "MIT",
+      "FileName": "%APPDIR%/MITLicense.txt"
+    },
+    {
+      "Name": "CCBYSA4_0",
+      "FileName": "%APPDIR%/CCBYSA4_0License.txt"
+    }
+  ],
+  "Copyright": "Copyright (c) 2020 - 2021 Sergiy Tolkachov aka metatypeman"
+}

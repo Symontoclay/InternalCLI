@@ -208,7 +208,14 @@ namespace BaseDevPipeline.Data.Implementation
 
                 item.SourcePath = PathsHelper.Normalize(solutionSource.SourcePath);
 
-                if(string.IsNullOrWhiteSpace(solutionSource.License))
+                if(string.IsNullOrWhiteSpace(item.SourcePath))
+                {
+                    item.SourcePath = item.Path;
+                }
+
+                item.BuiltNuGetPackages = solutionSource.BuiltNuGetPackages;
+
+                if (string.IsNullOrWhiteSpace(solutionSource.License))
                 {
                     item.LicenseName = string.Empty;
                 }
@@ -348,7 +355,9 @@ namespace BaseDevPipeline.Data.Implementation
 
                 item.Kind = Enum.Parse<KindOfProject>(projectSource.Kind);
 
-                if(projectSource.Path.StartsWith("%") || projectSource.Path.Contains(":"))
+                item.FolderName = projectSource.Path;
+
+                if (projectSource.Path.StartsWith("%") || projectSource.Path.Contains(":"))
                 {
                     item.Path = PathsHelper.Normalize(projectSource.Path);
                 }

@@ -18,6 +18,7 @@ namespace BaseDevPipeline.SourceData
         public string SlnPath { get; set; }
         public string License { get; set; }
         public string SourcePath { get; set; }
+        public string BuiltNuGetPackages { get; set; }
         public bool EnableGenerateReadme { get; set; }
         public string ReadmeSource { get; set; }
         public string BadgesSource { get; set; }
@@ -55,6 +56,7 @@ namespace BaseDevPipeline.SourceData
             sb.AppendLine($"{spaces}{nameof(SlnPath)} = {SlnPath}");
             sb.AppendLine($"{spaces}{nameof(License)} = {License}");
             sb.AppendLine($"{spaces}{nameof(SourcePath)} = {SourcePath}");
+            sb.AppendLine($"{spaces}{nameof(BuiltNuGetPackages)} = {BuiltNuGetPackages}");
             sb.AppendLine($"{spaces}{nameof(EnableGenerateReadme)} = {EnableGenerateReadme}");
             sb.AppendLine($"{spaces}{nameof(ReadmeSource)} = {ReadmeSource}");
             sb.AppendLine($"{spaces}{nameof(BadgesSource)} = {BadgesSource}");

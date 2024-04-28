@@ -17,6 +17,7 @@ namespace BaseDevPipeline.Data.Implementation
         public string Path { get; set; }
         public string SlnPath { get; set; }
         public string SourcePath { get; set; }
+        public string BuiltNuGetPackages { get; set; }
 
         public List<ProjectSettings> Projects { get; set; }
 
@@ -93,6 +94,7 @@ namespace BaseDevPipeline.Data.Implementation
             sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
             sb.AppendLine($"{spaces}{nameof(SlnPath)} = {SlnPath}");
             sb.AppendLine($"{spaces}{nameof(SourcePath)} = {SourcePath}");
+            sb.AppendLine($"{spaces}{nameof(BuiltNuGetPackages)} = {BuiltNuGetPackages}");
             sb.PrintObjListProp(n, nameof(Projects), Projects);
             sb.AppendLine($"{spaces}{nameof(LicenseName)} = {LicenseName}");
             sb.PrintObjProp(n, nameof(License), License);
