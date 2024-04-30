@@ -1,5 +1,5 @@
-﻿using CommonUtils.DebugHelpers;
-using CommonUtils.DeploymentTasks;
+﻿using CommonUtils.DeploymentTasks;
+using SymOntoClay.Common.DebugHelpers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -268,7 +268,7 @@ namespace Deployment.DevTasks.RemoveSingleLineComments
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
-            var nextN = n + 4;
+            var nextN = n + DisplayHelper.IndentationStep;
             var nextNSpaces = DisplayHelper.Spaces(nextN);
 
             var sb = new StringBuilder();

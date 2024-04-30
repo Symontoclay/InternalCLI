@@ -1,11 +1,6 @@
-﻿using CommonUtils.DebugHelpers;
-using SymOntoClay.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using SymOntoClay.Common;
+using SymOntoClay.Common.DebugHelpers;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Deployment.Tasks.BuildExamples
 {

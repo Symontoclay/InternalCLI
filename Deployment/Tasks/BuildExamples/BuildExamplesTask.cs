@@ -1,10 +1,10 @@
 ﻿using CollectionsHelpers.CollectionsHelpers;
 using CommonUtils;
-using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Deployment.Tasks.BuildExamples;
 using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
+using SymOntoClay.Common.DebugHelpers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -233,7 +233,7 @@ namespace Deployment.Tasks.ExamplesCreator
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
-            var nextN = n + 4;
+            var nextN = n + DisplayHelper.IndentationStep;
             var nextNSpaces = DisplayHelper.Spaces(nextN);
 
             var sb = new StringBuilder();

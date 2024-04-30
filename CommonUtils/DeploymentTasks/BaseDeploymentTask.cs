@@ -104,7 +104,7 @@ namespace CommonUtils.DeploymentTasks
 
         protected virtual void Run()
         {
-            var n = Deep * 4;
+            var n = Deep * DisplayHelper.IndentationStep;
 
             var spaces = DisplayHelper.Spaces(n);
 
@@ -127,7 +127,7 @@ namespace CommonUtils.DeploymentTasks
                         _logger.Info($"{spaces}{GetType().Name} (Key: '{_key}') is skeeped.");
                         if (_options != null)
                         {
-                            _logger.Info($"{_options.ToString(n + 4)}");
+                            _logger.Info($"{_options.ToString(n + DisplayHelper.IndentationStep)}");
                         }
 
                         return;
@@ -137,7 +137,7 @@ namespace CommonUtils.DeploymentTasks
                 _logger.Info($"{spaces}{GetType().Name} (Key: '{_key}') started.");
                 if (_options != null)
                 {
-                    _logger.Info($"{_options.ToString(n + 4)}");
+                    _logger.Info($"{_options.ToString(n + DisplayHelper.IndentationStep)}");
                 }
 
                 CheckValidationOptions();
@@ -152,7 +152,7 @@ namespace CommonUtils.DeploymentTasks
             catch (Exception e)
             {
                 _logger.Info($"{spaces}Error in {GetType().Name} (Key: '{_key}') with options:");
-                _logger.Info(_options?.ToString(n + 4));
+                _logger.Info(_options?.ToString(n + DisplayHelper.IndentationStep));
                 _logger.Info(e);
 
                 throw;
@@ -250,7 +250,7 @@ namespace CommonUtils.DeploymentTasks
         protected string PrintValidation(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
-            var next_N = n + 4;
+            var next_N = n + DisplayHelper.IndentationStep;
             var nextSpaces = DisplayHelper.Spaces(next_N);
 
             var sb = new StringBuilder();

@@ -1,14 +1,10 @@
 ﻿using CommonUtils;
-using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
-using NLog;
 using Octokit;
-using System;
-using System.Collections.Generic;
+using SymOntoClay.Common.DebugHelpers;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitHubTasks.GitHubRelease
 {
@@ -103,7 +99,7 @@ namespace Deployment.Tasks.GitHubTasks.GitHubRelease
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
-            var next_N = n + 4;
+            var next_N = n + DisplayHelper.IndentationStep;
             var nextSpaces = DisplayHelper.Spaces(next_N);
 
             var sb = new StringBuilder();

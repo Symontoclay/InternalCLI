@@ -1,9 +1,9 @@
 ﻿using CollectionsHelpers.CollectionsHelpers;
 using CommonUtils;
-using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Deployment.Tasks.DirectoriesTasks.CopyTargetFiles;
+using SymOntoClay.Common.DebugHelpers;
 using System.Linq;
 using System.Text;
 
@@ -66,7 +66,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
-            var next_N = n + 4;
+            var next_N = n + DisplayHelper.IndentationStep;
             var nextSpaces = DisplayHelper.Spaces(next_N);
 
             var sb = new StringBuilder();

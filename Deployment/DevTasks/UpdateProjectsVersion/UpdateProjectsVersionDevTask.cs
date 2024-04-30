@@ -1,17 +1,12 @@
 ﻿using BaseDevPipeline;
-using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
-using Deployment.Tasks;
 using Deployment.Tasks.ProjectsTasks.UpdateSolutionCopyright;
 using Deployment.Tasks.ProjectsTasks.UpdateSolutionVersion;
 using Deployment.Tasks.ProjectsTasks.UpdateUnityPackageVersion;
-using NLog;
+using SymOntoClay.Common.DebugHelpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.DevTasks.UpdateProjectsVersion
 {

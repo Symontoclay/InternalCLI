@@ -1,7 +1,7 @@
 ﻿using CollectionsHelpers.CollectionsHelpers;
-using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
 using CSharpUtils;
+using SymOntoClay.Common.DebugHelpers;
 using System.Text;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeaders
@@ -52,7 +52,7 @@ namespace Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeaders
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
-            var next_N = n + 4;
+            var next_N = n + DisplayHelper.IndentationStep;
             var nextSpaces = DisplayHelper.Spaces(next_N);
 
             var sb = new StringBuilder();
