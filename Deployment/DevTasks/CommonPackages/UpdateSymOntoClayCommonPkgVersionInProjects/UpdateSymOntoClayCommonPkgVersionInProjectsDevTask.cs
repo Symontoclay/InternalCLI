@@ -37,7 +37,7 @@ namespace Deployment.DevTasks.CommonPackages.UpdateSymOntoClayCommonPkgVersionIn
             //_logger.Info($"targetVersion = {targetVersion}");
 #endif
 
-            var packagesList = commonPackagesSolution.Projects.Select(p => p.FolderName).ToList();
+            var packagesList = commonPackagesSolution.Projects.Where(p => p.Kind == KindOfProject.Library).Select(p => p.FolderName).ToList();
 
 #if DEBUG
             //_logger.Info($"packagesList = {JsonConvert.SerializeObject(packagesList, Formatting.Indented)}");
