@@ -1,13 +1,9 @@
 ﻿using CommonUtils;
-using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
-using NLog;
+using SymOntoClay.Common.DebugHelpers;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Tasks.GitTasks.CreateBranch
 {

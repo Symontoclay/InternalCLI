@@ -1,7 +1,7 @@
 ﻿using CommonUtils;
-using CommonUtils.DebugHelpers;
 using CommonUtils.DeploymentTasks;
 using CSharpUtils;
+using SymOntoClay.Common.DebugHelpers;
 using System.Text;
 
 namespace Deployment.Tasks.ProjectsTasks.UpdateProjectCopyright
