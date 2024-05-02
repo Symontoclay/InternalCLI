@@ -1,10 +1,8 @@
-﻿using CollectionsHelpers.CollectionsHelpers;
-using Newtonsoft.Json;
-using NLog;
+﻿using NLog;
+using SymOntoClay.Common.CollectionsHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace XMLDocReader.CSharpDoc
 {

@@ -1,11 +1,8 @@
-﻿using CollectionsHelpers.CollectionsHelpers;
-using Newtonsoft.Json;
-using NLog;
+﻿using SymOntoClay.Common.CollectionsHelpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace CSharpUtils

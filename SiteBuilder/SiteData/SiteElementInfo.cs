@@ -148,7 +148,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(LastUpdateDate)} = {LastUpdateDate}");
 
             sb.PrintExisting(n, nameof(Parent), Parent);
-            sb.PrintExistingList(n, nameof(SubItemsList), SubItemsList);
+            sb.PrintExisting(n, nameof(SubItemsList), SubItemsList);
 
             return sb.ToString();
         }

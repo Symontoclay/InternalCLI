@@ -65,7 +65,7 @@ namespace XMLDocReader.CSharpDoc
             sb.PrintShortObjListProp(n, nameof(ClassesList), ClassesList);
             sb.PrintShortObjListProp(n, nameof(InterfacesList), InterfacesList);
             sb.PrintShortObjListProp(n, nameof(EnumsList), EnumsList);
-            sb.PrintExistingList(n, nameof(XMLCardsWithoutTypeList), XMLCardsWithoutTypeList);
+            sb.PrintExisting(n, nameof(XMLCardsWithoutTypeList), XMLCardsWithoutTypeList);
 
             return sb.ToString();
         }
@@ -89,8 +89,8 @@ namespace XMLDocReader.CSharpDoc
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(AssemblyName)} = {AssemblyName}");
-            sb.PrintExistingList(n, nameof(NamespacesList), NamespacesList);
-            sb.PrintExistingList(n, nameof(XMLCardsWithoutTypeList), XMLCardsWithoutTypeList);
+            sb.PrintExisting(n, nameof(NamespacesList), NamespacesList);
+            sb.PrintExisting(n, nameof(XMLCardsWithoutTypeList), XMLCardsWithoutTypeList);
 
             return sb.ToString();
         }
