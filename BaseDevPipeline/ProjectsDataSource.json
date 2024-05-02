@@ -282,6 +282,10 @@
         {
           "Kind": "Library",
           "Path": "SymOntoClay.Common"
+        },
+        {
+          "Kind": "AdditionalApp",
+          "Path": "TestSandBox"
         }
       ]
     }
