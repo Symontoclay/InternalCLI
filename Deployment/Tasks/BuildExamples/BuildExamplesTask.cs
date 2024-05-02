@@ -1,9 +1,9 @@
-﻿using CollectionsHelpers.CollectionsHelpers;
-using CommonUtils;
+﻿using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Deployment.Tasks.BuildExamples;
 using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
+using SymOntoClay.Common.CollectionsHelpers;
 using SymOntoClay.Common.DebugHelpers;
 using System.Collections.Generic;
 using System.IO;

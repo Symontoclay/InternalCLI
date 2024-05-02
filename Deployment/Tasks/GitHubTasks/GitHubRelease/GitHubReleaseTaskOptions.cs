@@ -1,5 +1,4 @@
-﻿using CommonUtils.DebugHelpers;
-using SymOntoClay.Common;
+﻿using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
 using System.Collections.Generic;
 using System.Text;
@@ -35,7 +34,7 @@ namespace Deployment.Tasks.GitHubTasks.GitHubRelease
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.PrintExistingStr(n, nameof(Token), Token);
+            sb.PrintExisting(n, nameof(Token), Token);
             sb.AppendLine($"{spaces}{nameof(RepositoryOwner)} = {RepositoryOwner}");
             sb.AppendLine($"{spaces}{nameof(RepositoryName)} = {RepositoryName}");
             sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");            
