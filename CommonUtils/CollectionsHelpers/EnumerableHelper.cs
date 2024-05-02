@@ -5,11 +5,11 @@ using System.Text;
 
 namespace CollectionsHelpers.CollectionsHelpers
 {
-    public static class EnumerableHelper
-    {
-        public static bool IsNullOrEmpty<T>(this IEnumerable<T> list)
-        {
-            return list == null || !list.Any();
-        }
-    }
+    //public static class EnumerableHelper
+    //{
+    //    public static bool IsNullOrEmpty<T>(this IEnumerable<T> list)
+    //    {
+    //        return list == null || !list.Any();
+    //    }
+    //}
 }

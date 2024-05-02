@@ -3,6 +3,7 @@ using CommonUtils.DeploymentTasks;
 using CSharpUtils;
 using SymOntoClay.Common.DebugHelpers;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFolder
@@ -36,7 +37,7 @@ namespace Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFol
 
             Directory.CreateDirectory(destPackagesPath);
 
-            foreach (var project in commonPackageSolution.Projects)
+            foreach (var project in commonPackageSolution.Projects.Where(p => p.Kind == KindOfProject.Library))
             {
 #if DEBUG
                 //_logger.Info($"project = {project}");

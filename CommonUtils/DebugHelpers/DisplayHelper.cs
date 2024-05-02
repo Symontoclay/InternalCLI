@@ -7,19 +7,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CommonUtils.DebugHelpers
-{
-    [Obsolete]
-    public static class OldDisplayHelper
-    {
-        [Obsolete]
-        public static void PrintExistingStr(this StringBuilder sb, uint n, string propName, string value)
-        {
-            var spaces = DisplayHelper.Spaces(n);
-            var mark = string.IsNullOrWhiteSpace(value) ? "No" : "Yes";
-            sb.AppendLine($"{spaces}{propName} = {mark}");
-        }
-    }
+//namespace CommonUtils.DebugHelpers
+//{
+    //[Obsolete]
+    //public static class OldDisplayHelper
+    //{
+    //    [Obsolete]
+    //    public static void PrintExistingStr(this StringBuilder sb, uint n, string propName, string value)
+    //    {
+    //        var spaces = DisplayHelper.Spaces(n);
+    //        var mark = string.IsNullOrWhiteSpace(value) ? "No" : "Yes";
+    //        sb.AppendLine($"{spaces}{propName} = {mark}");
+    //    }
+    //}
 
     //    [Obsolete]
     //    public static class DisplayHelper
@@ -837,4 +837,4 @@ namespace CommonUtils.DebugHelpers
     //            return sb.ToString();
     //        }
     //    }
-}
+//}
