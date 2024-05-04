@@ -191,6 +191,10 @@ namespace TestSandBox
                 {
                     _logger.Info($"project.FolderName = {project.FolderName}");
                     _logger.Info($"project.CsProjPath = {project.CsProjPath}");
+
+                    var targetFramework = CSharpProjectHelper.GetTargetFrameworkVersion(project.CsProjPath);
+
+                    _logger.Info($"targetFramework = {targetFramework}");
                 }
             }
 

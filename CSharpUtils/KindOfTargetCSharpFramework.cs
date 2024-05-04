@@ -10,6 +10,7 @@ namespace CSharpUtils
     {
         NetStandard,
         Net,
-        NetFramework
+        NetFramework,
+        NetWindows
     }
 }

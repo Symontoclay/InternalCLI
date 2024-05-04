@@ -84,6 +84,7 @@ namespace CSharpUtils
 
         private const string _netstandardPrefix = "netstandard";
         private const string _netPrefix = "net";
+        private const string _netWindowsSuffix = "-windows";
         private const string _netFrameworkPrefix = "v";
 
         public static (KindOfTargetCSharpFramework Kind, Version Version) ConvertTargetFrameworkToVersion(string targetFramework)
@@ -110,6 +111,17 @@ namespace CSharpUtils
 #if DEBUG
                 _logger.Info($"versionStr = {versionStr}");
 #endif
+
+                if(targetFramework.EndsWith(_netWindowsSuffix))
+                {
+                    versionStr = versionStr.Replace(_netWindowsSuffix, string.Empty).Trim();
+
+#if DEBUG
+                    _logger.Info($"versionStr (after) = {versionStr}");
+#endif
+
+                    return (KindOfTargetCSharpFramework.NetWindows, new Version(versionStr));
+                }
 
                 return (KindOfTargetCSharpFramework.Net, new Version(versionStr));
             }
@@ -148,6 +160,9 @@ namespace CSharpUtils
                 case KindOfTargetCSharpFramework.NetFramework:
                     return _netFrameworkPrefix + version;
 
+                case KindOfTargetCSharpFramework.NetWindows:
+                    return _netPrefix + version + _netWindowsSuffix;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
             }
@@ -182,6 +197,7 @@ namespace CSharpUtils
                 KindOfTargetCSharpFramework.NetStandard => GetTargetFrameworkSection(project),
                 KindOfTargetCSharpFramework.Net => GetTargetFrameworkSection(project),
                 KindOfTargetCSharpFramework.NetFramework => GetTargetFrameworkSectionForNetFramework(project),
+                KindOfTargetCSharpFramework.NetWindows => GetTargetFrameworkSection(project),
                 _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, null)
             };
 
