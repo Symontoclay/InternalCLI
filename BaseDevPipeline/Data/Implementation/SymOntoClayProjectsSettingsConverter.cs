@@ -229,7 +229,26 @@ namespace BaseDevPipeline.Data.Implementation
                     }                    
                 }
 
-                if (!solutionSource.Projects.IsNullOrEmpty())
+                if (solutionSource.Projects.IsNullOrEmpty())
+                {
+                    if(item.Kind == KindOfProject.Unity)
+                    {
+                        InitProjectsList(item, result);
+
+                        var projectSource = new ProjectSource()
+                        {
+                            Kind = "Unity",
+                            CsProjPath = "%SLN_ROOT_PATH%/Assembly-CSharp.csproj"
+                        };
+
+#if DEBUG
+                        _logger.Info($"projectSource = {projectSource}");
+#endif
+
+                        FillUpProject(projectSource, item, result);
+                    }
+                }
+                else
                 {
                     FillUpProjects(item, solutionSource, result);
                 }
@@ -331,29 +350,41 @@ namespace BaseDevPipeline.Data.Implementation
             return PathsHelper.Normalize(sourceSlnPath);
         }
 
-        private static void FillUpProjects(SolutionSettings solution, SolutionSource soutionSource, SymOntoClayProjectsSettings result)
+        private static void InitProjectsList(SolutionSettings solution, SymOntoClayProjectsSettings result)
         {
-            var solutionProjects = new List<ProjectSettings>();
-            solution.Projects = solutionProjects;
+            solution.Projects = new List<ProjectSettings>();
 
-            if(result.Projects == null)
+            if (result.Projects == null)
             {
                 result.Projects = new List<ProjectSettings>();
             }
+        }
+
+        private static void FillUpProjects(SolutionSettings solution, SolutionSource soutionSource, SymOntoClayProjectsSettings result)
+        {
+            InitProjectsList(solution, result);
 
             foreach(var projectSource in soutionSource.Projects)
             {
-                var item = new ProjectSettings()
-                {
-                    Solution = solution,
-                    LicenseName = solution.LicenseName,
-                    License = solution.License
-                };
+                FillUpProject(projectSource, solution, result);
+            }
+        }
 
-                item.Kind = Enum.Parse<KindOfProject>(projectSource.Kind);
+        private static void FillUpProject(ProjectSource projectSource, SolutionSettings solution, SymOntoClayProjectsSettings result)
+        {
+            var item = new ProjectSettings()
+            {
+                Solution = solution,
+                LicenseName = solution.LicenseName,
+                License = solution.License
+            };
 
-                item.FolderName = projectSource.Path;
+            item.Kind = Enum.Parse<KindOfProject>(projectSource.Kind);
 
+            item.FolderName = projectSource.Path;
+
+            if(!string.IsNullOrWhiteSpace(projectSource.Path))
+            {
                 if (projectSource.Path.StartsWith("%") || projectSource.Path.Contains(":"))
                 {
                     item.Path = PathsHelper.Normalize(projectSource.Path);
@@ -361,13 +392,13 @@ namespace BaseDevPipeline.Data.Implementation
                 else
                 {
                     item.Path = Path.Combine(solution.Path, projectSource.Path);
-                }                
-
-                item.CsProjPath = DetectCsProjPath(projectSource.CsProjPath, item.Path);
-
-                solutionProjects.Add(item);
-                result.Projects.Add(item);
+                }
             }
+
+            item.CsProjPath = DetectCsProjPath(projectSource.CsProjPath, item.Path);
+
+            solution.Projects.Add(item);
+            result.Projects.Add(item);
         }
 
         private static string DetectCsProjPath(string sourceCsProjPath, string path)

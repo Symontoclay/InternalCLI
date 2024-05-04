@@ -94,6 +94,7 @@ namespace BaseDevPipeline.Data.Implementation
             return _solutionsWithMaintainedVersionsInCSharpProjects;
         }
 
+        /// <inheritdoc/>
         public IReadOnlyList<ISolutionSettings> GetSolutionsWhichUseCommonPakage()
         {
             return _solutionsWhichUseCommonPakage;
@@ -103,6 +104,18 @@ namespace BaseDevPipeline.Data.Implementation
         public IReadOnlyList<ISolutionSettings> GetUnityExampleSolutions()
         {
             return _unityExampleSolutions;
+        }
+
+        /// <inheritdoc/>
+        public IReadOnlyList<ISolutionSettings> GetCSharpSolutions()
+        {
+            return _cSharpSolutions;
+        }
+
+        /// <inheritdoc/>
+        public IReadOnlyList<ISolutionSettings> GetCSharpSolutionsWhichUseNuGetPakages()
+        {
+            return _cSharpSolutionsWhichUseNuGetPakages;
         }
 
         /// <inheritdoc/>
@@ -157,6 +170,9 @@ namespace BaseDevPipeline.Data.Implementation
             _solutionsWithMaintainedVersionsInCSharpProjects = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.Unity).Cast<ISolutionSettings>().ToList();
             _solutionsWhichUseCommonPakage = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.InternalCLISolution).Cast<ISolutionSettings>().ToList();
             _unityExampleSolutions = Solutions.Where(p => p.Kind == KindOfProject.UnityExample).Cast<ISolutionSettings>().ToList();
+            _cSharpSolutions = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.Unity || p.Kind == KindOfProject.InternalCLISolution || p.Kind == KindOfProject.CommonPackagesSolution).Cast<ISolutionSettings>().ToList();
+            _cSharpSolutionsWhichUseNuGetPakages = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.InternalCLISolution || p.Kind == KindOfProject.CommonPackagesSolution).Cast<ISolutionSettings>().ToList();
+
             _projectsDict = Projects.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<IProjectSettings>().ToList());
             _devArtifactsDict = DevArtifacts.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<IArtifactSettings>().ToList());
 
@@ -178,6 +194,8 @@ namespace BaseDevPipeline.Data.Implementation
         private List<ISolutionSettings> _solutionsWithMaintainedVersionsInCSharpProjects;
         private List<ISolutionSettings> _solutionsWhichUseCommonPakage;
         private List<ISolutionSettings> _unityExampleSolutions;
+        private List<ISolutionSettings> _cSharpSolutions;
+        private List<ISolutionSettings> _cSharpSolutionsWhichUseNuGetPakages;
         private Dictionary<KindOfProject, List<IProjectSettings>> _projectsDict;
         private Dictionary<KindOfArtifact, List<IArtifactSettings>> _devArtifactsDict;
         private Dictionary<string, ILicenseSettings> _licesnsesDict;

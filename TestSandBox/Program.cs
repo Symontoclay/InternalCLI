@@ -186,6 +186,12 @@ namespace TestSandBox
             foreach(var solution in cSharpSolutions)
             {
                 _logger.Info($"solution.Name = {solution.Name}");
+
+                foreach (var project in solution.Projects)
+                {
+                    _logger.Info($"project.FolderName = {project.FolderName}");
+                    _logger.Info($"project.CsProjPath = {project.CsProjPath}");
+                }
             }
 
             _logger.Info("End");

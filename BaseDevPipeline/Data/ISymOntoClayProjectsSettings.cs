@@ -29,6 +29,8 @@ namespace BaseDevPipeline.Data
         IReadOnlyList<ISolutionSettings> GetSolutionsWithMaintainedVersionsInCSharpProjects();
         IReadOnlyList<ISolutionSettings> GetSolutionsWhichUseCommonPakage();
         IReadOnlyList<ISolutionSettings> GetUnityExampleSolutions();
+        IReadOnlyList<ISolutionSettings> GetCSharpSolutions();
+        IReadOnlyList<ISolutionSettings> GetCSharpSolutionsWhichUseNuGetPakages();
 
         IProjectSettings GetProject(KindOfProject kind);
         IReadOnlyList<IProjectSettings> GetProjects(KindOfProject kind);
