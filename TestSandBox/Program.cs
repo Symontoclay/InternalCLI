@@ -74,7 +74,10 @@ namespace TestSandBox
 
             try
             {
-                TstUpdateSymOntoClayCommonPkgVersionInProjectsDevTask();
+                TstCheckTargetFrameworksInAllCSharpProjects();
+                //TstSetTargetFramework();
+                //TstCheckTargetFramework();
+                //TstUpdateSymOntoClayCommonPkgVersionInProjectsDevTask();
                 //TstSymOntoClayCommonPkgToCommonFolderDevTask();
                 //TstIncreaseSymOntoClayCommonPkgVersionDevTask();
                 //TstCommonPackagesSolution();
@@ -156,6 +159,112 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstCheckTargetFrameworksInAllCSharpProjects()
+        {
+            _logger.Info("Begin");
+
+            //var commonPackageSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.CommonPackagesSolution);
+
+            //_logger.Info($"commonPackageSolution = {commonPackageSolution}");
+
+            //var internalCliSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.InternalCLISolution);
+
+            //_logger.Info($"internalCliSolution = {internalCliSolution}");
+
+            //var symOntoClaySolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.CoreSolution);
+
+            //_logger.Info($"symOntoClaySolution = {symOntoClaySolution}");
+
+            //var assetSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.Unity);
+
+            //_logger.Info($"assetSolution = {assetSolution}");
+
+            var cSharpSolutions = ProjectsDataSourceFactory.GetCSharpSolutions();
+
+            foreach(var solution in cSharpSolutions)
+            {
+                _logger.Info($"solution.Name = {solution.Name}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private static void TstSetTargetFramework()
+        {
+            _logger.Info("Begin");
+
+            var filePath = @"c:\Users\Acer\source\repos\SymOntoClay\TestSandbox\TestSandbox.csproj";
+
+            _logger.Info($"filePath = {filePath}");
+
+            var targetFramework = CSharpProjectHelper.GetTargetFrameworkVersion(filePath);
+
+            _logger.Info($"targetFramework = {targetFramework}");
+
+            var targetFrameworkStr = CSharpProjectHelper.ConvertVersionToTargetFramework(targetFramework);
+
+            _logger.Info($"targetFrameworkStr = {targetFrameworkStr}");
+
+            CSharpProjectHelper.SetTargetFramework(filePath, "net8.0");
+
+            _logger.Info("End");
+        }
+
+        private static void TstCheckTargetFramework()
+        {
+            _logger.Info("Begin");
+
+            var filePath = @"c:\Users\Acer\source\repos\SymOntoClay\TestSandbox\TestSandbox.csproj";
+
+            _logger.Info($"filePath = {filePath}");
+
+            var targetFramework = CSharpProjectHelper.GetTargetFrameworkVersion(filePath);
+
+            _logger.Info($"targetFramework = {targetFramework}");
+
+            var targetFrameworkStr = CSharpProjectHelper.ConvertVersionToTargetFramework(targetFramework);
+
+            _logger.Info($"targetFrameworkStr = {targetFrameworkStr}");
+
+            filePath = @"c:\Users\Acer\source\repos\SymOntoClay\SymOntoClayCore\SymOntoClayCore.csproj";
+
+            _logger.Info($"filePath = {filePath}");
+
+            targetFramework = CSharpProjectHelper.GetTargetFrameworkVersion(filePath);
+
+            _logger.Info($"targetFramework = {targetFramework}");
+
+            targetFrameworkStr = CSharpProjectHelper.ConvertVersionToTargetFramework(targetFramework);
+
+            _logger.Info($"targetFrameworkStr = {targetFrameworkStr}");
+
+            filePath = @"c:\Users\Acer\source\repos\InternalCLI\TestSandBox\TestSandBox.csproj";
+
+            _logger.Info($"filePath = {filePath}");
+
+            targetFramework = CSharpProjectHelper.GetTargetFrameworkVersion(filePath);
+
+            _logger.Info($"targetFramework = {targetFramework}");
+
+            targetFrameworkStr = CSharpProjectHelper.ConvertVersionToTargetFramework(targetFramework);
+
+            _logger.Info($"targetFrameworkStr = {targetFrameworkStr}");
+
+            filePath = @"c:\Users\Acer\source\repos\SymOntoClayAsset\Assembly-CSharp.csproj";
+
+            _logger.Info($"filePath = {filePath}");
+
+            targetFramework = CSharpProjectHelper.GetTargetFrameworkVersion(filePath);
+
+            _logger.Info($"targetFramework = {targetFramework}");
+
+            targetFrameworkStr = CSharpProjectHelper.ConvertVersionToTargetFramework(targetFramework);
+
+            _logger.Info($"targetFrameworkStr = {targetFrameworkStr}");
+
+            _logger.Info("End");
         }
 
         private static void TstUpdateSymOntoClayCommonPkgVersionInProjectsDevTask()

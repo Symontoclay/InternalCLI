@@ -1,4 +1,6 @@
-﻿using SymOntoClay.Common.CollectionsHelpers;
+﻿using Newtonsoft.Json;
+using NLog;
+using SymOntoClay.Common.CollectionsHelpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +12,7 @@ namespace CSharpUtils
     public static class CSharpProjectHelper
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static List<string> GetCSharpFileNames(string projectFileName)
@@ -24,25 +26,186 @@ namespace CSharpUtils
         {
             var project = LoadProject(projectFileName);
 
-            var targetPropertyGroup = GetMainPropertyGroup(project);
-
-            var section = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name == "TargetFramework");
+            var section = GetTargetFrameworkSection(project);
 
             if(section == null)
             {
-                return string.Empty;
+                section = GetTargetFrameworkSectionForNetFramework(project);
+
+                if (section == null)
+                {
+                    return string.Empty;
+                }
             }
 
             return section.Value;
+        }
+
+        private static XElement GetTargetFrameworkSection(XElement project)
+        {
+            var elementName = "TargetFramework";
+
+            var targetPropertyGroup = GetMainPropertyGroup(project, elementName);
+
+#if DEBUG
+            _logger.Info($"targetPropertyGroup = {targetPropertyGroup}");
+#endif
+
+            if(targetPropertyGroup == null)
+            {
+                return null;
+            }
+
+            return targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == elementName);
+        }
+
+        private static XElement GetTargetFrameworkSectionForNetFramework(XElement project)
+        {
+            var elementName = "TargetFrameworkVersion";
+
+            var targetPropertyGroup = GetMainPropertyGroup(project, elementName);
+
+#if DEBUG
+            _logger.Info($"targetPropertyGroup = {targetPropertyGroup}");
+#endif
+
+            if (targetPropertyGroup == null)
+            {
+                return null;
+            }
+
+            return targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == elementName);
+        }
+
+        public static (KindOfTargetCSharpFramework Kind, Version Version) GetTargetFrameworkVersion(string projectFileName)
+        {
+            return ConvertTargetFrameworkToVersion(GetTargetFramework(projectFileName));
+        }
+
+        private const string _netstandardPrefix = "netstandard";
+        private const string _netPrefix = "net";
+        private const string _netFrameworkPrefix = "v";
+
+        public static (KindOfTargetCSharpFramework Kind, Version Version) ConvertTargetFrameworkToVersion(string targetFramework)
+        {
+#if DEBUG
+            _logger.Info($"targetFramework = {targetFramework}");
+#endif
+
+            if (targetFramework.StartsWith(_netstandardPrefix))
+            {
+                var versionStr = targetFramework.Replace(_netstandardPrefix, string.Empty).Trim();
+
+#if DEBUG
+                _logger.Info($"versionStr = {versionStr}");
+#endif
+
+                return (KindOfTargetCSharpFramework.NetStandard, new Version(versionStr));
+            }
+
+            if (targetFramework.StartsWith(_netPrefix))
+            {
+                var versionStr = targetFramework.Replace(_netPrefix, string.Empty).Trim();
+
+#if DEBUG
+                _logger.Info($"versionStr = {versionStr}");
+#endif
+
+                return (KindOfTargetCSharpFramework.Net, new Version(versionStr));
+            }
+
+            if(targetFramework.StartsWith(_netFrameworkPrefix))
+            {
+                var versionStr = targetFramework.Replace(_netFrameworkPrefix, string.Empty).Trim();
+
+#if DEBUG
+                _logger.Info($"versionStr = {versionStr}");
+#endif
+
+                return (KindOfTargetCSharpFramework.NetFramework, new Version(versionStr));
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public static string ConvertVersionToTargetFramework((KindOfTargetCSharpFramework Kind, Version Version) frameworkVersion)
+        {
+#if DEBUG
+            _logger.Info($"frameworkVersion = {frameworkVersion}");
+#endif
+
+            var kind = frameworkVersion.Kind;
+            var version = frameworkVersion.Version;
+
+            switch(kind)
+            {
+                case KindOfTargetCSharpFramework.NetStandard:
+                    return _netstandardPrefix + version;
+
+                case KindOfTargetCSharpFramework.Net:
+                    return _netPrefix + version;
+
+                case KindOfTargetCSharpFramework.NetFramework:
+                    return _netFrameworkPrefix + version;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+            }
+        }
+
+        public static bool SetTargetFramework(string projectFileName, string targetFramework)
+        {
+#if DEBUG
+            _logger.Info($"targetFramework = {targetFramework}");
+#endif
+
+            return SetTargetFramework(projectFileName, ConvertTargetFrameworkToVersion(targetFramework));
+        }
+
+        public static bool SetTargetFramework(string projectFileName, (KindOfTargetCSharpFramework Kind, Version Version) frameworkVersion)
+        {
+            var project = LoadProject(projectFileName);
+
+#if DEBUG
+            _logger.Info($"frameworkVersion = {frameworkVersion}");
+#endif
+
+            var kind = frameworkVersion.Kind;
+            var versionStr = ConvertVersionToTargetFramework(frameworkVersion);
+
+#if DEBUG
+            _logger.Info($"versionStr = {versionStr}");
+#endif
+
+            var section = kind switch
+            {
+                KindOfTargetCSharpFramework.NetStandard => GetTargetFrameworkSection(project),
+                KindOfTargetCSharpFramework.Net => GetTargetFrameworkSection(project),
+                KindOfTargetCSharpFramework.NetFramework => GetTargetFrameworkSectionForNetFramework(project),
+                _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, null)
+            };
+
+            var existingVersion = section.Value;
+
+            if (existingVersion != versionStr)
+            {
+                section.Value = versionStr;
+
+                SaveProject(project, projectFileName);
+
+                return true;
+            }
+
+            return false;
         }
 
         public static bool GetGeneratePackageOnBuild(string projectFileName)
         {
             var project = LoadProject(projectFileName);
 
-            var targetPropertyGroup = GetMainPropertyGroup(project);
+            var targetPropertyGroup = GetMainPropertyGroup(project, "GeneratePackageOnBuild");
 
-            var section = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name == "GeneratePackageOnBuild");
+            var section = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "GeneratePackageOnBuild");
 
             if(section == null)
             {
@@ -56,9 +219,9 @@ namespace CSharpUtils
         {
             var project = LoadProject(projectFileName);
 
-            var targetPropertyGroup = GetMainPropertyGroup(project);
+            var targetPropertyGroup = GetMainPropertyGroup(project, "AssemblyName");
 
-            var section = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name == "AssemblyName");
+            var section = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "AssemblyName");
 
             if (section == null)
             {
@@ -72,9 +235,9 @@ namespace CSharpUtils
         {
             var project = LoadProject(projectFileName);
 
-            var targetPropertyGroup = GetMainPropertyGroup(project);
+            var targetPropertyGroup = GetMainPropertyGroup(project, "PackageId");
 
-            var section = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name == "PackageId");
+            var section = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "PackageId");
 
             if (section == null)
             {
@@ -102,7 +265,7 @@ namespace CSharpUtils
             return packageItem.Attribute("Version").Value;
         }
 
-        public static void UpdatePackageVersion(string projectFileName, string packageId, string version)
+        public static bool UpdatePackageVersion(string projectFileName, string packageId, string version)
         {
             var packageItemResult = GetPackageElement(projectFileName, packageId);
 
@@ -114,19 +277,28 @@ namespace CSharpUtils
 
             if (packageItem == null)
             {
-                return;
+                return false;
             }
 
-            packageItem.Attribute("Version").Value = version;
+            var existingVersionStr = packageItem.Attribute("Version").Value;
 
-            SaveProject(packageItemResult.Project, projectFileName);
+            if (existingVersionStr != version)
+            {
+                existingVersionStr = version;
+
+                SaveProject(packageItemResult.Project, projectFileName);
+
+                return true;
+            }
+
+            return false;
         }
 
         private static (XElement PackageItem, XElement Project) GetPackageElement(string projectFileName, string packageId)
         {
             var project = LoadProject(projectFileName);
 
-            var itemGroup = project.Elements().FirstOrDefault(p => p.Name == "ItemGroup" && p.HasElements && p.Elements().Any(x => x.Name == "PackageReference"));
+            var itemGroup = project.Elements().FirstOrDefault(p => p.Name.LocalName == "ItemGroup" && p.HasElements && p.Elements().Any(x => x.Name.LocalName == "PackageReference"));
 
 #if DEBUG
             //_logger.Info($"itemGroup = {itemGroup}");
@@ -137,16 +309,16 @@ namespace CSharpUtils
                 return (null, project);
             }
 
-            return (itemGroup.Elements().FirstOrDefault(p => p.Name == "PackageReference" && p.HasAttributes && p.Attributes().Any(x => x.Name == "Include" && x.Value == packageId)), project);
+            return (itemGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "PackageReference" && p.HasAttributes && p.Attributes().Any(x => x.Name.LocalName == "Include" && x.Value == packageId)), project);
         }
 
         public static string GetVersion(string projectFileName)
         {
             var project = LoadProject(projectFileName);
 
-            var targetPropertyGroup = GetMainPropertyGroup(project);
+            var targetPropertyGroup = GetMainPropertyGroup(project, "Version");
 
-            var version = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name == "Version");
+            var version = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "Version");
 
             if(version == null)
             {
@@ -237,11 +409,11 @@ namespace CSharpUtils
         {
             var project = LoadProject(projectFileName);
 
-            var targetPropertyGroup = GetMainPropertyGroup(project);
+            var targetPropertyGroup = GetMainPropertyGroup(project, "Version");
 
             var needUpdate = false;
 
-            var assemblyVersion = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name == "AssemblyVersion");
+            var assemblyVersion = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "AssemblyVersion");
 
             if (assemblyVersion == null)
             {
@@ -260,7 +432,7 @@ namespace CSharpUtils
                 }
             }
 
-            var fileVersion = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name == "FileVersion");
+            var fileVersion = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "FileVersion");
 
             if (fileVersion == null)
             {
@@ -279,7 +451,7 @@ namespace CSharpUtils
                 }
             }
 
-            var version = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name == "Version");
+            var version = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "Version");
 
             if (version == null)
             {
@@ -310,11 +482,11 @@ namespace CSharpUtils
         {
             var project = LoadProject(projectFileName);
 
-            var targetPropertyGroup = GetMainPropertyGroup(project);
+            var targetPropertyGroup = GetMainPropertyGroup(project, "Copyright");
 
             var needUpdate = false;
 
-            var copyrightSection = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name == "Copyright");
+            var copyrightSection = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "Copyright");
 
             if (copyrightSection == null)
             {
@@ -426,9 +598,21 @@ namespace CSharpUtils
             File.WriteAllText(projectFileName, txt);
         }
 
-        private static XElement GetMainPropertyGroup(XElement project)
+        private static XElement GetMainPropertyGroup(XElement project, string elementName)
         {
-            return project.Elements().FirstOrDefault(p => p.Name == "PropertyGroup" && !p.HasAttributes);
+#if DEBUG
+            //_logger.Info($"project = {project}");
+            //_logger.Info($"project.Elements().Select(p => p.Name) = {JsonConvert.SerializeObject(project.Elements().Select(p => (p.Name, p.HasAttributes, !p.HasAttributes, p.Name.LocalName == "PropertyGroup")), Formatting.Indented)}");
+#endif
+
+            var elements = project.Elements().Where(p => p.Name.LocalName == "PropertyGroup" && !p.HasAttributes);
+
+            if(string.IsNullOrEmpty(elementName))
+            {
+                return elements.FirstOrDefault();
+            }
+
+            return elements.FirstOrDefault(p => p.Elements()?.Any(x => x.Name.LocalName == elementName) ?? false);
         }
 
         private static XElement GetPropertyGroup(XElement project, KindOfConfiguration kindOfConfiguration)

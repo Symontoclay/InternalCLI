@@ -69,6 +69,18 @@ namespace BaseDevPipeline
             return settings.GetUnityExampleSolutions();
         }
 
+        public static IReadOnlyList<ISolutionSettings> GetCSharpSolutions()
+        {
+            var settings = GetSymOntoClayProjectsSettings();
+            return settings.GetCSharpSolutions();
+        }
+
+        public static IReadOnlyList<ISolutionSettings> GetCSharpSolutionsWhichUseNuGetPakages()
+        {
+            var settings = GetSymOntoClayProjectsSettings();
+            return settings.GetCSharpSolutionsWhichUseNuGetPakages();
+        }
+
         public static IProjectSettings GetProject(KindOfProject kind)
         {
             var settings = GetSymOntoClayProjectsSettings();
