@@ -19,6 +19,7 @@ using Deployment.DevTasks.CreateAndCommitLicenses;
 using Deployment.DevTasks.CreateAndCommitReadmes;
 using Deployment.DevTasks.CreateExtendedDocFile;
 using Deployment.DevTasks.CreateReadmes;
+using Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpProjects;
 using Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories;
 using Deployment.DevTasks.UpdateUnityExampleRepository;
 using Deployment.Helpers;
@@ -74,7 +75,8 @@ namespace TestSandBox
 
             try
             {
-                TstCheckTargetFrameworksInAllCSharpProjects();
+                TstCheckTargetFrameworksInAllCSharpProjectsDevTask();
+                //TstCheckTargetFrameworksInAllCSharpProjects();
                 //TstSetTargetFramework();
                 //TstCheckTargetFramework();
                 //TstUpdateSymOntoClayCommonPkgVersionInProjectsDevTask();
@@ -159,6 +161,15 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstCheckTargetFrameworksInAllCSharpProjectsDevTask()
+        {
+            _logger.Info("Begin");
+
+            DeploymentPipeline.Run(new CheckTargetFrameworksInAllCSharpProjectsDevTask());
+
+            _logger.Info("End");
         }
 
         private static void TstCheckTargetFrameworksInAllCSharpProjects()

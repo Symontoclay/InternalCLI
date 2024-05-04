@@ -73,9 +73,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonPackages", "CommonPac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IncreaseSymOntoClayCommonPkgVersion", "IncreaseSymOntoClayCommonPkgVersion\IncreaseSymOntoClayCommonPkgVersion.csproj", "{0B74D0A9-017F-4E23-9A73-5B3F6F0557A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopySymOntoClayCommonPkgToCommonFolder", "CopySymOntoClayCommonPkgToCommonFolder\CopySymOntoClayCommonPkgToCommonFolder.csproj", "{4AA70A08-7419-4665-9292-833F40E4BEB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CopySymOntoClayCommonPkgToCommonFolder", "CopySymOntoClayCommonPkgToCommonFolder\CopySymOntoClayCommonPkgToCommonFolder.csproj", "{4AA70A08-7419-4665-9292-833F40E4BEB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateSymOntoClayCommonPkgVersionInProjects", "UpdateSymOntoClayCommonPkgVersionInProjects\UpdateSymOntoClayCommonPkgVersionInProjects.csproj", "{145E7F79-E07B-4A51-B3EE-FE5ED2A4B914}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpdateSymOntoClayCommonPkgVersionInProjects", "UpdateSymOntoClayCommonPkgVersionInProjects\UpdateSymOntoClayCommonPkgVersionInProjects.csproj", "{145E7F79-E07B-4A51-B3EE-FE5ED2A4B914}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TargetFrameworks", "TargetFrameworks", "{FB8F15D6-F834-4A60-9E7D-D8AE7FE76286}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
