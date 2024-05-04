@@ -44,6 +44,7 @@ using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
 using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
 using SiteBuilder.SiteData;
+using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
 using System;
 using System.Collections;
