@@ -181,6 +181,8 @@ namespace TestSandBox
 
             //_logger.Info($"assetSolution = {assetSolution}");
 
+            var projectInformationList = new List<(string CsProjPath, KindOfProject KindOfProject, KindOfTargetCSharpFramework KindOfTargetCSharpFramework, Version Version)>();
+
             var cSharpSolutions = ProjectsDataSourceFactory.GetCSharpSolutions();
 
             foreach(var solution in cSharpSolutions)
@@ -195,6 +197,36 @@ namespace TestSandBox
                     var targetFramework = CSharpProjectHelper.GetTargetFrameworkVersion(project.CsProjPath);
 
                     _logger.Info($"targetFramework = {targetFramework}");
+
+                    projectInformationList.Add((project.CsProjPath, solution.Kind, targetFramework.Kind, targetFramework.Version));
+                }
+            }
+
+            _logger.Info($"targetSolution = {JsonConvert.SerializeObject(projectInformationList, Formatting.Indented)}");
+
+            var targetFrameworksDict = projectInformationList.GroupBy(p => p.KindOfTargetCSharpFramework).ToDictionary(p => p.Key, p => p.ToList());
+
+            foreach(var targetFrameworksKvpItem in targetFrameworksDict)
+            {
+                _logger.Info($"targetFrameworksKvpItem.Key = {targetFrameworksKvpItem.Key}");
+
+                var targetFrameworksItemsDict = targetFrameworksKvpItem.Value.GroupBy(p => p.Version).OrderByDescending(p => p.Key).ToDictionary(p => p.Key, p => p.ToList());
+
+                foreach(var itemsKvp in targetFrameworksItemsDict)
+                {
+                    _logger.Info($"itemsKvp.Key = {itemsKvp.Key}");
+
+                    var solutionsDict = itemsKvp.Value.GroupBy(p => p.KindOfProject).ToDictionary(p => p.Key, p => p.ToList());
+
+                    foreach(var solutionKvpItem in solutionsDict)
+                    {
+                        _logger.Info($"solutionKvpItem.Key = {solutionKvpItem.Key}");
+
+                        foreach(var projectItem in solutionKvpItem.Value.Select(p => p.CsProjPath))
+                        {
+                            _logger.Info($"projectItem = {projectItem}");
+                        }
+                    }
                 }
             }
 
