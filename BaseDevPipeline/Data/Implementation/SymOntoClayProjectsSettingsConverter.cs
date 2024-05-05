@@ -242,7 +242,7 @@ namespace BaseDevPipeline.Data.Implementation
                         };
 
 #if DEBUG
-                        _logger.Info($"projectSource = {projectSource}");
+                        //_logger.Info($"projectSource = {projectSource}");
 #endif
 
                         FillUpProject(projectSource, item, result);

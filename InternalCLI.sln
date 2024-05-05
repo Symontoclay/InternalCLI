@@ -79,6 +79,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpdateSymOntoClayCommonPkgV
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TargetFrameworks", "TargetFrameworks", "{FB8F15D6-F834-4A60-9E7D-D8AE7FE76286}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InstalledNuGetPackages", "InstalledNuGetPackages", "{540154D8-BAA3-4F93-A4C2-B48A47E2417F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

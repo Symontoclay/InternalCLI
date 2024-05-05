@@ -7,26 +7,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpProjects
+namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackagesInAllCSharpProjects
 {
-    public class CheckTargetFrameworksInAllCSharpProjectsDevTask : BaseDeploymentTask
+    public class CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask : BaseDeploymentTask
     {
-        public CheckTargetFrameworksInAllCSharpProjectsDevTask()
+        public CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask()
             : this(null)
         {
         }
 
-        public CheckTargetFrameworksInAllCSharpProjectsDevTask(IDeploymentTask parentTask)
-            : base("F4148046-893B-4136-AE00-43FDE3335ED5", false, null, parentTask)
+        public CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask(IDeploymentTask parentTask)
+            : base("B9B0E5D6-9CDA-4748-82D8-E10BE36F6651", false, null, parentTask)
         {
         }
 
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            var projectInformationList = GetInformationAboutProjects();
+            var packagesInformationList = GetPackagesInformationList();
 
-            var targetFrameworksDict = projectInformationList.GroupBy(p => p.KindOfTargetCSharpFramework).ToDictionary(p => p.Key, p => p.ToList());
+            var packageIdsDict = packagesInformationList.GroupBy(p => p.PackageId).ToDictionary(p => p.Key, p => p.ToList());
 
             var sb = new StringBuilder();
 
@@ -34,20 +34,20 @@ namespace Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpP
 
             var spaces = DisplayHelper.Spaces(n);
 
-            foreach (var targetFrameworksKvpItem in targetFrameworksDict)
+            foreach (var packageIdKvpItem in packageIdsDict)
             {
 #if DEBUG
-                //_logger.Info($"targetFrameworksKvpItem.Key = {targetFrameworksKvpItem.Key}");
+                //_logger.Info($"packageIdKvpItem.Key = {packageIdKvpItem.Key}");
 #endif
 
-                sb.AppendLine($"{spaces}{targetFrameworksKvpItem.Key}:");
+                sb.AppendLine($"{spaces}{packageIdKvpItem.Key}:");
 
                 var nextN = n + DisplayHelper.IndentationStep;
                 var nextSpaces = DisplayHelper.Spaces(nextN);
 
-                var targetFrameworksItemsDict = targetFrameworksKvpItem.Value.GroupBy(p => p.Version).OrderByDescending(p => p.Key).ToDictionary(p => p.Key, p => p.ToList());
+                var packageIdsItemsDict = packageIdKvpItem.Value.GroupBy(p => p.Version).OrderByDescending(p => p.Key).ToDictionary(p => p.Key, p => p.ToList());
 
-                foreach (var itemsKvp in targetFrameworksItemsDict)
+                foreach (var itemsKvp in packageIdsItemsDict)
                 {
 #if DEBUG
                     //_logger.Info($"itemsKvp.Key = {itemsKvp.Key}");
@@ -86,11 +86,11 @@ namespace Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpP
             _logger.Info(sb);
         }
 
-        private List<(string CsProjPath, KindOfProject KindOfProject, KindOfTargetCSharpFramework KindOfTargetCSharpFramework, Version Version)> GetInformationAboutProjects()
+        private List<(string CsProjPath, KindOfProject KindOfProject, string PackageId, Version Version)> GetPackagesInformationList()
         {
-            var projectInformationList = new List<(string CsProjPath, KindOfProject KindOfProject, KindOfTargetCSharpFramework KindOfTargetCSharpFramework, Version Version)>();
+            var packagesInformationList = new List<(string CsProjPath, KindOfProject KindOfProject, string PackageId, Version Version)>();
 
-            var cSharpSolutions = ProjectsDataSourceFactory.GetCSharpSolutions();
+            var cSharpSolutions = ProjectsDataSourceFactory.GetCSharpSolutionsWhichUseNuGetPakages();
 
             foreach (var solution in cSharpSolutions)
             {
@@ -105,17 +105,20 @@ namespace Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpP
                     //_logger.Info($"project.CsProjPath = {project.CsProjPath}");
 #endif
 
-                    var targetFramework = CSharpProjectHelper.GetTargetFrameworkVersion(project.CsProjPath);
+                    var installedPackages = CSharpProjectHelper.GetInstalledPackages(project.CsProjPath);
 
+                    foreach (var package in installedPackages)
+                    {
 #if DEBUG
-                    //_logger.Info($"targetFramework = {targetFramework}");
+                        //_logger.Info($"package = {package}");
 #endif
 
-                    projectInformationList.Add((project.CsProjPath, solution.Kind, targetFramework.Kind, targetFramework.Version));
+                        packagesInformationList.Add((project.CsProjPath, solution.Kind, package.PackageId, package.Version));
+                    }
                 }
             }
 
-            return projectInformationList;
+            return packagesInformationList;
         }
 
         /// <inheritdoc/>
@@ -124,7 +127,7 @@ namespace Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpP
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Checks all C# projects in organization and prints their target frameworks version to log file.");
+            sb.AppendLine($"{spaces}Checks all installed NuGet packages in organization and prints their target frameworks version to log file.");
 
             sb.Append(PrintValidation(n));
 

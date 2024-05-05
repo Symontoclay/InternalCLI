@@ -19,6 +19,7 @@ using Deployment.DevTasks.CreateAndCommitLicenses;
 using Deployment.DevTasks.CreateAndCommitReadmes;
 using Deployment.DevTasks.CreateExtendedDocFile;
 using Deployment.DevTasks.CreateReadmes;
+using Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackagesInAllCSharpProjects;
 using Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpProjects;
 using Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories;
 using Deployment.DevTasks.UpdateUnityExampleRepository;
@@ -75,7 +76,8 @@ namespace TestSandBox
 
             try
             {
-                TstCheckInstalledNuGetPackagesInAllCSharpProjects();
+                TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTask();
+                //TstCheckInstalledNuGetPackagesInAllCSharpProjects();
                 //TstCheckInstalledNuGetPackages();
                 //TstCheckTargetFrameworksInAllCSharpProjectsDevTask();
                 //TstCheckTargetFrameworksInAllCSharpProjects();
@@ -163,6 +165,15 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTask()
+        {
+            _logger.Info("Begin");
+
+            DeploymentPipeline.Run(new CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask());
+
+            _logger.Info("End");
         }
 
         private static void TstCheckInstalledNuGetPackagesInAllCSharpProjects()
