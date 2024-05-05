@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 
 namespace CSharpUtils
@@ -318,7 +319,7 @@ namespace CSharpUtils
 
             if (existingVersionStr != version)
             {
-                existingVersionStr = version;
+                packageItem.Attribute("Version").Value = version;
 
                 SaveProject(packageItemResult.Project, projectFileName);
 
@@ -639,7 +640,7 @@ namespace CSharpUtils
 
             txt = txt.Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", string.Empty).Replace("xmlns=\"\"", string.Empty).TrimStart();
 
-            File.WriteAllText(projectFileName, txt);
+            File.WriteAllText(projectFileName, txt, Encoding.UTF8);
         }
 
         private static XElement GetMainPropertyGroup(XElement project, string elementName)

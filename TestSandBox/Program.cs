@@ -77,7 +77,8 @@ namespace TestSandBox
 
             try
             {
-                TstUpdateTargetFrameworkInAllCSharpProjectsDevTask();
+                TstUpdateInstalledNuGetPackagesInAllCSharpProjects();
+                //TstUpdateTargetFrameworkInAllCSharpProjectsDevTask();
                 //TstUpdateTargetFrameworkInAllCSharpProjects();
                 //TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTask();
                 //TstCheckInstalledNuGetPackagesInAllCSharpProjects();
@@ -168,6 +169,55 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstUpdateInstalledNuGetPackagesInAllCSharpProjects()
+        {
+            _logger.Info("Begin");
+
+            var targetPackageId = "NLog";
+            var targetVersionStr = "5.1.4";
+
+            _logger.Info($"targetPackageId = {targetPackageId}");
+            _logger.Info($"targetVersionStr = {targetVersionStr}");
+
+            var targetVersion = new Version(targetVersionStr);
+
+            _logger.Info($"targetVersion = {targetVersion}");
+
+            var cSharpSolutions = ProjectsDataSourceFactory.GetCSharpSolutionsWhichUseNuGetPakages();
+
+            foreach (var solution in cSharpSolutions)
+            {
+                _logger.Info($"solution.Name = {solution.Name}");
+
+                foreach (var project in solution.Projects)
+                {
+                    _logger.Info($"project.FolderName = {project.FolderName}");
+                    _logger.Info($"project.CsProjPath = {project.CsProjPath}");
+
+                    var installedPackages = CSharpProjectHelper.GetInstalledPackages(project.CsProjPath);
+
+                    foreach (var package in installedPackages)
+                    {
+                        _logger.Info($"package = {package}");
+
+                        if(package.PackageId == targetPackageId)
+                        {
+                            if(package.Version >= targetVersion)
+                            {
+                                continue;
+                            }
+
+                            _logger.Info("NEXT");
+
+                            CSharpProjectHelper.UpdateInstalledPackageVersion(project.CsProjPath, targetPackageId, targetVersionStr);
+                        }
+                    }
+                }
+            }
+
+            _logger.Info("End");
         }
 
         private static void TstUpdateTargetFrameworkInAllCSharpProjectsDevTask()
