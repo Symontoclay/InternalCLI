@@ -75,7 +75,8 @@ namespace TestSandBox
 
             try
             {
-                TstCheckInstalledNuGetPackages();
+                TstCheckInstalledNuGetPackagesInAllCSharpProjects();
+                //TstCheckInstalledNuGetPackages();
                 //TstCheckTargetFrameworksInAllCSharpProjectsDevTask();
                 //TstCheckTargetFrameworksInAllCSharpProjects();
                 //TstSetTargetFramework();
@@ -162,6 +163,65 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstCheckInstalledNuGetPackagesInAllCSharpProjects()
+        {
+            _logger.Info("Begin");
+
+            var packagesInformationList = new List<(string CsProjPath, KindOfProject KindOfProject, string PackageId, Version Version)>();
+
+            var cSharpSolutions = ProjectsDataSourceFactory.GetCSharpSolutionsWhichUseNuGetPakages();
+
+            foreach(var solution in cSharpSolutions)
+            {
+                _logger.Info($"solution.Name = {solution.Name}");
+
+                foreach (var project in solution.Projects)
+                {
+                    _logger.Info($"project.FolderName = {project.FolderName}");
+                    _logger.Info($"project.CsProjPath = {project.CsProjPath}");
+
+                    var installedPackages = CSharpProjectHelper.GetInstalledPackages(project.CsProjPath);
+
+                    foreach(var package in installedPackages)
+                    {
+                        _logger.Info($"package = {package}");
+
+                        packagesInformationList.Add((project.CsProjPath, solution.Kind, package.PackageId, package.Version));
+                    }
+                }
+            }
+
+            _logger.Info($"packagesInformationList = {JsonConvert.SerializeObject(packagesInformationList, Formatting.Indented)}");
+
+            var packageIdsDict = packagesInformationList.GroupBy(p => p.PackageId).ToDictionary(p => p.Key, p => p.ToList());
+
+            foreach (var packageIdKvpItem in packageIdsDict)
+            {
+                _logger.Info($"packageIdKvpItem.Key = {packageIdKvpItem.Key}");
+
+                var packageIdsItemsDict = packageIdKvpItem.Value.GroupBy(p => p.Version).OrderByDescending(p => p.Key).ToDictionary(p => p.Key, p => p.ToList());
+
+                foreach (var itemsKvp in packageIdsItemsDict)
+                {
+                    _logger.Info($"itemsKvp.Key = {itemsKvp.Key}");
+
+                    var solutionsDict = itemsKvp.Value.GroupBy(p => p.KindOfProject).ToDictionary(p => p.Key, p => p.ToList());
+
+                    foreach (var solutionKvpItem in solutionsDict)
+                    {
+                        _logger.Info($"solutionKvpItem.Key = {solutionKvpItem.Key}");
+
+                        foreach (var projectItem in solutionKvpItem.Value.Select(p => p.CsProjPath))
+                        {
+                            _logger.Info($"projectItem = {projectItem}");
+                        }
+                    }
+                }
+            }
+
+            _logger.Info("End");
         }
 
         private static void TstCheckInstalledNuGetPackages()
@@ -253,7 +313,7 @@ namespace TestSandBox
                 }
             }
 
-            _logger.Info($"targetSolution = {JsonConvert.SerializeObject(projectInformationList, Formatting.Indented)}");
+            _logger.Info($"projectInformationList = {JsonConvert.SerializeObject(projectInformationList, Formatting.Indented)}");
 
             var targetFrameworksDict = projectInformationList.GroupBy(p => p.KindOfTargetCSharpFramework).ToDictionary(p => p.Key, p => p.ToList());
 

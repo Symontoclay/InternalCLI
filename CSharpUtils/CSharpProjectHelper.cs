@@ -12,7 +12,7 @@ namespace CSharpUtils
     public static class CSharpProjectHelper
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static List<string> GetCSharpFileNames(string projectFileName)
@@ -48,7 +48,7 @@ namespace CSharpUtils
             var targetPropertyGroup = GetMainPropertyGroup(project, elementName);
 
 #if DEBUG
-            _logger.Info($"targetPropertyGroup = {targetPropertyGroup}");
+            //_logger.Info($"targetPropertyGroup = {targetPropertyGroup}");
 #endif
 
             if(targetPropertyGroup == null)
@@ -66,7 +66,7 @@ namespace CSharpUtils
             var targetPropertyGroup = GetMainPropertyGroup(project, elementName);
 
 #if DEBUG
-            _logger.Info($"targetPropertyGroup = {targetPropertyGroup}");
+            //_logger.Info($"targetPropertyGroup = {targetPropertyGroup}");
 #endif
 
             if (targetPropertyGroup == null)
@@ -90,7 +90,7 @@ namespace CSharpUtils
         public static (KindOfTargetCSharpFramework Kind, Version Version) ConvertTargetFrameworkToVersion(string targetFramework)
         {
 #if DEBUG
-            _logger.Info($"targetFramework = {targetFramework}");
+            //_logger.Info($"targetFramework = {targetFramework}");
 #endif
 
             if (targetFramework.StartsWith(_netstandardPrefix))
@@ -98,7 +98,7 @@ namespace CSharpUtils
                 var versionStr = targetFramework.Replace(_netstandardPrefix, string.Empty).Trim();
 
 #if DEBUG
-                _logger.Info($"versionStr = {versionStr}");
+                //_logger.Info($"versionStr = {versionStr}");
 #endif
 
                 return (KindOfTargetCSharpFramework.NetStandard, new Version(versionStr));
@@ -109,7 +109,7 @@ namespace CSharpUtils
                 var versionStr = targetFramework.Replace(_netPrefix, string.Empty).Trim();
 
 #if DEBUG
-                _logger.Info($"versionStr = {versionStr}");
+                //_logger.Info($"versionStr = {versionStr}");
 #endif
 
                 if(targetFramework.EndsWith(_netWindowsSuffix))
@@ -117,7 +117,7 @@ namespace CSharpUtils
                     versionStr = versionStr.Replace(_netWindowsSuffix, string.Empty).Trim();
 
 #if DEBUG
-                    _logger.Info($"versionStr (after) = {versionStr}");
+                    //_logger.Info($"versionStr (after) = {versionStr}");
 #endif
 
                     return (KindOfTargetCSharpFramework.NetWindows, new Version(versionStr));
@@ -131,7 +131,7 @@ namespace CSharpUtils
                 var versionStr = targetFramework.Replace(_netFrameworkPrefix, string.Empty).Trim();
 
 #if DEBUG
-                _logger.Info($"versionStr = {versionStr}");
+                //_logger.Info($"versionStr = {versionStr}");
 #endif
 
                 return (KindOfTargetCSharpFramework.NetFramework, new Version(versionStr));
@@ -143,7 +143,7 @@ namespace CSharpUtils
         public static string ConvertVersionToTargetFramework((KindOfTargetCSharpFramework Kind, Version Version) frameworkVersion)
         {
 #if DEBUG
-            _logger.Info($"frameworkVersion = {frameworkVersion}");
+            //_logger.Info($"frameworkVersion = {frameworkVersion}");
 #endif
 
             var kind = frameworkVersion.Kind;
@@ -171,7 +171,7 @@ namespace CSharpUtils
         public static bool SetTargetFramework(string projectFileName, string targetFramework)
         {
 #if DEBUG
-            _logger.Info($"targetFramework = {targetFramework}");
+            //_logger.Info($"targetFramework = {targetFramework}");
 #endif
 
             return SetTargetFramework(projectFileName, ConvertTargetFrameworkToVersion(targetFramework));
@@ -182,14 +182,14 @@ namespace CSharpUtils
             var project = LoadProject(projectFileName);
 
 #if DEBUG
-            _logger.Info($"frameworkVersion = {frameworkVersion}");
+            //_logger.Info($"frameworkVersion = {frameworkVersion}");
 #endif
 
             var kind = frameworkVersion.Kind;
             var versionStr = ConvertVersionToTargetFramework(frameworkVersion);
 
 #if DEBUG
-            _logger.Info($"versionStr = {versionStr}");
+            //_logger.Info($"versionStr = {versionStr}");
 #endif
 
             var section = kind switch
@@ -270,7 +270,7 @@ namespace CSharpUtils
             var itemGroup = installedPackagesElementResult.PackageElement;
 
 #if DEBUG
-            _logger.Info($"itemGroup = {itemGroup}");
+            //_logger.Info($"itemGroup = {itemGroup}");
 #endif
 
             if(itemGroup == null)
@@ -278,7 +278,7 @@ namespace CSharpUtils
                 return new List<(string PackageId, Version Version)>();
             }
 
-            return itemGroup.Elements().Select(p => (p.Attribute("Include").Value, new Version(p.Attribute("Version").Value))).ToList();
+            return itemGroup.Elements().Select(p => (p.Attribute("Include").Value, new Version(p.Attribute("Version").Value.Replace("-Preview1", string.Empty).Trim()))).ToList();
         }
 
         public static string GetInstalledPackageVersion(string projectFileName, string packageId)
@@ -350,7 +350,7 @@ namespace CSharpUtils
             var itemGroup = project.Elements().FirstOrDefault(p => p.Name.LocalName == "ItemGroup" && p.HasElements && p.Elements().Any(x => x.Name.LocalName == "PackageReference"));
 
 #if DEBUG
-            _logger.Info($"itemGroup = {itemGroup}");
+            //_logger.Info($"itemGroup = {itemGroup}");
 #endif
 
             return (itemGroup, project);
