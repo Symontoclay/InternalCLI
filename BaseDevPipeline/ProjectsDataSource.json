@@ -267,6 +267,14 @@
         {
           "Kind": "CLI",
           "Path": "UpdateSymOntoClayCommonPkgVersionInProjects"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "CheckInstalledNuGetPackagesInAllCSharpProjects"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "CheckTargetFrameworksInAllCSharpProjects"
         }
       ]
     },
