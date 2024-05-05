@@ -75,7 +75,8 @@ namespace TestSandBox
 
             try
             {
-                TstCheckTargetFrameworksInAllCSharpProjectsDevTask();
+                TstCheckInstalledNuGetPackages();
+                //TstCheckTargetFrameworksInAllCSharpProjectsDevTask();
                 //TstCheckTargetFrameworksInAllCSharpProjects();
                 //TstSetTargetFramework();
                 //TstCheckTargetFramework();
@@ -161,6 +162,45 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstCheckInstalledNuGetPackages()
+        {
+            _logger.Info("Begin");
+
+            var filePath = @"c:\Users\Acer\source\repos\SymOntoClay\TestSandbox\TestSandbox.csproj";
+
+            _logger.Info($"filePath = {filePath}");
+
+            var installedPackages = CSharpProjectHelper.GetInstalledPackages(filePath);
+
+            _logger.Info($"installedPackages = {JsonConvert.SerializeObject(installedPackages, Formatting.Indented)}");
+
+            filePath = @"c:\Users\Acer\source\repos\SymOntoClay\SymOntoClayCore\SymOntoClayCore.csproj";
+
+            _logger.Info($"filePath = {filePath}");
+
+            installedPackages = CSharpProjectHelper.GetInstalledPackages(filePath);
+
+            _logger.Info($"installedPackages = {JsonConvert.SerializeObject(installedPackages, Formatting.Indented)}");
+
+            filePath = @"c:\Users\Acer\source\repos\InternalCLI\TestSandBox\TestSandBox.csproj";
+
+            _logger.Info($"filePath = {filePath}");
+
+            installedPackages = CSharpProjectHelper.GetInstalledPackages(filePath);
+
+            _logger.Info($"installedPackages = {JsonConvert.SerializeObject(installedPackages, Formatting.Indented)}");
+
+            filePath = @"c:\Users\Acer\source\repos\SymOntoClayAsset\Assembly-CSharp.csproj";
+
+            _logger.Info($"filePath = {filePath}");
+
+            installedPackages = CSharpProjectHelper.GetInstalledPackages(filePath);
+
+            _logger.Info($"installedPackages = {JsonConvert.SerializeObject(installedPackages, Formatting.Indented)}");
+
+            _logger.Info("End");
         }
 
         private static void TstCheckTargetFrameworksInAllCSharpProjectsDevTask()
@@ -441,7 +481,7 @@ namespace TestSandBox
         {
             _logger.Info($"targetProjectPath = {targetProjectPath}");
 
-            var versionStr = CSharpProjectHelper.GetPackageVersion(targetProjectPath, packageId);
+            var versionStr = CSharpProjectHelper.GetInstalledPackageVersion(targetProjectPath, packageId);
 
             _logger.Info($"versionStr = {versionStr}");
 
@@ -451,7 +491,7 @@ namespace TestSandBox
 
             if (targetVersion > existingVersion)
             {
-                CSharpProjectHelper.UpdatePackageVersion(targetProjectPath, packageId, targetVersion.ToString());
+                CSharpProjectHelper.UpdateInstalledPackageVersion(targetProjectPath, packageId, targetVersion.ToString());
             }
         }
 

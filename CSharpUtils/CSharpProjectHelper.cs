@@ -263,9 +263,27 @@ namespace CSharpUtils
             return section.Value;
         }
 
-        public static string GetPackageVersion(string projectFileName, string packageId)
+        public static List<(string PackageId, Version Version)> GetInstalledPackages(string projectFileName)
         {
-            var packageItemResult = GetPackageElement(projectFileName, packageId);
+            var installedPackagesElementResult = GetInstalledPackagesElement(projectFileName);
+
+            var itemGroup = installedPackagesElementResult.PackageElement;
+
+#if DEBUG
+            _logger.Info($"itemGroup = {itemGroup}");
+#endif
+
+            if(itemGroup == null)
+            {
+                return new List<(string PackageId, Version Version)>();
+            }
+
+            return itemGroup.Elements().Select(p => (p.Attribute("Include").Value, new Version(p.Attribute("Version").Value))).ToList();
+        }
+
+        public static string GetInstalledPackageVersion(string projectFileName, string packageId)
+        {
+            var packageItemResult = GetInstalledPackageElement(projectFileName, packageId);
 
             var packageItem = packageItemResult.PackageItem;
 
@@ -281,9 +299,9 @@ namespace CSharpUtils
             return packageItem.Attribute("Version").Value;
         }
 
-        public static bool UpdatePackageVersion(string projectFileName, string packageId, string version)
+        public static bool UpdateInstalledPackageVersion(string projectFileName, string packageId, string version)
         {
-            var packageItemResult = GetPackageElement(projectFileName, packageId);
+            var packageItemResult = GetInstalledPackageElement(projectFileName, packageId);
 
             var packageItem = packageItemResult.PackageItem;
 
@@ -310,15 +328,12 @@ namespace CSharpUtils
             return false;
         }
 
-        private static (XElement PackageItem, XElement Project) GetPackageElement(string projectFileName, string packageId)
+        private static (XElement PackageItem, XElement Project) GetInstalledPackageElement(string projectFileName, string packageId)
         {
-            var project = LoadProject(projectFileName);
+            var installedPackagesElementResult = GetInstalledPackagesElement(projectFileName);
 
-            var itemGroup = project.Elements().FirstOrDefault(p => p.Name.LocalName == "ItemGroup" && p.HasElements && p.Elements().Any(x => x.Name.LocalName == "PackageReference"));
-
-#if DEBUG
-            //_logger.Info($"itemGroup = {itemGroup}");
-#endif
+            var itemGroup = installedPackagesElementResult.PackageElement;
+            var project = installedPackagesElementResult.Project;
 
             if (itemGroup == null)
             {
@@ -326,6 +341,19 @@ namespace CSharpUtils
             }
 
             return (itemGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "PackageReference" && p.HasAttributes && p.Attributes().Any(x => x.Name.LocalName == "Include" && x.Value == packageId)), project);
+        }
+
+        private static (XElement PackageElement, XElement Project) GetInstalledPackagesElement(string projectFileName)
+        {
+            var project = LoadProject(projectFileName);
+
+            var itemGroup = project.Elements().FirstOrDefault(p => p.Name.LocalName == "ItemGroup" && p.HasElements && p.Elements().Any(x => x.Name.LocalName == "PackageReference"));
+
+#if DEBUG
+            _logger.Info($"itemGroup = {itemGroup}");
+#endif
+
+            return (itemGroup, project);
         }
 
         public static string GetVersion(string projectFileName)

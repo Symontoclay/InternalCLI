@@ -68,7 +68,7 @@ namespace Deployment.DevTasks.CommonPackages.UpdateSymOntoClayCommonPkgVersionIn
                         //_logger.Info($"package = {package}");
 #endif
 
-                        var versionStr = CSharpProjectHelper.GetPackageVersion(project.CsProjPath, package);
+                        var versionStr = CSharpProjectHelper.GetInstalledPackageVersion(project.CsProjPath, package);
 
 #if DEBUG
                         //_logger.Info($"versionStr = {versionStr}");
@@ -87,7 +87,7 @@ namespace Deployment.DevTasks.CommonPackages.UpdateSymOntoClayCommonPkgVersionIn
 
                         if (targetVersion > existingVersion)
                         {
-                            CSharpProjectHelper.UpdatePackageVersion(project.CsProjPath, package, targetVersion.ToString());
+                            CSharpProjectHelper.UpdateInstalledPackageVersion(project.CsProjPath, package, targetVersion.ToString());
                         }
                     }
                 }
