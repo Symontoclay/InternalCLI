@@ -87,6 +87,10 @@
         },
         {
           "Kind": "AdditionalApp",
+          "Path": "DictionaryGenerator"
+        },
+        {
+          "Kind": "AdditionalApp",
           "Path": "LinguisticVariableViewer"
         },
         {
