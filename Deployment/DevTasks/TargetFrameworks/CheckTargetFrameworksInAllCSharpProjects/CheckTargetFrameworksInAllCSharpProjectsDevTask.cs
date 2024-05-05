@@ -37,32 +37,47 @@ namespace Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpP
             foreach (var targetFrameworksKvpItem in targetFrameworksDict)
             {
 #if DEBUG
-                _logger.Info($"targetFrameworksKvpItem.Key = {targetFrameworksKvpItem.Key}");
+                //_logger.Info($"targetFrameworksKvpItem.Key = {targetFrameworksKvpItem.Key}");
 #endif
 
                 sb.AppendLine($"{spaces}{targetFrameworksKvpItem.Key}:");
+
+                var nextN = n + DisplayHelper.IndentationStep;
+                var nextSpaces = DisplayHelper.Spaces(nextN);
 
                 var targetFrameworksItemsDict = targetFrameworksKvpItem.Value.GroupBy(p => p.Version).OrderByDescending(p => p.Key).ToDictionary(p => p.Key, p => p.ToList());
 
                 foreach (var itemsKvp in targetFrameworksItemsDict)
                 {
 #if DEBUG
-                    _logger.Info($"itemsKvp.Key = {itemsKvp.Key}");
+                    //_logger.Info($"itemsKvp.Key = {itemsKvp.Key}");
 #endif
+
+                    sb.AppendLine($"{nextSpaces}{itemsKvp.Key}:");
+
+                    var nextNextN = nextN + DisplayHelper.IndentationStep;
+                    var nextNextSpaces = DisplayHelper.Spaces(nextNextN);
 
                     var solutionsDict = itemsKvp.Value.GroupBy(p => p.KindOfProject).ToDictionary(p => p.Key, p => p.ToList());
 
                     foreach (var solutionKvpItem in solutionsDict)
                     {
 #if DEBUG
-                        _logger.Info($"solutionKvpItem.Key = {solutionKvpItem.Key}");
+                        //_logger.Info($"solutionKvpItem.Key = {solutionKvpItem.Key}");
 #endif
+
+                        sb.AppendLine($"{nextNextSpaces}{solutionKvpItem.Key}:");
+
+                        var nextNextNextN = nextNextN + DisplayHelper.IndentationStep;
+                        var nextNextNextSpaces = DisplayHelper.Spaces(nextNextNextN);
 
                         foreach (var projectItem in solutionKvpItem.Value.Select(p => p.CsProjPath))
                         {
 #if DEBUG
-                            _logger.Info($"projectItem = {projectItem}");
+                            //_logger.Info($"projectItem = {projectItem}");
 #endif
+
+                            sb.AppendLine($"{nextNextNextSpaces}{projectItem}");
                         }
                     }
                 }
