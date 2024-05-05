@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "UpdateInstalledNuGetPackagesInAllCSharpProjects": {
+      "commandName": "Project",
+      "commandLineArgs": "NLog 5.1.4"
+    }
+  }
+}

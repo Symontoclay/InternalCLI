@@ -81,11 +81,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TargetFrameworks", "TargetF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InstalledNuGetPackages", "InstalledNuGetPackages", "{540154D8-BAA3-4F93-A4C2-B48A47E2417F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckInstalledNuGetPackagesInAllCSharpProjects", "CheckInstalledNuGetPackagesInAllCSharpProjects\CheckInstalledNuGetPackagesInAllCSharpProjects.csproj", "{BB6020EF-E302-49DD-9DBB-A4426564C7C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckInstalledNuGetPackagesInAllCSharpProjects", "CheckInstalledNuGetPackagesInAllCSharpProjects\CheckInstalledNuGetPackagesInAllCSharpProjects.csproj", "{BB6020EF-E302-49DD-9DBB-A4426564C7C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckTargetFrameworksInAllCSharpProjects", "CheckTargetFrameworksInAllCSharpProjects\CheckTargetFrameworksInAllCSharpProjects.csproj", "{01473DAD-59CD-46B5-A8AE-4D621F71F735}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckTargetFrameworksInAllCSharpProjects", "CheckTargetFrameworksInAllCSharpProjects\CheckTargetFrameworksInAllCSharpProjects.csproj", "{01473DAD-59CD-46B5-A8AE-4D621F71F735}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateTargetFrameworkInAllCSharpProjects", "UpdateTargetFrameworkInAllCSharpProjects\UpdateTargetFrameworkInAllCSharpProjects.csproj", "{E0AA6EA6-8625-47E6-8820-4EAA93C3584A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpdateTargetFrameworkInAllCSharpProjects", "UpdateTargetFrameworkInAllCSharpProjects\UpdateTargetFrameworkInAllCSharpProjects.csproj", "{E0AA6EA6-8625-47E6-8820-4EAA93C3584A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateInstalledNuGetPackagesInAllCSharpProjects", "UpdateInstalledNuGetPackagesInAllCSharpProjects\UpdateInstalledNuGetPackagesInAllCSharpProjects.csproj", "{135D1381-53DB-4BF8-ACA7-E3C47F1ECA80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -229,6 +231,10 @@ Global
 		{E0AA6EA6-8625-47E6-8820-4EAA93C3584A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0AA6EA6-8625-47E6-8820-4EAA93C3584A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0AA6EA6-8625-47E6-8820-4EAA93C3584A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{135D1381-53DB-4BF8-ACA7-E3C47F1ECA80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{135D1381-53DB-4BF8-ACA7-E3C47F1ECA80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{135D1381-53DB-4BF8-ACA7-E3C47F1ECA80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{135D1381-53DB-4BF8-ACA7-E3C47F1ECA80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -262,6 +268,7 @@ Global
 		{BB6020EF-E302-49DD-9DBB-A4426564C7C3} = {540154D8-BAA3-4F93-A4C2-B48A47E2417F}
 		{01473DAD-59CD-46B5-A8AE-4D621F71F735} = {FB8F15D6-F834-4A60-9E7D-D8AE7FE76286}
 		{E0AA6EA6-8625-47E6-8820-4EAA93C3584A} = {FB8F15D6-F834-4A60-9E7D-D8AE7FE76286}
+		{135D1381-53DB-4BF8-ACA7-E3C47F1ECA80} = {540154D8-BAA3-4F93-A4C2-B48A47E2417F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {06C4A77F-C5ED-463F-A718-5E248AB5CDAB}

@@ -274,6 +274,10 @@
         },
         {
           "Kind": "CLI",
+          "Path": "UpdateInstalledNuGetPackagesInAllCSharpProjects"
+        },
+        {
+          "Kind": "CLI",
           "Path": "CheckTargetFrameworksInAllCSharpProjects"
         },
         {
