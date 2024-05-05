@@ -20,6 +20,7 @@ using Deployment.DevTasks.CreateAndCommitReadmes;
 using Deployment.DevTasks.CreateExtendedDocFile;
 using Deployment.DevTasks.CreateReadmes;
 using Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackagesInAllCSharpProjects;
+using Deployment.DevTasks.InstalledNuGetPackages.UpdateInstalledNuGetPackagesInAllCSharpProjects;
 using Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpProjects;
 using Deployment.DevTasks.TargetFrameworks.UpdateTargetFrameworkInAllCSharpProjects;
 using Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories;
@@ -77,7 +78,8 @@ namespace TestSandBox
 
             try
             {
-                TstUpdateInstalledNuGetPackagesInAllCSharpProjects();
+                TstUpdateInstalledNuGetPackagesInAllCSharpProjectsDevTask();
+                //TstUpdateInstalledNuGetPackagesInAllCSharpProjects();
                 //TstUpdateTargetFrameworkInAllCSharpProjectsDevTask();
                 //TstUpdateTargetFrameworkInAllCSharpProjects();
                 //TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTask();
@@ -169,6 +171,25 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstUpdateInstalledNuGetPackagesInAllCSharpProjectsDevTask()
+        {
+            _logger.Info("Begin");
+
+            var targetPackageId = "NLog";
+            var targetVersionStr = "5.1.4";
+
+            _logger.Info($"targetPackageId = {targetPackageId}");
+            _logger.Info($"targetVersionStr = {targetVersionStr}");
+
+            DeploymentPipeline.Run(new UpdateInstalledNuGetPackagesInAllCSharpProjectsDevTask(new UpdateInstalledNuGetPackagesInAllCSharpProjectsDevTaskOptions()
+            {
+                PackageId = targetPackageId,
+                Version = targetVersionStr
+            }));
+
+            _logger.Info("End");
         }
 
         private static void TstUpdateInstalledNuGetPackagesInAllCSharpProjects()

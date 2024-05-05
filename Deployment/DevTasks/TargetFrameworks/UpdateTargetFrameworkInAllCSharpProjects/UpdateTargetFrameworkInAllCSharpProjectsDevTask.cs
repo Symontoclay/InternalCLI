@@ -86,7 +86,7 @@ namespace Deployment.DevTasks.TargetFrameworks.UpdateTargetFrameworkInAllCSharpP
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}Updates target framework's version for all C# projects in organization.");
+            sb.AppendLine($"{spaces}Updates target framework's '{_options.KindOfTargetCSharpFramework}' version to '{_options.Version}' for all C# projects in organization.");
             sb.AppendLine($"{spaces}This only increases version without change target framework.");
             sb.AppendLine($"{spaces}If target framework has equal or higher version, It will be ignored.");
 
