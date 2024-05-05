@@ -21,6 +21,7 @@ using Deployment.DevTasks.CreateExtendedDocFile;
 using Deployment.DevTasks.CreateReadmes;
 using Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackagesInAllCSharpProjects;
 using Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpProjects;
+using Deployment.DevTasks.TargetFrameworks.UpdateTargetFrameworkInAllCSharpProjects;
 using Deployment.DevTasks.UpdateAndCommitUnityExampleRepositories;
 using Deployment.DevTasks.UpdateUnityExampleRepository;
 using Deployment.Helpers;
@@ -76,7 +77,9 @@ namespace TestSandBox
 
             try
             {
-                TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTask();
+                TstUpdateTargetFrameworkInAllCSharpProjectsDevTask();
+                //TstUpdateTargetFrameworkInAllCSharpProjects();
+                //TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTask();
                 //TstCheckInstalledNuGetPackagesInAllCSharpProjects();
                 //TstCheckInstalledNuGetPackages();
                 //TstCheckTargetFrameworksInAllCSharpProjectsDevTask();
@@ -165,6 +168,75 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstUpdateTargetFrameworkInAllCSharpProjectsDevTask()
+        {
+            _logger.Info("Begin");
+
+            var kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.Net;
+            var targetVersionStr = "8.0";
+
+            _logger.Info($"kindOfTargetCSharpFramework = {kindOfTargetCSharpFramework}");
+            _logger.Info($"targetVersionStr = {targetVersionStr}");
+
+            DeploymentPipeline.Run(new UpdateTargetFrameworkInAllCSharpProjectsDevTask(new UpdateTargetFrameworkInAllCSharpProjectsDevTaskOptions()
+            {
+                KindOfTargetCSharpFramework = kindOfTargetCSharpFramework,
+                Version = targetVersionStr
+            }));
+
+            _logger.Info("End");
+        }
+
+        private static void TstUpdateTargetFrameworkInAllCSharpProjects()
+        {
+            _logger.Info("Begin");
+
+            var kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.Net;
+            var targetVersionStr = "8.0";
+
+            _logger.Info($"kindOfTargetCSharpFramework = {kindOfTargetCSharpFramework}");
+            _logger.Info($"targetVersionStr = {targetVersionStr}");
+
+            var targetVersion = new Version(targetVersionStr);
+
+            _logger.Info($"targetVersion = {targetVersion}");
+
+            var frameworkVersion = (kindOfTargetCSharpFramework, targetVersion);
+
+            var cSharpSolutions = ProjectsDataSourceFactory.GetCSharpSolutions();
+
+            foreach (var solution in cSharpSolutions)
+            {
+                _logger.Info($"solution.Name = {solution.Name}");
+
+                foreach (var project in solution.Projects)
+                {
+                    _logger.Info($"project.FolderName = {project.FolderName}");
+                    _logger.Info($"project.CsProjPath = {project.CsProjPath}");
+
+                    var currentFramework = CSharpProjectHelper.GetTargetFrameworkVersion(project.CsProjPath);
+
+                    _logger.Info($"currentFramework = {currentFramework}");
+
+                    if(currentFramework.Kind != kindOfTargetCSharpFramework)
+                    {
+                        continue;
+                    }
+
+                    if(currentFramework.Version >= targetVersion)
+                    {
+                        continue;
+                    }
+
+                    _logger.Info("NEXT");
+
+                    CSharpProjectHelper.SetTargetFramework(project.CsProjPath, frameworkVersion);
+                }
+            }
+
+            _logger.Info("End");
         }
 
         private static void TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTask()
@@ -316,25 +388,25 @@ namespace TestSandBox
                     _logger.Info($"project.FolderName = {project.FolderName}");
                     _logger.Info($"project.CsProjPath = {project.CsProjPath}");
 
-                    var targetFramework = CSharpProjectHelper.GetTargetFrameworkVersion(project.CsProjPath);
+                    var currentFramework = CSharpProjectHelper.GetTargetFrameworkVersion(project.CsProjPath);
 
-                    _logger.Info($"targetFramework = {targetFramework}");
+                    _logger.Info($"currentFramework = {currentFramework}");
 
-                    projectInformationList.Add((project.CsProjPath, solution.Kind, targetFramework.Kind, targetFramework.Version));
+                    projectInformationList.Add((project.CsProjPath, solution.Kind, currentFramework.Kind, currentFramework.Version));
                 }
             }
 
             _logger.Info($"projectInformationList = {JsonConvert.SerializeObject(projectInformationList, Formatting.Indented)}");
 
-            var targetFrameworksDict = projectInformationList.GroupBy(p => p.KindOfTargetCSharpFramework).ToDictionary(p => p.Key, p => p.ToList());
+            var currentFrameworksDict = projectInformationList.GroupBy(p => p.KindOfTargetCSharpFramework).ToDictionary(p => p.Key, p => p.ToList());
 
-            foreach(var targetFrameworksKvpItem in targetFrameworksDict)
+            foreach(var currentFrameworksKvpItem in currentFrameworksDict)
             {
-                _logger.Info($"targetFrameworksKvpItem.Key = {targetFrameworksKvpItem.Key}");
+                _logger.Info($"currentFrameworksKvpItem.Key = {currentFrameworksKvpItem.Key}");
 
-                var targetFrameworksItemsDict = targetFrameworksKvpItem.Value.GroupBy(p => p.Version).OrderByDescending(p => p.Key).ToDictionary(p => p.Key, p => p.ToList());
+                var currentFrameworksItemsDict = currentFrameworksKvpItem.Value.GroupBy(p => p.Version).OrderByDescending(p => p.Key).ToDictionary(p => p.Key, p => p.ToList());
 
-                foreach(var itemsKvp in targetFrameworksItemsDict)
+                foreach(var itemsKvp in currentFrameworksItemsDict)
                 {
                     _logger.Info($"itemsKvp.Key = {itemsKvp.Key}");
 

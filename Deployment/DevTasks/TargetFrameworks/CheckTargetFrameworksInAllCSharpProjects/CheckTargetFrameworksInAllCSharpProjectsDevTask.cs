@@ -26,7 +26,7 @@ namespace Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpP
         {
             var projectInformationList = GetInformationAboutProjects();
 
-            var targetFrameworksDict = projectInformationList.GroupBy(p => p.KindOfTargetCSharpFramework).ToDictionary(p => p.Key, p => p.ToList());
+            var currentFrameworksDict = projectInformationList.GroupBy(p => p.KindOfTargetCSharpFramework).ToDictionary(p => p.Key, p => p.ToList());
 
             var sb = new StringBuilder();
 
@@ -34,20 +34,20 @@ namespace Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpP
 
             var spaces = DisplayHelper.Spaces(n);
 
-            foreach (var targetFrameworksKvpItem in targetFrameworksDict)
+            foreach (var currentFrameworksKvpItem in currentFrameworksDict)
             {
 #if DEBUG
-                //_logger.Info($"targetFrameworksKvpItem.Key = {targetFrameworksKvpItem.Key}");
+                //_logger.Info($"currentFrameworksKvpItem.Key = {currentFrameworksKvpItem.Key}");
 #endif
 
-                sb.AppendLine($"{spaces}{targetFrameworksKvpItem.Key}:");
+                sb.AppendLine($"{spaces}{currentFrameworksKvpItem.Key}:");
 
                 var nextN = n + DisplayHelper.IndentationStep;
                 var nextSpaces = DisplayHelper.Spaces(nextN);
 
-                var targetFrameworksItemsDict = targetFrameworksKvpItem.Value.GroupBy(p => p.Version).OrderByDescending(p => p.Key).ToDictionary(p => p.Key, p => p.ToList());
+                var currentFrameworksItemsDict = currentFrameworksKvpItem.Value.GroupBy(p => p.Version).OrderByDescending(p => p.Key).ToDictionary(p => p.Key, p => p.ToList());
 
-                foreach (var itemsKvp in targetFrameworksItemsDict)
+                foreach (var itemsKvp in currentFrameworksItemsDict)
                 {
 #if DEBUG
                     //_logger.Info($"itemsKvp.Key = {itemsKvp.Key}");
@@ -105,13 +105,13 @@ namespace Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpP
                     //_logger.Info($"project.CsProjPath = {project.CsProjPath}");
 #endif
 
-                    var targetFramework = CSharpProjectHelper.GetTargetFrameworkVersion(project.CsProjPath);
+                    var currentFramework = CSharpProjectHelper.GetTargetFrameworkVersion(project.CsProjPath);
 
 #if DEBUG
-                    //_logger.Info($"targetFramework = {targetFramework}");
+                    //_logger.Info($"currentFramework = {currentFramework}");
 #endif
 
-                    projectInformationList.Add((project.CsProjPath, solution.Kind, targetFramework.Kind, targetFramework.Version));
+                    projectInformationList.Add((project.CsProjPath, solution.Kind, currentFramework.Kind, currentFramework.Version));
                 }
             }
 
