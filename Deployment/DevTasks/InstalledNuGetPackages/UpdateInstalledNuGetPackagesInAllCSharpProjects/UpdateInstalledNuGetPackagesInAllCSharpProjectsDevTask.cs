@@ -1,4 +1,6 @@
-﻿using CommonUtils.DeploymentTasks;
+﻿using BaseDevPipeline;
+using CommonUtils.DeploymentTasks;
+using CSharpUtils;
 using SymOntoClay.Common.DebugHelpers;
 using System;
 using System.Text;
@@ -30,7 +32,51 @@ namespace Deployment.DevTasks.InstalledNuGetPackages.UpdateInstalledNuGetPackage
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            throw new NotImplementedException();
+            var targetVersion = new Version(_options.Version);
+
+#if DEBUG
+            //_logger.Info($"targetVersion = {targetVersion}");
+#endif
+
+            var cSharpSolutions = ProjectsDataSourceFactory.GetCSharpSolutionsWhichUseNuGetPakages();
+
+            foreach (var solution in cSharpSolutions)
+            {
+#if DEBUG
+                //_logger.Info($"solution.Name = {solution.Name}");
+#endif
+
+                foreach (var project in solution.Projects)
+                {
+#if DEBUG
+                    //_logger.Info($"project.FolderName = {project.FolderName}");
+                    //_logger.Info($"project.CsProjPath = {project.CsProjPath}");
+#endif
+
+                    var installedPackages = CSharpProjectHelper.GetInstalledPackages(project.CsProjPath);
+
+                    foreach (var package in installedPackages)
+                    {
+#if DEBUG
+                        //_logger.Info($"package = {package}");
+#endif
+
+                        if (package.PackageId == _options.PackageId)
+                        {
+                            if (package.Version >= targetVersion)
+                            {
+                                continue;
+                            }
+
+#if DEBUG
+                            //_logger.Info("NEXT");
+#endif
+
+                            CSharpProjectHelper.UpdateInstalledPackageVersion(project.CsProjPath, _options.PackageId, _options.Version);
+                        }
+                    }
+                }
+            }
         }
 
         /// <inheritdoc/>
