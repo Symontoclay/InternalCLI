@@ -1,18 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="dotless" Version="1.6.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="NLog" Version="4.7.5" />
+    <PackageReference Include="NLog" Version="5.1.4" />
     <PackageReference Include="Octokit" Version="0.50.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\BaseDevPipeline\BaseDevPipeline.csproj" />
     <ProjectReference Include="..\CommonUtils\CommonUtils.csproj" />
@@ -22,7 +19,6 @@
     <ProjectReference Include="..\SiteBuilder\SiteBuilder.csproj" />
     <ProjectReference Include="..\XMLDocReader\XMLDocReader.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="cleanedNPCPackage.unitypackage">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -67,5 +63,4 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>

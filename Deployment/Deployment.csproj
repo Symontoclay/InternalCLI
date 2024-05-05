@@ -1,22 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Version>1.0.1</Version>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Html2Markdown" Version="5.1.0.703" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="NLog" Version="4.7.5" />
+    <PackageReference Include="NLog" Version="5.1.4" />
     <PackageReference Include="Octokit" Version="0.50.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\BaseDevPipeline\BaseDevPipeline.csproj" />
     <ProjectReference Include="..\CommonUtils\CommonUtils.csproj" />
     <ProjectReference Include="..\CSharpUtils\CSharpUtils.csproj" />
     <ProjectReference Include="..\SiteBuilder\SiteBuilder.csproj" />
   </ItemGroup>
-
 </Project>
