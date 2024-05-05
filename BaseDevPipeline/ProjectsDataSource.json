@@ -275,6 +275,10 @@
         {
           "Kind": "CLI",
           "Path": "CheckTargetFrameworksInAllCSharpProjects"
+        },
+        {
+          "Kind": "CLI",
+          "Path": "UpdateTargetFrameworkInAllCSharpProjects"
         }
       ]
     },

@@ -85,6 +85,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckInstalledNuGetPackages
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckTargetFrameworksInAllCSharpProjects", "CheckTargetFrameworksInAllCSharpProjects\CheckTargetFrameworksInAllCSharpProjects.csproj", "{01473DAD-59CD-46B5-A8AE-4D621F71F735}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateTargetFrameworkInAllCSharpProjects", "UpdateTargetFrameworkInAllCSharpProjects\UpdateTargetFrameworkInAllCSharpProjects.csproj", "{E0AA6EA6-8625-47E6-8820-4EAA93C3584A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -223,6 +225,10 @@ Global
 		{01473DAD-59CD-46B5-A8AE-4D621F71F735}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01473DAD-59CD-46B5-A8AE-4D621F71F735}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01473DAD-59CD-46B5-A8AE-4D621F71F735}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0AA6EA6-8625-47E6-8820-4EAA93C3584A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0AA6EA6-8625-47E6-8820-4EAA93C3584A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0AA6EA6-8625-47E6-8820-4EAA93C3584A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0AA6EA6-8625-47E6-8820-4EAA93C3584A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -255,6 +261,7 @@ Global
 		{145E7F79-E07B-4A51-B3EE-FE5ED2A4B914} = {CA92B63C-3120-481B-BE10-7A9DA89DDC81}
 		{BB6020EF-E302-49DD-9DBB-A4426564C7C3} = {540154D8-BAA3-4F93-A4C2-B48A47E2417F}
 		{01473DAD-59CD-46B5-A8AE-4D621F71F735} = {FB8F15D6-F834-4A60-9E7D-D8AE7FE76286}
+		{E0AA6EA6-8625-47E6-8820-4EAA93C3584A} = {FB8F15D6-F834-4A60-9E7D-D8AE7FE76286}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {06C4A77F-C5ED-463F-A718-5E248AB5CDAB}
