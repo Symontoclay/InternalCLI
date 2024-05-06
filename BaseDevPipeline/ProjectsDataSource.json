@@ -304,6 +304,10 @@
           "Path": "SymOntoClay.Common"
         },
         {
+          "Kind": "Library",
+          "Path": "SymOntoClay.CLI.Helpers"
+        },
+        {
           "Kind": "AdditionalApp",
           "Path": "TestSandBox"
         }
