@@ -3,6 +3,7 @@ using CommonUtils;
 using NLog;
 using SymOntoClay.Common;
 using SymOntoClay.Common.CollectionsHelpers;
+using SymOntoClay.Common.DebugHelpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -59,28 +60,42 @@ namespace BaseDevPipeline.Data.Implementation
 
         private static string DetectBasePath(List<string> basePaths)
         {
-            var normalizedBasePaths = basePaths.Select(p => PathsHelper.Normalize(p));
+            var normalizedBasePaths = basePaths.Select(PathsHelper.Normalize);
 
-            var existingBasePaths = normalizedBasePaths.Where(p => Directory.Exists(p));
+            var existingBasePaths = normalizedBasePaths.Where(Directory.Exists);
 
             var count = existingBasePaths.Count();
 
+#if DEBUG
+            //_logger.Info($"count = {count}");
+            //_logger.Info($"existingBasePaths = {existingBasePaths.WritePODListToString()}");
+#endif
+
             switch (count)
             {
+                case 0:
+                    return string.Empty;
+
                 case 1:
                     return existingBasePaths.Single();
-            }
 
-            throw new NotImplementedException();
+                default:
+                    return existingBasePaths.First();
+            }
         }
 
         private static string DetectSecretFilePath(List<string> secretsFilePaths)
         {
-            var normalizedSecretsFilePaths = secretsFilePaths.Select(p => PathsHelper.Normalize(p));
+            var normalizedSecretsFilePaths = secretsFilePaths.Select(PathsHelper.Normalize);
 
-            var existingSecretsFilePaths = normalizedSecretsFilePaths.Where(p => File.Exists(p));
+            var existingSecretsFilePaths = normalizedSecretsFilePaths.Where(File.Exists);
 
             var count = existingSecretsFilePaths.Count();
+
+#if DEBUG
+            //_logger.Info($"count = {count}");
+            //_logger.Info($"existingSecretsFilePaths = {existingSecretsFilePaths.WritePODListToString()}");
+#endif
 
             switch (count)
             {
@@ -89,9 +104,10 @@ namespace BaseDevPipeline.Data.Implementation
 
                 case 1:
                     return existingSecretsFilePaths.Single();
-            }
 
-            throw new NotImplementedException();
+                default:
+                    return existingSecretsFilePaths.First();
+            }
         }
 
         private static List<UtityExeInstance> DetectUnities()
