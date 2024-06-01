@@ -1,6 +1,6 @@
 {
   "BasePaths": [
-    "%USERPROFILE%/Documents/GitHub",
+    "d:/Repos",
     "%USERPROFILE%/source/repos"
   ],
   "SecretsFilePaths": [
@@ -306,6 +306,14 @@
         {
           "Kind": "Library",
           "Path": "SymOntoClay.CLI.Helpers"
+        },
+        {
+          "Kind": "IntegrationTest",
+          "Path": "SymOntoClay.CLI.Helpers.Tests"
+        },
+        {
+          "Kind": "IntegrationTest",
+          "Path": "SymOntoClay.Common.Tests"
         },
         {
           "Kind": "AdditionalApp",
