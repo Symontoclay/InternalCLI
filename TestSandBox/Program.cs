@@ -78,7 +78,8 @@ namespace TestSandBox
 
             try
             {
-                TstUpdateInstalledNuGetPackagesInAllCSharpProjectsDevTask();
+                TstCSharpProjectHelperTestsHandler();
+                //TstUpdateInstalledNuGetPackagesInAllCSharpProjectsDevTask();
                 //TstUpdateInstalledNuGetPackagesInAllCSharpProjects();
                 //TstUpdateTargetFrameworkInAllCSharpProjectsDevTask();
                 //TstUpdateTargetFrameworkInAllCSharpProjects();
@@ -171,6 +172,16 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstCSharpProjectHelperTestsHandler()
+        {
+            _logger.Info("Begin");
+
+            var handler = new CSharpProjectHelperTestsHandler();
+            handler.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstUpdateInstalledNuGetPackagesInAllCSharpProjectsDevTask()
