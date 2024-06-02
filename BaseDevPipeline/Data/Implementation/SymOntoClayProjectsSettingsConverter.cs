@@ -25,7 +25,7 @@ namespace BaseDevPipeline.Data.Implementation
             EVPath.RegVar("BASE_PATH", result.BasePath);
 
 #if DEBUG
-            _logger.Info($"source.Temp = {source.Temp}");
+            //_logger.Info($"source.Temp = {source.Temp}");
 #endif
 
             var sourceTemp = source.Temp;
