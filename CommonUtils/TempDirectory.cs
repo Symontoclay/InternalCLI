@@ -11,8 +11,8 @@ namespace CommonUtils
 
         public TempDirectory()
         {
-            _dir = Path.Combine("D://", $"TempProjects_{Guid.NewGuid().ToString("D").Replace("-", string.Empty)}");
-            //_dir = Path.Combine(Environment.GetEnvironmentVariable("TMP"), $"TempProjects_{Guid.NewGuid().ToString("D").Replace("-", string.Empty)}");
+            _dir = Path.Combine("D://", CreateDirName());
+            //_dir = Path.Combine(Environment.GetEnvironmentVariable("TMP"), CreateDirName());
 
             if (!Directory.Exists(_dir))
             {
@@ -40,6 +40,11 @@ namespace CommonUtils
                     _logger.Info($"Directory '{_dir}' has not been deleted.");
                 }
             }
+        }
+
+        public static string CreateDirName()
+        {
+            return $"TempProjects_{Guid.NewGuid().ToString("D").Replace("-", string.Empty)}";
         }
     }
 }
