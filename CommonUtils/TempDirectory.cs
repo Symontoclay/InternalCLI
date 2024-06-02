@@ -9,10 +9,11 @@ namespace CommonUtils
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public TempDirectory()
+        public TempDirectory(string rootDir = null, bool clearOnDisposing = true)
         {
-            _dir = Path.Combine("D://", CreateDirName());
-            //_dir = Path.Combine(Environment.GetEnvironmentVariable("TMP"), CreateDirName());
+            _clearOnDisposing = clearOnDisposing;
+
+            _dir = Path.Combine(NormalizeRootDir(rootDir), CreateDirName());
 
             if (!Directory.Exists(_dir))
             {
@@ -20,24 +21,39 @@ namespace CommonUtils
             }
         }
 
+        private string NormalizeRootDir(string rootDir)
+        {
+            if(string.IsNullOrWhiteSpace(rootDir))
+            {//"D://"
+                return Environment.GetEnvironmentVariable("TMP");
+            }
+
+            return rootDir;
+        }
+
         private readonly string _dir;
 
         public string FullName => _dir;
+
+        private readonly bool _clearOnDisposing;
 
         /// <inheritdoc/>
         protected override void OnDisposing()
         {
             base.OnDisposing();
 
-            if (Directory.Exists(_dir))
+            if(_clearOnDisposing)
             {
-                try
+                if (Directory.Exists(_dir))
                 {
-                    //Directory.Delete(_dir, true);
-                }
-                catch
-                {
-                    _logger.Info($"Directory '{_dir}' has not been deleted.");
+                    try
+                    {
+                        Directory.Delete(_dir, true);
+                    }
+                    catch
+                    {
+                        _logger.Info($"Directory '{_dir}' has not been deleted.");
+                    }
                 }
             }
         }
