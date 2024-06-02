@@ -1,4 +1,6 @@
 ﻿using BaseDevPipeline;
+using BaseDevPipeline.Data;
+using BaseDevPipeline.Data.Implementation;
 using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using CSharpUtils;
@@ -78,9 +80,11 @@ namespace Deployment.ReleaseTasks.GitHubRelease
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            using var unityTempDir = new TempDirectory();
-            using var cliTempDir = new TempDirectory();
-            using var cliArchTempDir = new TempDirectory();
+            var tempSettings = ProjectsDataSourceFactory.GetTempSettings();
+
+            using var unityTempDir = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
+            using var cliTempDir = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
+            using var cliArchTempDir = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
 
             var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 

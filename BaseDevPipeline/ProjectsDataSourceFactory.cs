@@ -33,6 +33,12 @@ namespace BaseDevPipeline
             }
         }
 
+        public static ITempSettings GetTempSettings()
+        {
+            var settings = GetSymOntoClayProjectsSettings();
+            return settings.Temp;
+        }
+
         public static ISolutionSettings GetSolution(KindOfProject kind)
         {
             var settings = GetSymOntoClayProjectsSettings();

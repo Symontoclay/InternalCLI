@@ -1,4 +1,5 @@
 ﻿using BaseDevPipeline;
+using BaseDevPipeline.Data.Implementation;
 using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.SiteTasks.SiteBuild;
@@ -24,8 +25,8 @@ namespace Deployment.ReleaseTasks.ProdSiteBuild
         protected override void OnRun()
         {
             var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
-
-            using var tempDir = new TempDirectory();
+            var tempSettings = ProjectsDataSourceFactory.GetTempSettings();
+            using var tempDir = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
 
             Exec(new SiteBuildTask(new SiteBuildTaskOptions()
             {

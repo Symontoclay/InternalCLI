@@ -1,4 +1,5 @@
 ﻿using BaseDevPipeline;
+using BaseDevPipeline.Data.Implementation;
 using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
@@ -49,7 +50,9 @@ namespace Deployment.DevTasks.CoreToSiteSource
         {
             var destDir = Path.Combine(_options.SiteSourceDir, "CSharpApiFiles");
 
-            using var tempDir = new TempDirectory();
+            var tempSettings = ProjectsDataSourceFactory.GetTempSettings();
+
+            using var tempDir = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
             var deploymentPipeline = new DeploymentPipeline(_context);
 
             deploymentPipeline.Add(new CopyAndBuildVSProjectOrSolutionDevTask(new CopyAndBuildVSProjectOrSolutionDevTaskOptions()

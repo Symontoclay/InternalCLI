@@ -1,4 +1,6 @@
 ﻿using BaseDevPipeline;
+using BaseDevPipeline.Data;
+using BaseDevPipeline.Data.Implementation;
 using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
@@ -47,7 +49,9 @@ namespace Deployment.DevTasks.CoreToAsset
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            using var tempDir = new TempDirectory();
+            var tempSettings = ProjectsDataSourceFactory.GetTempSettings();
+
+            using var tempDir = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
 
             var deploymentPipeline = new DeploymentPipeline(_context);
 
@@ -72,7 +76,7 @@ namespace Deployment.DevTasks.CoreToAsset
             {
                 foreach(var pluginCProjPath in _options.Plugins)
                 {
-                    using var tempDir_2 = new TempDirectory();
+                    using var tempDir_2 = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
 
                     deploymentPipeline.Add(new CopyAndBuildVSProjectOrSolutionDevTask(new CopyAndBuildVSProjectOrSolutionDevTaskOptions()
                     {

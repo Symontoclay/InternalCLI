@@ -1,4 +1,6 @@
-﻿using CommonUtils;
+﻿using BaseDevPipeline;
+using BaseDevPipeline.Data.Implementation;
+using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Deployment.Tasks.BuildExamples;
@@ -56,7 +58,9 @@ namespace Deployment.Tasks.ExamplesCreator
                 ClearDestDir();
             }
 
-            using var tempDir = new TempDirectory();
+            var tempSettings = ProjectsDataSourceFactory.GetTempSettings();
+
+            using var tempDir = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
 
 #if DEBUG
             //_logger.Info($"_options.DestDir = {_options.DestDir}");

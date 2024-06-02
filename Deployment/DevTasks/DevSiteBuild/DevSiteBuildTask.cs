@@ -1,4 +1,5 @@
 ﻿using BaseDevPipeline;
+using BaseDevPipeline.Data.Implementation;
 using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
@@ -46,7 +47,9 @@ namespace Deployment.DevTasks.DevSiteBuild
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            using var tempDir = new TempDirectory();
+            var tempSettings = ProjectsDataSourceFactory.GetTempSettings();
+
+            using var tempDir = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
             var deploymentPipeline = new DeploymentPipeline(_context);
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()

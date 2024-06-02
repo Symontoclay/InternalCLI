@@ -179,10 +179,14 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
+            //var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
             //_logger.Info($"settings = {settings}");
-            _logger.Info($"settings.Temp = {settings.Temp}");
+            //_logger.Info($"settings.Temp = {settings.Temp}");
+
+            var tempSettings = ProjectsDataSourceFactory.GetTempSettings();
+
+            _logger.Info($"tempSettings = {tempSettings}");
 
             _logger.Info("End");
         }

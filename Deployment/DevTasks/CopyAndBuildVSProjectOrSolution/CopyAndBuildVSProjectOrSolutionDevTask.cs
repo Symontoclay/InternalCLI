@@ -1,4 +1,6 @@
-﻿using CommonUtils;
+﻿using BaseDevPipeline;
+using BaseDevPipeline.Data.Implementation;
+using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.BuildTasks.Build;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
@@ -32,7 +34,9 @@ namespace Deployment.DevTasks.CopyAndBuildVSProjectOrSolution
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            using var tempDir = new TempDirectory();
+            var tempSettings = ProjectsDataSourceFactory.GetTempSettings();
+
+            using var tempDir = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
 
             var slnFolder = PathsHelper.GetSlnFolder(_options.ProjectOrSoutionFileName);
 

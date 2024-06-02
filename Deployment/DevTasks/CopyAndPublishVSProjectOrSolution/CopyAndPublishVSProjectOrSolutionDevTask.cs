@@ -1,4 +1,5 @@
-﻿using CommonUtils;
+﻿using BaseDevPipeline;
+using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.BuildTasks.Publish;
 using Deployment.Tasks.DirectoriesTasks.CopySourceFilesOfProject;
@@ -32,7 +33,9 @@ namespace Deployment.DevTasks.CopyAndPublishVSProjectOrSolution
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            using var tempDir = new TempDirectory();
+            var tempSettings = ProjectsDataSourceFactory.GetTempSettings();
+
+            using var tempDir = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
 
 #if DEBUG
             //_logger.Info($"tempDir.FullName = {tempDir.FullName}");
