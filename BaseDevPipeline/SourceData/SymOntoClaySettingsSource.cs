@@ -8,7 +8,8 @@ namespace BaseDevPipeline.SourceData
     public class SymOntoClaySettingsSource : IObjectToString
     {
         public List<string> BasePaths { get; set; }
-        public List<string> SecretsFilePaths { get; set; }        
+        public TempSettingsSource Temp { get; set; }
+        public List<string> SecretsFilePaths { get; set; }
         public List<string> ArtifactsForDeployment { get; set; }
         public string RepositoryReadmeSource { get; set; }
         public string RepositoryBadgesSource { get; set; }
@@ -37,6 +38,7 @@ namespace BaseDevPipeline.SourceData
             var sb = new StringBuilder();
 
             sb.PrintPODList(n, nameof(BasePaths), BasePaths);
+            sb.PrintObjProp(n, nameof(Temp), Temp);
             sb.PrintPODList(n, nameof(SecretsFilePaths), SecretsFilePaths);
             sb.PrintPODList(n, nameof(ArtifactsForDeployment), ArtifactsForDeployment);
             sb.AppendLine($"{spaces}{nameof(RepositoryReadmeSource)} = {RepositoryReadmeSource}");

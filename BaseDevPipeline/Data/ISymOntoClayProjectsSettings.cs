@@ -6,6 +6,7 @@ namespace BaseDevPipeline.Data
     public interface ISymOntoClayProjectsSettings : IObjectToString
     {
         string BasePath { get; }
+        ITempSettings Temp { get; }
         string SecretFilePath { get; }
         string CommonReadmeSource { get; }
         string CommonBadgesSource { get; }

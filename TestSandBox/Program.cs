@@ -78,7 +78,8 @@ namespace TestSandBox
 
             try
             {
-                TstCSharpProjectHelperTestsHandler();
+                TstTempSettings();
+                //TstCSharpProjectHelperTestsHandler();
                 //TstUpdateInstalledNuGetPackagesInAllCSharpProjectsDevTask();
                 //TstUpdateInstalledNuGetPackagesInAllCSharpProjects();
                 //TstUpdateTargetFrameworkInAllCSharpProjectsDevTask();
@@ -172,6 +173,18 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstTempSettings()
+        {
+            _logger.Info("Begin");
+
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
+
+            //_logger.Info($"settings = {settings}");
+            _logger.Info($"settings.Temp = {settings.Temp}");
+
+            _logger.Info("End");
         }
 
         private static void TstCSharpProjectHelperTestsHandler()

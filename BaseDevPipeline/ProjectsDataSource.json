@@ -3,6 +3,10 @@
     "d:/Repos",
     "%USERPROFILE%/source/repos"
   ],
+  "Temp": {
+    "Dir": "D:/",
+    "ClearOnDispose" : true
+  },
   "SecretsFilePaths": [
     "%USERPROFILE%/example_s.json"
   ],

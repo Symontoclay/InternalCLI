@@ -9,7 +9,7 @@ namespace CommonUtils
     public static class PathsHelper
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static string Normalize(string path)

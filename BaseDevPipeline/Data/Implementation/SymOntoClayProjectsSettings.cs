@@ -9,6 +9,7 @@ namespace BaseDevPipeline.Data.Implementation
     public class SymOntoClayProjectsSettings: ISymOntoClayProjectsSettings
     {
         public string BasePath { get; set; }
+        public TempSettings Temp { get; set; }
 
         public string SecretFilePath { get; set; }
 
@@ -22,6 +23,8 @@ namespace BaseDevPipeline.Data.Implementation
 
         public string InternalCLIDist { get; set; }
         public string SocExePath { get; set; }
+
+        ITempSettings ISymOntoClayProjectsSettings.Temp => Temp;
 
         /// <inheritdoc/>
         public SecretInfo GetSecret(string key)
@@ -223,6 +226,7 @@ namespace BaseDevPipeline.Data.Implementation
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(BasePath)} = {BasePath}");
+            sb.PrintObjProp(n, nameof(Temp), Temp);
             sb.AppendLine($"{spaces}{nameof(CommonReadmeSource)} = {CommonReadmeSource}");
             sb.AppendLine($"{spaces}{nameof(CommonBadgesSource)} = {CommonBadgesSource}");
             sb.AppendLine($"{spaces}{nameof(CodeOfConductSource)} = {CodeOfConductSource}");

@@ -50,7 +50,7 @@ namespace BaseDevPipeline
         private ISymOntoClayProjectsSettings _settings;
         
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public ISymOntoClayProjectsSettings GetSymOntoClayProjectsSettings()

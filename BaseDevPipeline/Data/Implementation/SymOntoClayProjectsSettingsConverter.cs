@@ -24,6 +24,24 @@ namespace BaseDevPipeline.Data.Implementation
 
             EVPath.RegVar("BASE_PATH", result.BasePath);
 
+#if DEBUG
+            _logger.Info($"source.Temp = {source.Temp}");
+#endif
+
+            var sourceTemp = source.Temp;
+            var resultTemp = new TempSettings();
+            result.Temp = resultTemp;
+
+            if (sourceTemp != null)
+            {
+                if (!string.IsNullOrWhiteSpace(sourceTemp.Dir))
+                {
+                    resultTemp.Dir = PathsHelper.Normalize(sourceTemp.Dir);
+                }
+
+                resultTemp.ClearOnDispose = sourceTemp.ClearOnDispose;
+            }
+
             result.SecretFilePath = DetectSecretFilePath(source.SecretsFilePaths);
 
             result.UtityExeInstances = DetectUnities();
