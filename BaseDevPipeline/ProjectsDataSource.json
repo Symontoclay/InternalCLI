@@ -218,6 +218,10 @@
         },
         {
           "Kind": "IntegrationTest",
+          "Path": "CSharpUtilsTests"
+        },
+        {
+          "Kind": "IntegrationTest",
           "Path": "PipelinesTests"
         },
         {
