@@ -1,7 +1,11 @@
-﻿namespace CSharpUtilsTests
+﻿using CSharpUtils;
+
+namespace CSharpUtilsTests
 {
     public class CSharpProjectHelperNetStandardTests : BaseCSharpProjectHelperTests
     {
+        private KindOfTargetCSharpFramework _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetStandard;
+
         [Test]
         public void TestGetSetTargetFramework()
         {
