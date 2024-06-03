@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BaseDevPipeline\BaseDevPipeline.csproj" />
     <ProjectReference Include="..\CommonUtils\CommonUtils.csproj" />
+    <ProjectReference Include="..\CSharpUtilsTests\CSharpUtilsTests.csproj" />
     <ProjectReference Include="..\CSharpUtils\CSharpUtils.csproj" />
     <ProjectReference Include="..\Deployment\Deployment.csproj" />
     <ProjectReference Include="..\PipelinesTests\PipelinesTests.csproj" />

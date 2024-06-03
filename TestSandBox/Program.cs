@@ -78,8 +78,8 @@ namespace TestSandBox
 
             try
             {
-                TstTempSettings();
-                //TstCSharpProjectHelperTestsHandler();
+                //TstTempSettings();
+                TstCSharpProjectHelperTestsHandler();
                 //TstUpdateInstalledNuGetPackagesInAllCSharpProjectsDevTask();
                 //TstUpdateInstalledNuGetPackagesInAllCSharpProjects();
                 //TstUpdateTargetFrameworkInAllCSharpProjectsDevTask();

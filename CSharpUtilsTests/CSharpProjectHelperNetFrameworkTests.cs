@@ -1,6 +1,6 @@
 ﻿namespace CSharpUtilsTests
 {
-    public class CSharpProjectHelperNetFrameworkTests
+    public class CSharpProjectHelperNetFrameworkTests: BaseCSharpProjectHelperTests
     {
     }
 }
