@@ -15,7 +15,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            RunNetStandard();
+            //RunNetStandard();
+            RunNet();
 
             _logger.Info("End");
         }
@@ -24,6 +25,11 @@ namespace TestSandBox
         {
             //RunNetStandard_GetSetTargetFramework();
             RunNetStandard_GetSetTargetFrameworkVersion();
+        }
+
+        private void RunNet()
+        {
+            RunNet_GetSetTargetFramework();
         }
 
         private void RunNetStandard_GetSetTargetFramework()
@@ -43,6 +49,31 @@ namespace TestSandBox
 #endif
 
             CSharpProjectHelper.SetTargetFramework(projectFileName, "netstandard2.1");
+
+            targetFrameworkVersion = CSharpProjectHelper.GetTargetFramework(projectFileName);
+
+#if DEBUG
+            _logger.Info($"targetFrameworkVersion = '{targetFrameworkVersion}'");
+#endif
+        }
+
+        private void RunNet_GetSetTargetFramework()
+        {
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(KindOfTargetCSharpFramework.Net, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var targetFrameworkVersion = CSharpProjectHelper.GetTargetFramework(projectFileName);
+
+#if DEBUG
+            _logger.Info($"targetFrameworkVersion = '{targetFrameworkVersion}'");
+#endif
+
+            CSharpProjectHelper.SetTargetFramework(projectFileName, "net8.1");
 
             targetFrameworkVersion = CSharpProjectHelper.GetTargetFramework(projectFileName);
 
