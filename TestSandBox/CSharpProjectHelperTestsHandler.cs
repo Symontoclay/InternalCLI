@@ -22,10 +22,11 @@ namespace TestSandBox
 
         private void RunNetStandard()
         {
-            RunNetStandard_TargetFramework();
+            //RunNetStandard_GetSetTargetFramework();
+            RunNetStandard_GetSetTargetFrameworkVersion();
         }
 
-        private void RunNetStandard_TargetFramework()
+        private void RunNetStandard_GetSetTargetFramework()
         {
             using var tempDir = new TempDirectory();
 
@@ -50,12 +51,36 @@ namespace TestSandBox
 #endif
         }
 
-        /*
-public static string (string )
-public static bool (string projectFileName, string targetFramework)
+        private void RunNetStandard_GetSetTargetFrameworkVersion()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetStandard;
 
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var targetFrameworkVersion = CSharpProjectHelper.GetTargetFrameworkVersion(projectFileName);
+
+#if DEBUG
+            _logger.Info($"targetFrameworkVersion = '{targetFrameworkVersion}'");
+#endif
+
+            CSharpProjectHelper.SetTargetFramework(projectFileName, (KindOfTargetCSharpFramework.NetStandard, new Version(2, 1)));
+
+            targetFrameworkVersion = CSharpProjectHelper.GetTargetFrameworkVersion(projectFileName);
+
+#if DEBUG
+            _logger.Info($"targetFrameworkVersion = '{targetFrameworkVersion}'");
+#endif
+        }
+
+        /*
 public static (KindOfTargetCSharpFramework Kind, Version Version) GetTargetFrameworkVersion(string projectFileName)
-public static bool SetTargetFramework(string projectFileName, (KindOfTargetCSharpFramework Kind, Version Version) frameworkVersion)
+public static bool (string projectFileName, (KindOfTargetCSharpFramework Kind, Version Version) frameworkVersion)
 
 public static bool GetGeneratePackageOnBuild(string projectFileName)
 public static string GetAssemblyName(string projectFileName)
