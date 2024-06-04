@@ -171,9 +171,13 @@ namespace TestSandBox
 #endif
         }
 
+
+
         /*
 public static bool GetGeneratePackageOnBuild(string projectFileName)
+
 public static string GetAssemblyName(string projectFileName)
+
 public static string GetPackageId(string projectFileName)
 
 public static List<(string PackageId, Version Version)> GetInstalledPackages(string projectFileName)
