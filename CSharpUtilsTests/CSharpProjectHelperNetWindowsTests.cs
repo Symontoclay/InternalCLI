@@ -1,4 +1,5 @@
-﻿using CSharpUtils;
+﻿using CommonUtils;
+using CSharpUtils;
 
 namespace CSharpUtilsTests
 {
@@ -9,23 +10,37 @@ namespace CSharpUtilsTests
         [Test]
         public void TestGetSetTargetFramework()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static string GetTargetFramework(string projectFileName)
-public static bool SetTargetFramework(string projectFileName, string targetFramework) 
-            */
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var targetFrameworkVersion = CSharpProjectHelper.GetTargetFramework(projectFileName);
+
+            Assert.That(targetFrameworkVersion, Is.EqualTo("net7.0-windows"));
+
+            CSharpProjectHelper.SetTargetFramework(projectFileName, "net8.0-windows");
+
+            targetFrameworkVersion = CSharpProjectHelper.GetTargetFramework(projectFileName);
+
+            Assert.That(targetFrameworkVersion, Is.EqualTo("net8.0-windows"));
         }
 
         [Test]
         public void TestGetSetTargetFrameworkVersion()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static (KindOfTargetCSharpFramework Kind, Version Version) GetTargetFrameworkVersion(string projectFileName)
-public static bool SetTargetFramework(string projectFileName, (KindOfTargetCSharpFramework Kind, Version Version) frameworkVersion) 
-            */
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var targetFrameworkVersion = CSharpProjectHelper.GetTargetFrameworkVersion(projectFileName);
+
+            Assert.That(targetFrameworkVersion, Is.EqualTo((KindOfTargetCSharpFramework.NetWindows, new Version(7, 0))));
+
+            CSharpProjectHelper.SetTargetFramework(projectFileName, (KindOfTargetCSharpFramework.NetWindows, new Version(8, 0)));
+
+            targetFrameworkVersion = CSharpProjectHelper.GetTargetFrameworkVersion(projectFileName);
+
+            Assert.That(targetFrameworkVersion, Is.EqualTo((KindOfTargetCSharpFramework.NetWindows, new Version(8, 0))));
         }
 
         [Test]

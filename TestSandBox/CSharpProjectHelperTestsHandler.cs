@@ -16,7 +16,9 @@ namespace TestSandBox
             _logger.Info("Begin");
 
             //RunNetStandard();
-            RunNet();
+            //RunNet();
+            //RunNetFramework();
+            RunNetWindows();
 
             _logger.Info("End");
         }
@@ -30,6 +32,16 @@ namespace TestSandBox
         private void RunNet()
         {
             RunNet_GetSetTargetFramework();
+        }
+
+        private void RunNetFramework()
+        {
+            RunNetFramework_GetSetTargetFramework();
+        }
+
+        private void RunNetWindows()
+        {
+            RunNetWindows_GetSetTargetFramework();
         }
 
         private void RunNetStandard_GetSetTargetFramework()
@@ -82,6 +94,56 @@ namespace TestSandBox
 #endif
         }
 
+        private void RunNetFramework_GetSetTargetFramework()
+        {
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(KindOfTargetCSharpFramework.NetFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var targetFrameworkVersion = CSharpProjectHelper.GetTargetFramework(projectFileName);
+
+#if DEBUG
+            _logger.Info($"targetFrameworkVersion = '{targetFrameworkVersion}'");
+#endif
+
+            CSharpProjectHelper.SetTargetFramework(projectFileName, "v4.7.2");
+
+            targetFrameworkVersion = CSharpProjectHelper.GetTargetFramework(projectFileName);
+
+#if DEBUG
+            _logger.Info($"targetFrameworkVersion = '{targetFrameworkVersion}'");
+#endif
+        }
+
+        private void RunNetWindows_GetSetTargetFramework()
+        {
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(KindOfTargetCSharpFramework.NetWindows, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var targetFrameworkVersion = CSharpProjectHelper.GetTargetFramework(projectFileName);
+
+#if DEBUG
+            _logger.Info($"targetFrameworkVersion = '{targetFrameworkVersion}'");
+#endif
+
+            CSharpProjectHelper.SetTargetFramework(projectFileName, "net8.0-windows");
+
+            targetFrameworkVersion = CSharpProjectHelper.GetTargetFramework(projectFileName);
+
+#if DEBUG
+            _logger.Info($"targetFrameworkVersion = '{targetFrameworkVersion}'");
+#endif
+        }
+
         private void RunNetStandard_GetSetTargetFrameworkVersion()
         {
             var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetStandard;
@@ -110,9 +172,6 @@ namespace TestSandBox
         }
 
         /*
-public static (KindOfTargetCSharpFramework Kind, Version Version) GetTargetFrameworkVersion(string projectFileName)
-public static bool (string projectFileName, (KindOfTargetCSharpFramework Kind, Version Version) frameworkVersion)
-
 public static bool GetGeneratePackageOnBuild(string projectFileName)
 public static string GetAssemblyName(string projectFileName)
 public static string GetPackageId(string projectFileName)
