@@ -46,11 +46,13 @@ namespace CSharpUtilsTests
         [Test]
         public void TestGetGeneratePackageOnBuild()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static bool GetGeneratePackageOnBuild(string projectFileName)
-            */
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var result = CSharpProjectHelper.GetGeneratePackageOnBuild(projectFileName);
+
+            Assert.That(result, Is.EqualTo(true));
         }
 
         [Test]

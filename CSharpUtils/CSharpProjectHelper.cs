@@ -222,6 +222,11 @@ namespace CSharpUtils
 
             var targetPropertyGroup = GetMainPropertyGroup(project, "GeneratePackageOnBuild");
 
+            if(targetPropertyGroup == null)
+            {
+                return false;
+            }
+
             var section = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "GeneratePackageOnBuild");
 
             if(section == null)
@@ -238,6 +243,11 @@ namespace CSharpUtils
 
             var targetPropertyGroup = GetMainPropertyGroup(project, "AssemblyName");
 
+            if(targetPropertyGroup == null)
+            {
+                return string.Empty;
+            }
+
             var section = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "AssemblyName");
 
             if (section == null)
@@ -253,6 +263,11 @@ namespace CSharpUtils
             var project = LoadProject(projectFileName);
 
             var targetPropertyGroup = GetMainPropertyGroup(project, "PackageId");
+
+            if (targetPropertyGroup == null)
+            {
+                return string.Empty;
+            }
 
             var section = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "PackageId");
 

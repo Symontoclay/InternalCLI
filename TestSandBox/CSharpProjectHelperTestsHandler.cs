@@ -26,22 +26,26 @@ namespace TestSandBox
         private void RunNetStandard()
         {
             //RunNetStandard_GetSetTargetFramework();
-            RunNetStandard_GetSetTargetFrameworkVersion();
+            //RunNetStandard_GetSetTargetFrameworkVersion();
+            RunNetStandard_GetGeneratePackageOnBuild();
         }
 
         private void RunNet()
         {
-            RunNet_GetSetTargetFramework();
+            //RunNet_GetSetTargetFramework();
+            RunNet_GetGeneratePackageOnBuild();
         }
 
         private void RunNetFramework()
         {
-            RunNetFramework_GetSetTargetFramework();
+            //RunNetFramework_GetSetTargetFramework();
+            RunNetFramework_GetGeneratePackageOnBuild();
         }
 
         private void RunNetWindows()
         {
-            RunNetWindows_GetSetTargetFramework();
+            //RunNetWindows_GetSetTargetFramework();
+            RunNetWindows_GetGeneratePackageOnBuild();
         }
 
         private void RunNetStandard_GetSetTargetFramework()
@@ -171,11 +175,83 @@ namespace TestSandBox
 #endif
         }
 
+        private void RunNetStandard_GetGeneratePackageOnBuild()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetStandard;
 
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var result = CSharpProjectHelper.GetGeneratePackageOnBuild(projectFileName);
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+        }
+
+        private void RunNet_GetGeneratePackageOnBuild()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.Net;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var result = CSharpProjectHelper.GetGeneratePackageOnBuild(projectFileName);
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+        }
+
+        private void RunNetFramework_GetGeneratePackageOnBuild()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetFramework;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var result = CSharpProjectHelper.GetGeneratePackageOnBuild(projectFileName);
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+        }
+
+        private void RunNetWindows_GetGeneratePackageOnBuild()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetWindows;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var result = CSharpProjectHelper.GetGeneratePackageOnBuild(projectFileName);
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+        }
 
         /*
-public static bool GetGeneratePackageOnBuild(string projectFileName)
-
 public static string GetAssemblyName(string projectFileName)
 
 public static string GetPackageId(string projectFileName)
