@@ -70,11 +70,13 @@ namespace CSharpUtilsTests
         [Test]
         public void TestGetPackageId()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static string GetPackageId(string projectFileName)
-*/
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var packageId = CSharpProjectHelper.GetPackageId(projectFileName);
+
+            Assert.That(packageId, Is.EqualTo(""));
         }
 
         [Test]
