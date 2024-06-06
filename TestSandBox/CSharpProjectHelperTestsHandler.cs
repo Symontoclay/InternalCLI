@@ -15,10 +15,10 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            //RunNetStandard();
+            RunNetStandard();
             //RunNet();
             //RunNetFramework();
-            RunNetWindows();
+            //RunNetWindows();
 
             _logger.Info("End");
         }
@@ -28,28 +28,32 @@ namespace TestSandBox
             //RunNetStandard_GetSetTargetFramework();
             //RunNetStandard_GetSetTargetFrameworkVersion();
             //RunNetStandard_GetGeneratePackageOnBuild();
-            RunNetStandard_GetAssemblyName();
+            //RunNetStandard_GetAssemblyName();
+            RunNetStandard_GetPackageId();
         }
 
         private void RunNet()
         {
             //RunNet_GetSetTargetFramework();
             //RunNet_GetGeneratePackageOnBuild();
-            RunNet_GetAssemblyName();
+            //RunNet_GetAssemblyName();
+            RunNet_GetPackageId();
         }
 
         private void RunNetFramework()
         {
             //RunNetFramework_GetSetTargetFramework();
             //RunNetFramework_GetGeneratePackageOnBuild();
-            RunNetFramework_GetAssemblyName();
+            //RunNetFramework_GetAssemblyName();
+            RunNetFramework_GetPackageId();
         }
 
         private void RunNetWindows()
         {
             //RunNetWindows_GetSetTargetFramework();
             //RunNetWindows_GetGeneratePackageOnBuild();
-            RunNetWindows_GetAssemblyName();
+            //RunNetWindows_GetAssemblyName();
+            RunNetWindows_GetPackageId();
         }
 
         private void RunNetStandard_GetSetTargetFramework()
@@ -331,9 +335,83 @@ namespace TestSandBox
 #endif
         }
 
-        /*
-public static string GetPackageId(string projectFileName)
+        private void RunNetStandard_GetPackageId()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetStandard;
 
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var packageId = CSharpProjectHelper.GetPackageId(projectFileName);
+
+#if DEBUG
+            _logger.Info($"packageId = {packageId}");
+#endif
+        }
+
+        private void RunNet_GetPackageId()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.Net;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var packageId = CSharpProjectHelper.GetPackageId(projectFileName);
+
+#if DEBUG
+            _logger.Info($"packageId = {packageId}");
+#endif
+        }
+
+        private void RunNetFramework_GetPackageId()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetFramework;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var packageId = CSharpProjectHelper.GetPackageId(projectFileName);
+
+#if DEBUG
+            _logger.Info($"packageId = {packageId}");
+#endif
+        }
+
+        private void RunNetWindows_GetPackageId()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetWindows;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var packageId = CSharpProjectHelper.GetPackageId(projectFileName);
+
+#if DEBUG
+            _logger.Info($"packageId = {packageId}");
+#endif
+        }
+
+        /*
 public static List<(string PackageId, Version Version)> GetInstalledPackages(string projectFileName)
 
 public static string GetInstalledPackageVersion(string projectFileName, string packageId)
