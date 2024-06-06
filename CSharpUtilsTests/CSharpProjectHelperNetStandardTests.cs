@@ -82,11 +82,28 @@ namespace CSharpUtilsTests
         [Test]
         public void TestGetInstalledPackages()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static List<(string PackageId, Version Version)> GetInstalledPackages(string projectFileName)
-*/
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var packagesList = CSharpProjectHelper.GetInstalledPackages(projectFileName);
+
+            Assert.That(packagesList.Count, Is.EqualTo(3));
+
+            var item1 = packagesList[0];
+
+            Assert.That(item1.PackageId, Is.EqualTo("Newtonsoft.Json"));
+            Assert.That(item1.Version, Is.EqualTo(new Version("13.0.3")));
+
+            var item2 = packagesList[1];
+
+            Assert.That(item2.PackageId, Is.EqualTo("NLog"));
+            Assert.That(item2.Version, Is.EqualTo(new Version("5.1.4")));
+
+            var item3 = packagesList[2];
+
+            Assert.That(item3.PackageId, Is.EqualTo("System.Numerics.Vectors"));
+            Assert.That(item3.Version, Is.EqualTo(new Version("4.5.0")));
         }
 
         [Test]

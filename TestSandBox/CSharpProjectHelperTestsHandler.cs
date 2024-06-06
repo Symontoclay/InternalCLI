@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CSharpUtils;
+using Newtonsoft.Json;
 using NLog;
 using NuGet.Frameworks;
 using System;
@@ -15,8 +16,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            RunNetStandard();
-            //RunNet();
+            //RunNetStandard();
+            RunNet();
             //RunNetFramework();
             //RunNetWindows();
 
@@ -29,7 +30,8 @@ namespace TestSandBox
             //RunNetStandard_GetSetTargetFrameworkVersion();
             //RunNetStandard_GetGeneratePackageOnBuild();
             //RunNetStandard_GetAssemblyName();
-            RunNetStandard_GetPackageId();
+            //RunNetStandard_GetPackageId();
+            RunNetStandard_GetInstalledPackages();
         }
 
         private void RunNet()
@@ -37,7 +39,8 @@ namespace TestSandBox
             //RunNet_GetSetTargetFramework();
             //RunNet_GetGeneratePackageOnBuild();
             //RunNet_GetAssemblyName();
-            RunNet_GetPackageId();
+            //RunNet_GetPackageId();
+            RunNet_GetInstalledPackages();
         }
 
         private void RunNetFramework()
@@ -45,7 +48,8 @@ namespace TestSandBox
             //RunNetFramework_GetSetTargetFramework();
             //RunNetFramework_GetGeneratePackageOnBuild();
             //RunNetFramework_GetAssemblyName();
-            RunNetFramework_GetPackageId();
+            //RunNetFramework_GetPackageId();
+            RunNetFramework_GetInstalledPackages();
         }
 
         private void RunNetWindows()
@@ -53,7 +57,8 @@ namespace TestSandBox
             //RunNetWindows_GetSetTargetFramework();
             //RunNetWindows_GetGeneratePackageOnBuild();
             //RunNetWindows_GetAssemblyName();
-            RunNetWindows_GetPackageId();
+            //RunNetWindows_GetPackageId();
+            RunNetWindows_GetInstalledPackages();
         }
 
         private void RunNetStandard_GetSetTargetFramework()
@@ -411,9 +416,83 @@ namespace TestSandBox
 #endif
         }
 
-        /*
-public static List<(string PackageId, Version Version)> GetInstalledPackages(string projectFileName)
+        private void RunNetStandard_GetInstalledPackages()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetStandard;
 
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var packagesList = CSharpProjectHelper.GetInstalledPackages(projectFileName);
+
+#if DEBUG
+            _logger.Info($"packagesList = {JsonConvert.SerializeObject(packagesList, Formatting.Indented)}");
+#endif
+        }
+
+        private void RunNet_GetInstalledPackages()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.Net;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var packagesList = CSharpProjectHelper.GetInstalledPackages(projectFileName);
+
+#if DEBUG
+            _logger.Info($"packagesList = {JsonConvert.SerializeObject(packagesList, Formatting.Indented)}");
+#endif
+        }
+
+        private void RunNetFramework_GetInstalledPackages()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetFramework;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var packagesList = CSharpProjectHelper.GetInstalledPackages(projectFileName);
+
+#if DEBUG
+            _logger.Info($"packagesList = {JsonConvert.SerializeObject(packagesList, Formatting.Indented)}");
+#endif
+        }
+
+        private void RunNetWindows_GetInstalledPackages()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetWindows;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var packagesList = CSharpProjectHelper.GetInstalledPackages(projectFileName);
+
+#if DEBUG
+            _logger.Info($"packagesList = {JsonConvert.SerializeObject(packagesList, Formatting.Indented)}");
+#endif
+        }
+
+        /*
 public static string GetInstalledPackageVersion(string projectFileName, string packageId)
 public static bool UpdateInstalledPackageVersion(string projectFileName, string packageId, string version)
 
