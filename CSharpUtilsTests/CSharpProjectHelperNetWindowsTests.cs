@@ -108,7 +108,7 @@ public static bool SetVersion(string projectFileName, string targetVersion)
         }
 
         [Test]
-        public void TestSetCopyright()
+        public void TestGetSetCopyright()
         {
             throw new NotImplementedException();
 

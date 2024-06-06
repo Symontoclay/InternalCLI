@@ -16,9 +16,9 @@ namespace TestSandBox
             _logger.Info("Begin");
 
             //RunNetStandard();
-            //RunNet();
+            RunNet();
             //RunNetFramework();
-            RunNetWindows();
+            //RunNetWindows();
 
             _logger.Info("End");
         }
@@ -27,25 +27,29 @@ namespace TestSandBox
         {
             //RunNetStandard_GetSetTargetFramework();
             //RunNetStandard_GetSetTargetFrameworkVersion();
-            RunNetStandard_GetGeneratePackageOnBuild();
+            //RunNetStandard_GetGeneratePackageOnBuild();
+            RunNetStandard_GetAssemblyName();
         }
 
         private void RunNet()
         {
             //RunNet_GetSetTargetFramework();
-            RunNet_GetGeneratePackageOnBuild();
+            //RunNet_GetGeneratePackageOnBuild();
+            RunNet_GetAssemblyName();
         }
 
         private void RunNetFramework()
         {
             //RunNetFramework_GetSetTargetFramework();
-            RunNetFramework_GetGeneratePackageOnBuild();
+            //RunNetFramework_GetGeneratePackageOnBuild();
+            RunNetFramework_GetAssemblyName();
         }
 
         private void RunNetWindows()
         {
             //RunNetWindows_GetSetTargetFramework();
-            RunNetWindows_GetGeneratePackageOnBuild();
+            //RunNetWindows_GetGeneratePackageOnBuild();
+            RunNetWindows_GetAssemblyName();
         }
 
         private void RunNetStandard_GetSetTargetFramework()
@@ -251,9 +255,59 @@ namespace TestSandBox
 #endif
         }
 
-        /*
-public static string GetAssemblyName(string projectFileName)
+        private void RunNetStandard_GetAssemblyName()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetStandard;
 
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var assemblyName = CSharpProjectHelper.GetAssemblyName(projectFileName);
+
+#if DEBUG
+            _logger.Info($"assemblyName = {assemblyName}");
+#endif
+        }
+
+        private void RunNet_GetAssemblyName()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.Net;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var assemblyName = CSharpProjectHelper.GetAssemblyName(projectFileName);
+
+#if DEBUG
+            _logger.Info($"assemblyName = {assemblyName}");
+#endif
+        }
+
+        private void RunNetFramework_GetAssemblyName()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetFramework;
+
+            throw new NotImplementedException();
+        }
+
+        private void RunNetWindows_GetAssemblyName()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetWindows;
+
+            throw new NotImplementedException();
+        }
+
+        /*
 public static string GetPackageId(string projectFileName)
 
 public static List<(string PackageId, Version Version)> GetInstalledPackages(string projectFileName)
@@ -264,6 +318,7 @@ public static bool UpdateInstalledPackageVersion(string projectFileName, string 
 public static string GetVersion(string projectFileName)
 public static bool SetVersion(string projectFileName, string targetVersion)
 
+public static bool GetCopyright(string projectFileName);
 public static bool SetCopyright(string projectFileName, string copyright)
 
 public static string GetOutputPath(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)

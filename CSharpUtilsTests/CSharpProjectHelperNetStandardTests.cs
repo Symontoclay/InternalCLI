@@ -58,11 +58,13 @@ namespace CSharpUtilsTests
         [Test]
         public void TestGetAssemblyName()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static string GetAssemblyName(string projectFileName)
-*/
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var assemblyName = CSharpProjectHelper.GetAssemblyName(projectFileName);
+
+            Assert.That(assemblyName, Is.EqualTo("SymOntoClay.Core"));
         }
 
         [Test]
@@ -108,11 +110,12 @@ public static bool SetVersion(string projectFileName, string targetVersion)
         }
 
         [Test]
-        public void TestSetCopyright()
+        public void TestGetSetCopyright()
         {
             throw new NotImplementedException();
 
             /*
+            public static bool GetCopyright(string projectFileName);
             public static bool SetCopyright(string projectFileName, string copyright)
 */
         }
@@ -224,6 +227,7 @@ public static bool UpdateInstalledPackageVersion(string projectFileName, string 
 public static string GetVersion(string projectFileName)
 public static bool SetVersion(string projectFileName, string targetVersion)
 
+public static bool GetCopyright(string projectFileName);
 public static bool SetCopyright(string projectFileName, string copyright)
 
 public static string GetOutputPath(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
