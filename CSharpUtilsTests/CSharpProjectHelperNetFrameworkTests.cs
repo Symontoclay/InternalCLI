@@ -58,11 +58,13 @@ namespace CSharpUtilsTests
         [Test]
         public void TestGetAssemblyName()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static string GetAssemblyName(string projectFileName)
-*/
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var assemblyName = CSharpProjectHelper.GetAssemblyName(projectFileName);
+
+            Assert.That(assemblyName, Is.EqualTo("Assembly-CSharp"));
         }
 
         [Test]

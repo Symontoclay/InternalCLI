@@ -16,9 +16,9 @@ namespace TestSandBox
             _logger.Info("Begin");
 
             //RunNetStandard();
-            RunNet();
+            //RunNet();
             //RunNetFramework();
-            //RunNetWindows();
+            RunNetWindows();
 
             _logger.Info("End");
         }
@@ -297,14 +297,38 @@ namespace TestSandBox
         {
             var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetFramework;
 
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var assemblyName = CSharpProjectHelper.GetAssemblyName(projectFileName);
+
+#if DEBUG
+            _logger.Info($"assemblyName = {assemblyName}");
+#endif
         }
 
         private void RunNetWindows_GetAssemblyName()
         {
             var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetWindows;
 
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var assemblyName = CSharpProjectHelper.GetAssemblyName(projectFileName);
+
+#if DEBUG
+            _logger.Info($"assemblyName = {assemblyName}");
+#endif
         }
 
         /*
