@@ -16,10 +16,10 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            //RunNetStandard();
+            RunNetStandard();
             //RunNet();
             //RunNetFramework();
-            RunNetWindows();
+            //RunNetWindows();
 
             _logger.Info("End");
         }
@@ -31,7 +31,8 @@ namespace TestSandBox
             //RunNetStandard_GetGeneratePackageOnBuild();
             //RunNetStandard_GetAssemblyName();
             //RunNetStandard_GetPackageId();
-            RunNetStandard_GetInstalledPackages();
+            //RunNetStandard_GetInstalledPackages();
+            RunNetStandard_GetUpdateInstalledPackageVersion();
         }
 
         private void RunNet()
@@ -40,7 +41,8 @@ namespace TestSandBox
             //RunNet_GetGeneratePackageOnBuild();
             //RunNet_GetAssemblyName();
             //RunNet_GetPackageId();
-            RunNet_GetInstalledPackages();
+            //RunNet_GetInstalledPackages();
+            RunNet_GetUpdateInstalledPackageVersion();
         }
 
         private void RunNetFramework()
@@ -49,7 +51,8 @@ namespace TestSandBox
             //RunNetFramework_GetGeneratePackageOnBuild();
             //RunNetFramework_GetAssemblyName();
             //RunNetFramework_GetPackageId();
-            RunNetFramework_GetInstalledPackages();
+            //RunNetFramework_GetInstalledPackages();
+            RunNetFramework_GetUpdateInstalledPackageVersion();
         }
 
         private void RunNetWindows()
@@ -58,7 +61,8 @@ namespace TestSandBox
             //RunNetWindows_GetGeneratePackageOnBuild();
             //RunNetWindows_GetAssemblyName();
             //RunNetWindows_GetPackageId();
-            RunNetWindows_GetInstalledPackages();
+            //RunNetWindows_GetInstalledPackages();
+            RunNetWindows_GetUpdateInstalledPackageVersion();
         }
 
         private void RunNetStandard_GetSetTargetFramework()
@@ -490,6 +494,98 @@ namespace TestSandBox
 #if DEBUG
             _logger.Info($"packagesList = {JsonConvert.SerializeObject(packagesList, Formatting.Indented)}");
 #endif
+        }
+
+        private void RunNetStandard_GetUpdateInstalledPackageVersion()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var packageId = ;
+
+            var packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
+
+#if DEBUG
+            _logger.Info($"packageVersion = '{packageVersion}'");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        private void RunNet_GetUpdateInstalledPackageVersion()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var packageId = ;
+
+            var packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
+
+#if DEBUG
+            _logger.Info($"packageVersion = '{packageVersion}'");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        private void RunNetFramework_GetUpdateInstalledPackageVersion()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var packageId = ;
+
+            var packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
+
+#if DEBUG
+            _logger.Info($"packageVersion = '{packageVersion}'");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        private void RunNetWindows_GetUpdateInstalledPackageVersion()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var packageId = ;
+
+            var packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
+
+#if DEBUG
+            _logger.Info($"packageVersion = '{packageVersion}'");
+#endif
+
+            throw new NotImplementedException();
         }
 
         /*
