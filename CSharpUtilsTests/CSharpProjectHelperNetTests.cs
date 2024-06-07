@@ -89,24 +89,27 @@ namespace CSharpUtilsTests
 
             var packagesList = CSharpProjectHelper.GetInstalledPackages(projectFileName);
 
-            //Assert.That(packagesList.Count, Is.EqualTo(3));
+            Assert.That(packagesList.Count, Is.EqualTo(4));
 
-            //var item1 = packagesList[0];
+            var item1 = packagesList[0];
 
-            //Assert.That(item1.PackageId, Is.EqualTo("Newtonsoft.Json"));
-            //Assert.That(item1.Version, Is.EqualTo(new Version("13.0.3")));
+            Assert.That(item1.PackageId, Is.EqualTo("Newtonsoft.Json"));
+            Assert.That(item1.Version, Is.EqualTo(new Version("13.0.3")));
 
-            //var item2 = packagesList[1];
+            var item2 = packagesList[1];
 
-            //Assert.That(item2.PackageId, Is.EqualTo("NLog"));
-            //Assert.That(item2.Version, Is.EqualTo(new Version("5.1.4")));
+            Assert.That(item2.PackageId, Is.EqualTo("NLog"));
+            Assert.That(item2.Version, Is.EqualTo(new Version("5.1.4")));
 
-            //var item3 = packagesList[2];
+            var item3 = packagesList[2];
 
-            //Assert.That(item3.PackageId, Is.EqualTo("System.Numerics.Vectors"));
-            //Assert.That(item3.Version, Is.EqualTo(new Version("4.5.0")));
+            Assert.That(item3.PackageId, Is.EqualTo("System.Configuration.ConfigurationManager"));
+            Assert.That(item3.Version, Is.EqualTo(new Version("4.7.0")));
 
-            throw new NotImplementedException();
+            var item4 = packagesList[3];
+
+            Assert.That(item4.PackageId, Is.EqualTo("SymOntoClay.Common"));
+            Assert.That(item4.Version, Is.EqualTo(new Version("0.5.4.9")));
         }
 
         [Test]

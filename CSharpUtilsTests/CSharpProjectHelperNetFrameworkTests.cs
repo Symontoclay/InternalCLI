@@ -82,11 +82,13 @@ namespace CSharpUtilsTests
         [Test]
         public void TestGetInstalledPackages()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static List<(string PackageId, Version Version)> GetInstalledPackages(string projectFileName)
-*/
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var packagesList = CSharpProjectHelper.GetInstalledPackages(projectFileName);
+
+            Assert.That(packagesList.Count, Is.EqualTo(0));
         }
 
         [Test]

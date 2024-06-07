@@ -17,9 +17,9 @@ namespace TestSandBox
             _logger.Info("Begin");
 
             //RunNetStandard();
-            RunNet();
+            //RunNet();
             //RunNetFramework();
-            //RunNetWindows();
+            RunNetWindows();
 
             _logger.Info("End");
         }
