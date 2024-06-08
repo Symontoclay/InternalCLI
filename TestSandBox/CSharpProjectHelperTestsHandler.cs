@@ -16,10 +16,10 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            //RunNetStandard();
+            RunNetStandard();
             //RunNet();
             //RunNetFramework();
-            RunNetWindows();
+            //RunNetWindows();
 
             _logger.Info("End");
         }
@@ -33,7 +33,8 @@ namespace TestSandBox
             //RunNetStandard_GetPackageId();
             //RunNetStandard_GetInstalledPackages();
             //RunNetStandard_GetUpdateInstalledPackageVersion();
-            RunNetStandard_GetSetVersion();
+            //RunNetStandard_GetSetVersion();
+            GetSetCopyright();
         }
 
         private void RunNet()
@@ -44,7 +45,8 @@ namespace TestSandBox
             //RunNet_GetPackageId();
             //RunNet_GetInstalledPackages();
             //RunNet_GetUpdateInstalledPackageVersion();
-            RunNet_GetSetVersion();
+            //RunNet_GetSetVersion();
+            GetSetCopyright();
         }
 
         private void RunNetFramework()
@@ -55,7 +57,8 @@ namespace TestSandBox
             //RunNetFramework_GetPackageId();
             //RunNetFramework_GetInstalledPackages();
             //RunNetFramework_GetUpdateInstalledPackageVersion();
-            RunNetFramework_GetSetVersion();
+            //RunNetFramework_GetSetVersion();
+            GetSetCopyright();
         }
 
         private void RunNetWindows()
@@ -66,7 +69,8 @@ namespace TestSandBox
             //RunNetWindows_GetPackageId();
             //RunNetWindows_GetInstalledPackages();
             //RunNetWindows_GetUpdateInstalledPackageVersion();
-            RunNetWindows_GetSetVersion();
+            //RunNetWindows_GetSetVersion();
+            GetSetCopyright();
         }
 
         private void RunNetStandard_GetSetTargetFramework()
@@ -757,10 +761,12 @@ namespace TestSandBox
 #endif
         }
 
-        /*
-public static string (string projectFileName)
-public static bool (string projectFileName, string targetVersion)
+        GetSetCopyright()
+        GetSetCopyright()
+        GetSetCopyright()
+        GetSetCopyright()
 
+        /*
 public static bool GetCopyright(string projectFileName);
 public static bool SetCopyright(string projectFileName, string copyright)
 
