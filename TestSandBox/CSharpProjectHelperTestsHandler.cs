@@ -16,10 +16,10 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            RunNetStandard();
+            //RunNetStandard();
             //RunNet();
             //RunNetFramework();
-            //RunNetWindows();
+            RunNetWindows();
 
             _logger.Info("End");
         }
@@ -795,27 +795,96 @@ namespace TestSandBox
         {
             var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.Net;
 
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var copyright = CSharpProjectHelper.GetCopyright(projectFileName);
+
+#if DEBUG
+            _logger.Info($"copyright = '{copyright}'");
+#endif
+
+            var result = CSharpProjectHelper.SetCopyright(projectFileName, "Copyright (c) Tst");
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            copyright = CSharpProjectHelper.GetCopyright(projectFileName);
+
+#if DEBUG
+            _logger.Info($"copyright = '{copyright}'");
+#endif
         }
 
         private void RunNetFramework_GetSetCopyright()
         {
             var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetFramework;
 
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var copyright = CSharpProjectHelper.GetCopyright(projectFileName);
+
+#if DEBUG
+            _logger.Info($"copyright = '{copyright}'");
+#endif
+
+            var result = CSharpProjectHelper.SetCopyright(projectFileName, "Copyright (c) Tst");
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            copyright = CSharpProjectHelper.GetCopyright(projectFileName);
+
+#if DEBUG
+            _logger.Info($"copyright = '{copyright}'");
+#endif
         }
 
         private void RunNetWindows_GetSetCopyright()
         {
             var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetWindows;
 
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var copyright = CSharpProjectHelper.GetCopyright(projectFileName);
+
+#if DEBUG
+            _logger.Info($"copyright = '{copyright}'");
+#endif
+
+            var result = CSharpProjectHelper.SetCopyright(projectFileName, "Copyright (c) Tst");
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            copyright = CSharpProjectHelper.GetCopyright(projectFileName);
+
+#if DEBUG
+            _logger.Info($"copyright = '{copyright}'");
+#endif
         }
 
         /*
-public static bool GetCopyright(string projectFileName);
-public static bool SetCopyright(string projectFileName, string copyright)
-
 public static string GetOutputPath(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
 
 public static string GetDocumentationFile(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)

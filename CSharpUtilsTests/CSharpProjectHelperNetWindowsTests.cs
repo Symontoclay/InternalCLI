@@ -146,11 +146,21 @@ namespace CSharpUtilsTests
         [Test]
         public void TestGetSetCopyright()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static bool SetCopyright(string projectFileName, string copyright)
-*/
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var copyright = CSharpProjectHelper.GetCopyright(projectFileName);
+
+            Assert.That(copyright, Is.EqualTo("Copyright (c) 2020 - 2024 Sergiy Tolkachov aka metatypeman"));
+
+            var result = CSharpProjectHelper.SetCopyright(projectFileName, "Copyright (c) Tst");
+
+            Assert.That(result, Is.EqualTo(true));
+
+            copyright = CSharpProjectHelper.GetCopyright(projectFileName);
+
+            Assert.That(copyright, Is.EqualTo("Copyright (c) Tst"));
         }
 
         [Test]
