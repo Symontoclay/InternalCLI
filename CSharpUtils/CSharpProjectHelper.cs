@@ -378,6 +378,11 @@ namespace CSharpUtils
 
             var targetPropertyGroup = GetMainPropertyGroup(project, "Version");
 
+            if(targetPropertyGroup == null)
+            {
+                return string.Empty;
+            }
+
             var version = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "Version");
 
             if(version == null)
@@ -470,6 +475,11 @@ namespace CSharpUtils
             var project = LoadProject(projectFileName);
 
             var targetPropertyGroup = GetMainPropertyGroup(project, "Version");
+
+            if(targetPropertyGroup == null)
+            {
+                return false;
+            }
 
             var needUpdate = false;
 

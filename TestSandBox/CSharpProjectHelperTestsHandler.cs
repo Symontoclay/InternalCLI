@@ -16,10 +16,10 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            RunNetStandard();
+            //RunNetStandard();
             //RunNet();
             //RunNetFramework();
-            //RunNetWindows();
+            RunNetWindows();
 
             _logger.Info("End");
         }
@@ -32,7 +32,8 @@ namespace TestSandBox
             //RunNetStandard_GetAssemblyName();
             //RunNetStandard_GetPackageId();
             //RunNetStandard_GetInstalledPackages();
-            RunNetStandard_GetUpdateInstalledPackageVersion();
+            //RunNetStandard_GetUpdateInstalledPackageVersion();
+            RunNetStandard_GetSetVersion();
         }
 
         private void RunNet()
@@ -42,7 +43,8 @@ namespace TestSandBox
             //RunNet_GetAssemblyName();
             //RunNet_GetPackageId();
             //RunNet_GetInstalledPackages();
-            RunNet_GetUpdateInstalledPackageVersion();
+            //RunNet_GetUpdateInstalledPackageVersion();
+            RunNet_GetSetVersion();
         }
 
         private void RunNetFramework()
@@ -52,7 +54,8 @@ namespace TestSandBox
             //RunNetFramework_GetAssemblyName();
             //RunNetFramework_GetPackageId();
             //RunNetFramework_GetInstalledPackages();
-            RunNetFramework_GetUpdateInstalledPackageVersion();
+            //RunNetFramework_GetUpdateInstalledPackageVersion();
+            RunNetFramework_GetSetVersion();
         }
 
         private void RunNetWindows()
@@ -62,7 +65,8 @@ namespace TestSandBox
             //RunNetWindows_GetAssemblyName();
             //RunNetWindows_GetPackageId();
             //RunNetWindows_GetInstalledPackages();
-            RunNetWindows_GetUpdateInstalledPackageVersion();
+            //RunNetWindows_GetUpdateInstalledPackageVersion();
+            RunNetWindows_GetSetVersion();
         }
 
         private void RunNetStandard_GetSetTargetFramework()
@@ -498,7 +502,7 @@ namespace TestSandBox
 
         private void RunNetStandard_GetUpdateInstalledPackageVersion()
         {
-            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.;
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetStandard;
 
             using var tempDir = new TempDirectory();
 
@@ -508,7 +512,7 @@ namespace TestSandBox
             _logger.Info($"projectFileName = '{projectFileName}'");
 #endif
 
-            var packageId = ;
+            var packageId = "NLog";
 
             var packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
 
@@ -516,12 +520,22 @@ namespace TestSandBox
             _logger.Info($"packageVersion = '{packageVersion}'");
 #endif
 
-            throw new NotImplementedException();
+            var result = CSharpProjectHelper.UpdateInstalledPackageVersion(projectFileName, packageId, "5.1.5");
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
+
+#if DEBUG
+            _logger.Info($"packageVersion = '{packageVersion}'");
+#endif
         }
 
         private void RunNet_GetUpdateInstalledPackageVersion()
         {
-            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.;
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.Net;
 
             using var tempDir = new TempDirectory();
 
@@ -531,7 +545,7 @@ namespace TestSandBox
             _logger.Info($"projectFileName = '{projectFileName}'");
 #endif
 
-            var packageId = ;
+            var packageId = "NLog";
 
             var packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
 
@@ -539,12 +553,22 @@ namespace TestSandBox
             _logger.Info($"packageVersion = '{packageVersion}'");
 #endif
 
-            throw new NotImplementedException();
+            var result = CSharpProjectHelper.UpdateInstalledPackageVersion(projectFileName, packageId, "5.1.5");
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
+
+#if DEBUG
+            _logger.Info($"packageVersion = '{packageVersion}'");
+#endif
         }
 
         private void RunNetFramework_GetUpdateInstalledPackageVersion()
         {
-            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.;
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetFramework;
 
             using var tempDir = new TempDirectory();
 
@@ -554,7 +578,7 @@ namespace TestSandBox
             _logger.Info($"projectFileName = '{projectFileName}'");
 #endif
 
-            var packageId = ;
+            var packageId = "NLog";
 
             var packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
 
@@ -562,12 +586,22 @@ namespace TestSandBox
             _logger.Info($"packageVersion = '{packageVersion}'");
 #endif
 
-            throw new NotImplementedException();
+            var result = CSharpProjectHelper.UpdateInstalledPackageVersion(projectFileName, packageId, "5.1.5");
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
+
+#if DEBUG
+            _logger.Info($"packageVersion = '{packageVersion}'");
+#endif
         }
 
         private void RunNetWindows_GetUpdateInstalledPackageVersion()
         {
-            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.;
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetWindows;
 
             using var tempDir = new TempDirectory();
 
@@ -577,7 +611,7 @@ namespace TestSandBox
             _logger.Info($"projectFileName = '{projectFileName}'");
 #endif
 
-            var packageId = ;
+            var packageId = "NLog";
 
             var packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
 
@@ -585,15 +619,147 @@ namespace TestSandBox
             _logger.Info($"packageVersion = '{packageVersion}'");
 #endif
 
-            throw new NotImplementedException();
+            var result = CSharpProjectHelper.UpdateInstalledPackageVersion(projectFileName, packageId, "5.1.5");
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
+
+#if DEBUG
+            _logger.Info($"packageVersion = '{packageVersion}'");
+#endif
+        }
+
+        private void RunNetStandard_GetSetVersion()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetStandard;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var version = CSharpProjectHelper.GetVersion(projectFileName);
+
+#if DEBUG
+            _logger.Info($"version = '{version}'");
+#endif
+
+            var result = CSharpProjectHelper.SetVersion(projectFileName, "0.5.5");
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            version = CSharpProjectHelper.GetVersion(projectFileName);
+
+#if DEBUG
+            _logger.Info($"version = '{version}'");
+#endif
+        }
+
+        private void RunNet_GetSetVersion()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.Net;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var version = CSharpProjectHelper.GetVersion(projectFileName);
+
+#if DEBUG
+            _logger.Info($"version = '{version}'");
+#endif
+
+            var result = CSharpProjectHelper.SetVersion(projectFileName, "0.5.5");
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            version = CSharpProjectHelper.GetVersion(projectFileName);
+
+#if DEBUG
+            _logger.Info($"version = '{version}'");
+#endif
+        }
+
+        private void RunNetFramework_GetSetVersion()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetFramework;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var version = CSharpProjectHelper.GetVersion(projectFileName);
+
+#if DEBUG
+            _logger.Info($"version = '{version}'");
+#endif
+
+            var result = CSharpProjectHelper.SetVersion(projectFileName, "0.5.5");
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            version = CSharpProjectHelper.GetVersion(projectFileName);
+
+#if DEBUG
+            _logger.Info($"version = '{version}'");
+#endif
+        }
+
+        private void RunNetWindows_GetSetVersion()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetWindows;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var version = CSharpProjectHelper.GetVersion(projectFileName);
+
+#if DEBUG
+            _logger.Info($"version = '{version}'");
+#endif
+
+
+            var result = CSharpProjectHelper.SetVersion(projectFileName, "0.5.5");
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            version = CSharpProjectHelper.GetVersion(projectFileName);
+
+#if DEBUG
+            _logger.Info($"version = '{version}'");
+#endif
         }
 
         /*
-public static string GetInstalledPackageVersion(string projectFileName, string packageId)
-public static bool UpdateInstalledPackageVersion(string projectFileName, string packageId, string version)
-
-public static string GetVersion(string projectFileName)
-public static bool SetVersion(string projectFileName, string targetVersion)
+public static string (string projectFileName)
+public static bool (string projectFileName, string targetVersion)
 
 public static bool GetCopyright(string projectFileName);
 public static bool SetCopyright(string projectFileName, string copyright)

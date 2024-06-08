@@ -94,23 +94,43 @@ namespace CSharpUtilsTests
         [Test]
         public void TestGetUpdateInstalledPackageVersion()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static string GetInstalledPackageVersion(string projectFileName, string packageId)
-public static bool UpdateInstalledPackageVersion(string projectFileName, string packageId, string version)
-*/
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var packageId = "NLog";
+
+            var packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
+
+            Assert.That(packageVersion, Is.EqualTo(""));
+
+            var result = CSharpProjectHelper.UpdateInstalledPackageVersion(projectFileName, packageId, "5.1.5");
+
+            Assert.That(result, Is.EqualTo(false));
+
+            packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
+
+            Assert.That(packageVersion, Is.EqualTo(""));
         }
 
         [Test]
         public void TestGetSetVersion()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static string GetVersion(string projectFileName)
-public static bool SetVersion(string projectFileName, string targetVersion)
-*/
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var version = CSharpProjectHelper.GetVersion(projectFileName);
+
+            Assert.That(version, Is.EqualTo(""));
+
+            var result = CSharpProjectHelper.SetVersion(projectFileName, "0.5.5");
+
+            Assert.That(result, Is.EqualTo(false));
+
+            version = CSharpProjectHelper.GetVersion(projectFileName);
+
+            Assert.That(version, Is.EqualTo(""));
         }
 
         [Test]

@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CSharpUtils;
+using NUnit.Framework.Interfaces;
 
 namespace CSharpUtilsTests
 {
@@ -109,23 +110,43 @@ namespace CSharpUtilsTests
         [Test]
         public void TestGetUpdateInstalledPackageVersion()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static string GetInstalledPackageVersion(string projectFileName, string packageId)
-public static bool UpdateInstalledPackageVersion(string projectFileName, string packageId, string version)
-*/
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var packageId = "NLog";
+
+            var packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
+
+            Assert.That(packageVersion, Is.EqualTo("5.1.4"));
+
+            var result = CSharpProjectHelper.UpdateInstalledPackageVersion(projectFileName, packageId, "5.1.5");
+
+            Assert.That(result, Is.EqualTo(true));
+
+            packageVersion = CSharpProjectHelper.GetInstalledPackageVersion(projectFileName, packageId);
+
+            Assert.That(packageVersion, Is.EqualTo("5.1.5"));
         }
 
         [Test]
         public void TestGetSetVersion()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static string GetVersion(string projectFileName)
-public static bool SetVersion(string projectFileName, string targetVersion)
-*/
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var version = CSharpProjectHelper.GetVersion(projectFileName);
+
+            Assert.That(version, Is.EqualTo("0.5.4"));
+
+            var result = CSharpProjectHelper.SetVersion(projectFileName, "0.5.5");
+
+            Assert.That(result, Is.EqualTo(true));
+
+            version = CSharpProjectHelper.GetVersion(projectFileName);
+
+            Assert.That(version, Is.EqualTo("0.5.5"));
         }
 
         [Test]
