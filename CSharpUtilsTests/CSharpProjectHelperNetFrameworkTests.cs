@@ -156,21 +156,25 @@ namespace CSharpUtilsTests
         [Test]
         public void TestGetOutputPathDebug()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static string GetOutputPath(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-*/
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var outputPathDebug = CSharpProjectHelper.GetOutputPath(projectFileName, KindOfConfiguration.Debug);
+
+            Assert.That(outputPathDebug, Is.EqualTo(@"Temp\bin\Debug\"));
         }
 
         [Test]
         public void TestGetOutputPathRelease()
         {
-            throw new NotImplementedException();
+            using var tempDir = new TempDirectory();
 
-            /*
-            public static string GetOutputPath(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-*/
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var outputPathRelease = CSharpProjectHelper.GetOutputPath(projectFileName, KindOfConfiguration.Release);
+
+            Assert.That(outputPathRelease, Is.EqualTo(@"Temp\bin\Release\"));
         }
 
         [Test]

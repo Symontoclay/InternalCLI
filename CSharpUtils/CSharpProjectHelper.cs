@@ -13,7 +13,7 @@ namespace CSharpUtils
     public static class CSharpProjectHelper
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static List<string> GetCSharpFileNames(string projectFileName)
@@ -617,6 +617,11 @@ namespace CSharpUtils
 
             var propertyGroup = GetPropertyGroup(project, kindOfConfiguration);
 
+            if(propertyGroup == null)
+            {
+                return string.Empty;
+            }
+
             var outputPathNode = propertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName.ToLower() == "OutputPath".ToLower());
 
             return (outputPathNode?.Value)?? string.Empty;
@@ -627,6 +632,11 @@ namespace CSharpUtils
             var project = LoadProject(projectFileName);
 
             var propertyGroup = GetPropertyGroup(project, kindOfConfiguration);
+
+            if (propertyGroup == null)
+            {
+                return string.Empty;
+            }
 
             var documentationFileNode = propertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName.ToLower() == "DocumentationFile".ToLower());
 

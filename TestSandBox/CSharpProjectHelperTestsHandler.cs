@@ -2,7 +2,6 @@
 using CSharpUtils;
 using Newtonsoft.Json;
 using NLog;
-using NuGet.Frameworks;
 using System;
 using System.IO;
 
@@ -34,7 +33,8 @@ namespace TestSandBox
             //RunNetStandard_GetInstalledPackages();
             //RunNetStandard_GetUpdateInstalledPackageVersion();
             //RunNetStandard_GetSetVersion();
-            RunNetStandard_GetSetCopyright();
+            //RunNetStandard_GetSetCopyright();
+            RunNetStandard_GetOutputPath();
         }
 
         private void RunNet()
@@ -46,7 +46,8 @@ namespace TestSandBox
             //RunNet_GetInstalledPackages();
             //RunNet_GetUpdateInstalledPackageVersion();
             //RunNet_GetSetVersion();
-            RunNet_GetSetCopyright();
+            //RunNet_GetSetCopyright();
+            RunNet_GetOutputPath();
         }
 
         private void RunNetFramework()
@@ -58,7 +59,8 @@ namespace TestSandBox
             //RunNetFramework_GetInstalledPackages();
             //RunNetFramework_GetUpdateInstalledPackageVersion();
             //RunNetFramework_GetSetVersion();
-            RunNetFramework_GetSetCopyright();
+            //RunNetFramework_GetSetCopyright();
+            RunNetFramework_GetOutputPath();
         }
 
         private void RunNetWindows()
@@ -70,7 +72,8 @@ namespace TestSandBox
             //RunNetWindows_GetInstalledPackages();
             //RunNetWindows_GetUpdateInstalledPackageVersion();
             //RunNetWindows_GetSetVersion();
-            RunNetWindows_GetSetCopyright();
+            //RunNetWindows_GetSetCopyright();
+            RunNetWindows_GetOutputPath();
         }
 
         private void RunNetStandard_GetSetTargetFramework()
@@ -881,6 +884,106 @@ namespace TestSandBox
 
 #if DEBUG
             _logger.Info($"copyright = '{copyright}'");
+#endif
+        }
+
+        private void RunNetStandard_GetOutputPath()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetStandard;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var outputPathDebug = CSharpProjectHelper.GetOutputPath(projectFileName, KindOfConfiguration.Debug);
+
+#if DEBUG
+            _logger.Info($"outputPathDebug = '{outputPathDebug}'");
+#endif
+
+            var outputPathRelease = CSharpProjectHelper.GetOutputPath(projectFileName, KindOfConfiguration.Release);
+
+#if DEBUG
+            _logger.Info($"outputPathRelease = '{outputPathRelease}'");
+#endif
+        }
+
+        private void RunNet_GetOutputPath()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.Net;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var outputPathDebug = CSharpProjectHelper.GetOutputPath(projectFileName, KindOfConfiguration.Debug);
+
+#if DEBUG
+            _logger.Info($"outputPathDebug = '{outputPathDebug}'");
+#endif
+
+            var outputPathRelease = CSharpProjectHelper.GetOutputPath(projectFileName, KindOfConfiguration.Release);
+
+#if DEBUG
+            _logger.Info($"outputPathRelease = '{outputPathRelease}'");
+#endif
+        }
+
+        private void RunNetFramework_GetOutputPath()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetFramework;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var outputPathDebug = CSharpProjectHelper.GetOutputPath(projectFileName, KindOfConfiguration.Debug);
+
+#if DEBUG
+            _logger.Info($"outputPathDebug = '{outputPathDebug}'");
+#endif
+
+            var outputPathRelease = CSharpProjectHelper.GetOutputPath(projectFileName, KindOfConfiguration.Release);
+
+#if DEBUG
+            _logger.Info($"outputPathRelease = '{outputPathRelease}'");
+#endif
+        }
+
+        private void RunNetWindows_GetOutputPath()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetWindows;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var outputPathDebug = CSharpProjectHelper.GetOutputPath(projectFileName, KindOfConfiguration.Debug);
+
+#if DEBUG
+            _logger.Info($"outputPathDebug = '{outputPathDebug}'");
+#endif
+
+            var outputPathRelease = CSharpProjectHelper.GetOutputPath(projectFileName, KindOfConfiguration.Release);
+
+#if DEBUG
+            _logger.Info($"outputPathRelease = '{outputPathRelease}'");
 #endif
         }
 
