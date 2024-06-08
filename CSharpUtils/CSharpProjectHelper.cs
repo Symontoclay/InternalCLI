@@ -474,12 +474,11 @@ namespace CSharpUtils
         {
             var project = LoadProject(projectFileName);
 
-            var targetPropertyGroup = GetMainPropertyGroup(project, "Version");
+            var targetPropertyGroup = GetMainPropertyGroup(project, "Version", true);
 
-            if(targetPropertyGroup == null)
-            {
-                return false;
-            }
+#if DEBUG
+            //_logger.Info($"targetPropertyGroup = {targetPropertyGroup}");
+#endif
 
             var needUpdate = false;
 
@@ -548,11 +547,40 @@ namespace CSharpUtils
             return needUpdate;
         }
 
-        public static bool SetCopyright(string projectFileName, string copyright)
+        public static string GetCopyright(string projectFileName)
         {
             var project = LoadProject(projectFileName);
 
             var targetPropertyGroup = GetMainPropertyGroup(project, "Copyright");
+
+#if DEBUG
+            //_logger.Info($"targetPropertyGroup = {targetPropertyGroup}");
+#endif
+
+            if(targetPropertyGroup == null)
+            {
+                return string.Empty;
+            }
+
+            var copyrightSection = targetPropertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName == "Copyright");
+
+#if DEBUG
+            //_logger.Info($"copyrightSection = {copyrightSection}");
+#endif
+
+            if (copyrightSection == null)
+            {
+                return string.Empty;
+            }
+
+            return copyrightSection.Value;
+        }
+
+        public static bool SetCopyright(string projectFileName, string copyright)
+        {
+            var project = LoadProject(projectFileName);
+
+            var targetPropertyGroup = GetMainPropertyGroup(project, "Copyright", true);
 
             var needUpdate = false;
 
@@ -668,7 +696,7 @@ namespace CSharpUtils
             File.WriteAllText(projectFileName, txt, Encoding.UTF8);
         }
 
-        private static XElement GetMainPropertyGroup(XElement project, string elementName)
+        private static XElement GetMainPropertyGroup(XElement project, string elementName, bool getFirstIfNotExists = false)
         {
 #if DEBUG
             //_logger.Info($"project = {project}");
@@ -682,7 +710,14 @@ namespace CSharpUtils
                 return elements.FirstOrDefault();
             }
 
-            return elements.FirstOrDefault(p => p.Elements()?.Any(x => x.Name.LocalName == elementName) ?? false);
+            var result = elements.FirstOrDefault(p => p.Elements()?.Any(x => x.Name.LocalName == elementName) ?? false);
+
+            if(result == null && getFirstIfNotExists)
+            {
+                return elements.FirstOrDefault(p => !(p.Elements()?.Any(x => x.Name.LocalName == "LangVersion") ?? false));
+            }
+
+            return result;
         }
 
         private static XElement GetPropertyGroup(XElement project, KindOfConfiguration kindOfConfiguration)

@@ -126,11 +126,11 @@ namespace CSharpUtilsTests
 
             var result = CSharpProjectHelper.SetVersion(projectFileName, "0.5.5");
 
-            Assert.That(result, Is.EqualTo(false));
+            Assert.That(result, Is.EqualTo(true));
 
             version = CSharpProjectHelper.GetVersion(projectFileName);
 
-            Assert.That(version, Is.EqualTo(""));
+            Assert.That(version, Is.EqualTo("0.5.5"));
         }
 
         [Test]

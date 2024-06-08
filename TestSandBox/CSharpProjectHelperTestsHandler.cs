@@ -34,7 +34,7 @@ namespace TestSandBox
             //RunNetStandard_GetInstalledPackages();
             //RunNetStandard_GetUpdateInstalledPackageVersion();
             //RunNetStandard_GetSetVersion();
-            GetSetCopyright();
+            RunNetStandard_GetSetCopyright();
         }
 
         private void RunNet()
@@ -46,7 +46,7 @@ namespace TestSandBox
             //RunNet_GetInstalledPackages();
             //RunNet_GetUpdateInstalledPackageVersion();
             //RunNet_GetSetVersion();
-            GetSetCopyright();
+            RunNet_GetSetCopyright();
         }
 
         private void RunNetFramework()
@@ -58,7 +58,7 @@ namespace TestSandBox
             //RunNetFramework_GetInstalledPackages();
             //RunNetFramework_GetUpdateInstalledPackageVersion();
             //RunNetFramework_GetSetVersion();
-            GetSetCopyright();
+            RunNetFramework_GetSetCopyright();
         }
 
         private void RunNetWindows()
@@ -70,7 +70,7 @@ namespace TestSandBox
             //RunNetWindows_GetInstalledPackages();
             //RunNetWindows_GetUpdateInstalledPackageVersion();
             //RunNetWindows_GetSetVersion();
-            GetSetCopyright();
+            RunNetWindows_GetSetCopyright();
         }
 
         private void RunNetStandard_GetSetTargetFramework()
@@ -747,7 +747,6 @@ namespace TestSandBox
             _logger.Info($"version = '{version}'");
 #endif
 
-
             var result = CSharpProjectHelper.SetVersion(projectFileName, "0.5.5");
 
 #if DEBUG
@@ -761,10 +760,57 @@ namespace TestSandBox
 #endif
         }
 
-        GetSetCopyright()
-        GetSetCopyright()
-        GetSetCopyright()
-        GetSetCopyright()
+        private void RunNetStandard_GetSetCopyright()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetStandard;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var copyright = CSharpProjectHelper.GetCopyright(projectFileName);
+
+#if DEBUG
+            _logger.Info($"copyright = '{copyright}'");
+#endif
+
+            var result = CSharpProjectHelper.SetCopyright(projectFileName, "Copyright (c) Tst");
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            copyright = CSharpProjectHelper.GetCopyright(projectFileName);
+
+#if DEBUG
+            _logger.Info($"copyright = '{copyright}'");
+#endif
+        }
+
+        private void RunNet_GetSetCopyright()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.Net;
+
+            throw new NotImplementedException();
+        }
+
+        private void RunNetFramework_GetSetCopyright()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetFramework;
+
+            throw new NotImplementedException();
+        }
+
+        private void RunNetWindows_GetSetCopyright()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetWindows;
+
+            throw new NotImplementedException();
+        }
 
         /*
 public static bool GetCopyright(string projectFileName);
