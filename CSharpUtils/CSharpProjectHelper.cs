@@ -27,9 +27,14 @@ namespace CSharpUtils
         {
             var project = LoadProject(projectFileName);
 
+            return GetTargetFramework(project);
+        }
+
+        public static string GetTargetFramework(XElement project)
+        {
             var section = GetTargetFrameworkSection(project);
 
-            if(section == null)
+            if (section == null)
             {
                 section = GetTargetFrameworkSectionForNetFramework(project);
 
@@ -81,6 +86,11 @@ namespace CSharpUtils
         public static (KindOfTargetCSharpFramework Kind, Version Version) GetTargetFrameworkVersion(string projectFileName)
         {
             return ConvertTargetFrameworkToVersion(GetTargetFramework(projectFileName));
+        }
+
+        public static (KindOfTargetCSharpFramework Kind, Version Version) GetTargetFrameworkVersion(XElement project)
+        {
+            return ConvertTargetFrameworkToVersion(GetTargetFramework(project));
         }
 
         private const string _netstandardPrefix = "netstandard";
@@ -631,7 +641,7 @@ namespace CSharpUtils
         {
             var project = LoadProject(projectFileName);
 
-            var propertyGroup = GetPropertyGroup(project, kindOfConfiguration);
+            var propertyGroup = GetDocumentationFilePropertyGroup(project, kindOfConfiguration);
 
             if (propertyGroup == null)
             {
@@ -667,7 +677,7 @@ namespace CSharpUtils
         {
             var project = LoadProject(projectFileName);
 
-            var propertyGroup = GetPropertyGroup(project, kindOfConfiguration);
+            var propertyGroup = GetDocumentationFilePropertyGroup(project, kindOfConfiguration);
 
             var documentationFileNode = propertyGroup.Elements().FirstOrDefault(p => p.Name.LocalName.ToLower() == "DocumentationFile".ToLower());
 
@@ -686,6 +696,27 @@ namespace CSharpUtils
             SaveProject(project, projectFileName);
 
             return true;
+        }
+
+        private static XElement GetDocumentationFilePropertyGroup(XElement project, KindOfConfiguration kindOfConfiguration)
+        {
+            var targetFramework = GetTargetFrameworkVersion(project);
+
+            var kind = targetFramework.Kind;
+
+            switch (kind)
+            {
+                case KindOfTargetCSharpFramework.NetStandard:
+                case KindOfTargetCSharpFramework.NetFramework:
+                    return GetPropertyGroup(project, kindOfConfiguration);
+
+                case KindOfTargetCSharpFramework.Net:
+                case KindOfTargetCSharpFramework.NetWindows:
+                    return GetMainPropertyGroup(project, "DocumentationFile", true);
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+            }
         }
 
         private static XElement LoadProject(string projectFileName)

@@ -197,23 +197,45 @@ namespace CSharpUtilsTests
         [Test]
         public void TestGetSetDocumentationFileInUnityProjectIfEmptyDebug()
         {
-            throw new NotImplementedException();
+            var kindOfConfiguration = KindOfConfiguration.Debug;
 
-            /*
-            public static string GetDocumentationFile(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-            public static bool SetDocumentationFileInUnityProjectIfEmpty(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-*/
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+            Assert.That(documentationFile, Is.EqualTo("SymOntoClay.Core.xml"));
+
+            var result = CSharpProjectHelper.SetDocumentationFileInUnityProjectIfEmpty(projectFileName, kindOfConfiguration);
+
+            Assert.That(result, Is.EqualTo(false));
+
+            documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+            Assert.That(documentationFile, Is.EqualTo("SymOntoClay.Core.xml"));
         }
 
         [Test]
         public void TestGetSetDocumentationFileInUnityProjectIfEmptyRelease()
         {
-            throw new NotImplementedException();
+            var kindOfConfiguration = KindOfConfiguration.Release;
 
-            /*
-            public static string GetDocumentationFile(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-            public static bool SetDocumentationFileInUnityProjectIfEmpty(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-*/
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+            Assert.That(documentationFile, Is.EqualTo(""));
+
+            var result = CSharpProjectHelper.SetDocumentationFileInUnityProjectIfEmpty(projectFileName, kindOfConfiguration);
+
+            Assert.That(result, Is.EqualTo(true));
+
+            documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+            Assert.That(documentationFile, Is.EqualTo("Assembly-CSharp.xml"));
         }
 
         [Test]
