@@ -222,6 +222,10 @@
         },
         {
           "Kind": "IntegrationTest",
+          "Path": "CLI.CmdlParser.Tests"
+        },
+        {
+          "Kind": "IntegrationTest",
           "Path": "CSharpUtilsTests"
         },
         {

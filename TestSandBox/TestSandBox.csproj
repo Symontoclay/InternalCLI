@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseDevPipeline\BaseDevPipeline.csproj" />
+    <ProjectReference Include="..\CLI.CmdlParser.Tests\CLI.CmdlParser.Tests.csproj" />
     <ProjectReference Include="..\CommonUtils\CommonUtils.csproj" />
     <ProjectReference Include="..\CSharpUtilsTests\CSharpUtilsTests.csproj" />
     <ProjectReference Include="..\CSharpUtils\CSharpUtils.csproj" />
