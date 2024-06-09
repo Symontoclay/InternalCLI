@@ -1,4 +1,5 @@
 ﻿using NLog;
+using System;
 using System.Collections.Generic;
 using UpdateTargetFrameworkInAllCSharpProjects;
 
@@ -40,13 +41,20 @@ namespace TestSandBox
 
         private void UpdateTargetFrameworkInAllCSharpProjectsCase2()
         {
-            var args = new List<string>();
+            try
+            {
+                var args = new List<string>();
 
-            var parser = new UpdateTargetFrameworkInAllCSharpProjectsCommandLineParser(true);
+                var parser = new UpdateTargetFrameworkInAllCSharpProjectsCommandLineParser(true);
 
-            var result = parser.Parse(args.ToArray());
+                var result = parser.Parse(args.ToArray());
 
-            _logger.Info($"result = {result}");
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception e)
+            {
+                _logger.Info(e);
+            }
         }
     }
 }
