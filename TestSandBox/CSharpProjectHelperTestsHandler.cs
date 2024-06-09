@@ -36,7 +36,8 @@ namespace TestSandBox
             //RunNetStandard_GetSetCopyright();
             //RunNetStandard_GetOutputPath();
             //RunNetStandard_GetSetDocumentationFileInUnityProjectIfEmpty();
-            RunNetStandard_GetSetDocumentationFileIfEmpty();
+            //RunNetStandard_GetSetDocumentationFileIfEmpty();
+            RunNetStandard_GetSetDocumentationFile();
         }
 
         private void RunNet()
@@ -51,7 +52,8 @@ namespace TestSandBox
             //RunNet_GetSetCopyright();
             //RunNet_GetOutputPath();
             //RunNet_GetSetDocumentationFileInUnityProjectIfEmpty();
-            RunNet_GetSetDocumentationFileIfEmpty();
+            //RunNet_GetSetDocumentationFileIfEmpty();
+            RunNet_GetSetDocumentationFile();
         }
 
         private void RunNetFramework()
@@ -66,7 +68,8 @@ namespace TestSandBox
             //RunNetFramework_GetSetCopyright();
             //RunNetFramework_GetOutputPath();
             //RunNetFramework_GetSetDocumentationFileInUnityProjectIfEmpty();
-            RunNetFramework_GetSetDocumentationFileIfEmpty();
+            //RunNetFramework_GetSetDocumentationFileIfEmpty();
+            RunNetFramework_GetSetDocumentationFile();
         }
 
         private void RunNetWindows()
@@ -81,7 +84,8 @@ namespace TestSandBox
             //RunNetWindows_GetSetCopyright();
             //RunNetWindows_GetOutputPath();
             //RunNetWindows_GetSetDocumentationFileInUnityProjectIfEmpty();
-            RunNetWindows_GetSetDocumentationFileIfEmpty();
+            //RunNetWindows_GetSetDocumentationFileIfEmpty();
+            RunNetWindows_GetSetDocumentationFile();
         }
 
         private void RunNetStandard_GetSetTargetFramework()
@@ -1259,40 +1263,143 @@ namespace TestSandBox
 #endif
         }
 
+        private void RunNetStandard_GetSetDocumentationFile()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetStandard;
+
+            var kindOfConfiguration = KindOfConfiguration.Debug;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+#if DEBUG
+            _logger.Info($"documentationFile = '{documentationFile}'");
+#endif
+
+            var result = CSharpProjectHelper.SetDocumentationFile(projectFileName, "SomeDoc.xml", kindOfConfiguration);
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+#if DEBUG
+            _logger.Info($"documentationFile = '{documentationFile}'");
+#endif
+        }
+
+        private void RunNet_GetSetDocumentationFile()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.Net;
+
+            var kindOfConfiguration = KindOfConfiguration.Debug;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+#if DEBUG
+            _logger.Info($"documentationFile = '{documentationFile}'");
+#endif
+
+            var result = CSharpProjectHelper.SetDocumentationFile(projectFileName, "SomeDoc.xml", kindOfConfiguration);
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+#if DEBUG
+            _logger.Info($"documentationFile = '{documentationFile}'");
+#endif
+        }
+
+        private void RunNetFramework_GetSetDocumentationFile()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetFramework;
+
+            var kindOfConfiguration = KindOfConfiguration.Debug;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+#if DEBUG
+            _logger.Info($"documentationFile = '{documentationFile}'");
+#endif
+
+            var result = CSharpProjectHelper.SetDocumentationFile(projectFileName, "SomeDoc.xml", kindOfConfiguration);
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+#if DEBUG
+            _logger.Info($"documentationFile = '{documentationFile}'");
+#endif
+        }
+
+        private void RunNetWindows_GetSetDocumentationFile()
+        {
+            var _kindOfTargetCSharpFramework = KindOfTargetCSharpFramework.NetWindows;
+
+            var kindOfConfiguration = KindOfConfiguration.Debug;
+
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+#if DEBUG
+            _logger.Info($"projectFileName = '{projectFileName}'");
+#endif
+
+            var documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+#if DEBUG
+            _logger.Info($"documentationFile = '{documentationFile}'");
+#endif
+
+            var result = CSharpProjectHelper.SetDocumentationFile(projectFileName, "SomeDoc.xml", kindOfConfiguration);
+
+#if DEBUG
+            _logger.Info($"result = {result}");
+#endif
+
+            documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+#if DEBUG
+            _logger.Info($"documentationFile = '{documentationFile}'");
+#endif
+        }
+
         /*
 public static string GetDocumentationFile(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
 
-public static bool SetDocumentationFile(string projectFileName, string documentationFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
+public static bool (string projectFileName, string documentationFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
 */
-
-        /*
-        public static string GetTargetFramework(string projectFileName)
-        public static bool SetTargetFramework(string projectFileName, string targetFramework)
-
-        public static (KindOfTargetCSharpFramework Kind, Version Version) GetTargetFrameworkVersion(string projectFileName)
-        public static bool SetTargetFramework(string projectFileName, (KindOfTargetCSharpFramework Kind, Version Version) frameworkVersion)
-
-        public static bool GetGeneratePackageOnBuild(string projectFileName)
-        public static string GetAssemblyName(string projectFileName)
-        public static string GetPackageId(string projectFileName)
-
-        public static List<(string PackageId, Version Version)> GetInstalledPackages(string projectFileName)
-
-        public static string GetInstalledPackageVersion(string projectFileName, string packageId)
-        public static bool UpdateInstalledPackageVersion(string projectFileName, string packageId, string version)
-
-        public static string GetVersion(string projectFileName)
-        public static bool SetVersion(string projectFileName, string targetVersion)
-
-        public static bool SetCopyright(string projectFileName, string copyright)
-
-        public static string GetOutputPath(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-
-        public static string GetDocumentationFile(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-        public static bool SetDocumentationFileInUnityProjectIfEmpty(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-        public static bool SetDocumentationFileIfEmpty(string projectFileName, string documentationFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-        public static bool SetDocumentationFile(string projectFileName, string documentationFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
- */
 
         private string CreateTestCsProjectFile(KindOfTargetCSharpFramework kindOfTargetCSharpFramework, TempDirectory tempDirectory)
         {

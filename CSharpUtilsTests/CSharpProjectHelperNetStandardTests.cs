@@ -285,53 +285,45 @@ namespace CSharpUtilsTests
         [Test]
         public void TestGetSetDocumentationFileDebug()
         {
-            throw new NotImplementedException();
+            var kindOfConfiguration = KindOfConfiguration.Debug;
 
-            /*
-            public static string GetDocumentationFile(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-            public static bool SetDocumentationFile(string projectFileName, string documentationFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-*/
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+            Assert.That(documentationFile, Is.EqualTo("SymOntoClay.Core.xml"));
+
+            var result = CSharpProjectHelper.SetDocumentationFile(projectFileName, "SomeDoc.xml", kindOfConfiguration);
+
+            Assert.That(result, Is.EqualTo(true));
+
+            documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+            Assert.That(documentationFile, Is.EqualTo("SomeDoc.xml"));
         }
 
         [Test]
         public void TestGetSetDocumentationFileRelease()
         {
-            throw new NotImplementedException();
+            var kindOfConfiguration = KindOfConfiguration.Release;
 
-            /*
-            public static string GetDocumentationFile(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-            public static bool SetDocumentationFile(string projectFileName, string documentationFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-*/
+            using var tempDir = new TempDirectory();
+
+            var projectFileName = CreateTestCsProjectFile(_kindOfTargetCSharpFramework, tempDir);
+
+            var documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+            Assert.That(documentationFile, Is.EqualTo(""));
+
+            var result = CSharpProjectHelper.SetDocumentationFile(projectFileName, "SomeDoc.xml", kindOfConfiguration);
+
+            Assert.That(result, Is.EqualTo(true));
+
+            documentationFile = CSharpProjectHelper.GetDocumentationFile(projectFileName, kindOfConfiguration);
+
+            Assert.That(documentationFile, Is.EqualTo("SomeDoc.xml"));
         }
     }
 }
-
-/*
-public static string GetTargetFramework(string projectFileName)
-public static bool SetTargetFramework(string projectFileName, string targetFramework)
-
-public static (KindOfTargetCSharpFramework Kind, Version Version) GetTargetFrameworkVersion(string projectFileName)
-public static bool SetTargetFramework(string projectFileName, (KindOfTargetCSharpFramework Kind, Version Version) frameworkVersion)
-
-public static bool GetGeneratePackageOnBuild(string projectFileName)
-public static string GetAssemblyName(string projectFileName)
-public static string GetPackageId(string projectFileName)
-
-public static List<(string PackageId, Version Version)> GetInstalledPackages(string projectFileName)
-
-public static string GetInstalledPackageVersion(string projectFileName, string packageId)
-public static bool UpdateInstalledPackageVersion(string projectFileName, string packageId, string version)
-
-public static string GetVersion(string projectFileName)
-public static bool SetVersion(string projectFileName, string targetVersion)
-
-public static bool GetCopyright(string projectFileName);
-public static bool SetCopyright(string projectFileName, string copyright)
-
-public static string GetOutputPath(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-
-public static string GetDocumentationFile(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-public static bool SetDocumentationFileInUnityProjectIfEmpty(string projectFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-public static bool SetDocumentationFileIfEmpty(string projectFileName, string documentationFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-public static bool SetDocumentationFile(string projectFileName, string documentationFileName, KindOfConfiguration kindOfConfiguration = KindOfConfiguration.Debug)
-*/
