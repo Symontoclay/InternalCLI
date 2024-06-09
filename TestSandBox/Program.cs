@@ -78,8 +78,9 @@ namespace TestSandBox
 
             try
             {
+                TstAppCmdlParsersHandler();
                 //TstTempSettings();
-                TstCSharpProjectHelperTestsHandler();
+                //TstCSharpProjectHelperTestsHandler();
                 //TstUpdateInstalledNuGetPackagesInAllCSharpProjectsDevTask();
                 //TstUpdateInstalledNuGetPackagesInAllCSharpProjects();
                 //TstUpdateTargetFrameworkInAllCSharpProjectsDevTask();
@@ -173,6 +174,16 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstAppCmdlParsersHandler()
+        {
+            _logger.Info("Begin");
+
+            var handler = new TstAppCmdlParsersHandler();
+            handler.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstTempSettings()

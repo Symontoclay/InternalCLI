@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="SymOntoClay.CLI.Helpers" Version="0.5.4.9" />
+  </ItemGroup>
+	
+  <ItemGroup>
     <ProjectReference Include="..\BaseDevPipeline\BaseDevPipeline.csproj" />
     <ProjectReference Include="..\CommonUtils\CommonUtils.csproj" />
     <ProjectReference Include="..\Deployment\Deployment.csproj" />
