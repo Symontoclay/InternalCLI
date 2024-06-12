@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using CSharpUtils;
+using NLog;
 using System;
 using System.Collections.Generic;
 using UpdateTargetFrameworkInAllCSharpProjects;
@@ -13,8 +14,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            //UpdateTargetFrameworkInAllCSharpProjectsCase1();
-            UpdateTargetFrameworkInAllCSharpProjectsCase2();
+            UpdateTargetFrameworkInAllCSharpProjectsCase1();
+            //UpdateTargetFrameworkInAllCSharpProjectsCase2();
 
             _logger.Info("End");
         }
@@ -32,6 +33,14 @@ namespace TestSandBox
             var result = parser.Parse(args.ToArray());
 
             _logger.Info($"result = {result}");
+
+            var targetFramework = (KindOfTargetCSharpFramework)result.Params["TargetFramework"];
+
+            _logger.Info($"targetFramework = {targetFramework}");
+
+            var targetVersion = (Version)result.Params["TargetVersion"];
+
+            _logger.Info($"targetVersion = {targetVersion}");
         }
 
         private void UpdateTargetFrameworkInAllCSharpProjectsCase2()
