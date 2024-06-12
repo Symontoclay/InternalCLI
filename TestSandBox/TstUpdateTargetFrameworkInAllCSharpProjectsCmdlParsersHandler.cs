@@ -5,7 +5,7 @@ using UpdateTargetFrameworkInAllCSharpProjects;
 
 namespace TestSandBox
 {
-    public class TstAppCmdlParsersHandler
+    public class TstUpdateTargetFrameworkInAllCSharpProjectsCmdlParsersHandler
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -13,15 +13,10 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            UpdateTargetFrameworkInAllCSharpProjects();
-
-            _logger.Info("End");
-        }
-
-        private void UpdateTargetFrameworkInAllCSharpProjects()
-        {
             //UpdateTargetFrameworkInAllCSharpProjectsCase1();
             UpdateTargetFrameworkInAllCSharpProjectsCase2();
+
+            _logger.Info("End");
         }
 
         private void UpdateTargetFrameworkInAllCSharpProjectsCase1()

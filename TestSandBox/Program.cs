@@ -180,7 +180,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var handler = new TstAppCmdlParsersHandler();
+            var handler = new TstUpdateTargetFrameworkInAllCSharpProjectsCmdlParsersHandler();
             handler.Run();
 
             _logger.Info("End");
