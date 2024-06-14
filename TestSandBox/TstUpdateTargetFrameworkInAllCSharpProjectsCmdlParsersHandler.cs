@@ -14,20 +14,18 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            //UpdateTargetFrameworkInAllCSharpProjectsCase5_1();//It should be tested.
-            //UpdateTargetFrameworkInAllCSharpProjectsCase5();//It should be tested.
-            //UpdateTargetFrameworkInAllCSharpProjectsCase4_1();//It should be tested.
-            //UpdateTargetFrameworkInAllCSharpProjectsCase4();//It should be tested.
-            //UpdateTargetFrameworkInAllCSharpProjectsCase3_1();//It should be tested.
-            //UpdateTargetFrameworkInAllCSharpProjectsCase3();//It should be tested.
+            //UpdateTargetFrameworkInAllCSharpProjectsCase4_1();
+            UpdateTargetFrameworkInAllCSharpProjectsCase4();
+            //UpdateTargetFrameworkInAllCSharpProjectsCase3_1();
+            //UpdateTargetFrameworkInAllCSharpProjectsCase3();
             //UpdateTargetFrameworkInAllCSharpProjectsCase2();
-            UpdateTargetFrameworkInAllCSharpProjectsCase1_1();//It should be tested.
+            //UpdateTargetFrameworkInAllCSharpProjectsCase1_1();
             //UpdateTargetFrameworkInAllCSharpProjectsCase1();
 
             _logger.Info("End");
         }
 
-        private void UpdateTargetFrameworkInAllCSharpProjectsCase5_1()//It should be tested.
+        private void UpdateTargetFrameworkInAllCSharpProjectsCase4_1()
         {
             try
             {
@@ -47,11 +45,12 @@ namespace TestSandBox
             }
             catch (Exception e)
             {
+                _logger.Info($"e.Message = '{e.Message}'");
                 _logger.Info(e);
             }
         }
 
-        private void UpdateTargetFrameworkInAllCSharpProjectsCase5()//It should be tested.
+        private void UpdateTargetFrameworkInAllCSharpProjectsCase4()
         {
             try
             {
@@ -69,57 +68,12 @@ namespace TestSandBox
             }
             catch (Exception e)
             {
+                _logger.Info($"e.Message = '{e.Message}'");
                 _logger.Info(e);
             }
         }
 
-        private void UpdateTargetFrameworkInAllCSharpProjectsCase4_1()//It should be tested.
-        {
-            try
-            {
-                var args = new List<string>()
-                {
-                    "TargetFramework",
-                    "NetStandard",
-                    "TargetVersion",
-                    "Cat"
-                };
-
-                var parser = new UpdateTargetFrameworkInAllCSharpProjectsCommandLineParser(false);
-
-                var result = parser.Parse(args.ToArray());
-
-                _logger.Info($"result = {result}");
-            }
-            catch (Exception e)
-            {
-                _logger.Info(e);
-            }
-        }
-
-        private void UpdateTargetFrameworkInAllCSharpProjectsCase4()//It should be tested.
-        {
-            try
-            {
-                var args = new List<string>()
-                {
-                    "NetStandard",
-                    "Cat"
-                };
-
-                var parser = new UpdateTargetFrameworkInAllCSharpProjectsCommandLineParser(false);
-
-                var result = parser.Parse(args.ToArray());
-
-                _logger.Info($"result = {result}");
-            }
-            catch (Exception e)
-            {
-                _logger.Info(e);
-            }
-        }
-
-        private void UpdateTargetFrameworkInAllCSharpProjectsCase3_1()//It should be tested.
+        private void UpdateTargetFrameworkInAllCSharpProjectsCase3_1()
         {
             try
             {
@@ -139,11 +93,12 @@ namespace TestSandBox
             }
             catch (Exception e)
             {
+                _logger.Info($"e.Message = '{e.Message}'");
                 _logger.Info(e);
             }
         }
 
-        private void UpdateTargetFrameworkInAllCSharpProjectsCase3()//It should be tested.
+        private void UpdateTargetFrameworkInAllCSharpProjectsCase3()
         {
             try
             {
@@ -153,7 +108,7 @@ namespace TestSandBox
                     "2.0"
                 };
 
-                var parser = new UpdateTargetFrameworkInAllCSharpProjectsCommandLineParser(false);
+                var parser = new UpdateTargetFrameworkInAllCSharpProjectsCommandLineParser(true);
 
                 var result = parser.Parse(args.ToArray());
 
@@ -161,6 +116,7 @@ namespace TestSandBox
             }
             catch (Exception e)
             {
+                _logger.Info($"e.Message = '{e.Message}'");
                 _logger.Info(e);
             }
         }
@@ -179,11 +135,12 @@ namespace TestSandBox
             }
             catch (Exception e)
             {
+                _logger.Info($"e.Message = '{e.Message}'");
                 _logger.Info(e);
             }
         }
 
-        private void UpdateTargetFrameworkInAllCSharpProjectsCase1_1()//It should be tested.
+        private void UpdateTargetFrameworkInAllCSharpProjectsCase1_1()
         {
             var args = new List<string>()
             {
