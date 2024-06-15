@@ -2,6 +2,7 @@
 using Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackagesInAllCSharpProjects;
 using Deployment.DevTasks.InstalledNuGetPackages.UpdateInstalledNuGetPackagesInAllCSharpProjects;
 using NLog;
+using SymOntoClay.CLI.Helpers;
 
 namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
 {
@@ -12,13 +13,17 @@ namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            //
+#if DEBUG
+            //_logger.Info($"args = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
+#endif
+
+            ConsoleWrapper.WriteCopyright();
 
             if (args.Length == 0)
             {
-                Console.WriteLine("You shoud input target nuget packageId and target version in command line.");
-                Console.WriteLine("The first argument should be target nuget packageId, next target version after space.");
-                Console.WriteLine("For example: 'NLog 5.1.4'");
-                Console.WriteLine("The target version should only contain digits and point, for example: '5.1.4', '3.1.2'");
+                PrintHelp();
+
                 Console.WriteLine("Press any key for exit");
 
                 Console.ReadKey();
@@ -46,10 +51,6 @@ namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
                 return;
             }
 
-#if DEBUG
-            //_logger.Info($"args = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
-#endif
-
             var targetPackageId = args[0];
             var targetVersionStr = args[1];
 
@@ -68,21 +69,21 @@ namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
                 return;
             }
 
-            Console.WriteLine($"All C# projects with nuget package {targetPackageId} will be updated to {targetVersionStr}.");
-            Console.WriteLine("Are you sure?");
-            Console.WriteLine("Press 'y' or 'Y' for continue or other else key for cancel.");
-            Console.WriteLine("After your choise press enter.");
+            ConsoleWrapper.WriteText($"All C# projects with nuget package {targetPackageId} will be updated to {targetVersionStr}.");
+            ConsoleWrapper.WriteText("Are you sure?");
+            ConsoleWrapper.WriteText("Press 'y' or 'Y' for continue or other else key for cancel.");
+            ConsoleWrapper.WriteText("After your choise press enter.");
 
             var key = Console.ReadLine();
 
             if (key != "y" && key != "Y")
             {
-                Console.WriteLine("Updating has been cancelled.");
+                ConsoleWrapper.WriteText("Updating has been cancelled.");
 
                 return;
             }
 
-            Console.WriteLine("Updating has been started.");
+            ConsoleWrapper.WriteText("Updating has been started.");
 
             var deploymentPipeline = new DeploymentPipeline();
 
@@ -95,6 +96,14 @@ namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
             deploymentPipeline.Add(new CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask());
 
             deploymentPipeline.Run();
+        }
+
+        private static void PrintHelp()
+        {
+            ConsoleWrapper.WriteText("You shoud input target nuget packageId and target version in command line.");
+            ConsoleWrapper.WriteText("The first argument should be target nuget packageId, next target version after space.");
+            ConsoleWrapper.WriteText("For example: 'NLog 5.1.4'");
+            ConsoleWrapper.WriteText("The target version should only contain digits and point, for example: '5.1.4', '3.1.2'");
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

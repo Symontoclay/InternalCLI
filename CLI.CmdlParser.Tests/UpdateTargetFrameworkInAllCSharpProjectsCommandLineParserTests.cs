@@ -4,7 +4,7 @@ using UpdateTargetFrameworkInAllCSharpProjects;
 
 namespace CLI.CmdlParser.Tests
 {
-    public class UpdateTargetFrameworkInAllCSharpProjectsCommandLineParserTest
+    public class UpdateTargetFrameworkInAllCSharpProjectsCommandLineParserTests
     {
         [Test]
         public void ValidCommandLine_Positioned_Success()

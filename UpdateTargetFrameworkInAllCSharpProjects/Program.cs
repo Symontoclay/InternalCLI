@@ -86,11 +86,11 @@ namespace UpdateTargetFrameworkInAllCSharpProjects
 
         private static void PrintHelp()
         {
-            Console.WriteLine("You shoud input kind of target framework and target version in command line.");
-            Console.WriteLine("The first argument should be name of target framework, next target version after space.");
-            Console.WriteLine("For example: 'Net 8.0'");
-            Console.WriteLine("The kind of target framework is an option of enum KindOfTargetCSharpFramework.");
-            Console.WriteLine("The target version should only contain digits and point, for example: '8.0', '3.1.2'");
+            ConsoleWrapper.WriteText("You shoud input kind of target framework and target version in command line.");
+            ConsoleWrapper.WriteText("The first argument should be name of target framework, next target version after space.");
+            ConsoleWrapper.WriteText("For example: 'Net 8.0'");
+            ConsoleWrapper.WriteText("The kind of target framework is an option of enum KindOfTargetCSharpFramework.");
+            ConsoleWrapper.WriteText("The target version should only contain digits and point, for example: '8.0', '3.1.2'");
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
