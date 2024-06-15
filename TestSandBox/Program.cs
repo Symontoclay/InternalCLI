@@ -78,7 +78,8 @@ namespace TestSandBox
 
             try
             {
-                TstUpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParserHandler();
+                TstStartNewVersionCommandLineParserHandler();
+                //TstUpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParserHandler();
                 //TstUpdateTargetFrameworkInAllCSharpProjectsCmdlParsersHandler();
                 //TstTempSettings();
                 //TstCSharpProjectHelperTestsHandler();
@@ -175,6 +176,16 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstStartNewVersionCommandLineParserHandler()
+        {
+            _logger.Info("Begin");
+
+            var handler = new TstStartNewVersionCommandLineParserHandler();
+            handler.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstUpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParserHandler()

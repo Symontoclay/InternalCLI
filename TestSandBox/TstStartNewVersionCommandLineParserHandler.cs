@@ -1,11 +1,11 @@
 ﻿using NLog;
+using StartNewVersion;
 using System;
 using System.Collections.Generic;
-using UpdateInstalledNuGetPackagesInAllCSharpProjects;
 
 namespace TestSandBox
 {
-    public class TstUpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParserHandler
+    public class TstStartNewVersionCommandLineParserHandler
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -15,12 +15,12 @@ namespace TestSandBox
 
             //WrongVersion_Named_ErrorsList();
             //WrongVersion_Named_Fail();
-            WrongVersion_Positioned_ErrorsList();
+            //WrongVersion_Positioned_ErrorsList();
             //WrongVersion_Positioned_Fail();
             //EmptyCommandLine_ErrorsList();
             //EmptyCommandLine_Fail();
             //ValidCommandLine_Named_Success();
-            //ValidCommandLine_Positioned_Success();
+            ValidCommandLine_Positioned_Success();
 
             _logger.Info("End");
         }
@@ -29,13 +29,11 @@ namespace TestSandBox
         {
             var args = new List<string>()
                 {
-                    "TargetPackageId",
-                    "NLog",
                     "TargetVersion",
                     "SomeVersion"
                 };
 
-            var parser = new UpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParser(true);
+            var parser = new StartNewVersionCommandLineParser(true);
 
             var result = parser.Parse(args.ToArray());
 
@@ -47,14 +45,12 @@ namespace TestSandBox
             try
             {
                 var args = new List<string>()
-                    {
-                        "TargetPackageId",
-                        "NLog",
-                        "TargetVersion",
-                        "SomeVersion"
-                    };
+                {
+                    "TargetVersion",
+                    "SomeVersion"
+                };
 
-                var parser = new UpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParser(false);
+                var parser = new StartNewVersionCommandLineParser(false);
 
                 var result = parser.Parse(args.ToArray());
 
@@ -71,11 +67,10 @@ namespace TestSandBox
         {
             var args = new List<string>()
                 {
-                    "NLog",
                     "SomeVersion"
                 };
 
-            var parser = new UpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParser(true);
+            var parser = new StartNewVersionCommandLineParser(true);
 
             var result = parser.Parse(args.ToArray());
 
@@ -87,12 +82,11 @@ namespace TestSandBox
             try
             {
                 var args = new List<string>()
-                    {
-                        "NLog",
-                        "SomeVersion"
-                    };
+                {
+                    "SomeVersion"
+                };
 
-                var parser = new UpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParser(false);
+                var parser = new StartNewVersionCommandLineParser(false);
 
                 var result = parser.Parse(args.ToArray());
 
@@ -109,7 +103,7 @@ namespace TestSandBox
         {
             var args = new List<string>();
 
-            var parser = new UpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParser(true);
+            var parser = new StartNewVersionCommandLineParser(true);
 
             var result = parser.Parse(args.ToArray());
 
@@ -122,7 +116,7 @@ namespace TestSandBox
             {
                 var args = new List<string>();
 
-                var parser = new UpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParser(false);
+                var parser = new StartNewVersionCommandLineParser(false);
 
                 var result = parser.Parse(args.ToArray());
 
@@ -132,28 +126,22 @@ namespace TestSandBox
             {
                 _logger.Info($"e.Message = '{e.Message}'");
                 _logger.Info(e);
-            }
+            }            
         }
 
         private void ValidCommandLine_Named_Success()
         {
             var args = new List<string>()
                 {
-                    "TargetPackageId",
-                    "NLog",
                     "TargetVersion",
                     "5.1.4"
                 };
 
-            var parser = new UpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParser(true);
+            var parser = new StartNewVersionCommandLineParser(true);
 
             var result = parser.Parse(args.ToArray());
 
             _logger.Info($"result = {result}");
-
-            var targetPackageId = (string)result.Params["TargetPackageId"];
-
-            _logger.Info($"targetPackageId = {targetPackageId}");
 
             var targetVersion = (Version)result.Params["TargetVersion"];
 
@@ -164,19 +152,14 @@ namespace TestSandBox
         {
             var args = new List<string>()
                 {
-                    "NLog",
                     "5.1.4"
                 };
 
-            var parser = new UpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParser(true);
+            var parser = new StartNewVersionCommandLineParser(true);
 
             var result = parser.Parse(args.ToArray());
 
             _logger.Info($"result = {result}");
-
-            var targetPackageId = (string)result.Params["TargetPackageId"];
-
-            _logger.Info($"targetPackageId = {targetPackageId}");
 
             var targetVersion = (Version)result.Params["TargetVersion"];
 
