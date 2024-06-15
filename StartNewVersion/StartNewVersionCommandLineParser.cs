@@ -8,7 +8,7 @@ namespace StartNewVersion
     public class StartNewVersionCommandLineParser : CommandLineParser
     {
         public StartNewVersionCommandLineParser(bool initWithoutExceptions)
-            : base(new List<BaseCommandLineArgument>() 
+            : base(new List<BaseCommandLineArgument>()
             {
                 new CommandLineArgument
                 {
