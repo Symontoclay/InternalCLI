@@ -2,6 +2,7 @@
 using Deployment.ReleaseTasks.StartNewVersion;
 using Newtonsoft.Json;
 using NLog;
+using SymOntoClay.CLI.Helpers;
 using System;
 using System.IO;
 using System.Linq;
@@ -16,67 +17,69 @@ namespace StartNewVersion
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            if (!args.Any())
+            ConsoleWrapper.WriteCopyright();
+
+            var parser = new StartNewVersionCommandLineParser(true);
+
+            var result = parser.Parse(args.ToArray());
+
+            if (result.Errors.Count > 1)
             {
-                Console.WriteLine("You should specify new version as CLI argument!");
-                Console.WriteLine("Press any key for exit!");
+                foreach (var error in result.Errors)
+                {
+                    ConsoleWrapper.WriteError(error);
+                }
+
+                PrintHelp();
+
+                ConsoleWrapper.WriteText("Press any key for exit");
+
                 Console.ReadKey();
+
                 return;
             }
 
-            if(args.Length > 1)
+            if (result.Params.Count == 0)
             {
-                Console.WriteLine($"The CLI should receive only one argument which specifies new version! But got {args.Length} arguments.");
-                Console.WriteLine("Press any key for exit!");
+                PrintHelp();
+
+                ConsoleWrapper.WriteText("Press any key for exit");
+
                 Console.ReadKey();
+
                 return;
             }
 
-            var newVersion = args.Single();
+            var targetVersion = (Version)result.Params["TargetVersion"];
 
-            try
-            {
-                var version = new Version(newVersion);
-            }
-            catch
-            {
-                Console.WriteLine($"The new version has incorrect format!");
-                Console.WriteLine("Press any key for exit!");
-                Console.ReadKey();
-                return;
-            }
-
-            if(newVersion.Count(p => p == '.') != 2)
-            {
-                Console.WriteLine($"The new version has incorrect format!");
-                Console.WriteLine("Press any key for exit!");
-                Console.ReadKey();
-                return;
-            }
-
-            Console.WriteLine($"This app will start new version {newVersion}. Are you sure?");
-            Console.WriteLine("Press 'y' or 'Y' for release or other else key for cancel starting new version.");
-            Console.WriteLine("After your choise press enter.");
+            ConsoleWrapper.WriteText($"This app will start new version {targetVersion}. Are you sure?");
+            ConsoleWrapper.WriteText("Press 'y' or 'Y' for release or other else key for cancel starting new version.");
+            ConsoleWrapper.WriteText("After your choise press enter.");
 
             var key = Console.ReadLine();
 
             if (key != "y" && key != "Y")
             {
-                Console.WriteLine("Starting new version has been cancelled.");
+                ConsoleWrapper.WriteText("Starting new version has been cancelled.");
 
                 return;
             }
 
-            Console.WriteLine("Starting new version is being.");
+            ConsoleWrapper.WriteText("Starting new version is being.");
 
             DeploymentPipeline.Run(new StartNewVersionReleaseTask(new StartNewVersionReleaseTaskOptions
             {
-                Version = newVersion
+                Version = targetVersion.ToString()
             }), new DeploymentPipelineOptions()
             {
                 UseAutorestoring = true,
                 DirectoryForAutorestoring = Directory.GetCurrentDirectory()
             });
+        }
+
+        private static void PrintHelp()
+        {
+            ConsoleWrapper.WriteText("You must specify new version as CLI argument!");
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
