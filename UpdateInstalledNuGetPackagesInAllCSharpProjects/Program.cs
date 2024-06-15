@@ -13,63 +13,53 @@ namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            //
+            
 #if DEBUG
             //_logger.Info($"args = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
 #endif
 
             ConsoleWrapper.WriteCopyright();
 
-            if (args.Length == 0)
+            var parser = new UpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParser(true);
+
+            var result = parser.Parse(args.ToArray());
+
+            if (result.Errors.Count > 1)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ConsoleWrapper.WriteError(error);
+                }
+
+                PrintHelp();
+
+                ConsoleWrapper.WriteText("Press any key for exit");
+
+                Console.ReadKey();
+
+                return;
+            }
+
+            if (result.Params.Count == 0)
             {
                 PrintHelp();
 
-                Console.WriteLine("Press any key for exit");
+                ConsoleWrapper.WriteText("Press any key for exit");
 
                 Console.ReadKey();
 
                 return;
             }
 
-            if (args.Length < 2)
-            {
-                Console.WriteLine("Not enough arguments! So target version argument is absent.");
-                Console.WriteLine("Press any key for exit");
-
-                Console.ReadKey();
-
-                return;
-            }
-
-            if (args.Length > 2)
-            {
-                Console.WriteLine("Too many arguments!");
-                Console.WriteLine("Press any key for exit");
-
-                Console.ReadKey();
-
-                return;
-            }
-
-            var targetPackageId = args[0];
-            var targetVersionStr = args[1];
+            var targetPackageId = (string)result.Params["TargetPackageId"];
+            var targetVersion = (Version)result.Params["TargetVersion"];
 
 #if DEBUG
             //_logger.Info($"targetPackageId = {targetPackageId}");
-            //_logger.Info($"targetVersionStr = {targetVersionStr}");
+            //_logger.Info($"targetVersion = {targetVersion}");
 #endif
 
-            if (!Version.TryParse(targetVersionStr, out var targetVersion))
-            {
-                Console.WriteLine($"Bad version format '{targetVersionStr}'");
-                Console.WriteLine("Press any key for exit");
-
-                Console.ReadKey();
-
-                return;
-            }
-
-            ConsoleWrapper.WriteText($"All C# projects with nuget package {targetPackageId} will be updated to {targetVersionStr}.");
+            ConsoleWrapper.WriteText($"All C# projects with nuget package {targetPackageId} will be updated to {targetVersion}.");
             ConsoleWrapper.WriteText("Are you sure?");
             ConsoleWrapper.WriteText("Press 'y' or 'Y' for continue or other else key for cancel.");
             ConsoleWrapper.WriteText("After your choise press enter.");
@@ -90,7 +80,7 @@ namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
             deploymentPipeline.Add(new UpdateInstalledNuGetPackagesInAllCSharpProjectsDevTask(new UpdateInstalledNuGetPackagesInAllCSharpProjectsDevTaskOptions()
             {
                 PackageId = targetPackageId,
-                Version = targetVersionStr
+                Version = targetVersion.ToString()
             }));
 
             deploymentPipeline.Add(new CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask());
