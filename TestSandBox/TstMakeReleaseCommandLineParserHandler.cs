@@ -11,9 +11,20 @@ namespace TestSandBox
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
+        private enum RunMode
+        {
+            TestFirstProdNext,
+            Test,
+            Prod
+        }
+
         public void Run()
         {
             _logger.Info("Begin");
+
+            var tstEnum = Enum.Parse<RunMode>("prod", true);
+
+            _logger.Info($"tstEnum = {tstEnum}");
 
             _logger.Info("End");
         }
