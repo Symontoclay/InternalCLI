@@ -126,13 +126,6 @@ namespace MakeRelease
             return true;
         }
 
-        private enum RunMode
-        {
-            TestFirstProdNext,
-            Test,
-            Prod
-        }
-
         private const RunMode DEFAULT_RUN_MODE = RunMode.TestFirstProdNext;
 
         private static RunMode GetParseRunModeFromArgs(string[] args)

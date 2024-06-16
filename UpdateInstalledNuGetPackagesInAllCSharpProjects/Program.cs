@@ -3,6 +3,7 @@ using Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackagesInAl
 using Deployment.DevTasks.InstalledNuGetPackages.UpdateInstalledNuGetPackagesInAllCSharpProjects;
 using NLog;
 using SymOntoClay.CLI.Helpers;
+using System.Configuration;
 
 namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
 {
@@ -13,12 +14,32 @@ namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            
+
+            var writeOutputToTextFileAsParallel = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.WriteOutputToTextFileAsParallel"] ?? "false");
+            var useNLogLogger = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.UseNLogLogger"] ?? "false");
+            var writeCopyright = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.WriteCopyright"] ?? "false");
+
 #if DEBUG
+            //_logger.Info($"writeOutputToTextFileAsParallel = {writeOutputToTextFileAsParallel}");
+            //_logger.Info($"useNLogLogger = {useNLogLogger}");
+            //_logger.Info($"writeCopyright = {writeCopyright}");
             //_logger.Info($"args = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
 #endif
 
-            ConsoleWrapper.WriteCopyright();
+            if(useNLogLogger)
+            {
+                ConsoleWrapper.SetNLogLogger(_logger);
+            }
+
+            if (writeOutputToTextFileAsParallel)
+            {
+                ConsoleWrapper.WriteOutputToTextFileAsParallel = true;
+            }
+
+            if (writeCopyright)
+            {
+                ConsoleWrapper.WriteCopyright();
+            }
 
             var parser = new UpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParser(true);
 
