@@ -17,8 +17,7 @@ namespace MakeRelease
                     Index = 0,
                     Kind = KindOfCommandLineArgument.SingleValue,
                     TypeChecker = new EnumChecker<RunMode>(),
-                    TypeCheckErrorMessage = "Unknown run mode",
-                    IsRequired = true
+                    TypeCheckErrorMessage = "Unknown run mode"
                 }
             }, initWithoutExceptions)
         {
