@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using NLog;
 using SymOntoClay.CLI.Helpers;
 using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 
@@ -17,7 +18,31 @@ namespace StartNewVersion
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            ConsoleWrapper.WriteCopyright();
+            var writeOutputToTextFileAsParallel = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.WriteOutputToTextFileAsParallel"] ?? "false");
+            var useNLogLogger = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.UseNLogLogger"] ?? "false");
+            var writeCopyright = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.WriteCopyright"] ?? "false");
+
+#if DEBUG
+            //_logger.Info($"writeOutputToTextFileAsParallel = {writeOutputToTextFileAsParallel}");
+            //_logger.Info($"useNLogLogger = {useNLogLogger}");
+            //_logger.Info($"writeCopyright = {writeCopyright}");
+            //_logger.Info($"args = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
+#endif
+
+            if (useNLogLogger)
+            {
+                ConsoleWrapper.SetNLogLogger(_logger);
+            }
+
+            if (writeOutputToTextFileAsParallel)
+            {
+                ConsoleWrapper.WriteOutputToTextFileAsParallel = true;
+            }
+
+            if (writeCopyright)
+            {
+                ConsoleWrapper.WriteCopyright();
+            }
 
             var parser = new StartNewVersionCommandLineParser(true);
 
