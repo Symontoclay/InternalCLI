@@ -45,7 +45,7 @@ namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
 
             var result = parser.Parse(args.ToArray());
 
-            if (result.Errors.Count > 1)
+            if (result.Errors.Count > 0)
             {
                 foreach (var error in result.Errors)
                 {

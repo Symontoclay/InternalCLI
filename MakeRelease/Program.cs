@@ -4,7 +4,9 @@ using Deployment.Helpers;
 using Deployment.ReleaseTasks.MakeRelease;
 using Deployment.TestDeploymentTasks.PrepareTestDeployment;
 using NLog;
+using SymOntoClay.CLI.Helpers;
 using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 
@@ -18,7 +20,40 @@ namespace MakeRelease
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var runMode = GetParseRunModeFromArgs(args);
+            var writeOutputToTextFileAsParallel = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.WriteOutputToTextFileAsParallel"] ?? "false");
+            var useNLogLogger = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.UseNLogLogger"] ?? "false");
+            var writeCopyright = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.WriteCopyright"] ?? "false");
+
+#if DEBUG
+            //_logger.Info($"writeOutputToTextFileAsParallel = {writeOutputToTextFileAsParallel}");
+            //_logger.Info($"useNLogLogger = {useNLogLogger}");
+            //_logger.Info($"writeCopyright = {writeCopyright}");
+            //_logger.Info($"args = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
+#endif
+
+            if (useNLogLogger)
+            {
+                ConsoleWrapper.SetNLogLogger(_logger);
+            }
+
+            if (writeOutputToTextFileAsParallel)
+            {
+                ConsoleWrapper.WriteOutputToTextFileAsParallel = true;
+            }
+
+            if (writeCopyright)
+            {
+                ConsoleWrapper.WriteCopyright();
+            }
+
+            var runModeResult = GetParseRunModeFromArgs(args);
+
+            if(runModeResult.HasErrors)
+            {
+                return;
+            }
+
+            var runMode = runModeResult.RunMode;
 
             var version = FutureReleaseInfoReader.GetFutureVersion();
 
@@ -26,9 +61,9 @@ namespace MakeRelease
             {
                 case RunMode.TestFirstProdNext:
                     {
-                        Console.WriteLine($"This app will release future version {version}.");
-                        Console.WriteLine("First this deployment of the release will be tested on test repositories.");
-                        Console.WriteLine("Next the release will be deployed into PROD.");
+                        ConsoleWrapper.WriteText($"This app will release future version {version}.");
+                        ConsoleWrapper.WriteText("First this deployment of the release will be tested on test repositories.");
+                        ConsoleWrapper.WriteText("Next the release will be deployed into PROD.");
 
                         if(!StartReleaseQuestion())
                         {
@@ -37,8 +72,8 @@ namespace MakeRelease
 
                         MakeReleaseOnTest();
 
-                        Console.WriteLine($"Version {version} has been successfully released into test repositories.");
-                        Console.WriteLine("Release into prod repositories has been started.");
+                        ConsoleWrapper.WriteText($"Version {version} has been successfully released into test repositories.");
+                        ConsoleWrapper.WriteText("Release into prod repositories has been started.");
 
                         MakeReleaseOnProd();
                     }
@@ -46,7 +81,7 @@ namespace MakeRelease
 
                 case RunMode.Test:
                     {
-                        Console.WriteLine($"This app will release future version {version} on test repositories.");
+                        ConsoleWrapper.WriteText($"This app will release future version {version} on test repositories.");
 
                         if (!StartReleaseQuestion())
                         {
@@ -59,7 +94,7 @@ namespace MakeRelease
 
                 case RunMode.Prod:
                     {
-                        Console.WriteLine($"This app will release future version {version} directly into PROD. Are you sure?");
+                        ConsoleWrapper.WriteText($"This app will release future version {version} directly into PROD. Are you sure?");
 
                         if (!StartReleaseQuestion())
                         {
@@ -109,48 +144,49 @@ namespace MakeRelease
 
         private static bool StartReleaseQuestion()
         {
-            Console.WriteLine("Press 'y' or 'Y' for release or other else key for cancel release.");
-            Console.WriteLine("After your choise press enter.");
+            ConsoleWrapper.WriteText("Press 'y' or 'Y' for release or other else key for cancel release.");
+            ConsoleWrapper.WriteText("After your choise press enter.");
 
             var key = Console.ReadLine();
 
             if (key != "y" && key != "Y")
             {
-                Console.WriteLine("Release has been cancelled.");
+                ConsoleWrapper.WriteText("Release has been cancelled.");
 
                 return false;
             }
 
-            Console.WriteLine("Release has been started.");
+            ConsoleWrapper.WriteText("Release has been started.");
 
             return true;
         }
 
         private const RunMode DEFAULT_RUN_MODE = RunMode.TestFirstProdNext;
 
-        private static RunMode GetParseRunModeFromArgs(string[] args)
+        private static (RunMode RunMode, bool HasErrors) GetParseRunModeFromArgs(string[] args)
         {
-            if(!args.Any())
+            var parser = new MakeReleaseCommandLineParser(true);
+
+            var result = parser.Parse(args.ToArray());
+
+            if(result.Errors.Count > 0)
             {
-                return DEFAULT_RUN_MODE;
+                foreach (var error in result.Errors)
+                {
+                    ConsoleWrapper.WriteError(error);
+                }
+
+                return (RunMode.Test, true);
             }
 
-            if(args.Contains("test") && args.Contains("prod"))
+            if (result.Params.Count == 0)
             {
-                throw new Exception("Option 'test' can not be used with option 'prod'.");
+                return (DEFAULT_RUN_MODE, false);
             }
 
-            if(args.Any(p => p == "test"))
-            {
-                return RunMode.Test;
-            }
+            var runMode = (RunMode)result.Params["RunMode"];
 
-            if(args.Any(p => p == "prod"))
-            {
-                return RunMode.Prod;
-            }
-
-            throw new NotImplementedException();
+            return (runMode, false);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
