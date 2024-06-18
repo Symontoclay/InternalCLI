@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DeploymentTasks;
+using Deployment;
 using Deployment.Helpers;
 using Deployment.ReleaseTasks.MakeRelease;
 using Deployment.TestDeploymentTasks.PrepareTestDeployment;
@@ -23,11 +24,15 @@ namespace MakeRelease
             var writeOutputToTextFileAsParallel = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.WriteOutputToTextFileAsParallel"] ?? "false");
             var useNLogLogger = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.UseNLogLogger"] ?? "false");
             var writeCopyright = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.WriteCopyright"] ?? "false");
+            var enableTests = bool.Parse(ConfigurationManager.AppSettings["GlobalOptions.EnableTests"] ?? "false");
+            var enableUnityPackage = bool.Parse(ConfigurationManager.AppSettings["GlobalOptions.EnableUnityPackage"] ?? "false");
 
 #if DEBUG
             //_logger.Info($"writeOutputToTextFileAsParallel = {writeOutputToTextFileAsParallel}");
             //_logger.Info($"useNLogLogger = {useNLogLogger}");
             //_logger.Info($"writeCopyright = {writeCopyright}");
+            //_logger.Info($"enableTests = {enableTests}");
+            //_logger.Info($"enableUnityPackage = {enableUnityPackage}");
             //_logger.Info($"args = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
 #endif
 
@@ -45,6 +50,9 @@ namespace MakeRelease
             {
                 ConsoleWrapper.WriteCopyright();
             }
+
+            GlobalOptions.EnableTests = enableTests;
+            GlobalOptions.EnableUnityPackage = enableUnityPackage;
 
             var runModeResult = GetParseRunModeFromArgs(args);
 
