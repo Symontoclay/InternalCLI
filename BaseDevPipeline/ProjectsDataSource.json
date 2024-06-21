@@ -71,6 +71,10 @@
         },
         {
           "Kind": "IntegrationTest",
+          "Path": "CLI.CmdlParser.Tests"
+        },
+        {
+          "Kind": "IntegrationTest",
           "Path": "SymOntoClayUnity3DAssetTest"
         },
         {
