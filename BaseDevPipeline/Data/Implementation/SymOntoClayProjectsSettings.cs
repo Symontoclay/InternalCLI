@@ -169,8 +169,8 @@ namespace BaseDevPipeline.Data.Implementation
         public void Prepare()
         {
             _solutionsDict = Solutions.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<ISolutionSettings>().ToList());
-            _solutionsWithMaintainedReleases = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.ProjectSite || p.Kind == KindOfProject.Unity).Cast<ISolutionSettings>().ToList();
-            _solutionsWithMaintainedVersionsInCSharpProjects = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.Unity).Cast<ISolutionSettings>().ToList();
+            _solutionsWithMaintainedReleases = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.ProjectSite || p.Kind == KindOfProject.Unity || p.Kind == KindOfProject.CommonPackagesSolution).Cast<ISolutionSettings>().ToList();
+            _solutionsWithMaintainedVersionsInCSharpProjects = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.Unity || p.Kind == KindOfProject.CommonPackagesSolution).Cast<ISolutionSettings>().ToList();
             _solutionsWhichUseCommonPakage = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.InternalCLISolution).Cast<ISolutionSettings>().ToList();
             _unityExampleSolutions = Solutions.Where(p => p.Kind == KindOfProject.UnityExample).Cast<ISolutionSettings>().ToList();
             _cSharpSolutions = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.Unity || p.Kind == KindOfProject.InternalCLISolution || p.Kind == KindOfProject.CommonPackagesSolution).Cast<ISolutionSettings>().ToList();
