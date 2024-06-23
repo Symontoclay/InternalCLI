@@ -2,9 +2,6 @@
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Helpers
 {
@@ -27,12 +24,28 @@ namespace Deployment.Helpers
         /// <returns><b>true</b> if the release is possible, otherwise returns <b>false</b>.</returns>
         public static bool CheckMayIMakeRelease(Logger logger)
         {
-            if(MayIMakeRelease())
+            return CheckMayIMakeRelease(errorMessage => { logger?.Error(errorMessage); });
+        }
+
+        /// <summary>
+        /// Checks the possibility of making a release.
+        /// Writes error to a string list, if It needs.
+        /// </summary>
+        /// <param name="errors">The string list for writing error.</param>
+        /// <returns><b>true</b> if the release is possible, otherwise returns <b>false</b>.</returns>
+        public static bool CheckMayIMakeRelease(List<string> errors)
+        {
+            return CheckMayIMakeRelease(errorMessage => { errors?.Add(errorMessage); });
+        }
+
+        private static bool CheckMayIMakeRelease(Action<string> onErrorHandler)
+        {
+            if (MayIMakeRelease())
             {
                 return true;
             }
 
-            logger?.Error("Starting new version is forbiden! New version has already been started!");
+            onErrorHandler?.Invoke("Starting new version is forbiden! New version has already been started!");
 
             return false;
         }

@@ -14,6 +14,11 @@ namespace Deployment.Helpers
             return Read().Version;
         }
 
+        public static string GetRepositoryName()
+        {
+            return ProjectsDataSourceFactory.GetSolution(KindOfProject.ReleaseMngrSolution).RepositoryName;
+        }
+
         public static string GetBaseRepositoryPath()
         {
             return ProjectsDataSourceFactory.GetSolution(KindOfProject.ReleaseMngrSolution).Path;

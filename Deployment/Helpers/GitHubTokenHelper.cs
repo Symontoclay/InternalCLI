@@ -1,6 +1,7 @@
 ﻿using BaseDevPipeline;
 using NLog;
 using System;
+using System.Collections.Generic;
 
 namespace Deployment.Helpers
 {
@@ -16,27 +17,43 @@ namespace Deployment.Helpers
         /// <returns><b>true</b> if the GitHub token is valid, otherwise returns <b>false</b>.</returns>
         public static bool CheckGitHubToken(Logger logger)
         {
+            return CheckGitHubToken(errorMessage => { logger?.Error(errorMessage); });
+        }
+
+        /// <summary>
+        /// Checks GitHub token.
+        /// Writes error to a string list, if It needs.
+        /// </summary>
+        /// <param name="errors">The string list for writing error.</param>
+        /// <returns><b>true</b> if the GitHub token is valid, otherwise returns <b>false</b>.</returns>
+        public static bool CheckGitHubToken(List<string> errors)
+        {
+            return CheckGitHubToken(errorMessage => { errors?.Add(errorMessage); });
+        }
+
+        private static bool CheckGitHubToken(Action<string> onErrorHandler)
+        {
             var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
             var token = settings.GetSecret(GitHubTokenKey);
 
             if (string.IsNullOrEmpty(token.Value))
             {
-                logger?.Error($"Making release is forbiden! {GitHubTokenKey} token is empty!");
+                onErrorHandler?.Invoke($"Making release is forbiden! {GitHubTokenKey} token is empty!");
 
                 return false;
             }
 
             if (!token.ExpDate.HasValue)
             {
-                logger?.Error($"Making release is forbiden! ExpDate of {GitHubTokenKey} token is empty!");
+                onErrorHandler?.Invoke($"Making release is forbiden! ExpDate of {GitHubTokenKey} token is empty!");
 
                 return false;
             }
 
             if (token.ExpDate <= DateTime.Now)
             {
-                logger?.Error($"Making release is forbiden! {GitHubTokenKey} token is expired!");
+                onErrorHandler?.Invoke($"Making release is forbiden! {GitHubTokenKey} token is expired!");
 
                 return false;
             }
