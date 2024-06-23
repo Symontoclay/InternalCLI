@@ -10,6 +10,7 @@ namespace Deployment.DevTasks.CoreToAsset
         public string CoreCProjPath { get; set; }
         public string DestDir { get; set; }
         public List<string> Plugins { get; set; }
+        public List<string> CommonPackages { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -32,6 +33,7 @@ namespace Deployment.DevTasks.CoreToAsset
             sb.AppendLine($"{spaces}{nameof(CoreCProjPath)} = {CoreCProjPath}");
             sb.AppendLine($"{spaces}{nameof(DestDir)} = {DestDir}");
             sb.PrintPODList(n, nameof(Plugins), Plugins);
+            sb.PrintPODList(n, nameof(CommonPackages), CommonPackages);
 
             return sb.ToString();
         }

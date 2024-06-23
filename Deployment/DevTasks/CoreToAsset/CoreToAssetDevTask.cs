@@ -1,6 +1,5 @@
 ﻿using BaseDevPipeline;
 using BaseDevPipeline.Data;
-using BaseDevPipeline.Data.Implementation;
 using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
@@ -25,7 +24,8 @@ namespace Deployment.DevTasks.CoreToAsset
             {
                 CoreCProjPath = ProjectsDataSourceFactory.GetProject(KindOfProject.CoreAssetLib).CsProjPath,
                 DestDir = ProjectsDataSourceFactory.GetSolution(KindOfProject.Unity).SourcePath,
-                Plugins = ProjectsDataSourceFactory.GetProjects(KindOfProject.CorePlugin).Select(p => p.CsProjPath).ToList()
+                Plugins = ProjectsDataSourceFactory.GetProjects(KindOfProject.CorePlugin).Select(p => p.CsProjPath).ToList(),
+                CommonPackages = ProjectsDataSourceFactory.GetCSharpSolutions().Where(p => p.Kind == KindOfProject.CommonPackagesSolution).SelectMany(p => p.Projects.Where(p => p.Kind == KindOfProject.Library)).Select(p => p.CsProjPath).ToList()
             }, parentTask)
         {
         }
@@ -55,9 +55,34 @@ namespace Deployment.DevTasks.CoreToAsset
 
             var deploymentPipeline = new DeploymentPipeline(_context);
 
+            ProcessProject(tempSettings, deploymentPipeline, _options.CoreCProjPath);
+
+            if(!_options.Plugins.IsNullOrEmpty())
+            {
+                foreach(var pluginCProjPath in _options.Plugins)
+                {
+                    ProcessProject(tempSettings, deploymentPipeline, pluginCProjPath);
+                }
+            }
+
+            if(!_options.CommonPackages.IsNullOrEmpty())
+            {
+                foreach (var commonPackageCProjPath in _options.CommonPackages)
+                {
+                    ProcessProject(tempSettings, deploymentPipeline, commonPackageCProjPath);
+                }
+            }
+
+            deploymentPipeline.Run();
+        }
+
+        private void ProcessProject(ITempSettings tempSettings, DeploymentPipeline deploymentPipeline, string csProjectPath)
+        {
+            using var tempDir = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
+
             deploymentPipeline.Add(new CopyAndBuildVSProjectOrSolutionDevTask(new CopyAndBuildVSProjectOrSolutionDevTaskOptions()
             {
-                ProjectOrSoutionFileName = _options.CoreCProjPath,
+                ProjectOrSoutionFileName = csProjectPath,
                 //BuildConfiguration = KindOfBuildConfiguration.Release,
                 OutputDir = tempDir.FullName,
                 NoLogo = true
@@ -71,33 +96,6 @@ namespace Deployment.DevTasks.CoreToAsset
                 OnlyFileExts = new List<string>() { "dll" },
                 FileNameShouldContain = new List<string>() { "SymOntoClay." }
             }, this));
-
-            if(!_options.Plugins.IsNullOrEmpty())
-            {
-                foreach(var pluginCProjPath in _options.Plugins)
-                {
-                    using var tempDir_2 = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
-
-                    deploymentPipeline.Add(new CopyAndBuildVSProjectOrSolutionDevTask(new CopyAndBuildVSProjectOrSolutionDevTaskOptions()
-                    {
-                        ProjectOrSoutionFileName = pluginCProjPath,
-                        //BuildConfiguration = KindOfBuildConfiguration.Release,
-                        OutputDir = tempDir_2.FullName,
-                        NoLogo = true
-                    }, this));
-
-                    deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
-                    {
-                        SourceDir = tempDir_2.FullName,
-                        DestDir = _options.DestDir,
-                        SaveSubDirs = false,
-                        OnlyFileExts = new List<string>() { "dll" },
-                        FileNameShouldContain = new List<string>() { "SymOntoClay." }
-                    }, this));
-                }
-            }
-
-            deploymentPipeline.Run();
         }
 
         /// <inheritdoc/>
