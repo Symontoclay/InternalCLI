@@ -12,7 +12,7 @@ namespace XMLDocReader.CSharpDoc
     public static class CSharpXMLDocLoader
     {
 #if DEBUG
-        //private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly static Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
         public static List<PackageCard> Load(CSharpDocLoaderOptions options)
         {
@@ -37,15 +37,20 @@ namespace XMLDocReader.CSharpDoc
         public static List<PackageCard> LoadOrigin(CSharpOriginDocLoaderOptions options)
         {
 #if DEBUG
-            //_logger.Info($"options = {options}");
+            _logger.Info($"options = {options}");
 #endif
+
             var settingsList = PackageCardReaderSettingsHelper.ConvertXMLFileNamesListToSettingsList(options.FileNamesList);
 
 #if DEBUG
-            //_logger.Info($"settingsList = {JsonConvert.SerializeObject(settingsList, Formatting.Indented)}");
+            _logger.Info($"settingsList = {JsonConvert.SerializeObject(settingsList, Formatting.Indented)}");
 #endif
 
             var packageCardsList = PackageCardReader.Read(settingsList);
+
+#if DEBUG
+            _logger.Info($"packageCardsList.Count = {packageCardsList.Count}");
+#endif
 
             PackageCardResolver.FillUpTypeCardsPropetties(packageCardsList, options.IgnoreErrors);
             PackageCardResolver.ResolveInheritdocAndInclude(packageCardsList, options.IgnoreErrors);

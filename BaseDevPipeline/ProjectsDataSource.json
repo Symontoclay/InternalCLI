@@ -5,7 +5,7 @@
   ],
   "Temp": {
     "Dir": "D:/",
-    "ClearOnDispose" : true
+    "ClearOnDispose" : false
   },
   "SecretsFilePaths": [
     "%USERPROFILE%/example_s.json"

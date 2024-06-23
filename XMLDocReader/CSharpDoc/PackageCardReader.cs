@@ -12,7 +12,7 @@ namespace XMLDocReader.CSharpDoc
     public static class PackageCardReader
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static List<PackageCard> Read(List<PackageCardReaderSettings> settingsList)
@@ -32,15 +32,46 @@ namespace XMLDocReader.CSharpDoc
         {
             var packageCard = new PackageCard();
 
+#if DEBUG
+            _logger.Info($"settings.AssemblyFileName = {settings.AssemblyFileName}");
+#endif
+
             var targetAssembly = GetAssembly(settings.AssemblyFileName);
             packageCard.AssemblyName = targetAssembly.GetName().Name;
 
+#if DEBUG
+            _logger.Info($"packageCard.AssemblyName = {packageCard.AssemblyName}");
+#endif
+
             var typesDict = new Dictionary<string, Type>();
 
-            foreach (var type in targetAssembly.GetTypes())
+            try
             {
-                typesDict[type.FullName] = type;
+                foreach (var type in targetAssembly.GetTypes())
+                {
+                    typesDict[type.FullName] = type;
+                }
             }
+            catch(ReflectionTypeLoadException e)
+            {
+#if DEBUG
+                _logger.Info($"e = {e}");
+#endif
+
+                foreach (var type in e.Types)
+                {
+#if DEBUG
+                    _logger.Info($"type?.Name = {type?.Name}");
+                    _logger.Info($"type?.FullName = {type?.FullName}");
+#endif
+                }
+
+                throw;
+            }
+
+#if DEBUG
+            _logger.Info($"NEXT");
+#endif
 
             var memberCardsList = XMLMemberCardsReader.Read(settings.XMLDocFileName);
 
@@ -229,14 +260,14 @@ namespace XMLDocReader.CSharpDoc
         private static Assembly GetAssembly(string assemblyFile)
         {
 #if DEBUG
-            //_logger.Info($"assemblyFile = {assemblyFile}");
-            //_logger.Info($"_assemblyCache.Keys = {JsonConvert.SerializeObject(_assemblyCache.Keys.ToList(), Formatting.Indented)}");
+            _logger.Info($"assemblyFile = {assemblyFile}");
+            _logger.Info($"_assemblyCache.Keys = {JsonConvert.SerializeObject(_assemblyCache.Keys.ToList(), Formatting.Indented)}");
 #endif
 
             var name = new FileInfo(assemblyFile).Name;
 
 #if DEBUG
-            //_logger.Info($"name = {name}");
+            _logger.Info($"name = {name}");
 #endif
 
             if (_assemblyCache.ContainsKey(name))

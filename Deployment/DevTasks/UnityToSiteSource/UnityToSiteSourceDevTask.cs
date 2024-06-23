@@ -5,9 +5,11 @@ using CommonUtils.DeploymentTasks;
 using CSharpUtils;
 using Deployment.DevTasks.CreateExtendedDocFile;
 using Deployment.Tasks.BuildTasks.Build;
+using Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution;
 using SymOntoClay.Common.DebugHelpers;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -86,6 +88,15 @@ namespace Deployment.DevTasks.UnityToSiteSource
                 OutputDir = tempDir.FullName,
                 NoLogo = true
             }, this));
+
+            //deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
+            //{
+            //    SourceDir = _options.UnitySlnPath,
+            //    DestDir = tempDir.FullName,
+            //    SaveSubDirs = false,
+            //    OnlyFileExts = new List<string>() { "dll" },
+            //    FileNameShouldContain = new List<string>() { "SymOntoClay." }
+            //}, this));
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {

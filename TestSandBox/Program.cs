@@ -78,7 +78,7 @@ namespace TestSandBox
 
             try
             {
-                CheckReadinessForReleaseHandler();
+                //CheckReadinessForReleaseHandler();
                 //TstMakeReleaseCommandLineParserHandler();
                 //TstStartNewVersionCommandLineParserHandler();
                 //TstUpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParserHandler();
@@ -113,7 +113,7 @@ namespace TestSandBox
                 //TstRemoveLogCommentsFromCSFile();
                 //TstExampleCache();
                 //TstMd5Hash();
-                //TstCreateExtendedDocFileDevTask();
+                TstCreateExtendedDocFileDevTask();
                 //TstBson();
                 //TstBuildExamplesDevTask();
                 //TstCoreToInternalCLIDistDevTask();
@@ -1144,8 +1144,8 @@ namespace TestSandBox
 
             deploymentPipeline.Add(new CreateExtendedDocFileDevTask(new CreateExtendedDocFileDevTaskOptions()
             {
-                XmlDocFile = PathsHelper.Normalize(@"%USERPROFILE%\source\repos\SymOntoClay\SymOntoClayCore\bin\Debug\netstandard2.0\SymOntoClay.Core.xml"),
-                ExtendedDocFile = PathsHelper.Normalize(@"%USERPROFILE%\source\SymOntoClay.Core.json")
+                XmlDocFile = PathsHelper.Normalize(@"d:\TempProjects_450d6c25ef684c4790815f4c9f331db0\Assembly-CSharp.xml"),
+                ExtendedDocFile = PathsHelper.Normalize(@"d:/Repos/symontoclay.github.io/siteSource/CSharpApiFiles\Assembly-CSharp.json")
             }));
 
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");
