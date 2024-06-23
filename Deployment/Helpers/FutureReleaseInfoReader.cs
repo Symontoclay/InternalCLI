@@ -1,15 +1,9 @@
 ﻿using BaseDevPipeline;
 using BaseDevPipeline.SourceData;
 using CommonUtils.DeploymentTasks;
-using Deployment.Tasks;
 using Deployment.Tasks.GitTasks.Pull;
-using NLog;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Deployment.Helpers
 {
@@ -20,9 +14,14 @@ namespace Deployment.Helpers
             return Read().Version;
         }
 
+        public static string GetBaseRepositoryPath()
+        {
+            return ProjectsDataSourceFactory.GetSolution(KindOfProject.ReleaseMngrSolution).Path;
+        }
+
         public static FutureReleaseInfo Read()
         {
-            return Read(ProjectsDataSourceFactory.GetSolution(KindOfProject.ReleaseMngrSolution).Path);
+            return Read(GetBaseRepositoryPath());
         }
 
         public static FutureReleaseInfo Read(string baseRepositoryPath)
@@ -36,7 +35,7 @@ namespace Deployment.Helpers
 
             deploymentPipeline.Run();
 
-            var relaseNotes = File.ReadAllText(Path.Combine(baseRepositoryPath, "FutureReleaseNotes.md"));
+            var relaseNotes = File.ReadAllText(GetFutureReleaseNotesFullFileName(baseRepositoryPath));
 
             var futureReleaseInfoSource = FutureReleaseInfoSource.ReadFile(Path.Combine(baseRepositoryPath, "FutureReleaseInfo.json"));
 
@@ -50,9 +49,19 @@ namespace Deployment.Helpers
             return result;
         }
 
+        public static string GetFutureReleaseNotesFullFileName()
+        {
+            return GetFutureReleaseNotesFullFileName(GetBaseRepositoryPath());
+        }
+
+        public static string GetFutureReleaseNotesFullFileName(string baseRepositoryPath)
+        {
+            return Path.Combine(baseRepositoryPath, "FutureReleaseNotes.md");
+        }
+
         public static FutureReleaseInfoSource ReadSource()
         {
-            return ReadSource(ProjectsDataSourceFactory.GetSolution(KindOfProject.ReleaseMngrSolution).Path);
+            return ReadSource(GetBaseRepositoryPath());
         }
 
         public static FutureReleaseInfoSource ReadSource(string baseRepositoryPath)

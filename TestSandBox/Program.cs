@@ -78,7 +78,8 @@ namespace TestSandBox
 
             try
             {
-                TstMakeReleaseCommandLineParserHandler();
+                CheckReadinessForReleaseHandler();
+                //TstMakeReleaseCommandLineParserHandler();
                 //TstStartNewVersionCommandLineParserHandler();
                 //TstUpdateInstalledNuGetPackageInAllCSharpProjectsCommandLineParserHandler();
                 //TstUpdateTargetFrameworkInAllCSharpProjectsCmdlParsersHandler();
@@ -177,6 +178,16 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void CheckReadinessForReleaseHandler()
+        {
+            _logger.Info("Begin");
+
+            var handler = new CheckReadinessForReleaseHandler();
+            handler.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstMakeReleaseCommandLineParserHandler()

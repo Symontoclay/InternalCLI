@@ -142,7 +142,7 @@ namespace Deployment.ReleaseTasks.MakeRelease
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            //sb.AppendLine($"{spaces}Builds and commits READMEs for all projects with maintained versions.");
+            sb.AppendLine($"{spaces}Makes release.");
             sb.Append(PrintValidation(n));
 
             return sb.ToString();
