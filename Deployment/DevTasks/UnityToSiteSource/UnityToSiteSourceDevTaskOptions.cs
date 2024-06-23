@@ -9,6 +9,7 @@ namespace Deployment.DevTasks.UnityToSiteSource
         public string UnitySlnPath { get; set; }
         public string SiteSourceDir { get; set; }
         public string UnityExeFilePath { get; set; }
+        public string UnityEnginePath { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -31,6 +32,7 @@ namespace Deployment.DevTasks.UnityToSiteSource
             sb.AppendLine($"{spaces}{nameof(UnitySlnPath)} = {UnitySlnPath}");
             sb.AppendLine($"{spaces}{nameof(SiteSourceDir)} = {SiteSourceDir}");
             sb.AppendLine($"{spaces}{nameof(UnityExeFilePath)} = {UnityExeFilePath}");
+            sb.AppendLine($"{spaces}{nameof(UnityEnginePath)} = {UnityEnginePath}");
 
             return sb.ToString();
         }

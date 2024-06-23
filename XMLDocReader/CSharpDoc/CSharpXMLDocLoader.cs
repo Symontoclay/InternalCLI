@@ -37,19 +37,19 @@ namespace XMLDocReader.CSharpDoc
         public static List<PackageCard> LoadOrigin(CSharpOriginDocLoaderOptions options)
         {
 #if DEBUG
-            _logger.Info($"options = {options}");
+            //_logger.Info($"options = {options}");
 #endif
 
             var settingsList = PackageCardReaderSettingsHelper.ConvertXMLFileNamesListToSettingsList(options.FileNamesList);
 
 #if DEBUG
-            _logger.Info($"settingsList = {JsonConvert.SerializeObject(settingsList, Formatting.Indented)}");
+            //_logger.Info($"settingsList = {JsonConvert.SerializeObject(settingsList, Formatting.Indented)}");
 #endif
 
             var packageCardsList = PackageCardReader.Read(settingsList);
 
 #if DEBUG
-            _logger.Info($"packageCardsList.Count = {packageCardsList.Count}");
+            //_logger.Info($"packageCardsList.Count = {packageCardsList.Count}");
 #endif
 
             PackageCardResolver.FillUpTypeCardsPropetties(packageCardsList, options.IgnoreErrors);

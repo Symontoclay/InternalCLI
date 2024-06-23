@@ -61,7 +61,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
                 var targetFileName = fileName.Replace(baseSourceDir, _options.DestDir);
 
 #if DEBUG
-                _logger.Info($"fileName = {fileName}; stargetFileName = {targetFileName}");
+                //_logger.Info($"fileName = {fileName}; stargetFileName = {targetFileName}");
 #endif
 
                 var fileInfo = new FileInfo(targetFileName);
@@ -102,7 +102,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
                 var targetFileName = Path.Combine(_options.DestDir, fileInfo.Name);
 
 #if DEBUG
-                _logger.Info($"fileName = {fileName}; stargetFileName = {targetFileName}");
+                //_logger.Info($"fileName = {fileName}; stargetFileName = {targetFileName}");
 #endif
 
                 if (File.Exists(targetFileName))

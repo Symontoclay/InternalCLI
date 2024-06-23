@@ -21,15 +21,16 @@ namespace Deployment.DevTasks.UnityToSiteSource
         {
             var result = new UnityToSiteSourceDevTaskOptions();
 
+            var unitySolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.Unity);
+
             var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
-            result.UnitySlnPath = ProjectsDataSourceFactory.GetSolution(KindOfProject.Unity).Path;
+            result.UnitySlnPath = unitySolution.Path;
             result.SiteSourceDir = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite).SourcePath;
 
-            var targetUnityVersion = UnityHelper.GetTargetUnityVersion(result.UnitySlnPath);
+            var unityExeInstance = settings.GetUtityExeInstance(unitySolution);
 
-            var unityExePath = settings.UtityExeInstances.SingleOrDefault(p => p.Version == targetUnityVersion).Path;
-
-            result.UnityExeFilePath = unityExePath;
+            result.UnityExeFilePath = unityExeInstance.Path;
+            result.UnityEnginePath = unityExeInstance.UnityEnginePath;
 
             return result;
         }
@@ -91,6 +92,15 @@ namespace Deployment.DevTasks.UnityToSiteSource
             deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
             {
                 SourceDir = _options.UnitySlnPath,
+                DestDir = tempDir.FullName,
+                SaveSubDirs = false,
+                ExistingFileStrategy = ExistingFileStrategy.Skip,
+                OnlyFileExts = new List<string>() { "dll" }
+            }, this));
+
+            deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
+            {
+                SourceDir = _options.UnityEnginePath,
                 DestDir = tempDir.FullName,
                 SaveSubDirs = false,
                 ExistingFileStrategy = ExistingFileStrategy.Skip,
