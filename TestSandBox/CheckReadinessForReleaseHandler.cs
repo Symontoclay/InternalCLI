@@ -3,6 +3,7 @@ using Deployment.Helpers;
 using NLog;
 using System;
 using System.IO;
+using System.Net.Sockets;
 
 namespace TestSandBox
 {
@@ -13,6 +14,10 @@ namespace TestSandBox
         public void Run()
         {
             _logger.Info("Begin");
+
+            var mayIMakeRelease = FutureReleaseGuard.CheckMayIMakeRelease(_logger);
+
+            _logger.Info($"mayIMakeRelease = {mayIMakeRelease}");
 
             var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
@@ -32,22 +37,9 @@ namespace TestSandBox
                 _logger.Info($"secret.Value.ExpDate = {secret.Value.ExpDate}");
             }
 
-            var token = settings.GetSecret(GitHubTokenHelper.GitHubTokenKey);
+            var checkGitHubTokenResult = GitHubTokenHelper.CheckGitHubToken(_logger);
 
-            if (string.IsNullOrEmpty(token.Value))
-            {
-                _logger.Info("Making release is forbiden! GitHub token is empty!");
-            }
-
-            if (!token.ExpDate.HasValue)
-            {
-                _logger.Info("Making release is forbiden! ExpDate of GitHub token is empty!");
-            }
-
-            if (token.ExpDate <= DateTime.Now)
-            {
-                _logger.Info("Making release is forbiden! GitHub token is expired!");
-            }
+            _logger.Info($"checkGitHubTokenResult = {checkGitHubTokenResult}");
 
             var futureReleaseInfo = FutureReleaseInfoReader.Read();
 

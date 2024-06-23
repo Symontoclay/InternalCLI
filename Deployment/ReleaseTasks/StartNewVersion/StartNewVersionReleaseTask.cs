@@ -42,10 +42,8 @@ namespace Deployment.ReleaseTasks.StartNewVersion
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            if (FutureReleaseGuard.MayIMakeRelease())
+            if (FutureReleaseGuard.CheckMayIMakeRelease(_logger))
             {
-                _logger.Info("Starting new version is forbiden! New version has already been started!");
-
                 return;
             }
 

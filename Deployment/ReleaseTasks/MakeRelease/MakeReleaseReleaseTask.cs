@@ -36,14 +36,12 @@ namespace Deployment.ReleaseTasks.MakeRelease
         /// <inheritdoc/>
         protected override void OnRun()
         {
-            if(!FutureReleaseGuard.MayIMakeRelease())
+            if(!FutureReleaseGuard.CheckMayIMakeRelease(_logger))
             {
-                _logger.Info("Making release is forbiden! New version has not been started!");
-
                 return;
             }
 
-            if(!CheckGitHubToken())
+            if(!GitHubTokenHelper.CheckGitHubToken(_logger))
             {
                 return;
             }
@@ -104,36 +102,6 @@ namespace Deployment.ReleaseTasks.MakeRelease
             Exec(new DeploymentToProdReleaseTask(this));
 
             Exec(new MarkAsCompletedReleaseTask(this));
-        }
-
-        private bool CheckGitHubToken()
-        {
-            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
-
-            var token = settings.GetSecret(GitHubTokenHelper.GitHubTokenKey);
-
-            if(string.IsNullOrEmpty(token.Value))
-            {
-                _logger.Info($"Making release is forbiden! {GitHubTokenHelper.GitHubTokenKey} token is empty!");
-
-                return false;
-            }
-
-            if(!token.ExpDate.HasValue)
-            {
-                _logger.Info($"Making release is forbiden! ExpDate of {GitHubTokenHelper.GitHubTokenKey} token is empty!");
-
-                return false;
-            }
-
-            if(token.ExpDate <= DateTime.Now)
-            {
-                _logger.Info($"Making release is forbiden! {GitHubTokenHelper.GitHubTokenKey} token is expired!");
-
-                return false;
-            }
-
-            return true;
         }
 
         /// <inheritdoc/>
