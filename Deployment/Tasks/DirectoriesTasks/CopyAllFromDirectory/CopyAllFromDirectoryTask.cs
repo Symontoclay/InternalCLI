@@ -56,6 +56,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
 
             Exec(new CopyTargetFilesTask(new CopyTargetFilesTaskOptions()
             {
+                ExistingFileStrategy = _options.ExistingFileStrategy,
                 DestDir = _options.DestDir,
                 SaveSubDirs = _options.SaveSubDirs,
                 TargetFiles = sourceFullFileNamesList
@@ -80,7 +81,10 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
             {
                 sb.AppendLine($"{spaces}All fles will be put to dest directory without saving subdirectories' structure.");
             }
-            if(!_options.OnlySubDirs.IsNullOrEmpty())
+
+            sb.AppendLine($"{spaces}ExistingFileStrategy: {_options.ExistingFileStrategy}");
+
+            if (!_options.OnlySubDirs.IsNullOrEmpty())
             {
                 sb.AppendLine($"{spaces}Copy when directory contains:");
                 foreach (var subdir in _options.OnlySubDirs)

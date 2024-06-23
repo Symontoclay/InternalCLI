@@ -10,6 +10,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
         public string SourceDir { get; set; }
         public string DestDir { get; set; }
         public bool SaveSubDirs { get; set; } = true;
+        public ExistingFileStrategy ExistingFileStrategy { get; set; } = ExistingFileStrategy.Overwrite;
         public List<string> OnlySubDirs { get; set; }
         public List<string> ExceptSubDirs { get; set; }
         public List<string> OnlyFileExts { get; set; }
@@ -38,6 +39,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyAllFromDirectory
             sb.AppendLine($"{spaces}{nameof(SourceDir)} = {SourceDir}");
             sb.AppendLine($"{spaces}{nameof(DestDir)} = {DestDir}");
             sb.AppendLine($"{spaces}{nameof(SaveSubDirs)} = {SaveSubDirs}");
+            sb.AppendLine($"{spaces}{nameof(ExistingFileStrategy)} = {ExistingFileStrategy}");
             sb.PrintPODList(n, nameof(OnlySubDirs), OnlySubDirs);
             sb.PrintPODList(n, nameof(ExceptSubDirs), ExceptSubDirs);
             sb.PrintPODList(n, nameof(OnlyFileExts), OnlyFileExts);

@@ -1144,7 +1144,7 @@ namespace TestSandBox
 
             deploymentPipeline.Add(new CreateExtendedDocFileDevTask(new CreateExtendedDocFileDevTaskOptions()
             {
-                XmlDocFile = PathsHelper.Normalize(@"d:\TempProjects_450d6c25ef684c4790815f4c9f331db0\Assembly-CSharp.xml"),
+                XmlDocFile = PathsHelper.Normalize(@"d:\TempProjects_d82a79c835a846d092c75a9fc3045ec9\Assembly-CSharp.xml"),
                 ExtendedDocFile = PathsHelper.Normalize(@"d:/Repos/symontoclay.github.io/siteSource/CSharpApiFiles\Assembly-CSharp.json")
             }));
 

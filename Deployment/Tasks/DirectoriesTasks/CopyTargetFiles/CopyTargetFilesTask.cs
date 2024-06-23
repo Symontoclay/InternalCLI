@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.DeploymentTasks;
+using CSharpUtils;
 using SymOntoClay.Common.CollectionsHelpers;
 using SymOntoClay.Common.DebugHelpers;
 using System;
@@ -21,6 +22,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
 
         private readonly CopyTargetFilesTaskOptions _options;
         private List<string> _targetFiles;
+        private ExistingFileStrategy _existingFileStrategy;
 
         /// <inheritdoc/>
         protected override void OnValidateOptions()
@@ -33,6 +35,8 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
         /// <inheritdoc/>
         protected override void OnRun()
         {
+            _existingFileStrategy = _options.ExistingFileStrategy;
+
             if (_options.SaveSubDirs)
             {
                 CopyWithSaveSubDirs();
@@ -56,11 +60,37 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
             {
                 var targetFileName = fileName.Replace(baseSourceDir, _options.DestDir);
 
+#if DEBUG
+                _logger.Info($"fileName = {fileName}; stargetFileName = {targetFileName}");
+#endif
+
                 var fileInfo = new FileInfo(targetFileName);
 
-                fileInfo.Directory.Create();
+                if(fileInfo.Exists)
+                {
+                    switch(_existingFileStrategy)
+                    {
+                        case ExistingFileStrategy.Unknown:
+                        case ExistingFileStrategy.Exception:
+                            throw new Exception($"The file {targetFileName} already exists.");
 
-                File.Copy(fileName, targetFileName, true);
+                        case ExistingFileStrategy.Skip:
+                            break;
+
+                        case ExistingFileStrategy.Overwrite:
+                            File.Copy(fileName, targetFileName, true);
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(_existingFileStrategy), _existingFileStrategy, null);
+                    }
+                }
+                else
+                {
+                    fileInfo.Directory.Create();
+
+                    File.Copy(fileName, targetFileName);
+                }
             }
         }
 
@@ -71,7 +101,33 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
                 var fileInfo = new FileInfo(fileName);
                 var targetFileName = Path.Combine(_options.DestDir, fileInfo.Name);
 
-                File.Copy(fileName, targetFileName, true);
+#if DEBUG
+                _logger.Info($"fileName = {fileName}; stargetFileName = {targetFileName}");
+#endif
+
+                if (File.Exists(targetFileName))
+                {
+                    switch (_existingFileStrategy)
+                    {
+                        case ExistingFileStrategy.Unknown:
+                        case ExistingFileStrategy.Exception:
+                            throw new Exception($"The file {targetFileName} already exists.");
+
+                        case ExistingFileStrategy.Skip:
+                            break;
+
+                        case ExistingFileStrategy.Overwrite:
+                            File.Copy(fileName, targetFileName, true);
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(_existingFileStrategy), _existingFileStrategy, null);
+                    }
+                }
+                else
+                {
+                    File.Copy(fileName, targetFileName);
+                }                
             }
         }
 
@@ -136,6 +192,9 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
             {
                 sb.AppendLine($"{spaces}All fles will be put to dest directory without saving subdirectories' structure.");
             }
+
+            sb.AppendLine($"{spaces}ExistingFileStrategy: {_options.ExistingFileStrategy}");
+
             if (!_options.TargetFiles.IsNullOrEmpty())
             {
                 sb.AppendLine($"{spaces}The target copied files:");

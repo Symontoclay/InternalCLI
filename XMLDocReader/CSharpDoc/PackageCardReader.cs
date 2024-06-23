@@ -45,28 +45,9 @@ namespace XMLDocReader.CSharpDoc
 
             var typesDict = new Dictionary<string, Type>();
 
-            try
+            foreach (var type in targetAssembly.GetTypes())
             {
-                foreach (var type in targetAssembly.GetTypes())
-                {
-                    typesDict[type.FullName] = type;
-                }
-            }
-            catch(ReflectionTypeLoadException e)
-            {
-#if DEBUG
-                _logger.Info($"e = {e}");
-#endif
-
-                foreach (var type in e.Types)
-                {
-#if DEBUG
-                    _logger.Info($"type?.Name = {type?.Name}");
-                    _logger.Info($"type?.FullName = {type?.FullName}");
-#endif
-                }
-
-                throw;
+                typesDict[type.FullName] = type;
             }
 
 #if DEBUG

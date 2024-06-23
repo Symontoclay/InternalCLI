@@ -1,5 +1,4 @@
 ﻿using BaseDevPipeline;
-using BaseDevPipeline.Data.Implementation;
 using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using CSharpUtils;
@@ -89,14 +88,14 @@ namespace Deployment.DevTasks.UnityToSiteSource
                 NoLogo = true
             }, this));
 
-            //deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
-            //{
-            //    SourceDir = _options.UnitySlnPath,
-            //    DestDir = tempDir.FullName,
-            //    SaveSubDirs = false,
-            //    OnlyFileExts = new List<string>() { "dll" },
-            //    FileNameShouldContain = new List<string>() { "SymOntoClay." }
-            //}, this));
+            deploymentPipeline.Add(new CopyAllFromDirectoryTask(new CopyAllFromDirectoryTaskOptions()
+            {
+                SourceDir = _options.UnitySlnPath,
+                DestDir = tempDir.FullName,
+                SaveSubDirs = false,
+                ExistingFileStrategy = ExistingFileStrategy.Skip,
+                OnlyFileExts = new List<string>() { "dll" }
+            }, this));
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {

@@ -49,14 +49,14 @@ namespace Deployment.Helpers
 
                     if (!_onlySubDirs.IsNullOrEmpty())
                     {
-                        if (!_onlySubDirs.Any(p => pureDir.Contains(p)))
+                        if (!_onlySubDirs.Any(pureDir.Contains))
                         {
                             continue;
                         }
                     }
                     if (!_exceptSubDirs.IsNullOrEmpty())
                     {
-                        if (_exceptSubDirs.Any(p => pureDir.Contains(p)))
+                        if (_exceptSubDirs.Any(pureDir.Contains))
                         {
                             continue;
                         }
