@@ -110,25 +110,25 @@ namespace Deployment.ReleaseTasks.MakeRelease
         {
             var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
-            var token = settings.GetSecret("GitHub");
+            var token = settings.GetSecret(GitHubTokenHelper.GitHubTokenKey);
 
             if(string.IsNullOrEmpty(token.Value))
             {
-                _logger.Info("Making release is forbiden! GitHub token is empty!");
+                _logger.Info($"Making release is forbiden! {GitHubTokenHelper.GitHubTokenKey} token is empty!");
 
                 return false;
             }
 
             if(!token.ExpDate.HasValue)
             {
-                _logger.Info("Making release is forbiden! ExpDate of GitHub token is empty!");
+                _logger.Info($"Making release is forbiden! ExpDate of {GitHubTokenHelper.GitHubTokenKey} token is empty!");
 
                 return false;
             }
 
             if(token.ExpDate <= DateTime.Now)
             {
-                _logger.Info("Making release is forbiden! GitHub token is expired!");
+                _logger.Info($"Making release is forbiden! {GitHubTokenHelper.GitHubTokenKey} token is expired!");
 
                 return false;
             }

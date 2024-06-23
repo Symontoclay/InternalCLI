@@ -2409,7 +2409,7 @@ namespace TestSandBox
 
             _logger.Info($"secrets = {JsonConvert.SerializeObject(secrets, Formatting.Indented)}");
 
-            var token = secrets["GitHub"];
+            var token = secrets[GitHubTokenHelper.GitHubTokenKey];
             var tokenAuth = new Credentials(token.Value);
             client.Credentials = tokenAuth;
 
@@ -2491,7 +2491,7 @@ namespace TestSandBox
 
             var client = new HttpClient();
             client.BaseAddress = new Uri("https://uploads.github.com");
-            var token = secrets["GitHub"];
+            var token = secrets[GitHubTokenHelper.GitHubTokenKey];
 
             client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("AppName", "1.0"));
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/zip"));
@@ -2563,7 +2563,7 @@ namespace TestSandBox
 
             var client = new HttpClient();
             client.BaseAddress = new Uri("https://api.github.com");
-            var token = secrets["GitHub"];
+            var token = secrets[GitHubTokenHelper.GitHubTokenKey];
 
             client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("AppName", "1.0"));
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
@@ -2627,7 +2627,7 @@ namespace TestSandBox
 
             var client = new HttpClient();
             client.BaseAddress = new Uri("https://api.github.com");
-            var token = secrets["GitHub"];
+            var token = secrets[GitHubTokenHelper.GitHubTokenKey];
 
             client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("AppName", "1.0"));
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));

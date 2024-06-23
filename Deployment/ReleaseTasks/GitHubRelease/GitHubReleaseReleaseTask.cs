@@ -140,7 +140,7 @@ namespace Deployment.ReleaseTasks.GitHubRelease
                 OutputFilePath = cliArchFullPath
             }, this));
 
-            var token = settings.GetSecret("GitHub");
+            var token = settings.GetSecret(GitHubTokenHelper.GitHubTokenKey);
 
             var assets = new List<GitHubReleaseAssetOptions>();
 

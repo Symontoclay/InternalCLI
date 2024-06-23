@@ -32,7 +32,7 @@ namespace TestSandBox
                 _logger.Info($"secret.Value.ExpDate = {secret.Value.ExpDate}");
             }
 
-            var token = settings.GetSecret("GitHub");
+            var token = settings.GetSecret(GitHubTokenHelper.GitHubTokenKey);
 
             if (string.IsNullOrEmpty(token.Value))
             {

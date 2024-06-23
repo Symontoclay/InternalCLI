@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DeploymentTasks;
+using Deployment.Helpers;
 using Octokit;
 using SymOntoClay.Common.DebugHelpers;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace Deployment.TestDeploymentTasks.RemoveReleasesFromTestRepositories
 
             var client = new GitHubClient(new ProductHeaderValue("SymOntoClay-InternalCLI"));
 
-            var token = testSettings.GetSecret("GitHub");
+            var token = testSettings.GetSecret(GitHubTokenHelper.GitHubTokenKey);
 
             var tokenAuth = new Credentials(token.Value);
             client.Credentials = tokenAuth;

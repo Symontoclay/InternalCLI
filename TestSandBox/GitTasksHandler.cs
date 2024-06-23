@@ -83,9 +83,9 @@ namespace TestSandBox
             //_logger.Info($"secretsFileName = {secretsFileName}");
 
             //var secrets = SecretFile.ReadSecrets(secretsFileName);
-            //var token = secrets["GitHub"];
+            //var token = secrets[GitHubTokenHelper.GitHubTokenKey];
             //var token = "example_token!!!!!";
-            var token = settings.GetSecret("GitHub");
+            var token = settings.GetSecret(GitHubTokenHelper.GitHubTokenKey);
 
             var owner = "metatypeman";
             var repo = "a1";
