@@ -148,7 +148,13 @@ namespace BaseDevPipeline.Data.Implementation
 
             foreach(var initUnityPath in existingUnityPaths)
             {
+#if DEBUG
+                //_logger.Info($"initUnityPath = {initUnityPath}");
+#endif
+
                 var unityPath = Path.Combine(initUnityPath, "Editor", "Unity.exe");
+
+                var unityEnginePath = Path.Combine(initUnityPath, @"Editor\Data\Managed\UnityEngine");
 
                 try
                 {
@@ -166,7 +172,8 @@ namespace BaseDevPipeline.Data.Implementation
                         var item = new UtityExeInstance()
                         {
                             Path = unityPath,
-                            Version = output
+                            Version = output,
+                            UnityEnginePath = unityEnginePath,
                         };
 
                         result.Add(item);

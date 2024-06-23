@@ -12,6 +12,8 @@ namespace BaseDevPipeline.Data.Implementation
         /// <inheritdoc/>
         public string Path { get; set; }
 
+        public string UnityEnginePath { get; set; }
+
         /// <inheritdoc/>
         public override string ToString()
         {
@@ -32,6 +34,7 @@ namespace BaseDevPipeline.Data.Implementation
 
             sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
             sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
+            sb.AppendLine($"{spaces}{nameof(UnityEnginePath)} = {UnityEnginePath}");
 
             return sb.ToString();
         }

@@ -19,6 +19,7 @@ namespace BaseDevPipeline.Data
         string InternalCLIDist { get; }
         string SocExePath { get; }
         IReadOnlyList<IUtityExeInstance> UtityExeInstances { get; }
+        IUtityExeInstance GetUtityExeInstance(ISolutionSettings solution);
         IReadOnlyList<ISolutionSettings> Solutions { get; }
         IReadOnlyList<IProjectSettings> Projects { get; }
         IReadOnlyList<IArtifactSettings> DevArtifacts { get; }

@@ -78,6 +78,7 @@ namespace TestSandBox
 
             try
             {
+                TstGetUnityPathsForUnitySolution();
                 //CheckReadinessForReleaseHandler();
                 //TstMakeReleaseCommandLineParserHandler();
                 //TstStartNewVersionCommandLineParserHandler();
@@ -113,7 +114,7 @@ namespace TestSandBox
                 //TstRemoveLogCommentsFromCSFile();
                 //TstExampleCache();
                 //TstMd5Hash();
-                TstCreateExtendedDocFileDevTask();
+                //TstCreateExtendedDocFileDevTask();//!!!!!!
                 //TstBson();
                 //TstBuildExamplesDevTask();
                 //TstCoreToInternalCLIDistDevTask();
@@ -178,6 +179,27 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstGetUnityPathsForUnitySolution()
+        {
+            _logger.Info("Begin");
+
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
+
+            var unityExeInstances = settings.UtityExeInstances;
+
+            _logger.Info($"unityExeInstances = {unityExeInstances.WriteListToString()}");
+
+            var unitySolution = settings.GetSolution(KindOfProject.Unity);
+
+            _logger.Info($"unitySolution.Name = {unitySolution.Name}");
+
+            var unityExeInstance = settings.GetUtityExeInstance(unitySolution);
+
+            _logger.Info($"unityExeInstance = {unityExeInstance}");
+
+            _logger.Info("End");
         }
 
         private static void CheckReadinessForReleaseHandler()

@@ -1,4 +1,5 @@
-﻿using SymOntoClay.Common;
+﻿using CSharpUtils;
+using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,19 @@ namespace BaseDevPipeline.Data.Implementation
 
         public string RepositoryReadmeSource { get; set; }
         public string RepositoryBadgesSource { get; set; }
+
+        /// <inheritdoc/>
+        public IUtityExeInstance GetUtityExeInstance(ISolutionSettings solution)
+        {
+            if(solution.Kind != KindOfProject.Unity)
+            {
+                return null;
+            }
+
+            var targetUnityVersion = UnityHelper.GetTargetUnityVersion(solution.Path);
+
+            return UtityExeInstances.SingleOrDefault(p => p.Version == targetUnityVersion);
+        }
 
         /// <inheritdoc/>
         public ISolutionSettings GetSolution(KindOfProject kind)

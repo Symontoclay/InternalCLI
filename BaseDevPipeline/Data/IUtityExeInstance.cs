@@ -6,5 +6,6 @@ namespace BaseDevPipeline.Data
     {
         string Version { get; }
         string Path { get; }
+        string UnityEnginePath { get; }
     }
 }
