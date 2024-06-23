@@ -37,13 +37,13 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
         protected override void OnRun()
         {
 #if DEBUG
-            _logger.Info($"_options.OutputFileName = {_options.OutputFileName}");
+            //_logger.Info($"_options.OutputFileName = {_options.OutputFileName}");
 #endif
 
-            _options.OutputFileName = EVPath.Normalize(_options.OutputFileName);
+            var outputFileName = EVPath.Normalize(_options.OutputFileName);
 
 #if DEBUG
-            _logger.Info($"_options.OutputFileName (after) = {_options.OutputFileName}");
+            //_logger.Info($"outputFileName = {outputFileName}");
 #endif
 
             var reportSb = new StringBuilder();
@@ -55,7 +55,7 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
             var mayIMakeRelease = FutureReleaseGuard.CheckMayIMakeRelease(errors);
 
 #if DEBUG
-            _logger.Info($"mayIMakeRelease = {mayIMakeRelease}");
+            //_logger.Info($"mayIMakeRelease = {mayIMakeRelease}");
 #endif
 
             reportSb.AppendLine();
@@ -66,7 +66,7 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
             var secretFilePath = settings.SecretFilePath;
 
 #if DEBUG
-            _logger.Info($"secretFilePath = {secretFilePath}");
+            //_logger.Info($"secretFilePath = {secretFilePath}");
 #endif
 
             reportSb.AppendLine();
@@ -84,7 +84,7 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
                 var secretFileLastWriteTime = File.GetLastWriteTime(secretFilePath);
 
 #if DEBUG
-                _logger.Info($"secretFileLastWriteTime = {secretFileLastWriteTime}");
+                //_logger.Info($"secretFileLastWriteTime = {secretFileLastWriteTime}");
 #endif
 
                 reportSb.AppendLine($"Checked: {secretFileLastWriteTime}");
@@ -96,8 +96,8 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
                 foreach (var secret in secrets)
                 {
 #if DEBUG
-                    _logger.Info($"secret.Key = {secret.Key}");
-                    _logger.Info($"secret.Value.ExpDate = {secret.Value.ExpDate}");
+                    //_logger.Info($"secret.Key = {secret.Key}");
+                    //_logger.Info($"secret.Value.ExpDate = {secret.Value.ExpDate}");
 #endif
 
                     reportSb.AppendLine($"{secret.Key}: ExpDate: {secret.Value.ExpDate}");
@@ -106,7 +106,7 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
                 var checkGitHubTokenResult = GitHubTokenHelper.CheckGitHubToken(errors);
 
 #if DEBUG
-                _logger.Info($"checkGitHubTokenResult = {checkGitHubTokenResult}");
+                //_logger.Info($"checkGitHubTokenResult = {checkGitHubTokenResult}");
 #endif
 
                 reportSb.AppendLine(checkGitHubTokenResult ? "Valid" : "Invaid");
@@ -115,7 +115,7 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
             var futureReleaseInfoRepositoryName = FutureReleaseInfoReader.GetRepositoryName();
 
 #if DEBUG
-            _logger.Info($"futureReleaseInfoRepositoryName = {futureReleaseInfoRepositoryName}");
+            //_logger.Info($"futureReleaseInfoRepositoryName = {futureReleaseInfoRepositoryName}");
 #endif
 
             var futureReleaseBaseRepositoryPath = FutureReleaseInfoReader.GetBaseRepositoryPath();
@@ -125,13 +125,13 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
             var futureReleaseInfo = FutureReleaseInfoReader.Read();
 
 #if DEBUG
-            _logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
+            //_logger.Info($"futureReleaseInfo = {futureReleaseInfo}");
 #endif
 
             var currentVersion = futureReleaseInfo.Version;
 
 #if DEBUG
-            _logger.Info($"currentVersion = {currentVersion}");
+            //_logger.Info($"currentVersion = {currentVersion}");
 #endif
 
             reportSb.AppendLine();
@@ -145,13 +145,13 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
             var futureReleaseNotesFullFileName = FutureReleaseInfoReader.GetFutureReleaseNotesFullFileName();
 
 #if DEBUG
-            _logger.Info($"futureReleaseNotesFullFileName = {futureReleaseNotesFullFileName}");
+            //_logger.Info($"futureReleaseNotesFullFileName = {futureReleaseNotesFullFileName}");
 #endif
 
             var futureReleaseNotesFileLastWriteTime = File.GetLastWriteTime(futureReleaseNotesFullFileName);
 
 #if DEBUG
-            _logger.Info($"futureReleaseNotesFileLastWriteTime = {futureReleaseNotesFileLastWriteTime}");
+            //_logger.Info($"futureReleaseNotesFileLastWriteTime = {futureReleaseNotesFileLastWriteTime}");
 #endif
 
             reportSb.AppendLine($"Release notes checked: {futureReleaseNotesFileLastWriteTime} {(futureReleaseNotesFileLastWriteTime < futureReleaseInfo.StartDate ? "!!!!Release notes too old" : string.Empty)}");
@@ -164,7 +164,7 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
             var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
 
 #if DEBUG
-            _logger.Info($"targetSolutions.Count = {targetSolutions.Count}");
+            //_logger.Info($"targetSolutions.Count = {targetSolutions.Count}");
 #endif
 
             reportSb.AppendLine();
@@ -173,16 +173,16 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
             foreach (var targetSolution in targetSolutions)
             {
 #if DEBUG
-                _logger.Info($"targetSolution.Name = {targetSolution.Name}");
-                _logger.Info($"targetSolution.Path = {targetSolution.Path}");
+                //_logger.Info($"targetSolution.Name = {targetSolution.Name}");
+                //_logger.Info($"targetSolution.Path = {targetSolution.Path}");
 #endif
 
                 CheckRepository(targetSolution.Name, targetSolution.Path, currentVersion, reportSb, warnings, errors);
             }
 
 #if DEBUG
-            _logger.Info($"warnings = {warnings.WritePODListToString()}");
-            _logger.Info($"errors = {errors.WritePODListToString()}");
+            //_logger.Info($"warnings = {warnings.WritePODListToString()}");
+            //_logger.Info($"errors = {errors.WritePODListToString()}");
 #endif
 
             if (warnings.Any())
@@ -213,18 +213,20 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
             reportSb.AppendLine($"Resolution: {resolution}");
 
 #if DEBUG
-            _logger.Info($"reportSb = {reportSb}");
+            //_logger.Info($"reportSb = {reportSb}");
 #endif
 
-            File.WriteAllText(_options.OutputFileName, reportSb.ToString());
+            File.WriteAllText(outputFileName, reportSb.ToString());
+
+            _logger.Info($"Report has been saved to '{outputFileName}'");
         }
 
         private void CheckRepository(string repositoryName, string repositoryPath, string targetBranchName, StringBuilder reportSb, List<string> warnings, List<string> errors)
         {
 #if DEBUG
-            _logger.Info($"repositoryName = {repositoryName}");
-            _logger.Info($"repositoryPath = {repositoryPath}");
-            _logger.Info($"targetBranchName = {targetBranchName}");
+            //_logger.Info($"repositoryName = {repositoryName}");
+            //_logger.Info($"repositoryPath = {repositoryPath}");
+            //_logger.Info($"targetBranchName = {targetBranchName}");
 #endif
 
             reportSb.AppendLine();
@@ -235,7 +237,7 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
             var currentBranch = checkRepositoryResult.CurrentBranchName;
 
 #if DEBUG
-            _logger.Info($"currentBranch = {currentBranch}");
+            //_logger.Info($"currentBranch = {currentBranch}");
 #endif
 
             reportSb.AppendLine($"CurrentBranch: {currentBranch} {(currentBranch == targetBranchName ? string.Empty : $"!!!!! Should be {targetBranchName}")}");
@@ -248,7 +250,7 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
             var hasUncommitedFiles = checkRepositoryResult.HasUncommitedFiles;
 
 #if DEBUG
-            _logger.Info($"hasUncommitedFiles = {hasUncommitedFiles}");
+            //_logger.Info($"hasUncommitedFiles = {hasUncommitedFiles}");
 #endif
 
             reportSb.AppendLine($"Files: {(hasUncommitedFiles ? "!!!!Has uncommited files" : "All files are commited")}");
@@ -262,32 +264,32 @@ namespace Deployment.ReleaseTasks.CheckReadinessForRelease
         private (string CurrentBranchName, bool HasUncommitedFiles) GetRepositoryInfo(string repositoryPath)
         {
 #if DEBUG
-            _logger.Info($"repositoryPath = {repositoryPath}");
+            //_logger.Info($"repositoryPath = {repositoryPath}");
 #endif
 
             var currentBranch = GitRepositoryHelper.GetCurrentBranchName(repositoryPath);
 
 #if DEBUG
-            _logger.Info($"currentBranch = {currentBranch}");
+            //_logger.Info($"currentBranch = {currentBranch}");
 #endif
 
             var uncommitedFilesList = GitRepositoryHelper.GetRepositoryFileInfoList(repositoryPath);
 
 #if DEBUG
-            _logger.Info($"uncommitedFilesList.Count = {uncommitedFilesList.Count}");
+            //_logger.Info($"uncommitedFilesList.Count = {uncommitedFilesList.Count}");
 #endif
 
-            foreach (var uncommitedFile in uncommitedFilesList)
-            {
-#if DEBUG
-                _logger.Info($"uncommitedFile = {uncommitedFile}");
-#endif
-            }
+//            foreach (var uncommitedFile in uncommitedFilesList)
+//            {
+//#if DEBUG
+//                _logger.Info($"uncommitedFile = {uncommitedFile}");
+//#endif
+//            }
 
             var hasUncommitedFiles = uncommitedFilesList.Any();
 
 #if DEBUG
-            _logger.Info($"hasUncommitedFiles = {hasUncommitedFiles}");
+            //_logger.Info($"hasUncommitedFiles = {hasUncommitedFiles}");
 #endif
 
             return (currentBranch, hasUncommitedFiles);

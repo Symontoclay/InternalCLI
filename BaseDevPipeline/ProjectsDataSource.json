@@ -218,6 +218,10 @@
         },
         {
           "Kind": "CLI",
+          "Path": "CheckReadinessForRelease"
+        },
+        {
+          "Kind": "CLI",
           "Path": "MakeRelease"
         },
         {
