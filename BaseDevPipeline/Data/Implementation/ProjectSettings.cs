@@ -1,5 +1,6 @@
 ﻿using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
+using System.Collections.Generic;
 using System.Text;
 
 namespace BaseDevPipeline.Data.Implementation
@@ -23,6 +24,10 @@ namespace BaseDevPipeline.Data.Implementation
 
         /// <inheritdoc/>
         ILicenseSettings IProjectSettings.License => License;
+
+        public List<KindOfProject> ExceptKindOfSolutions { get; set; }
+
+        IReadOnlyList<KindOfProject> IProjectSettings.ExceptKindOfSolutions => ExceptKindOfSolutions;
 
         /// <inheritdoc/>
         public override string ToString()
@@ -49,6 +54,7 @@ namespace BaseDevPipeline.Data.Implementation
             sb.AppendLine($"{spaces}{nameof(CsProjPath)} = {CsProjPath}");
             sb.AppendLine($"{spaces}{nameof(LicenseName)} = {LicenseName}");
             sb.PrintObjProp(n, nameof(License), License);
+            sb.PrintPODList(n, nameof(ExceptKindOfSolutions), ExceptKindOfSolutions);
 
             return sb.ToString();
         }

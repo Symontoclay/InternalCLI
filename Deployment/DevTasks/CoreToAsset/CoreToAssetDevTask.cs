@@ -24,8 +24,8 @@ namespace Deployment.DevTasks.CoreToAsset
             {
                 CoreCProjPath = ProjectsDataSourceFactory.GetProject(KindOfProject.CoreAssetLib).CsProjPath,
                 DestDir = ProjectsDataSourceFactory.GetSolution(KindOfProject.Unity).SourcePath,
-                Plugins = ProjectsDataSourceFactory.GetProjects(KindOfProject.CorePlugin).Select(p => p.CsProjPath).ToList(),
-                CommonPackages = ProjectsDataSourceFactory.GetCSharpSolutions().Where(p => p.Kind == KindOfProject.CommonPackagesSolution).SelectMany(p => p.Projects.Where(p => p.Kind == KindOfProject.Library)).Select(p => p.CsProjPath).ToList()
+                Plugins = ProjectsDataSourceFactory.GetProjects(KindOfProject.CorePlugin).ToList(),
+                CommonPackages = ProjectsDataSourceFactory.GetCSharpSolutions().Where(p => p.Kind == KindOfProject.CommonPackagesSolution).SelectMany(p => p.Projects.Where(p => p.Kind == KindOfProject.Library)).ToList()
             }, parentTask)
         {
         }
@@ -59,25 +59,46 @@ namespace Deployment.DevTasks.CoreToAsset
 
             if(!_options.Plugins.IsNullOrEmpty())
             {
-                foreach(var pluginCProjPath in _options.Plugins)
+                foreach(var plugin in _options.Plugins)
                 {
-                    ProcessProject(tempSettings, deploymentPipeline, pluginCProjPath);
+#if DEBUG
+                    //_logger.Info($"plugin.CsProjPath = {plugin.CsProjPath}");
+                    //_logger.Info($"ShouldSkipProject(plugin) = {ShouldSkipProject(plugin)}");
+#endif
+
+                    if(ShouldSkipProject(plugin))
+                    {
+                        continue;
+                    }
+
+                    ProcessProject(tempSettings, deploymentPipeline, plugin.CsProjPath);
                 }
             }
 
             if(!_options.CommonPackages.IsNullOrEmpty())
             {
-                foreach (var commonPackageCProjPath in _options.CommonPackages)
+                foreach (var commonPackage in _options.CommonPackages)
                 {
 #if DEBUG
-                    _logger.Info($"commonPackageCProjPath = {commonPackageCProjPath}");
+                    //_logger.Info($"commonPackage.CsProjPath = {commonPackage.CsProjPath}");
+                    //_logger.Info($"ShouldSkipProject(commonPackage) = {ShouldSkipProject(commonPackage)}");
 #endif
 
-                    //ProcessProject(tempSettings, deploymentPipeline, commonPackageCProjPath);
+                    if(ShouldSkipProject(commonPackage))
+                    {
+                        continue;
+                    }
+
+                    ProcessProject(tempSettings, deploymentPipeline, commonPackage.CsProjPath);
                 }
             }
 
             deploymentPipeline.Run();
+        }
+
+        private bool ShouldSkipProject(IProjectSettings projectSettings)
+        {
+            return projectSettings?.ExceptKindOfSolutions?.Any(p => p == KindOfProject.Unity || p == KindOfProject.UnityExample) ?? false;
         }
 
         private void ProcessProject(ITempSettings tempSettings, DeploymentPipeline deploymentPipeline, string csProjectPath)

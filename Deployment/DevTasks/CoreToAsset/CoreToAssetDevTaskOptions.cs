@@ -1,4 +1,6 @@
-﻿using SymOntoClay.Common;
+﻿using BaseDevPipeline;
+using BaseDevPipeline.Data;
+using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
 using System.Collections.Generic;
 using System.Text;
@@ -9,8 +11,8 @@ namespace Deployment.DevTasks.CoreToAsset
     {
         public string CoreCProjPath { get; set; }
         public string DestDir { get; set; }
-        public List<string> Plugins { get; set; }
-        public List<string> CommonPackages { get; set; }
+        public List<IProjectSettings> Plugins { get; set; }
+        public List<IProjectSettings> CommonPackages { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -32,8 +34,8 @@ namespace Deployment.DevTasks.CoreToAsset
 
             sb.AppendLine($"{spaces}{nameof(CoreCProjPath)} = {CoreCProjPath}");
             sb.AppendLine($"{spaces}{nameof(DestDir)} = {DestDir}");
-            sb.PrintPODList(n, nameof(Plugins), Plugins);
-            sb.PrintPODList(n, nameof(CommonPackages), CommonPackages);
+            sb.PrintObjListProp(n, nameof(Plugins), Plugins);
+            sb.PrintObjListProp(n, nameof(CommonPackages), CommonPackages);
 
             return sb.ToString();
         }

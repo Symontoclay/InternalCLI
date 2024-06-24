@@ -12,6 +12,6 @@ namespace BaseDevPipeline.Data
         string CsProjPath { get; }
         string LicenseName { get; }
         ILicenseSettings License { get; }
-        IReadOnlyList<KindOfProject>
+        IReadOnlyList<KindOfProject> ExceptKindOfSolutions { get; }
     }
 }

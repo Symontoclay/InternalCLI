@@ -414,7 +414,7 @@ namespace BaseDevPipeline.Data.Implementation
         private static void FillUpProject(ProjectSource projectSource, SolutionSettings solution, SymOntoClayProjectsSettings result)
         {
 #if DEBUG
-            _logger.Info($"projectSource = {projectSource}");
+            //_logger.Info($"projectSource = {projectSource}");
 #endif
 
             var item = new ProjectSettings()
@@ -441,6 +441,8 @@ namespace BaseDevPipeline.Data.Implementation
             }
 
             item.CsProjPath = DetectCsProjPath(projectSource.CsProjPath, item.Path);
+
+            item.ExceptKindOfSolutions = projectSource.ExceptKindOfSolutions?.Select(Enum.Parse<KindOfProject>).ToList() ?? new List<KindOfProject>();
 
             solution.Projects.Add(item);
             result.Projects.Add(item);
