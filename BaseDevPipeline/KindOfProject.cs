@@ -13,6 +13,7 @@ namespace BaseDevPipeline
         CoreSolution,
         Unity,
         CLI,
+        InternalCLI,
         CoreLib,
         CoreAssetLib,
         CorePlugin,
@@ -25,7 +26,7 @@ namespace BaseDevPipeline
         /// Describes repository with Unity example demoscene.
         /// </summary>
         UnityExample,
-        InternalCLISolution,
+        InternalCLISolution,        
         CommonPackagesSolution
     }
 }

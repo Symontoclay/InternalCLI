@@ -58,7 +58,7 @@
           "Path": "SymOntoClay.Monitor.Common.Data"
         },
         {
-          "Kind": "AdditionalApp",
+          "Kind": "InternalCLI",
           "Path": "SymOntoClay.Monitor.LogFileBuilder"
         },
         {
@@ -165,27 +165,27 @@
           "Path": "CommonUtils"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "CoreToAsset"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "CoreToCLIFolder"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "CoreToInternalCLIDist"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "CoreToSiteSource"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "CreateAndCommitReadmes"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "CreateReadmes"
         },
         {
@@ -197,35 +197,35 @@
           "Path": "Deployment"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "DevBuildExamples"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "DevExportPackage"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "DevFullMaintaining"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "DevSiteBuild"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "DevSiteFullBuild"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "CheckReadinessForRelease"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "MakeRelease"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "PageCreator"
         },
         {
@@ -241,7 +241,7 @@
           "Path": "PipelinesTests"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "PullSolutionsWithMaintainedReleases"
         },
         {
@@ -249,7 +249,7 @@
           "Path": "SiteBuilder"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "StartNewVersion"
         },
         {
@@ -257,27 +257,27 @@
           "Path": "TestSandBox"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "UnityToSiteSource"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "UpdateAndCommitProjectsVersion"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "UpdateProjectsVersion"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "UpdateReleaseNotes"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "UpdateTestAndCommitProjectsVersion"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "IncreaseSymOntoClayCommonPkgVersion"
         },
         {
@@ -285,27 +285,27 @@
           "Path": "XMLDocReader"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "CopySymOntoClayCommonPkgToCommonFolder"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "UpdateSymOntoClayCommonPkgVersionInProjects"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "CheckInstalledNuGetPackagesInAllCSharpProjects"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "UpdateInstalledNuGetPackagesInAllCSharpProjects"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "CheckTargetFrameworksInAllCSharpProjects"
         },
         {
-          "Kind": "CLI",
+          "Kind": "InternalCLI",
           "Path": "UpdateTargetFrameworkInAllCSharpProjects"
         }
       ]
