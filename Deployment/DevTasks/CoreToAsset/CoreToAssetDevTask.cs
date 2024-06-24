@@ -69,7 +69,11 @@ namespace Deployment.DevTasks.CoreToAsset
             {
                 foreach (var commonPackageCProjPath in _options.CommonPackages)
                 {
-                    ProcessProject(tempSettings, deploymentPipeline, commonPackageCProjPath);
+#if DEBUG
+                    _logger.Info($"commonPackageCProjPath = {commonPackageCProjPath}");
+#endif
+
+                    //ProcessProject(tempSettings, deploymentPipeline, commonPackageCProjPath);
                 }
             }
 

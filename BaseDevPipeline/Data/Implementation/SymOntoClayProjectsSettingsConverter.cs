@@ -21,7 +21,7 @@ namespace BaseDevPipeline.Data.Implementation
         {
             var result = new SymOntoClayProjectsSettings();
             result.BasePath = DetectBasePath(source.BasePaths);
-
+            
             EVPath.RegVar("BASE_PATH", result.BasePath);
 
 #if DEBUG
@@ -413,6 +413,10 @@ namespace BaseDevPipeline.Data.Implementation
 
         private static void FillUpProject(ProjectSource projectSource, SolutionSettings solution, SymOntoClayProjectsSettings result)
         {
+#if DEBUG
+            _logger.Info($"projectSource = {projectSource}");
+#endif
+
             var item = new ProjectSettings()
             {
                 Solution = solution,

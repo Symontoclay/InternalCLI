@@ -1,4 +1,5 @@
 ﻿using SymOntoClay.Common;
+using System.Collections.Generic;
 
 namespace BaseDevPipeline.Data
 {
@@ -11,5 +12,6 @@ namespace BaseDevPipeline.Data
         string CsProjPath { get; }
         string LicenseName { get; }
         ILicenseSettings License { get; }
+        IReadOnlyList<KindOfProject>
     }
 }

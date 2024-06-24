@@ -325,7 +325,11 @@
         },
         {
           "Kind": "Library",
-          "Path": "SymOntoClay.CLI.Helpers"
+          "Path": "SymOntoClay.CLI.Helpers",
+          "ExceptKindOfSolutions": [
+            "Unity",
+            "UnityExample"
+          ]
         },
         {
           "Kind": "IntegrationTest",

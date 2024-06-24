@@ -1,5 +1,6 @@
 ﻿using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
+using System.Collections.Generic;
 using System.Text;
 
 namespace BaseDevPipeline.SourceData
@@ -12,6 +13,7 @@ namespace BaseDevPipeline.SourceData
         /// This filed should be used if CsProj has non standard name and can not be detected automatically.
         /// </summary>
         public string CsProjPath { get; set; }
+        public List<string> ExceptKindOfSolutions { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -34,6 +36,7 @@ namespace BaseDevPipeline.SourceData
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Path)} = {Path}");
             sb.AppendLine($"{spaces}{nameof(CsProjPath)} = {CsProjPath}");
+            sb.PrintPODList(n, nameof(ExceptKindOfSolutions), ExceptKindOfSolutions);
 
             return sb.ToString();
         }

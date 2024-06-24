@@ -78,7 +78,7 @@ namespace TestSandBox
 
             try
             {
-                TstGetUnityPathsForUnitySolution();
+                //TstGetUnityPathsForUnitySolution();
                 //CheckReadinessForReleaseHandler();
                 //TstMakeReleaseCommandLineParserHandler();
                 //TstStartNewVersionCommandLineParserHandler();
@@ -163,7 +163,7 @@ namespace TestSandBox
                 //TstSiteSettings();
                 //TstFutureReleaseInfo();
                 //TstFutureReleaseInfoSource();
-                //TstProjectsDataSource();
+                TstProjectsDataSource();
                 //TstGetEnvironmentVariables();
                 //TstReleaseItemsHandler();
                 //TstLessHandler();
@@ -2751,13 +2751,13 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            ProjectsDataSourceFactory.Mode = ProjectsDataSourceMode.Test;
+            ProjectsDataSourceFactory.Mode = ProjectsDataSourceMode.Prod;
 
             _logger.Info($"ProjectsDataSourceFactory.Mode = {ProjectsDataSourceFactory.Mode}");
 
             var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
-            _logger.Info($"settings = {settings}");
+            //_logger.Info($"settings = {settings}");
 
             //var unitySolution = ProjectsDataSource.GetSolution(KindOfProject.Unity);
 
