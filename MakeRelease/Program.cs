@@ -28,6 +28,7 @@ namespace MakeRelease
             var writeCopyright = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.WriteCopyright"] ?? "false");
             var enableTests = bool.Parse(ConfigurationManager.AppSettings["GlobalOptions.EnableTests"] ?? "false");
             var enableUnityPackage = bool.Parse(ConfigurationManager.AppSettings["GlobalOptions.EnableUnityPackage"] ?? "false");
+            var enableCli = bool.Parse(ConfigurationManager.AppSettings["GlobalOptions.EnableCLI"] ?? "false");
 
 #if DEBUG
             //_logger.Info($"writeOutputToTextFileAsParallel = {writeOutputToTextFileAsParallel}");
@@ -55,6 +56,7 @@ namespace MakeRelease
 
             GlobalOptions.EnableTests = enableTests;
             GlobalOptions.EnableUnityPackage = enableUnityPackage;
+            GlobalOptions.EnableCLI = enableCli;
 
             var runModeResult = GetParseRunModeFromArgs(args);
 

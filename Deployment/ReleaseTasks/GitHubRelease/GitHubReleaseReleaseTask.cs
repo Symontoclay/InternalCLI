@@ -121,24 +121,31 @@ namespace Deployment.ReleaseTasks.GitHubRelease
                 }, this));
             }
 
-            var cliProject = ProjectsDataSourceFactory.GetProject(KindOfProject.CLI);
+            var cliArchName = string.Empty;
+            var cliArchFullPath = string.Empty;
 
-            Exec(new CopyAndPublishVSProjectOrSolutionDevTask(new CopyAndPublishVSProjectOrSolutionDevTaskOptions()
+            if (GlobalOptions.EnableCLI)
             {
-                ProjectOrSoutionFileName = cliProject.CsProjPath,
-                OutputDir = cliTempDir.FullName,
-                NoLogo = true
-            }, this));
+                var cliProject = ProjectsDataSourceFactory.GetProject(KindOfProject.CLI);
 
-            var cliArchName = DeployedItemsFactory.GetCLIArchName(version);
+                Exec(new CopyAndPublishVSProjectOrSolutionDevTask(new CopyAndPublishVSProjectOrSolutionDevTaskOptions()
+                {
+                    ProjectOrSoutionFileName = cliProject.CsProjPath,
+                    OutputDir = cliTempDir.FullName,
+                    NoLogo = true,
+                    SelfContained = false
+                }, this));
 
-            var cliArchFullPath = Path.Combine(cliArchTempDir.FullName, cliArchName);
+                cliArchName = DeployedItemsFactory.GetCLIArchName(version);
 
-            Exec(new ZipTask(new ZipTaskOptions()
-            {
-                SourceDir = cliTempDir.FullName,
-                OutputFilePath = cliArchFullPath
-            }, this));
+                cliArchFullPath = Path.Combine(cliArchTempDir.FullName, cliArchName);
+
+                Exec(new ZipTask(new ZipTaskOptions()
+                {
+                    SourceDir = cliTempDir.FullName,
+                    OutputFilePath = cliArchFullPath
+                }, this));
+            }
 
             var token = settings.GetSecret(GitHubTokenHelper.GitHubTokenKey);
 
@@ -153,11 +160,14 @@ namespace Deployment.ReleaseTasks.GitHubRelease
                 });
             }
 
-            assets.Add(new GitHubReleaseAssetOptions()
+            if (GlobalOptions.EnableCLI)
             {
-                DisplayedName = cliArchName,
-                UploadedFilePath = cliArchFullPath
-            });
+                assets.Add(new GitHubReleaseAssetOptions()
+                {
+                    DisplayedName = cliArchName,
+                    UploadedFilePath = cliArchFullPath
+                });
+            }
 
             Exec(new DeploymentTasksGroup("73C35B3E-6FBC-4999-A17A-A9880AD7E31F", true, this)
             {

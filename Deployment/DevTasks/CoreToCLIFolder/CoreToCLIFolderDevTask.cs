@@ -36,7 +36,8 @@ namespace Deployment.DevTasks.CoreToCLIFolder
             {
                 ProjectOrSoutionFileName = cliProject.CsProjPath,
                 OutputDir = cliFolderTargetPath,
-                NoLogo = true
+                NoLogo = true,
+                SelfContained = false
             }, this));
         }
 
