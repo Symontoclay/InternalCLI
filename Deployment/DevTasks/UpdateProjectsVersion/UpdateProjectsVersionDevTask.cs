@@ -48,6 +48,7 @@ namespace Deployment.DevTasks.UpdateProjectsVersion
                 switch (kind)
                 {
                     case KindOfProject.CoreSolution:
+                    case KindOfProject.CommonPackagesSolution:
                         Exec(new UpdateSolutionVersionTask(new UpdateSolutionVersionTaskOptions()
                         {
                             SolutionFilePath = targetSolution.SlnPath,

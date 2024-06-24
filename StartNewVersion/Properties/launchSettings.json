@@ -2,7 +2,7 @@
   "profiles": {
     "StartNewVersion": {
       "commandName": "Project",
-      "commandLineArgs": "0.5.4"
+      "commandLineArgs": "0.5.5"
     }
   }
 }
