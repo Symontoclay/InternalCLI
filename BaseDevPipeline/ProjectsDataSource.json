@@ -344,6 +344,10 @@
           "Path": "SymOntoClay.Common.Tests"
         },
         {
+          "Kind": "IntegrationTest",
+          "Path": "SymOntoClay.Threading.Tests"
+        },
+        {
           "Kind": "AdditionalApp",
           "Path": "TestSandBox"
         }
