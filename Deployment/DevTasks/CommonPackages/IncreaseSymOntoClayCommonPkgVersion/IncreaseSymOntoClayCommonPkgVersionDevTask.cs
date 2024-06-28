@@ -36,7 +36,7 @@ namespace Deployment.DevTasks.CommonPackages.IncreaseSymOntoClayCommonPkgVersion
             //_logger.Info($"version = {version}");
 #endif
 
-            var newVersion = new Version(version.Major, version.Minor, version.Build, version.Revision + 1);
+            var newVersion = new Version(version.Major, version.Minor, version.Build, version.Revision == -1 ? 1 : version.Revision + 1);
 
 #if DEBUG
             //_logger.Info($"newVersion = {newVersion}");
