@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NLog" Version="5.1.4" />
-    <PackageReference Include="SymOntoClay.CLI.Helpers" Version="0.5.5.9" />
+    <PackageReference Include="SymOntoClay.CLI.Helpers" Version="0.5.5.10" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseDevPipeline\BaseDevPipeline.csproj" />
