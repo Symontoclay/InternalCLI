@@ -35,6 +35,10 @@
         },
         {
           "Kind": "Library",
+          "Path": "SymOntoClay.ActiveObject"
+        },
+        {
+          "Kind": "Library",
           "Path": "SymOntoClayCoreHelper"
         },
         {
