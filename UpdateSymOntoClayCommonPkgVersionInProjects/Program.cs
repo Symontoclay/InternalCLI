@@ -1,5 +1,5 @@
 ﻿using CommonUtils.DeploymentTasks;
-using Deployment.DevTasks.CommonPackages.UpdateSymOntoClayCommonPkgVersionInProgects;
+using Deployment.DevTasks.CommonPackages.UpdateSymOntoClayCommonPkgVersionInProjects;
 using NLog;
 
 namespace UpdateSymOntoClayCommonPkgVersionInProjects

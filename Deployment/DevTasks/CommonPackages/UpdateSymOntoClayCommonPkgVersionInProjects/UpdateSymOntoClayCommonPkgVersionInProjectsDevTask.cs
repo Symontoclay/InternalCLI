@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace Deployment.DevTasks.CommonPackages.UpdateSymOntoClayCommonPkgVersionInProgects
+namespace Deployment.DevTasks.CommonPackages.UpdateSymOntoClayCommonPkgVersionInProjects
 {
     public class UpdateSymOntoClayCommonPkgVersionInProjectsDevTask : BaseDeploymentTask
     {
