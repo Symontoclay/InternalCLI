@@ -1,7 +1,6 @@
 {
   "BasePaths": [
-    "d:/Repos",
-    "%USERPROFILE%/source/repos"
+    "d:/Repos"
   ],
   "Temp": {
     "Dir": "D:/",
