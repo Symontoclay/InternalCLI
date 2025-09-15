@@ -44,12 +44,12 @@ namespace SiteBuilder
         private static void SetUpBootstrap()
         {
             //_commonCssLinksList.Add("<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css' integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2' crossorigin='anonymous'>");
-            _commonCssLinksList.Add("<link rel='stylesheet' href='assets/bootstrap_4.5.3/bootstrap.min.css'>");
+            //_commonCssLinksList.Add("<link rel='stylesheet' href='assets/bootstrap_4.5.3/bootstrap.min.css'>");
 
             //_commonJsLinksList.Add("<script src='https://code.jquery.com/jquery-3.5.1.slim.min.js' integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj' crossorigin='anonymous'></script>");
-            _commonJsLinksList.Add("<script src='assets/jquery-3.5.1/jquery-3.5.1.slim.min.js'></script>");
+            //_commonJsLinksList.Add("<script src='assets/jquery-3.5.1/jquery-3.5.1.slim.min.js'></script>");
             //_commonJsLinksList.Add("<script src='https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx' crossorigin='anonymous'></script>");
-            _commonJsLinksList.Add("<script src='assets/bootstrap_4.5.3/bootstrap.bundle.min.js'></script>");
+            //_commonJsLinksList.Add("<script src='assets/bootstrap_4.5.3/bootstrap.bundle.min.js'></script>");
         }
 
         private static void SetUpFontAwesome()
@@ -191,9 +191,6 @@ namespace SiteBuilder
             AppendLine("</head>");
             AppendLine("<body>");
 
-            AppendLine("<div class='container main-container'>");
-            AppendLine("<div class='row justify-content-center'>");
-            AppendLine("<div class='col col-md-10'>");
             AppendLine("<header role='banner'>");
             //GenerateMainWarning();
             GenerateHeader();
@@ -203,14 +200,9 @@ namespace SiteBuilder
             AppendLine("</nav>");
             GenerateMainSeparatorLine();
             
-            AppendLine("<nav class='bread-crumb-nav'>");
+            AppendLine("<nav role='navigation'>");
             GenerateBreadcrumbs();
             AppendLine("</nav>");
-            AppendLine("</div>");
-            AppendLine("</div>");
-
-            AppendLine("<div class='row justify-content-center'>");
-            AppendLine("<div class='col col-md-10'>");
 
             GenerateDisclaimer();
 
@@ -220,21 +212,14 @@ namespace SiteBuilder
             }
             else
             {
-                AppendLine("<div class='container-fluid'>");
-                AppendLine("<div class='row'>");
-                AppendLine("<div class='col col-md-3 my-menu-col'>");
+                //AppendLine("<div class='container-fluid'>");
+                //AppendLine("<div class='row'>");
+                //AppendLine("<div class='col col-md-3 my-menu-col'>");
                 GenerateAdditionalMenu();
-                AppendLine("</div>");
-                AppendLine("<div class='col col-md-9'>");
+                //AppendLine("</div>");
+                //AppendLine("<div class='col col-md-9'>");
                 GenerateArticle();
-                AppendLine("</div>");
-                AppendLine("</div>");
-                AppendLine("</div>");
             }
-
-            AppendLine("</div>");
-            AppendLine("</div>");
-            AppendLine("</div>");
 
             GenerateMainSeparatorLine();
             GenerateFooter();
@@ -263,8 +248,6 @@ namespace SiteBuilder
         {
             AppendLine("</br>");
             AppendLine("<footer class='container' role='contentinfo'>");
-            AppendLine("<div class='row justify-content-center'>");
-            AppendLine("<div class='col col-md-10'>");
             AppendLine("<span><a href='https://github.com/Symontoclay'><i class='fab fa-github' title='SymOntoClay on GitHub'></i></a></span>");
             //AppendLine("<span><a href='https://www.youtube.com/channel/UCgw9QmyKGZQXQyugbzCstZA'><i class='fab fa-youtube' title='SymOntoClay on Youtube'></i></a></span>");
             AppendLine("<span><a href='https://github.com/Symontoclay/SymOntoClay/discussions'><i class='far fa-comments' title='Discussions'></i></a></span>");
@@ -282,8 +265,6 @@ namespace SiteBuilder
             AppendLine($"&copy;&nbsp; <a href='https://github.com/metatypeman'>Sergiy Tolkachov</a> {GetCopyRightDate()}</br>");
             AppendLine("The text is available under the <a href='https://creativecommons.org/licenses/by-sa/4.0/'>Creative Commons Attribution-ShareAlike 4.0 International License By Sa</a>&nbsp;<i class='fab fa-creative-commons'></i><i class='fab fa-creative-commons-by'></i><i class='fab fa-creative-commons-sa'></i>");
             AppendLine("</br>&nbsp;");
-            AppendLine("</div>");
-            AppendLine("</div>");
             AppendLine("</footer>");
         }
 
