@@ -7,7 +7,7 @@ using CSharpUtils;
 using Deployment.DevTasks.BuildExamples;
 using Deployment.DevTasks.CommonPackages.CopySymOntoClayCommonPkgToCommonFolder;
 using Deployment.DevTasks.CommonPackages.IncreaseSymOntoClayCommonPkgVersion;
-using Deployment.DevTasks.CommonPackages.UpdateSymOntoClayCommonPkgVersionInProgects;
+using Deployment.DevTasks.CommonPackages.UpdateSymOntoClayCommonPkgVersionInProjects;
 using Deployment.DevTasks.CopyAndBuildVSProjectOrSolution;
 using Deployment.DevTasks.CopyAndTest;
 using Deployment.DevTasks.CoreToAsset;
