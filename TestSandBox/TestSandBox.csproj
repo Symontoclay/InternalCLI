@@ -7,6 +7,8 @@
 	<PackageReference Include="dotless.Core" Version="1.6.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLog" Version="5.1.4" />
+    <PackageReference Include="NuGet.Configuration" Version="6.14.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.14.0" />
     <PackageReference Include="Octokit" Version="0.50.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
   </ItemGroup>

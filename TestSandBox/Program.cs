@@ -43,6 +43,8 @@ using Deployment.Tasks.ProjectsTasks.PrepareUnityCSProjAndSolution;
 using Deployment.TestDeploymentTasks.PrepareTestDeployment;
 using Newtonsoft.Json;
 using NLog;
+using NuGet.Configuration;
+using NuGet.Protocol.Core.Types;
 using Octokit;
 using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
@@ -93,6 +95,7 @@ namespace TestSandBox
                 //TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTask();
                 //TstCheckInstalledNuGetPackagesInAllCSharpProjects();
                 //TstCheckInstalledNuGetPackages();
+                TstCheckLatestVersionOfNuGetPackage();
                 //TstCheckTargetFrameworksInAllCSharpProjectsDevTask();
                 //TstCheckTargetFrameworksInAllCSharpProjects();
                 //TstSetTargetFramework();
@@ -140,7 +143,7 @@ namespace TestSandBox
                 //TstSetXmlDocFileNameToCsProj();
                 //TstRemoveDir();
                 //TstFinishRelease0_3_6_p();
-                TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
+                //TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
                 //TstFinishRelease0_3_2();
                 //TstRestoreSlnInUnityProject();
                 //TstTesting();
@@ -521,6 +524,26 @@ namespace TestSandBox
             _logger.Info($"installedPackages = {JsonConvert.SerializeObject(installedPackages, Formatting.Indented)}");
 
             _logger.Info("End");
+        }
+
+        private static void TstCheckLatestVersionOfNuGetPackage()
+        {
+            _logger.Info("Begin");
+
+            string packageId = "Newtonsoft.Json"; // replace with the required package
+            bool includePrerelease = false;
+
+            var providers = NuGet.Protocol.Core.Types.Repository.Provider.GetCoreV3();
+            var source = new PackageSource("https://api.nuget.org/v3/index.json");
+            var repository = new SourceRepository(source, providers);
+
+            var metadataResource = repository.GetResource<PackageMetadataResource>();
+            var packages = metadataResource.GetMetadataAsync(packageId, includePrerelease, false, new SourceCacheContext(), NuGet.Common.NullLogger.Instance, CancellationToken.None).Result;
+
+            var latest = packages?.MaxBy(p => p.Identity.Version);
+            _logger.Info($"The latest version of the package {packageId}: {latest?.Identity.Version}");
+
+            _logger.Info("Begin");
         }
 
         private static void TstCheckTargetFrameworksInAllCSharpProjectsDevTask()
