@@ -1,11 +1,16 @@
 ﻿using BaseDevPipeline;
 using CommonUtils.DeploymentTasks;
 using CSharpUtils;
+using NuGet.Common;
+using NuGet.Configuration;
+using NuGet.Protocol.Core.Types;
+using NuGet.Versioning;
 using SymOntoClay.Common.DebugHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackagesInAllCSharpProjects
 {
@@ -40,7 +45,24 @@ namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackages
                 //_logger.Info($"packageIdKvpItem.Key = {packageIdKvpItem.Key}");
 #endif
 
-                sb.AppendLine($"{spaces}{packageIdKvpItem.Key}:");
+                var packageId = packageIdKvpItem.Key; // replace with the required package
+
+                sb.AppendLine($"{spaces}{packageId}:");
+
+                var includePrerelease = false;
+
+                var providers = Repository.Provider.GetCoreV3();
+                var source = new PackageSource("https://api.nuget.org/v3/index.json");
+                var repository = new SourceRepository(source, providers);
+
+                var metadataResource = repository.GetResource<PackageMetadataResource>();
+                var packages = metadataResource.GetMetadataAsync(packageId, includePrerelease, false, new SourceCacheContext(), NullLogger.Instance, CancellationToken.None).Result;
+
+                var latest = packages?.MaxBy(p => p.Identity.Version);
+
+                var latestVersion = latest?.Identity.Version;
+
+                //_logger.Info($"The latest version of the package {packageId}: {latestVersion}");
 
                 var nextN = n + DisplayHelper.IndentationStep;
                 var nextSpaces = DisplayHelper.Spaces(nextN);
@@ -49,11 +71,33 @@ namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackages
 
                 foreach (var itemsKvp in packageIdsItemsDict)
                 {
+                    var currentVersion = itemsKvp.Key;
+
 #if DEBUG
-                    //_logger.Info($"itemsKvp.Key = {itemsKvp.Key}");
+                    //_logger.Info($"currentVersion = {currentVersion}");
 #endif
 
-                    sb.AppendLine($"{nextSpaces}{itemsKvp.Key}:");
+                    sb.Append($"{nextSpaces}{currentVersion}");
+
+                    if(latestVersion == null)
+                    {
+                        sb.Append(" [*] (Internal)");
+                    }
+                    else
+                    {
+                        var currentNugetVersion = new NuGetVersion(currentVersion);
+
+                        if (currentNugetVersion == latestVersion)
+                        {
+                            sb.Append(" [+] Up to date");
+                        }
+                        else
+                        {
+                            sb.Append($" [-] (Outdated, latest: {latestVersion})");
+                        }
+                    }
+
+                    sb.AppendLine(":");
 
                     var nextNextN = nextN + DisplayHelper.IndentationStep;
                     var nextNextSpaces = DisplayHelper.Spaces(nextNextN);

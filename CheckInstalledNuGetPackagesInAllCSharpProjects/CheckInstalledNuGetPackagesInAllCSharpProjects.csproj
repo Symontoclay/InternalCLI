@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NuGet.Configuration" Version="6.14.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BaseDevPipeline\BaseDevPipeline.csproj" />
     <ProjectReference Include="..\CommonUtils\CommonUtils.csproj" />
     <ProjectReference Include="..\Deployment\Deployment.csproj" />
