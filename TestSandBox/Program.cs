@@ -140,7 +140,7 @@ namespace TestSandBox
                 //TstSetXmlDocFileNameToCsProj();
                 //TstRemoveDir();
                 //TstFinishRelease0_3_6_p();
-                TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
+                //TstFinishRelease0_3_6();//<--- It has been used when 0.4.0 release has been filed.
                 //TstFinishRelease0_3_2();
                 //TstRestoreSlnInUnityProject();
                 //TstTesting();
@@ -164,6 +164,7 @@ namespace TestSandBox
                 //TstFutureReleaseInfo();
                 //TstFutureReleaseInfoSource();
                 //TstProjectsDataSource();
+                TstMaintainedReleases();
                 //TstGetEnvironmentVariables();
                 //TstReleaseItemsHandler();
                 //TstLessHandler();
@@ -2768,6 +2769,26 @@ namespace TestSandBox
             _logger.Info($"settings.UtityExeInstances = {JsonConvert.SerializeObject(settings.UtityExeInstances, Formatting.Indented)}");
             _logger.Info($"settings.InternalCLIDist = {settings.InternalCLIDist}");
             _logger.Info($"settings.SocExePath = {settings.SocExePath}");
+
+            _logger.Info("End");
+        }
+
+        private static void TstMaintainedReleases()
+        {
+            _logger.Info("Begin");
+
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
+
+            var targetSolutions = settings.GetSolutionsWithMaintainedReleases();
+
+            foreach (var targetSolution in targetSolutions)
+            {
+                _logger.Info($"targetSolution.Name = {targetSolution.Name}");
+            }
+
+            var releaseNotesFilePath = CommonFileNamesHelper.BuildReleaseNotesPath();
+
+            _logger.Info($"releaseNotesFilePath = {releaseNotesFilePath}");
 
             _logger.Info("End");
         }

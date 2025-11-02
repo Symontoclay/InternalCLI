@@ -14,7 +14,7 @@ namespace Deployment.DevTasks.CreateAndCommitChangeLogs
             : this(null)
         {
         }
-
+        
         public CreateAndCommitChangeLogsDevTask(IDeploymentTask parentTask)
             : this(new CreateAndCommitChangeLogsDevTaskOptions()
             {

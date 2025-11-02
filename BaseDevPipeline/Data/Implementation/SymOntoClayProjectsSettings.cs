@@ -110,7 +110,7 @@ namespace BaseDevPipeline.Data.Implementation
         {
             return _solutionsWithMaintainedVersionsInCSharpProjects;
         }
-
+        
         /// <inheritdoc/>
         public IReadOnlyList<ISolutionSettings> GetSolutionsWhichUseCommonPakage()
         {

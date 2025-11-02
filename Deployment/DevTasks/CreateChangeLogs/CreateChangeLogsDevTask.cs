@@ -30,7 +30,7 @@ namespace Deployment.DevTasks.CreateChangeLogs
             var siteSolution = settings.GetSolution(KindOfProject.ProjectSite);
 
             var targetSolutions = settings.GetSolutionsWithMaintainedReleases();
-
+            
             foreach (var targetSolution in targetSolutions)
             {
                 var targetChangeLogFileName = string.Empty;
