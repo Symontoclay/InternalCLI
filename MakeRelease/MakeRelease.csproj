@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SymOntoClay.CLI.Helpers" Version="0.5.5.11" />
+    <PackageReference Include="SymOntoClay.CLI.Helpers" Version="0.5.5.12" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseDevPipeline\BaseDevPipeline.csproj" />
