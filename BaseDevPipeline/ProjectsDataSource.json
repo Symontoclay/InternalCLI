@@ -73,6 +73,10 @@
           "Path": "SymOntoClayCLI"
         },
         {
+          "Kind": "Library",
+          "Path": "SymOntoClayBaseTestLib"
+        },
+        {
           "Kind": "IntegrationTest",
           "Path": "CLI.CmdlParser.Tests"
         },
