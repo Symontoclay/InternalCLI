@@ -95,20 +95,20 @@ namespace Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpP
             foreach (var solution in cSharpSolutions)
             {
 #if DEBUG
-                _logger.Info($"solution.Name = {solution.Name}");
+                //_logger.Info($"solution.Name = {solution.Name}");
 #endif
 
                 foreach (var project in solution.Projects)
                 {
 #if DEBUG
-                    _logger.Info($"project.FolderName = {project.FolderName}");
-                    _logger.Info($"project.CsProjPath = {project.CsProjPath}");
+                    //_logger.Info($"project.FolderName = {project.FolderName}");
+                    //_logger.Info($"project.CsProjPath = {project.CsProjPath}");
 #endif
 
                     var currentFramework = CSharpProjectHelper.GetTargetFrameworkVersion(project.CsProjPath);
 
 #if DEBUG
-                    _logger.Info($"currentFramework = {currentFramework}");
+                    //_logger.Info($"currentFramework = {currentFramework}");
 #endif
 
                     projectInformationList.Add((project.CsProjPath, solution.Kind, currentFramework.Kind, currentFramework.Version));
