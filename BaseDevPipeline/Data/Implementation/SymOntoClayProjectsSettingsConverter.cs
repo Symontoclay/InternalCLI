@@ -385,7 +385,7 @@ namespace BaseDevPipeline.Data.Implementation
                     return slnFiles.First();
                 }
 
-                throw new NotImplementedException();
+                throw new NotImplementedException("D4640E8F-C005-416E-ABF9-F0B3594FE407");
             }
 
             return PathsHelper.Normalize(sourceSlnPath);
@@ -464,7 +464,7 @@ namespace BaseDevPipeline.Data.Implementation
                     return csProjFiles.Single();
                 }
 
-                throw new NotImplementedException();
+                throw new NotImplementedException("ED68B1BC-4739-4B90-A2FD-73E2AF9B02AA");
             }
 
             return PathsHelper.Normalize(sourceCsProjPath);

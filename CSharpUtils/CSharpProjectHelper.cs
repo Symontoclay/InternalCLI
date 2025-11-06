@@ -150,7 +150,7 @@ namespace CSharpUtils
                 return (KindOfTargetCSharpFramework.NetFramework, new Version(versionStr));
             }
 
-            throw new NotImplementedException();
+            throw new NotImplementedException("120E862D-BD16-4BC1-9B5D-10885E80142A");
         }
 
         public static string ConvertVersionToTargetFramework((KindOfTargetCSharpFramework Kind, Version Version) frameworkVersion)

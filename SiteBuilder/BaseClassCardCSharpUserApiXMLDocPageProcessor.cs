@@ -67,7 +67,7 @@ namespace SiteBuilder
 #if DEBUG
             if (_classCard.ExamplesList.Any())
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("6BA641FE-C99A-4AAC-8625-04BCC79751DF");
             }
 #endif
         }

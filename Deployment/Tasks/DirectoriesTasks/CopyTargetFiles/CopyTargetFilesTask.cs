@@ -1,6 +1,5 @@
 ﻿using CommonUtils;
 using CommonUtils.DeploymentTasks;
-using CSharpUtils;
 using SymOntoClay.Common.CollectionsHelpers;
 using SymOntoClay.Common.DebugHelpers;
 using System;
@@ -171,7 +170,7 @@ namespace Deployment.Tasks.DirectoriesTasks.CopyTargetFiles
                 result = fragment;
             }
 
-            throw new NotImplementedException();
+            throw new NotImplementedException("3EAD9684-DA90-4E16-B717-1BD9B4B760E3");
         }
 
         /// <inheritdoc/>

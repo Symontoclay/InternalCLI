@@ -35,7 +35,7 @@ namespace CommonUtils
                 return directoryInfo.Parent.FullName;
             }
 
-            throw new NotImplementedException();
+            throw new NotImplementedException("3B66405E-91A6-43F8-B1EA-FACF04A786CA");
         }
 
         public static string GetLongestCommonPath(string path1, string path2)
