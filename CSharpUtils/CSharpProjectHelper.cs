@@ -101,7 +101,7 @@ namespace CSharpUtils
         public static (KindOfTargetCSharpFramework Kind, Version Version) ConvertTargetFrameworkToVersion(string targetFramework)
         {
 #if DEBUG
-            //_logger.Info($"targetFramework = {targetFramework}");
+            _logger.Info($"targetFramework = {targetFramework}");
 #endif
 
             if (targetFramework.StartsWith(_netstandardPrefix))
@@ -109,7 +109,7 @@ namespace CSharpUtils
                 var versionStr = targetFramework.Replace(_netstandardPrefix, string.Empty).Trim();
 
 #if DEBUG
-                //_logger.Info($"versionStr = {versionStr}");
+                _logger.Info($"versionStr = {versionStr}");
 #endif
 
                 return (KindOfTargetCSharpFramework.NetStandard, new Version(versionStr));
@@ -120,15 +120,17 @@ namespace CSharpUtils
                 var versionStr = targetFramework.Replace(_netPrefix, string.Empty).Trim();
 
 #if DEBUG
-                //_logger.Info($"versionStr = {versionStr}");
+                _logger.Info($"versionStr = {versionStr}");
 #endif
 
-                if(targetFramework.EndsWith(_netWindowsSuffix))
+                if (versionStr.Contains(_netWindowsSuffix))
                 {
-                    versionStr = versionStr.Replace(_netWindowsSuffix, string.Empty).Trim();
+                    var pos = versionStr.IndexOf(_netWindowsSuffix);
+
+                    versionStr = versionStr.Substring(0, pos);
 
 #if DEBUG
-                    //_logger.Info($"versionStr (after) = {versionStr}");
+                    _logger.Info($"versionStr (2) = {versionStr}");
 #endif
 
                     return (KindOfTargetCSharpFramework.NetWindows, new Version(versionStr));
@@ -142,7 +144,7 @@ namespace CSharpUtils
                 var versionStr = targetFramework.Replace(_netFrameworkPrefix, string.Empty).Trim();
 
 #if DEBUG
-                //_logger.Info($"versionStr = {versionStr}");
+                _logger.Info($"versionStr = {versionStr}");
 #endif
 
                 return (KindOfTargetCSharpFramework.NetFramework, new Version(versionStr));
