@@ -381,7 +381,7 @@ namespace XMLDocReader.CSharpDoc
 
             if (baseType != null)
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("E06E2C82-61C4-4AC7-A2C8-37387BE9A42D");
             }
 
             var baseInterfacesList = targetCard.BaseInterfacesList;

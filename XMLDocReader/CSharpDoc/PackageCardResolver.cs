@@ -238,7 +238,7 @@ namespace XMLDocReader.CSharpDoc
                     }                    
                 }
 
-                //throw new NotImplementedException();
+                //throw new NotImplementedException("6C065D1A-78B9-4AF0-AB8D-FCFE3CA6F473");
             }
 
             //_logger.Info($"classCard.MethodsList.Count = {classCard.MethodsList.Count}");
@@ -501,17 +501,17 @@ namespace XMLDocReader.CSharpDoc
 
             if (classesWithIncludeList.Any())
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("42809767-F7ED-4AFB-9F85-CD7BC73B0A83");
             }
 
             if (interfacessWithIncludeList.Any())
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("07B75AC1-BD1E-4629-8D07-964C4E856E7B");
             }
 
             if (enumsWithIncludeList.Any())
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("C839A080-1766-409B-9C85-4E51959661E5");
             }
 
             foreach (var interfaceCard in interfacesList.Where(p => p.HasIsInheritdoc))
@@ -712,7 +712,7 @@ namespace XMLDocReader.CSharpDoc
                 return methodCardsList.Single();
             }
 
-            throw new NotImplementedException();
+            throw new NotImplementedException("84FC6A4D-A5C8-44AF-A6D4-DCB274AE96F9");
         }
 
         public static bool IsFit(MethodCard methodCard, MethodCard targetMethodCard)
@@ -747,12 +747,12 @@ namespace XMLDocReader.CSharpDoc
                 //_logger.Info($"targetParam.Name = {targetParam.Name}");
                 //_logger.Info($"currentMmethodCardParam.Name = {currentMmethodCardParam.Name}");
 
-                throw new NotImplementedException();
+                throw new NotImplementedException("01EA261B-7B51-445B-A63F-5C4E377D3E7E");
             }
 
             //_logger.Info($"isFit = {isFit}");
 
-            throw new NotImplementedException();
+            throw new NotImplementedException("3D528902-72FA-4474-9E77-DAE5ABFE388D");
         }
 
         private static List<ClassCard> GetClassCardsForResolvingInheritdocInMethodCardByImplInterface(MethodCard methodCard, Dictionary<string, ClassCard> classCardsInitialNamesDict)
@@ -850,12 +850,12 @@ namespace XMLDocReader.CSharpDoc
                 //_logger.Info($"param.Name = {param.Name}");
                 //_logger.Info($"currentMethodCardParam.Name = {currentMethodCardParam.Name}");
 
-                throw new NotImplementedException();
+                throw new NotImplementedException("8B29DB9F-E0BA-4DD2-ADF5-F924168101BE");
             }
 
             //_logger.Info($"isFit = {isFit}");
 
-            throw new NotImplementedException();
+            throw new NotImplementedException("4B855C82-FF30-4522-A019-034B7C8C57D1");
         }
 
         private static void ResolveInheritdocInPropertyCard(ClassCard classCard, PropertyCard propertyCard, Dictionary<Type, ClassCard> classCardsTypesDict, Dictionary<string, ClassCard> classCardsInitialNamesDict, bool ignoreErrors)
@@ -1070,7 +1070,7 @@ namespace XMLDocReader.CSharpDoc
             }
             else
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("BACACEC8-E4BF-4495-B201-52F2A27CEEC7");
             }
         }
 

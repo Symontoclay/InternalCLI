@@ -91,7 +91,7 @@ namespace XMLDocReader.CSharpDoc
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    throw new NotImplementedException("F921C398-59C6-42A7-A5F5-7C783BD92602");
                 }                
             }
 
@@ -170,12 +170,12 @@ namespace XMLDocReader.CSharpDoc
 
             if (rawName.Contains("{"))
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("D6DE020C-0F68-48C5-A6D7-360FCC80739C");
             }
 
             if (rawName.Contains("["))
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("679142D2-D528-4CD5-9992-E3502F187167");
             }
 
             memberName.Name = rawName;

@@ -509,7 +509,7 @@ namespace XMLDocReader.CSharpDoc
             switch(constructorsCount)
             {
                 case 0:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException("4E388261-4706-4D99-B1E1-7296A2AD4C64");
 
                 case 1:
                     result.ConstructorInfo = constructorsList.Single();
@@ -544,12 +544,12 @@ namespace XMLDocReader.CSharpDoc
 
             if (memberCard.TypeParamsList.Any())
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("7D9E303C-42AE-45D4-838A-16615B7749A3");
             }
 
             if (memberCard.ExceptionsList.Any())
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("904F0316-C142-4D52-94A1-229198B69571");
             }
 
 #if DEBUG
@@ -592,7 +592,7 @@ namespace XMLDocReader.CSharpDoc
             switch (methodsCount)
             {
                 case 0:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException("69857551-4437-4301-8BE4-23E2F353D68F");
 
                 case 1:
                     result.MethodInfo = methodsList.Single();
@@ -601,7 +601,7 @@ namespace XMLDocReader.CSharpDoc
                 default:
                     if(memberCard.Name.IsGenericDecl)
                     {
-                        throw new NotImplementedException();
+                        throw new NotImplementedException("F7A1A48E-3C08-422C-B877-45C2B38BD8AB");
                     }
                     else
                     {
@@ -679,7 +679,7 @@ namespace XMLDocReader.CSharpDoc
 
             if (memberCard.ExceptionsList.Any())
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("98FB4E15-D287-46A0-A225-81BEE5BFEEC8");
             }
 
 #if DEBUG
@@ -752,7 +752,7 @@ namespace XMLDocReader.CSharpDoc
                 }
             }
 
-            throw new NotImplementedException();
+            throw new NotImplementedException("A3903F70-4260-418D-8B60-9FDA4BF61911");
         }
 
         private static MethodBase GetMethodInfo(List<MethodBase> methodsList, XMLMemberCard memberCard)
@@ -807,7 +807,7 @@ namespace XMLDocReader.CSharpDoc
                 }
             }
 
-            throw new NotImplementedException();
+            throw new NotImplementedException("35F77C11-B3D7-4C21-96A4-27CEBEC89831");
         }
 
         private static KindOfMemberAccess GetKindOfMemberAccess(FieldInfo fieldInfo)
@@ -854,7 +854,7 @@ namespace XMLDocReader.CSharpDoc
 
                 if (property == null)
                 {
-                    throw new NotImplementedException();
+                    throw new NotImplementedException("122A0B6F-A990-4B40-B905-E51D8022CAE1");
                 }
 
                 result.KindOfMemberAccess = KindOfMemberAccess.Protected;
@@ -903,7 +903,7 @@ namespace XMLDocReader.CSharpDoc
                 return KindOfType.Enum;
             }
 
-            throw new NotImplementedException();
+            throw new NotImplementedException("502BC3FB-92E1-4E8B-AB8E-C7D853937F46");
         }
     }
 }
