@@ -17,18 +17,38 @@ namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackages
     public class CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask : BaseDeploymentTask
     {
         public CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask()
-            : this(null)
+            : this(null, null)
+        {
+        }
+
+        public CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask(CheckInstalledNuGetPackagesInAllCSharpProjectsDevTaskOptions options)
+            : this(options, null)
         {
         }
 
         public CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask(IDeploymentTask parentTask)
-            : base("B9B0E5D6-9CDA-4748-82D8-E10BE36F6651", false, null, parentTask)
+            : this(new CheckInstalledNuGetPackagesInAllCSharpProjectsDevTaskOptions
+            {
+                ShowOnlyOutdatedPackages = false
+            }, parentTask)
         {
         }
+
+        public CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask(CheckInstalledNuGetPackagesInAllCSharpProjectsDevTaskOptions options, IDeploymentTask parentTask)
+            : base("B9B0E5D6-9CDA-4748-82D8-E10BE36F6651", false, options, parentTask)
+        {
+            _options = options;
+        }
+
+        private readonly CheckInstalledNuGetPackagesInAllCSharpProjectsDevTaskOptions _options;
 
         /// <inheritdoc/>
         protected override void OnRun()
         {
+#if DEBUG
+            _logger.Info($"_options = {_options}");
+#endif
+
             var packagesInformationList = GetPackagesInformationList();
 
             var packageIdsDict = packagesInformationList.GroupBy(p => p.PackageId).ToDictionary(p => p.Key, p => p.ToList());
@@ -45,9 +65,11 @@ namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackages
                 //_logger.Info($"packageIdKvpItem.Key = {packageIdKvpItem.Key}");
 #endif
 
+                var itemSb = new StringBuilder();
+
                 var packageId = packageIdKvpItem.Key; // replace with the required package
 
-                sb.AppendLine($"{spaces}{packageId}:");
+                itemSb.AppendLine($"{spaces}{packageId}:");
 
                 var includePrerelease = false;
 
@@ -77,11 +99,11 @@ namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackages
                     //_logger.Info($"currentVersion = {currentVersion}");
 #endif
 
-                    sb.Append($"{nextSpaces}{currentVersion}");
+                    itemSb.Append($"{nextSpaces}{currentVersion}");
 
                     if(latestVersion == null)
                     {
-                        sb.Append(" [*] (Internal)");
+                        itemSb.Append(" [*] (Internal)");
                     }
                     else
                     {
@@ -89,15 +111,15 @@ namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackages
 
                         if (currentNugetVersion == latestVersion)
                         {
-                            sb.Append(" [+] Up to date");
+                            itemSb.Append(" [+] Up to date");
                         }
                         else
                         {
-                            sb.Append($" [-] (Outdated, latest: {latestVersion})");
+                            itemSb.Append($" [-] (Outdated, latest: {latestVersion})");
                         }
                     }
 
-                    sb.AppendLine(":");
+                    itemSb.AppendLine(":");
 
                     var nextNextN = nextN + DisplayHelper.IndentationStep;
                     var nextNextSpaces = DisplayHelper.Spaces(nextNextN);
@@ -110,7 +132,7 @@ namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackages
                         //_logger.Info($"solutionKvpItem.Key = {solutionKvpItem.Key}");
 #endif
 
-                        sb.AppendLine($"{nextNextSpaces}{solutionKvpItem.Key}:");
+                        itemSb.AppendLine($"{nextNextSpaces}{solutionKvpItem.Key}:");
 
                         var nextNextNextN = nextNextN + DisplayHelper.IndentationStep;
                         var nextNextNextSpaces = DisplayHelper.Spaces(nextNextNextN);
@@ -121,10 +143,12 @@ namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackages
                             //_logger.Info($"projectItem = {projectItem}");
 #endif
 
-                            sb.AppendLine($"{nextNextNextSpaces}{projectItem}");
+                            itemSb.AppendLine($"{nextNextNextSpaces}{projectItem}");
                         }
                     }
                 }
+
+                sb.Append(itemSb);
             }
 
             _logger.Info(sb);

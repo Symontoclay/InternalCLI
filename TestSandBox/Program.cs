@@ -92,10 +92,10 @@ namespace TestSandBox
                 //TstUpdateInstalledNuGetPackagesInAllCSharpProjects();
                 //TstUpdateTargetFrameworkInAllCSharpProjectsDevTask();
                 //TstUpdateTargetFrameworkInAllCSharpProjects();
-                //TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTask();
+                TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTask();
                 //TstCheckInstalledNuGetPackagesInAllCSharpProjects();
                 //TstCheckInstalledNuGetPackages();
-                TstCheckLatestVersionOfNuGetPackage();
+                //TstCheckLatestVersionOfNuGetPackage();
                 //TstCheckTargetFrameworksInAllCSharpProjectsDevTask();
                 //TstCheckTargetFrameworksInAllCSharpProjects();
                 //TstSetTargetFramework();
@@ -423,7 +423,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            DeploymentPipeline.Run(new CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask());
+            var options = new CheckInstalledNuGetPackagesInAllCSharpProjectsDevTaskOptions();
+
+            options.ShowOnlyOutdatedPackages = true;
+
+            DeploymentPipeline.Run(new CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask(options));
 
             _logger.Info("End");
         }
