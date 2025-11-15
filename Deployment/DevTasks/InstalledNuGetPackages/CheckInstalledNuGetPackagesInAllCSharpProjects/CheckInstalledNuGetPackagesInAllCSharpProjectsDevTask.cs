@@ -99,6 +99,8 @@ namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackages
                     //_logger.Info($"currentVersion = {currentVersion}");
 #endif
 
+                    var isOutdated = false;
+
                     itemSb.Append($"{nextSpaces}{currentVersion}");
 
                     if(latestVersion == null)
@@ -115,6 +117,8 @@ namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackages
                         }
                         else
                         {
+                            isOutdated = true;
+
                             itemSb.Append($" [-] (Outdated, latest: {latestVersion})");
                         }
                     }
@@ -146,9 +150,19 @@ namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackages
                             itemSb.AppendLine($"{nextNextNextSpaces}{projectItem}");
                         }
                     }
-                }
 
-                sb.Append(itemSb);
+                    if (_options.ShowOnlyOutdatedPackages)
+                    {
+                        if (isOutdated)
+                        {
+                            sb.Append(itemSb);
+                        }
+                    }
+                    else
+                    {
+                        sb.Append(itemSb);
+                    }
+                }
             }
 
             _logger.Info(sb);
