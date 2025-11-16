@@ -1,5 +1,6 @@
 ﻿using BaseDevPipeline;
 using BaseDevPipeline.SourceData;
+using CheckInstalledNuGetPackagesInAllCSharpProjects;
 using CommonMark;
 using CommonUtils;
 using CommonUtils.DeploymentTasks;
@@ -50,6 +51,8 @@ using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
 using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
 using SiteBuilder.SiteData;
+using SymOntoClay.CLI.Helpers.CommandLineParsing;
+using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
 using System;
@@ -422,9 +425,21 @@ namespace TestSandBox
 
         private static void TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTaskCommandLine()
         {
-            _logger.Info("Begin");
+            _logger.Info("Begin"); 
 
+            var parser = new CheckInstalledNuGetPackagesInAllCSharpProjectsCommandLineParser(true);
 
+            var args = new List<string>();
+
+            args.Add("-ShowOnlyOutdated");
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            var showOnlyOutdatedPackages = result.Params.TryGetValue("-ShowOnlyOutdated", out var value) && (bool)value;
+
+            _logger.Info($"showOnlyOutdatedPackages = {showOnlyOutdatedPackages}");
 
             _logger.Info("End");
         }

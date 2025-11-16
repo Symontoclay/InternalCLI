@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="NuGet.Configuration" Version="6.14.0" />
     <PackageReference Include="NuGet.Protocol" Version="6.14.0" />
+	<PackageReference Include="SymOntoClay.CLI.Helpers" Version="0.5.5.12" />
   </ItemGroup>
 
   <ItemGroup>
