@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "All": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    },
+    "Only Outdated": {
+      "commandName": "Project",
+      "commandLineArgs": "-ShowOnlyOutdated"
+    },
+  }
+}

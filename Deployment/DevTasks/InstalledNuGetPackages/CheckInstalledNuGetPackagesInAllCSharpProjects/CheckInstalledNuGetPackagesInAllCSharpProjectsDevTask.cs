@@ -46,7 +46,7 @@ namespace Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackages
         protected override void OnRun()
         {
 #if DEBUG
-            _logger.Info($"_options = {_options}");
+            //_logger.Info($"_options = {_options}");
 #endif
 
             var packagesInformationList = GetPackagesInformationList();
