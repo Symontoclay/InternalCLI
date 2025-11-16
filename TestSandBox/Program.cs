@@ -92,7 +92,8 @@ namespace TestSandBox
                 //TstUpdateInstalledNuGetPackagesInAllCSharpProjects();
                 //TstUpdateTargetFrameworkInAllCSharpProjectsDevTask();
                 //TstUpdateTargetFrameworkInAllCSharpProjects();
-                TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTask();
+                TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTaskCommandLine();
+                //TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTask();
                 //TstCheckInstalledNuGetPackagesInAllCSharpProjects();
                 //TstCheckInstalledNuGetPackages();
                 //TstCheckLatestVersionOfNuGetPackage();
@@ -415,6 +416,15 @@ namespace TestSandBox
                     CSharpProjectHelper.SetTargetFramework(project.CsProjPath, frameworkVersion);
                 }
             }
+
+            _logger.Info("End");
+        }
+
+        private static void TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTaskCommandLine()
+        {
+            _logger.Info("Begin");
+
+
 
             _logger.Info("End");
         }
