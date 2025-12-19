@@ -1,9 +1,7 @@
-﻿using CommonMark;
+﻿using SiteBuilder.HtmlPreprocessors;
 using SiteBuilder.SiteData;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using XMLDocReader.CSharpDoc;
 
@@ -92,7 +90,7 @@ namespace SiteBuilder
 
         protected string GetContent(string content)
         {
-            return CommonMarkConverter.Convert(content);
+            return MarkdownProcessor.MarkdownToHtml(content);
         }
     }
 }

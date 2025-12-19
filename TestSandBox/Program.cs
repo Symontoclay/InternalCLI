@@ -1,7 +1,6 @@
 ﻿using BaseDevPipeline;
 using BaseDevPipeline.SourceData;
 using CheckInstalledNuGetPackagesInAllCSharpProjects;
-using CommonMark;
 using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using CSharpUtils;
@@ -51,8 +50,6 @@ using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
 using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
 using SiteBuilder.SiteData;
-using SymOntoClay.CLI.Helpers.CommandLineParsing;
-using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
 using System;
@@ -2161,7 +2158,7 @@ namespace TestSandBox
 
             //_logger.Info($"readmeContent = {readmeContent}");
 
-            var htmlContent = CommonMarkConverter.Convert(readmeContent);
+            var htmlContent = MarkdownProcessor.MarkdownToHtml(readmeContent);
 
             //_logger.Info($"htmlContent = '{htmlContent}'");
 
@@ -2291,7 +2288,7 @@ namespace TestSandBox
 
             _logger.Info($"sb.ToString() = '{sb}'");
 
-            var htmlContent = CommonMarkConverter.Convert(sb.ToString());
+            var htmlContent = MarkdownProcessor.MarkdownToHtml(sb.ToString());
 
             _logger.Info($"htmlContent = '{htmlContent}'");
 

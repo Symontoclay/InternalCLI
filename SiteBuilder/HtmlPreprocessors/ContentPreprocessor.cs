@@ -1,5 +1,4 @@
-﻿using CommonMark;
-using NLog;
+﻿using NLog;
 using SiteBuilder.HtmlPreprocessors.CodeHighlighting;
 using SiteBuilder.HtmlPreprocessors.CSharpUserApiContentsGeneration;
 using SiteBuilder.HtmlPreprocessors.EBNF;
@@ -8,7 +7,6 @@ using SiteBuilder.HtmlPreprocessors.ReleaseInfoGeneration;
 using SiteBuilder.HtmlPreprocessors.RoadmapGeneration;
 using SiteBuilder.HtmlPreprocessors.ShortTags;
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace SiteBuilder.HtmlPreprocessors
@@ -28,7 +26,7 @@ namespace SiteBuilder.HtmlPreprocessors
         {
             if (markdownStrategy == MarkdownStrategy.ConvertMarkdownToHtml)
             {
-                initialContent = CommonMarkConverter.Convert(initialContent);
+                initialContent = MarkdownProcessor.MarkdownToHtml(initialContent);
             }
 
             var newContent = string.Empty;
