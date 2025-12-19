@@ -53,6 +53,7 @@ namespace SiteBuilder
         private readonly SiteElementInfo _siteElement;
         private readonly SitePageInfo _sitePageInfo;
         private readonly GeneralSiteBuilderSettings _generalSiteBuilderSettings;
+        private string _title;
         private readonly string _pdfFileName;
         private readonly string _pdfHref;
 
@@ -138,12 +139,12 @@ namespace SiteBuilder
 
             GenerateMicrodata();
 
-            var title = GetTitle();
+            _title = GetTitle();
 
-            if (!string.IsNullOrWhiteSpace(title))
+            if (!string.IsNullOrWhiteSpace(_title))
             {
                 Append("<title>");
-                Append(title);
+                Append(_title);
                 AppendLine("</title>");
             }
 
@@ -401,16 +402,22 @@ namespace SiteBuilder
             {
 #if DEBUG
                 _logger.Info($"_siteElement.TargetFullFileName = {_siteElement.TargetFullFileName}");
-                _logger.Info($"_pdfFileName = {_pdfFileName}");//
+                _logger.Info($"_pdfFileName = {_pdfFileName}");
                 _logger.Info($"_pdfHref = {_pdfHref}");
                 _logger.Info($"content = {content}");
 #endif
 
                 AppendLine("<div class='pdf-link'>");
-                AppendLine("<p><a href='_pdfHref'><i class='fas fa-file-pdf' style='color:#c00;'></i> Download PDF version</a></p>");//tmp
+                AppendLine($"<p><a href='{_pdfHref}'><i class='fas fa-file-pdf' style='color:#c00;'></i> Download PDF version</a></p>");//tmp
                 AppendLine("</div>");
 
-                //throw new NotImplementedException();
+                PDFCreator.CreateFile(
+                    fileName: _pdfFileName,
+                    title: _title,
+                    content: content,
+                    executablePath: @"C:\Program Files\Google\Chrome\Application\chrome.exe",//tmp
+                    fontPath: @"C:/Windows/Fonts"//tmp
+                );
             }
 
             AppendLine(content);
