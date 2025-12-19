@@ -92,7 +92,7 @@ namespace TestSandBox
                 //TstUpdateInstalledNuGetPackagesInAllCSharpProjects();
                 //TstUpdateTargetFrameworkInAllCSharpProjectsDevTask();
                 //TstUpdateTargetFrameworkInAllCSharpProjects();
-                TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTaskCommandLine();
+                //TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTaskCommandLine();
                 //TstCheckInstalledNuGetPackagesInAllCSharpProjectsDevTask();
                 //TstCheckInstalledNuGetPackagesInAllCSharpProjects();
                 //TstCheckInstalledNuGetPackages();
@@ -175,7 +175,7 @@ namespace TestSandBox
                 //TstRoadMap();
                 //TstReleaseTaskHandler();//<==
                 //TstGitTasksHandler();
-                //TstDeploymentTaskBasedBuildHandler();
+                TstDeploymentTaskBasedBuildHandler();
                 //TstSimplifyFullNameOfType();
                 //TstCreateCSharpApiOptionsFile();
                 //TstReadXMLDoc();

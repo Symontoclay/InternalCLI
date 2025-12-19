@@ -51,10 +51,10 @@ namespace TestSandBox
             //Case9();
             //Case8();
             //Case7();
-            //Case6();//SiteBuildTask
+            Case6();//SiteBuildTask
             //Case5();
             //Case4();
-            Case3();
+            //Case3();
             //Case2();
             //Case1();
 
@@ -282,6 +282,15 @@ namespace TestSandBox
             _logger.Info($"siteSolution = {siteSolution}");
 
             var destDir = Path.Combine(Directory.GetCurrentDirectory(), "s");
+
+#if DEBUG
+            _logger.Info($"destDir = {destDir}");
+            _logger.Info($"siteSolution.RepositoryName = {siteSolution.RepositoryName}");
+            _logger.Info($"siteSolution.SourcePath = {siteSolution.SourcePath}");
+            _logger.Info($"tempDir.FullName = {tempDir.FullName}");
+            //_logger.Info($" = {}");
+            //_logger.Info($" = {}");
+#endif
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {

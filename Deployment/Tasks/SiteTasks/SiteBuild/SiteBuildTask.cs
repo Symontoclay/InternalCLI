@@ -30,7 +30,7 @@ namespace Deployment.Tasks.SiteTasks.SiteBuild
             ValidateDirectory(nameof(_options.DestPath), _options.DestPath);
             ValidateDirectory(nameof(_options.TempPath), _options.TempPath);            
         }
-
+        
         /// <inheritdoc/>
         protected override void OnRun()
         {

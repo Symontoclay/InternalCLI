@@ -1,4 +1,5 @@
 ﻿using dotless.Core;
+using NLog;
 using SiteBuilder.HtmlPreprocessors;
 using SiteBuilder.HtmlPreprocessors.ShortTags;
 using SiteBuilder.SiteData;
@@ -14,7 +15,7 @@ namespace SiteBuilder
     public class PageProcessor
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static readonly List<string> _commonCssLinksList = new List<string>();
@@ -39,11 +40,21 @@ namespace SiteBuilder
         public PageProcessor(SiteElementInfo siteElement, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
             _siteElement = siteElement;
+            _sitePageInfo = _siteElement.SitePageInfo;
             _generalSiteBuilderSettings = generalSiteBuilderSettings;
+
+            if (_sitePageInfo.AddPdfVersion)
+            {
+                _pdfFileName = _siteElement.TargetFullFileName.Replace("html", "pdf");
+                _pdfHref = _siteElement.Href.Replace("html", "pdf");
+            }
         }
 
         private readonly SiteElementInfo _siteElement;
+        private readonly SitePageInfo _sitePageInfo;
         private readonly GeneralSiteBuilderSettings _generalSiteBuilderSettings;
+        private readonly string _pdfFileName;
+        private readonly string _pdfHref;
 
         public SiteElementInfo SiteElementInfo => _siteElement;
 
@@ -53,9 +64,7 @@ namespace SiteBuilder
             //_logger.Info("Begin");
 #endif
 
-            var sitePageInfo = _siteElement.SitePageInfo;
-
-            if (!sitePageInfo.IsReady)
+            if (!_sitePageInfo.IsReady)
             {
                 return;
             }
@@ -120,8 +129,6 @@ namespace SiteBuilder
 
         private void GenerateText()
         {
-            var sitePageInfo = _siteElement.SitePageInfo;
-            
             AppendLine("<!DOCTYPE html>");
             AppendLine("<html lang='en' xmlns='http://www.w3.org/1999/xhtml' prefix='og: https://ogp.me/ns#'>");
             AppendLine("<head>");
@@ -160,7 +167,7 @@ namespace SiteBuilder
                 AppendLine($"<link rel='stylesheet' href='{_siteElement.CssHrefForPage}'>");
             }
 
-            if (sitePageInfo.EnableMathML)
+            if (_sitePageInfo.EnableMathML)
             {
                 AppendLine("<script src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>");
             }
@@ -200,7 +207,7 @@ namespace SiteBuilder
                 GenerateArticle();
             }
 
-            GenerateMainSeparatorLine();
+            
             GenerateFooter();
 
             AppendLine("</body>");
@@ -215,7 +222,7 @@ namespace SiteBuilder
 
         private void GenerateDisclaimer()
         {
-            if (_siteElement.SitePageInfo.ShowDisclaimer ?? true)
+            if (_sitePageInfo.ShowDisclaimer ?? true)
             {
                 AppendLine(ShortTagsPreparation.GetDisclaimerHtml());
             }            
@@ -227,6 +234,18 @@ namespace SiteBuilder
         {
             AppendLine("</br>");
             AppendLine("<footer class='container' role='contentinfo'>");
+            
+            GenerateMainSeparatorLine();
+
+            AppendLine("</br>");
+
+            if (_sitePageInfo.AddPdfVersion)
+            {
+                AppendLine($"<a href='{_pdfHref}'><i class='fas fa-file-pdf' style='color:#c00;'></i> Download PDF version</a>");
+                AppendLine("</br>");
+                AppendLine("</br>");
+            }
+
             AppendLine("<span><a href='https://github.com/Symontoclay'><i class='fab fa-github' title='SymOntoClay on GitHub'></i></a></span>");
             //AppendLine("<span><a href='https://www.youtube.com/channel/UCgw9QmyKGZQXQyugbzCstZA'><i class='fab fa-youtube' title='SymOntoClay on Youtube'></i></a></span>");
             AppendLine("<span><a href='https://github.com/Symontoclay/SymOntoClay/discussions'><i class='far fa-comments' title='Discussions'></i></a></span>");
@@ -282,8 +301,7 @@ namespace SiteBuilder
         {
             var globalMictodata = _generalSiteBuilderSettings.SiteSettings.Microdata;
 
-            var sitePageInfo = _siteElement.SitePageInfo;
-            var siteMictodata = sitePageInfo.Microdata;
+            var siteMictodata = _sitePageInfo.Microdata;
 
             AppendLine("<meta property='og:type' content='article' />");
 
@@ -378,6 +396,23 @@ namespace SiteBuilder
 #endif
 
             AppendLine("<article>");
+
+            if (_sitePageInfo.AddPdfVersion)
+            {
+#if DEBUG
+                _logger.Info($"_siteElement.TargetFullFileName = {_siteElement.TargetFullFileName}");
+                _logger.Info($"_pdfFileName = {_pdfFileName}");//
+                _logger.Info($"_pdfHref = {_pdfHref}");
+                _logger.Info($"content = {content}");
+#endif
+
+                AppendLine("<div class='pdf-link'>");
+                AppendLine("<p><a href='_pdfHref'><i class='fas fa-file-pdf' style='color:#c00;'></i> Download PDF version</a></p>");//tmp
+                AppendLine("</div>");
+
+                //throw new NotImplementedException();
+            }
+
             AppendLine(content);
             AppendLine("</article>");
             AppendLine("<p>");
