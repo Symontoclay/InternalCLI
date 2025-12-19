@@ -20,6 +20,15 @@ namespace SiteBuilder.HtmlPreprocessors
 
         public static string MarkdownToHtml(string markdown)
         {
+#if DEBUG
+            _logger.Info($"markdown = {markdown}");
+#endif
+
+            if(string.IsNullOrWhiteSpace(markdown))
+            {
+                return string.Empty;
+            }
+
             return Markdown.ToHtml(markdown, _pipeline);
         }
     }

@@ -26,7 +26,7 @@ namespace Deployment.DevTasks.DevSiteBuild
             }, parentTask)
         {
         }
-
+        
         public DevSiteBuildTask(DevSiteBuildTaskOptions options, IDeploymentTask parentTask)
             : base("FF122FDF-E11E-41E3-A14D-628A6F9523FD", false, options, parentTask)
         {
@@ -51,6 +51,15 @@ namespace Deployment.DevTasks.DevSiteBuild
 
             using var tempDir = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
             var deploymentPipeline = new DeploymentPipeline(_context);
+
+#if DEBUG
+            _logger.Info($"_options.DestPath = {_options.DestPath}");
+            _logger.Info($"_options.SiteName = {_options.SiteName}");
+            _logger.Info($"_options.SourcePath = {_options.SourcePath}");
+            _logger.Info($"tempDir.FullName = {tempDir.FullName}");
+            //_logger.Info($" = {}");
+            //_logger.Info($" = {}");
+#endif
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
             {

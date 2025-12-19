@@ -16,6 +16,7 @@ namespace SiteBuilder.SiteData
         public string AdditionalMenu { get; set; }
         public bool EnableMathML { get; set; }
         public bool UseMarkdown { get; set; }
+        public bool AddPdfVersion { get; set; }
         public bool IsReady { get; set; }
         public bool? ShowDisclaimer { get; set; }
         public MicroDataInfo Microdata { get; set; }
