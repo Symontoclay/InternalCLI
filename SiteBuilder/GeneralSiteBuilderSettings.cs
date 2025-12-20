@@ -17,7 +17,7 @@ namespace SiteBuilder
 #if DEBUG
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
-
+        
         public GeneralSiteBuilderSettings(GeneralSiteBuilderSettingsOptions options)
         {
             var destPath = EVPath.Normalize(options.DestPath);
@@ -25,6 +25,9 @@ namespace SiteBuilder
 #if DEBUG
             //_logger.Info($"destPath = {destPath}");
 #endif
+
+            BrowserPath = EVPath.Normalize(options.BrowserPath);
+            FontPath = EVPath.Normalize(options.FontPath);
 
             KindOfTargetUrl = options.KindOfTargetUrl;
 
@@ -125,6 +128,9 @@ namespace SiteBuilder
         public string DestPath { get; private set; } = string.Empty;
 
         public string TempPath { get; private set; } = string.Empty;
+
+        public string BrowserPath { get; private set; } = string.Empty;
+        public string FontPath { get; private set; } = string.Empty;
 
         public List<string> IgnoredDirsList { get; private set; } = new List<string>();
 

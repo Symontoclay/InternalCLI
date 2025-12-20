@@ -9,6 +9,12 @@
   "SecretsFilePaths": [
     "%USERPROFILE%/example_s.json"
   ],
+  "BrowserPaths": [
+     "C:/Program Files/Google/Chrome/Application/chrome.exe"
+  ],
+  "FontPaths": [
+     "C:/Windows/Fonts"
+  ],
   "ArtifactsForDeployment": [
     "CLIArch",
     "UnityPackage"

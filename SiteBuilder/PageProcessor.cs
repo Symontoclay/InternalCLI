@@ -415,8 +415,8 @@ namespace SiteBuilder
                     fileName: _pdfFileName,
                     title: _title,
                     content: content,
-                    executablePath: @"C:\Program Files\Google\Chrome\Application\chrome.exe",//tmp
-                    fontPath: @"C:/Windows/Fonts"//tmp
+                    executablePath: _generalSiteBuilderSettings.BrowserPath,
+                    fontPath: _generalSiteBuilderSettings.FontPath
                 );
             }
 
@@ -448,7 +448,7 @@ namespace SiteBuilder
             Append("</span>");
             Append("&nbsp;");
             Append("<span>");
-            Append("is game AI experimental open source engine.");
+            Append(" is an Independent DIY Game AI DSL.");
             Append("</span>");
             AppendLine("</p>");
         }

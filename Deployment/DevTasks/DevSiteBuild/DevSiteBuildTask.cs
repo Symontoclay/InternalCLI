@@ -1,5 +1,4 @@
 ﻿using BaseDevPipeline;
-using BaseDevPipeline.Data.Implementation;
 using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
@@ -12,18 +11,29 @@ namespace Deployment.DevTasks.DevSiteBuild
 {
     public class DevSiteBuildTask: BaseDeploymentTask
     {
+        private static DevSiteBuildTaskOptions CreateDefaultOptions()
+        {
+            var solution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
+
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
+
+            return new DevSiteBuildTaskOptions()
+            {
+                SiteName = solution.RepositoryName,
+                SourcePath = solution.SourcePath,
+                DestPath = ProjectsDataSourceFactory.GetDevArtifact(KindOfArtifact.ProjectSite).Path,
+                BrowserPath = settings.BrowserPath,
+                FontPath = settings.FontPath
+            };
+        }
+
         public DevSiteBuildTask()
             : this(null)
         {
         }
 
         public DevSiteBuildTask(IDeploymentTask parentTask)
-            : this(new DevSiteBuildTaskOptions() 
-            { 
-                SiteName = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite).RepositoryName,
-                SourcePath = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite).SourcePath,
-                DestPath = ProjectsDataSourceFactory.GetDevArtifact(KindOfArtifact.ProjectSite).Path
-            }, parentTask)
+            : this(CreateDefaultOptions(), parentTask)
         {
         }
         
@@ -57,8 +67,8 @@ namespace Deployment.DevTasks.DevSiteBuild
             _logger.Info($"_options.SiteName = {_options.SiteName}");
             _logger.Info($"_options.SourcePath = {_options.SourcePath}");
             _logger.Info($"tempDir.FullName = {tempDir.FullName}");
-            //_logger.Info($" = {}");
-            //_logger.Info($" = {}");
+            _logger.Info($"_options.BrowserPath = {_options.BrowserPath}");
+            _logger.Info($"_options.FontPath = {_options.FontPath}");
 #endif
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
@@ -73,7 +83,9 @@ namespace Deployment.DevTasks.DevSiteBuild
                 SiteName = _options.SiteName,
                 SourcePath = _options.SourcePath,
                 DestPath = _options.DestPath,
-                TempPath = tempDir.FullName
+                TempPath = tempDir.FullName,
+                BrowserPath = _options.BrowserPath,
+                FontPath = _options.FontPath
             }, this));
 
             deploymentPipeline.Run();

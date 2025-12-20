@@ -24,7 +24,9 @@ namespace SiteBuilder
                 SiteName = options.SiteName,
                 SourcePath = options.SourcePath,
                 DestPath = options.DestPath,
-                TempPath = options.TempPath
+                TempPath = options.TempPath,
+                BrowserPath = options.BrowserPath,
+                FontPath = options.FontPath
             });
         }
 

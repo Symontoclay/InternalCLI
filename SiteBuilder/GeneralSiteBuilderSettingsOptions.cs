@@ -11,6 +11,8 @@ namespace SiteBuilder
         public string SourcePath { get; set; }
         public string DestPath { get; set; }
         public string TempPath { get; set; }
+        public string BrowserPath { get; set; }
+        public string FontPath { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -35,6 +37,8 @@ namespace SiteBuilder
             sb.AppendLine($"{spaces}{nameof(SourcePath)} = {SourcePath}");
             sb.AppendLine($"{spaces}{nameof(DestPath)} = {DestPath}");
             sb.AppendLine($"{spaces}{nameof(TempPath)} = {TempPath}");
+            sb.AppendLine($"{spaces}{nameof(BrowserPath)} = {BrowserPath}");
+            sb.AppendLine($"{spaces}{nameof(FontPath)} = {FontPath}");
 
             return sb.ToString();
         }

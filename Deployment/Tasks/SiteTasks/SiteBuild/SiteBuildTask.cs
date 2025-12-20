@@ -35,7 +35,7 @@ namespace Deployment.Tasks.SiteTasks.SiteBuild
         protected override void OnRun()
         {
 #if DEBUG
-            //_logger.Info($"_options = {_options}");
+            _logger.Info($"_options = {_options}");
 #endif
 
             var options = new SiteBuilderOptions();
@@ -49,6 +49,9 @@ namespace Deployment.Tasks.SiteTasks.SiteBuild
             options.DestPath = _options.DestPath;
 
             options.TempPath = _options.TempPath;
+
+            options.BrowserPath = _options.BrowserPath;
+            options.FontPath = _options.FontPath;
 
             var siteBuilder = new SiteBuilder.SiteBuilder(options);
             siteBuilder.Run();

@@ -27,7 +27,7 @@ namespace BaseDevPipeline.Data.Implementation
 #if DEBUG
             //_logger.Info($"source.Temp = {source.Temp}");
 #endif
-
+            
             var sourceTemp = source.Temp;
             var resultTemp = new TempSettings();
             result.Temp = resultTemp;
@@ -43,6 +43,9 @@ namespace BaseDevPipeline.Data.Implementation
             }
 
             result.SecretFilePath = DetectSecretFilePath(source.SecretsFilePaths);
+
+            result.BrowserPath = DetectBrowserPath(source.BrowserPaths);
+            result.FontPath = DetectFontPath(source.FontPaths);
 
             result.UtityExeInstances = DetectUnities();
 
@@ -127,6 +130,59 @@ namespace BaseDevPipeline.Data.Implementation
                     return existingSecretsFilePaths.First();
             }
         }
+
+        private static string DetectBrowserPath(List<string> paths)
+        {
+            var normalizedPaths = paths.Select(PathsHelper.Normalize);
+
+            var existingPaths = normalizedPaths.Where(File.Exists);
+
+            var count = existingPaths.Count();
+
+#if DEBUG
+            //_logger.Info($"count = {count}");
+            //_logger.Info($"existingPaths = {existingPaths.WritePODListToString()}");
+#endif
+
+            switch (count)
+            {
+                case 0:
+                    return string.Empty;
+
+                case 1:
+                    return existingPaths.Single();
+
+                default:
+                    return existingPaths.First();
+            }
+        }
+
+        private static string DetectFontPath(List<string> paths)
+        {
+            var normalizedPaths = paths.Select(PathsHelper.Normalize);
+
+            var existingPaths = normalizedPaths.Where(Directory.Exists);
+
+            var count = existingPaths.Count();
+
+#if DEBUG
+            //_logger.Info($"count = {count}");
+            //_logger.Info($"existingPaths = {existingPaths.WritePODListToString()}");
+#endif
+
+            switch (count)
+            {
+                case 0:
+                    return string.Empty;
+
+                case 1:
+                    return existingPaths.Single();
+
+                default:
+                    return existingPaths.First();
+            }
+        }
+
 
         private static List<UtityExeInstance> DetectUnities()
         {

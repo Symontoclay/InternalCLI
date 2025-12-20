@@ -10,6 +10,8 @@ namespace BaseDevPipeline.SourceData
         public List<string> BasePaths { get; set; }
         public TempSettingsSource Temp { get; set; }
         public List<string> SecretsFilePaths { get; set; }
+        public List<string> BrowserPaths { get; set; }
+        public List<string> FontPaths { get; set; }
         public List<string> ArtifactsForDeployment { get; set; }
         public string RepositoryReadmeSource { get; set; }
         public string RepositoryBadgesSource { get; set; }
@@ -18,7 +20,7 @@ namespace BaseDevPipeline.SourceData
         public List<ArtifactDest> DevArtifacts { get; set; }
         public List<LicenseSource> Licenses { get; set; }
         public string Copyright { get; set; }
-
+        
         /// <inheritdoc/>
         public override string ToString()
         {
@@ -40,6 +42,8 @@ namespace BaseDevPipeline.SourceData
             sb.PrintPODList(n, nameof(BasePaths), BasePaths);
             sb.PrintObjProp(n, nameof(Temp), Temp);
             sb.PrintPODList(n, nameof(SecretsFilePaths), SecretsFilePaths);
+            sb.PrintPODList(n, nameof(BrowserPaths), BrowserPaths);
+            sb.PrintPODList(n, nameof(FontPaths), FontPaths);
             sb.PrintPODList(n, nameof(ArtifactsForDeployment), ArtifactsForDeployment);
             sb.AppendLine($"{spaces}{nameof(RepositoryReadmeSource)} = {RepositoryReadmeSource}");
             sb.AppendLine($"{spaces}{nameof(RepositoryBadgesSource)} = {RepositoryBadgesSource}");

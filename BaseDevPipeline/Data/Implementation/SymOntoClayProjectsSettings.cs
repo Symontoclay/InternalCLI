@@ -13,6 +13,8 @@ namespace BaseDevPipeline.Data.Implementation
         public TempSettings Temp { get; set; }
 
         public string SecretFilePath { get; set; }
+        public string BrowserPath { get; set; }
+        public string FontPath { get; set; }
 
         public string CommonReadmeSource { get; set; }
         public string CommonBadgesSource { get; set; }
@@ -246,6 +248,8 @@ namespace BaseDevPipeline.Data.Implementation
             sb.AppendLine($"{spaces}{nameof(CodeOfConductSource)} = {CodeOfConductSource}");
             sb.AppendLine($"{spaces}{nameof(ContributingSource)} = {ContributingSource}");
             sb.AppendLine($"{spaces}{nameof(SecretFilePath)} = {SecretFilePath}");
+            sb.AppendLine($"{spaces}{nameof(BrowserPath)} = {BrowserPath}");
+            sb.AppendLine($"{spaces}{nameof(FontPath)} = {FontPath}");
             sb.PrintObjListProp(n, nameof(UtityExeInstances), UtityExeInstances);
             sb.PrintObjListProp(n, nameof(Solutions), Solutions);
             sb.PrintObjListProp(n, nameof(Projects), Projects);

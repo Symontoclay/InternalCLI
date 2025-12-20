@@ -9,6 +9,8 @@ namespace Deployment.DevTasks.DevSiteBuild
         public string SiteName { get; set; }
         public string SourcePath { get; set; }
         public string DestPath { get; set; }
+        public string BrowserPath { get; set; }
+        public string FontPath { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -31,6 +33,8 @@ namespace Deployment.DevTasks.DevSiteBuild
             sb.AppendLine($"{spaces}{nameof(SiteName)} = {SiteName}");
             sb.AppendLine($"{spaces}{nameof(SourcePath)} = {SourcePath}");
             sb.AppendLine($"{spaces}{nameof(DestPath)} = {DestPath}");
+            sb.AppendLine($"{spaces}{nameof(BrowserPath)} = {BrowserPath}");
+            sb.AppendLine($"{spaces}{nameof(FontPath)} = {FontPath}");
 
             return sb.ToString();
         }

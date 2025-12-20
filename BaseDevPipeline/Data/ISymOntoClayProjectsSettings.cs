@@ -8,6 +8,8 @@ namespace BaseDevPipeline.Data
         string BasePath { get; }
         ITempSettings Temp { get; }
         string SecretFilePath { get; }
+        string BrowserPath { get; }
+        string FontPath { get; }
         string CommonReadmeSource { get; }
         string CommonBadgesSource { get; }
         string CodeOfConductSource { get; }
