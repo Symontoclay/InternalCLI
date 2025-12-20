@@ -38,7 +38,7 @@ namespace SiteBuilder
 #if DEBUG
             //_logger.Info($"sourceDir = {sourceDir}");
             //_logger.Info($"destDir = {destDir}");
-            _logger.Info($"directory = {directory}");
+            //_logger.Info($"directory = {directory}");
             //_logger.Info($"siteName = {siteName}");
             //_logger.Info($"parent = {parent?.ToBriefString()}");
 #endif
@@ -209,19 +209,19 @@ namespace SiteBuilder
                     var fileInfo = new FileInfo(spFileName);
 
 #if DEBUG
-                    _logger.Info($"fileInfo.Name = {fileInfo.Name}");
+                    //_logger.Info($"fileInfo.Name = {fileInfo.Name}");
 #endif
 
                     var pageInfo = SitePageInfo.LoadFromFile(spFileName);
 
 #if DEBUG
-                    _logger.Info($"pageInfo = {pageInfo}");
+                    //_logger.Info($"pageInfo = {pageInfo}");
 #endif
 
                     var tHtmlFileName = spFileName.Replace(fileInfo.Name, fileInfo.Name.Replace(".sp", ".thtml"));
 
 #if DEBUG
-                    _logger.Info($"tHtmlFileName = {tHtmlFileName}");
+                    //_logger.Info($"tHtmlFileName = {tHtmlFileName}");
 #endif
 
                     if(!File.Exists(tHtmlFileName))
