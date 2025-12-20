@@ -208,7 +208,7 @@ namespace SiteBuilder
                 GenerateArticle();
             }
 
-            
+            GenerateMainSeparatorLine();
             GenerateFooter();
 
             AppendLine("</body>");
@@ -236,8 +236,6 @@ namespace SiteBuilder
             AppendLine("</br>");
             AppendLine("<footer class='container' role='contentinfo'>");
             
-            GenerateMainSeparatorLine();
-
             AppendLine("</br>");
 
             if (_sitePageInfo.AddPdfVersion)
@@ -249,10 +247,10 @@ namespace SiteBuilder
 
             AppendLine("<span><a href='https://github.com/Symontoclay'><i class='fab fa-github' title='SymOntoClay on GitHub'></i></a></span>");
             //AppendLine("<span><a href='https://www.youtube.com/channel/UCgw9QmyKGZQXQyugbzCstZA'><i class='fab fa-youtube' title='SymOntoClay on Youtube'></i></a></span>");
-            AppendLine("<span><a href='https://github.com/Symontoclay/SymOntoClay/discussions'><i class='far fa-comments' title='Discussions'></i></a></span>");
+            //AppendLine("<span><a href='https://github.com/Symontoclay/SymOntoClay/discussions'><i class='far fa-comments' title='Discussions'></i></a></span>");
             AppendLine("</br>");
             AppendLine("</br>");
-            AppendLine("<a href='you-need-to-know.html'>You need to know</a>");
+            AppendLine("<a href='general-disclaimer.html'>Disclaimers</a>");
             AppendLine("</br>");
             AppendLine("<a href='privacy.html'>Privacy Policy</a>");
             AppendLine("</br>");
@@ -401,10 +399,10 @@ namespace SiteBuilder
             if (_sitePageInfo.AddPdfVersion)
             {
 #if DEBUG
-                _logger.Info($"_siteElement.TargetFullFileName = {_siteElement.TargetFullFileName}");
-                _logger.Info($"_pdfFileName = {_pdfFileName}");
-                _logger.Info($"_pdfHref = {_pdfHref}");
-                _logger.Info($"content = {content}");
+                //_logger.Info($"_siteElement.TargetFullFileName = {_siteElement.TargetFullFileName}");
+                //_logger.Info($"_pdfFileName = {_pdfFileName}");
+                //_logger.Info($"_pdfHref = {_pdfHref}");
+                //_logger.Info($"content = {content}");
 #endif
 
                 AppendLine("<div class='pdf-link'>");

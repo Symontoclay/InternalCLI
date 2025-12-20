@@ -63,12 +63,12 @@ namespace Deployment.DevTasks.DevSiteBuild
             var deploymentPipeline = new DeploymentPipeline(_context);
 
 #if DEBUG
-            _logger.Info($"_options.DestPath = {_options.DestPath}");
-            _logger.Info($"_options.SiteName = {_options.SiteName}");
-            _logger.Info($"_options.SourcePath = {_options.SourcePath}");
-            _logger.Info($"tempDir.FullName = {tempDir.FullName}");
-            _logger.Info($"_options.BrowserPath = {_options.BrowserPath}");
-            _logger.Info($"_options.FontPath = {_options.FontPath}");
+            //_logger.Info($"_options.DestPath = {_options.DestPath}");
+            //_logger.Info($"_options.SiteName = {_options.SiteName}");
+            //_logger.Info($"_options.SourcePath = {_options.SourcePath}");
+            //_logger.Info($"tempDir.FullName = {tempDir.FullName}");
+            //_logger.Info($"_options.BrowserPath = {_options.BrowserPath}");
+            //_logger.Info($"_options.FontPath = {_options.FontPath}");
 #endif
 
             deploymentPipeline.Add(new CreateDirectoryTask(new CreateDirectoryTaskOptions()
