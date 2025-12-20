@@ -834,7 +834,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
         private static string GetDisclaimerMd()
         {
-            return $"> :warning: **Purely experimental and very unstable DIY project developed by only one person.** Please read the [Disclaimers](https://symontoclay.github.io/general-disclaimer.html) before starting";
+            return $"> :warning: **This is a purely experimental and unstable personal project, created by a single developer. Not intended for production use.** Please read the [Disclaimers](https://symontoclay.github.io/general-disclaimer.html) carefully before use!";
         }
 
         public static string GetDisclaimerHtml()
@@ -852,8 +852,8 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             sb.AppendLine("<img src='icons8-warning-48.png' width='48px' height='48px' alt='Warning logo'/>");
             sb.AppendLine("</td>");
             sb.AppendLine("<td>");
-            sb.AppendLine("<b>Purely experimental and very unstable DIY project developed by only one person</b></br>");
-            sb.AppendLine("Please read the <a href='general-disclaimer.html'>Disclaimers</a> before starting");
+            sb.AppendLine("<b>Disclaimer: This is a purely experimental and unstable personal project, created by a single developer. Not intended for production use.</b></br>");
+            sb.AppendLine("Please read the <a href='general-disclaimer.html'>disclaimers</a> carefully before use!");
             sb.AppendLine("</td>");
             sb.AppendLine("</tr>");
             sb.AppendLine("</tbody>");

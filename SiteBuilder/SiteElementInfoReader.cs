@@ -12,7 +12,7 @@ namespace SiteBuilder
     public static class SiteElementInfoReader
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static SiteElementInfo Read(string sourceDir, string destDir, string siteHref, List<string> forbidenDirectoriesList, List<string> forbidenFileNamesList, GeneralSiteBuilderSettings generalSiteBuilderSettings)
@@ -38,7 +38,7 @@ namespace SiteBuilder
 #if DEBUG
             //_logger.Info($"sourceDir = {sourceDir}");
             //_logger.Info($"destDir = {destDir}");
-            //_logger.Info($"directory = {directory}");
+            _logger.Info($"directory = {directory}");
             //_logger.Info($"siteName = {siteName}");
             //_logger.Info($"parent = {parent?.ToBriefString()}");
 #endif
@@ -209,18 +209,36 @@ namespace SiteBuilder
                     var fileInfo = new FileInfo(spFileName);
 
 #if DEBUG
-                    //_logger.Info($"fileInfo.Name = {fileInfo.Name}");
+                    _logger.Info($"fileInfo.Name = {fileInfo.Name}");
+#endif
+
+                    var pageInfo = SitePageInfo.LoadFromFile(spFileName);
+
+#if DEBUG
+                    _logger.Info($"pageInfo = {pageInfo}");
 #endif
 
                     var tHtmlFileName = spFileName.Replace(fileInfo.Name, fileInfo.Name.Replace(".sp", ".thtml"));
 
 #if DEBUG
-                    //_logger.Info($"tHtmlFileName = {tHtmlFileName}");
+                    _logger.Info($"tHtmlFileName = {tHtmlFileName}");
 #endif
 
                     if(!File.Exists(tHtmlFileName))
                     {
-                        throw new FileNotFoundException(null, tHtmlFileName);
+                        if(pageInfo.UseMarkdown)
+                        {
+                            tHtmlFileName = spFileName.Replace(fileInfo.Name, fileInfo.Name.Replace(".sp", ".md"));
+
+                            if(!File.Exists(tHtmlFileName))
+                            {
+                                throw new FileNotFoundException(null, tHtmlFileName);
+                            }
+                        }
+                        else
+                        {
+                            throw new FileNotFoundException(null, tHtmlFileName);
+                        }                            
                     }
 
                     exceptFileNamesList.Add(spFileName);
@@ -359,7 +377,7 @@ namespace SiteBuilder
 
             foreach(var fileName in fileNamesList)
             {
-                if(forbidenFileNamesList.Any(p => fileName.EndsWith(p)))
+                if(forbidenFileNamesList.Any(fileName.EndsWith))
                 {
                     continue;
                 }

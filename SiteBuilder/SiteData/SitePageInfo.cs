@@ -47,6 +47,7 @@ namespace SiteBuilder.SiteData
             sb.AppendLine($"{spaces}{nameof(AdditionalMenu)} = {AdditionalMenu}");
             sb.AppendLine($"{spaces}{nameof(EnableMathML)} = {EnableMathML}");
             sb.AppendLine($"{spaces}{nameof(UseMarkdown)} = {UseMarkdown}");
+            sb.AppendLine($"{spaces}{nameof(AddPdfVersion)} = {AddPdfVersion}");
             sb.AppendLine($"{spaces}{nameof(IsReady)} = {IsReady}");
             sb.AppendLine($"{spaces}{nameof(ShowDisclaimer)} = {ShowDisclaimer}");
 
