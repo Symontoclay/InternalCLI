@@ -30,6 +30,7 @@ namespace SiteBuilder.SiteData
         public List<string> LngExamplesPages { get; set; }
         public MicroDataInfo Microdata { get; set; }
         public List<string> IgnoredDirs { get; set; }
+        public bool EnableChristmasMode { get; set; }
 
         private void Init()
         {

@@ -427,8 +427,6 @@ namespace SiteBuilder
 
         private void GenerateHeader()
         {
-            //PrintUkrainianFlag();
-
             Append("<p>");
 
             if (!string.IsNullOrWhiteSpace(_generalSiteBuilderSettings.SiteSettings.Logo))
@@ -442,23 +440,21 @@ namespace SiteBuilder
             }
 
             Append("<span style='font-size: 30px; font-weight: bold;'>");
-            Append("SymOntoClay");
+            if(_generalSiteBuilderSettings.SiteSettings.EnableChristmasMode)
+            {
+                Append("SymOntoCla<span class='santa-letter-y'>y</span>");
+            }
+            else
+            {
+                Append("SymOntoClay");
+            }
+            
             Append("</span>");
             Append("&nbsp;");
             Append("<span>");
             Append(" is an Independent DIY Game AI DSL.");
             Append("</span>");
             AppendLine("</p>");
-        }
-
-        private void PrintUkrainianFlag()
-        {
-            Append("<div style='background-color: #005BBB;'>");
-            Append("&nbsp;");
-            AppendLine("</div>");
-            Append("<div style='background-color: #FFD500;'>");
-            Append("&nbsp;");
-            AppendLine("</div>");
         }
 
         private void GenerateMainMenu()
