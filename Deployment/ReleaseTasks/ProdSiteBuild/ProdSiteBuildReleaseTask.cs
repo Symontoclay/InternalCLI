@@ -28,13 +28,17 @@ namespace Deployment.ReleaseTasks.ProdSiteBuild
             var tempSettings = ProjectsDataSourceFactory.GetTempSettings();
             using var tempDir = new TempDirectory(tempSettings.Dir, tempSettings.ClearOnDispose);
 
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
+
             Exec(new SiteBuildTask(new SiteBuildTaskOptions()
             {
                 KindOfTargetUrl = KindOfTargetUrl.Domain,
                 SiteName = siteSolution.RepositoryName,
                 SourcePath = siteSolution.SourcePath,
                 DestPath = siteSolution.Path,
-                TempPath = tempDir.FullName
+                TempPath = tempDir.FullName,
+                BrowserPath = settings.BrowserPath,
+                FontPath = settings.FontPath
             }, this));
         }
 
