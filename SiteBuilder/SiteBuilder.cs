@@ -13,7 +13,7 @@ namespace SiteBuilder
     public class SiteBuilder
     {
 #if DEBUG
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public SiteBuilder(SiteBuilderOptions options)
@@ -260,7 +260,7 @@ namespace SiteBuilder
             foreach(var siteElement in siteElementsList)
             {
 #if DEBUG
-                _logger.Info($"siteElement = {siteElement}");
+                //_logger.Info($"siteElement = {siteElement}");
 #endif
 
                 if (!Directory.Exists(siteElement.DirectoryName))
