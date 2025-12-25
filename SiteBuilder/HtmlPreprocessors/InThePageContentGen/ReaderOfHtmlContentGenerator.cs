@@ -10,7 +10,7 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
     public static class ReaderOfHtmlContentGenerator
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private static readonly string mContentPlaceTag = "ContentsPlace".ToLower();
@@ -34,7 +34,7 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
             result.ContentPlaceNode = context.ContentPlaceNode;
 
 #if DEBUG
-            _logger.Info($"context.ContentItemsList = {JsonConvert.SerializeObject(context.ContentItemsList, Formatting.Indented)}");
+            //_logger.Info($"context.ContentItemsList = {JsonConvert.SerializeObject(context.ContentItemsList, Formatting.Indented)}");
 #endif
             var item = MakeTree(context);
 
@@ -128,7 +128,7 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
             var topTagName = queue.Peek().TagName;
 
 #if DEBUG
-            _logger.Info($"topTagName = '{topTagName}'");
+            //_logger.Info($"topTagName = '{topTagName}'");
 #endif
 
             switch (topTagName)
