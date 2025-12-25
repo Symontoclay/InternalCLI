@@ -1,13 +1,18 @@
 ﻿using HtmlAgilityPack;
+using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
 {
-    public class ReaderOfHtmlContentGenerator
+    public static class ReaderOfHtmlContentGenerator
     {
+#if DEBUG
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
+
         private static readonly string mContentPlaceTag = "ContentsPlace".ToLower();
         private static readonly List<string> mTargetTags = new List<string>() {
             "h1",
@@ -29,12 +34,12 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
             result.ContentPlaceNode = context.ContentPlaceNode;
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"context.ContentItemsList = {JsonConvert.SerializeObject(context.ContentItemsList, Formatting.Indented)}");
+            _logger.Info($"context.ContentItemsList = {JsonConvert.SerializeObject(context.ContentItemsList, Formatting.Indented)}");
 #endif
             var item = MakeTree(context);
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"item = {JsonConvert.SerializeObject(item, Formatting.Indented)}");
+            //_logger.Info($"item = {JsonConvert.SerializeObject(item, Formatting.Indented)}");
 #endif
             result.Items = item.Items;
 
@@ -82,15 +87,15 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
             };
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.Name = '{rootNode.Name}'");
-            //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
-            //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
-            //NLog.LogManager.GetCurrentClassLogger().Info($"rootNode.InnerText = {rootNode.InnerText}");
+            //_logger.Info($"rootNode.Name = '{rootNode.Name}'");
+            //_logger.Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
+            //_logger.Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
+            //_logger.Info($"rootNode.InnerText = {rootNode.InnerText}");
 #endif
             var text = rootNode.InnerText.Trim();
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"text = '{text}'");
+            //_logger.Info($"text = '{text}'");
 #endif
             contentItem.Title = text;
 
@@ -101,7 +106,7 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
                 var href = hrefNode.GetAttributeValue("href", string.Empty);
 
 #if DEBUG
-                //NLog.LogManager.GetCurrentClassLogger().Info($"href = '{href}'");
+                //_logger.Info($"href = '{href}'");
 #endif
                 contentItem.Href = href;
             }
@@ -122,6 +127,10 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
 
             var topTagName = queue.Peek().TagName;
 
+#if DEBUG
+            _logger.Info($"topTagName = '{topTagName}'");
+#endif
+
             switch (topTagName)
             {
                 case "h1":
@@ -136,6 +145,14 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
                     ProcessH3Items(item, queue);
                     break;
 
+                case "h4":
+                    ProcessH4Items(item, queue);
+                    break;
+
+                case "h5":
+                    ProcessH5Items(item, queue);
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(topTagName), topTagName, null);
             }
@@ -146,7 +163,7 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
         private static void ProcessH1Items(ContentItem parentItem, Queue<ContentItem> queue)
         {
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info("Begin");
+            //_logger.Info("Begin");
 #endif
             ContentItem currItem = null;
 
@@ -155,7 +172,7 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
                 var currentSourceItem = queue.Peek();
 
 #if DEBUG
-                //NLog.LogManager.GetCurrentClassLogger().Info($"currentSourceItem = {JsonConvert.SerializeObject(currentSourceItem, Formatting.Indented)}");
+                //_logger.Info($"currentSourceItem = {JsonConvert.SerializeObject(currentSourceItem, Formatting.Indented)}");
 #endif
                 switch (currentSourceItem.TagName)
                 {
@@ -180,14 +197,14 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
             }
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info("End");
+            //_logger.Info("End");
 #endif
         }
 
         private static void ProcessH2Items(ContentItem parentItem, Queue<ContentItem> queue)
         {
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info("Begin");
+            //_logger.Info("Begin");
 #endif
             ContentItem currItem = null;
 
@@ -196,7 +213,7 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
                 var currentSourceItem = queue.Peek();
 
 #if DEBUG
-                //NLog.LogManager.GetCurrentClassLogger().Info($"currentSourceItem = {JsonConvert.SerializeObject(currentSourceItem, Formatting.Indented)}");
+                //_logger.Info($"currentSourceItem = {JsonConvert.SerializeObject(currentSourceItem, Formatting.Indented)}");
 #endif
                 switch (currentSourceItem.TagName)
                 {
@@ -224,14 +241,14 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
             }
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info("End");
+            //_logger.Info("End");
 #endif
         }
 
         private static void ProcessH3Items(ContentItem parentItem, Queue<ContentItem> queue)
         {
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info("Begin");
+            //_logger.Info("Begin");
 #endif
             ContentItem currItem = null;
 
@@ -240,7 +257,7 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
                 var currentSourceItem = queue.Peek();
 
 #if DEBUG
-                //NLog.LogManager.GetCurrentClassLogger().Info($"currentSourceItem = {JsonConvert.SerializeObject(currentSourceItem, Formatting.Indented)}");
+                //_logger.Info($"currentSourceItem = {JsonConvert.SerializeObject(currentSourceItem, Formatting.Indented)}");
 #endif
                 switch (currentSourceItem.TagName)
                 {
@@ -271,14 +288,14 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
             }
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info("End");
+            //_logger.Info("End");
 #endif
         }
 
         private static void ProcessH4Items(ContentItem parentItem, Queue<ContentItem> queue)
         {
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info("Begin");
+            //_logger.Info("Begin");
 #endif
             ContentItem currItem = null;
 
@@ -287,7 +304,7 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
                 var currentSourceItem = queue.Peek();
 
 #if DEBUG
-                //NLog.LogManager.GetCurrentClassLogger().Info($"currentSourceItem = {JsonConvert.SerializeObject(currentSourceItem, Formatting.Indented)}");
+                //_logger.Info($"currentSourceItem = {JsonConvert.SerializeObject(currentSourceItem, Formatting.Indented)}");
 #endif
                 switch (currentSourceItem.TagName)
                 {
@@ -321,14 +338,14 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
             }
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info("End");
+            //_logger.Info("End");
 #endif
         }
 
         private static void ProcessH5Items(ContentItem parentItem, Queue<ContentItem> queue)
         {
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info("Begin");
+            //_logger.Info("Begin");
 #endif
             ContentItem currItem = null;
 
@@ -337,7 +354,7 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
                 var currentSourceItem = queue.Peek();
 
 #if DEBUG
-                //NLog.LogManager.GetCurrentClassLogger().Info($"currentSourceItem = {JsonConvert.SerializeObject(currentSourceItem, Formatting.Indented)}");
+                //_logger.Info($"currentSourceItem = {JsonConvert.SerializeObject(currentSourceItem, Formatting.Indented)}");
 #endif
                 switch (currentSourceItem.TagName)
                 {
@@ -371,7 +388,7 @@ namespace SiteBuilder.HtmlPreprocessors.InThePageContentGen
             }
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info("End");
+            //_logger.Info("End");
 #endif
         }
     }
