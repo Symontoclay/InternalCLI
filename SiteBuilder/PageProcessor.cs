@@ -226,7 +226,7 @@ namespace SiteBuilder
             if (_sitePageInfo.ShowDisclaimer ?? true)
             {
                 AppendLine(ShortTagsPreparation.GetDisclaimerHtml());
-            }            
+            }
 
             //<a target="_blank" href="https://icons8.com/icon/EggHJUeUuU6C/general-warning-sign">Warning</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
         }
@@ -235,33 +235,57 @@ namespace SiteBuilder
         {
             AppendLine("</br>");
             AppendLine("<footer class='container' role='contentinfo'>");
-            
-            AppendLine("</br>");
 
             if (_sitePageInfo.AddPdfVersion)
             {
+                AppendLine("<p>");
                 AppendLine($"<a href='{_pdfHref}'><i class='fas fa-file-pdf' style='color:#c00;'></i> Download PDF version</a>");
-                AppendLine("</br>");
-                AppendLine("</br>");
+                AppendLine("</p>");
             }
 
-            AppendLine("<span><a href='https://github.com/Symontoclay'><i class='fab fa-github' title='SymOntoClay on GitHub'></i></a></span>");
-            //AppendLine("<span><a href='https://www.youtube.com/channel/UCgw9QmyKGZQXQyugbzCstZA'><i class='fab fa-youtube' title='SymOntoClay on Youtube'></i></a></span>");
-            //AppendLine("<span><a href='https://github.com/Symontoclay/SymOntoClay/discussions'><i class='far fa-comments' title='Discussions'></i></a></span>");
-            AppendLine("</br>");
-            AppendLine("</br>");
+            AppendLine("<p>");
+            AppendLine("<a href='https://github.com/Symontoclay'>GitHub</a>");
+            AppendLine(" | ");
+            AppendLine("<a href='https://www.youtube.com/channel/UCgw9QmyKGZQXQyugbzCstZA'>YouTube</a>");
+            AppendLine(" | ");
+            AppendLine("<a href='https://discord.gg/UkC5r3ZDTN'>Discord</a>");
+            AppendLine("</p>");
+
+            AppendLine("<p>");
             AppendLine("<a href='general-disclaimer.html'>Disclaimers</a>");
-            AppendLine("</br>");
+            AppendLine(" • ");
             AppendLine("<a href='privacy.html'>Privacy Policy</a>");
-            AppendLine("</br>");
-            AppendLine("</br>");
-            AppendLine($"This page was last modified on {_siteElement.LastUpdateDate.ToString("dd MMMM yyyy", _targetCulture)}</br>");
+            AppendLine("</p>");
+
+            AppendLine("<p>");
+            AppendLine($"Last modified: {_siteElement.LastUpdateDate.ToString("dd MMMM yyyy", _targetCulture)}</br>");
             //Append(", at ");
             //Append(LastUpdateDate.ToString("HH:mm", tmpFormat));
+            AppendLine("</p>");
 
-            AppendLine($"&copy;&nbsp; <a href='https://github.com/metatypeman'>Sergiy Tolkachov aka metatypeman</a> {GetCopyRightDate()}</br>");
-            AppendLine("The text is available under the <a href='https://creativecommons.org/licenses/by-sa/4.0/'>Creative Commons Attribution-ShareAlike 4.0 International License By Sa</a>&nbsp;<i class='fab fa-creative-commons'></i><i class='fab fa-creative-commons-by'></i><i class='fab fa-creative-commons-sa'></i>");
-            AppendLine("</br>&nbsp;");
+            AppendLine("<p>");
+            AppendLine($"&copy;&nbsp;<a href='https://github.com/Symontoclay'>SymOntoClay</a>, {GetCopyRightDate()}. ");
+            AppendLine("<a href='https://creativecommons.org/licenses/by-sa/4.0/'>CC BY-SA 4.0</a>&nbsp;<i class='fab fa-creative-commons'></i><i class='fab fa-creative-commons-by'></i><i class='fab fa-creative-commons-sa'></i>");
+            AppendLine("</p>");
+
+            AppendLine("<p>");
+            AppendLine("&nbsp;");
+            AppendLine("</p>");
+
+            /*AppendLine("</br>");
+            
+            
+            
+            AppendLine("</br>");
+            
+            AppendLine("</br>");
+            
+            AppendLine("</br>");
+            AppendLine("</br>");
+            
+
+            
+            AppendLine("</br>&nbsp;");*/
             AppendLine("</footer>");
         }
 
