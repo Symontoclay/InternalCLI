@@ -272,20 +272,6 @@ namespace SiteBuilder
             AppendLine("&nbsp;");
             AppendLine("</p>");
 
-            /*AppendLine("</br>");
-            
-            
-            
-            AppendLine("</br>");
-            
-            AppendLine("</br>");
-            
-            AppendLine("</br>");
-            AppendLine("</br>");
-            
-
-            
-            AppendLine("</br>&nbsp;");*/
             AppendLine("</footer>");
         }
 
