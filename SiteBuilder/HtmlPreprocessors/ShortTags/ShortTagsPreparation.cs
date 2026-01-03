@@ -634,7 +634,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             }
         }
 
-        private const string _netVersion = "NET 7.0";
+        private const string _netVersion = "NET 9.0";
         private const string _unityVersion = "2022.2.8f1";
 
         private static void ProcessTypeNameHref(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
