@@ -148,6 +148,7 @@ namespace TestSandBox
                 //TstFinishRelease0_3_2();
                 //TstRestoreSlnInUnityProject();
                 //TstTesting();
+                TstCreateOrganizationReadme();
                 //TstCreateReadme();//<==
                 //TstInitCreateReadme();
                 //TstCreateMyUnityPackageManifest();
@@ -175,7 +176,7 @@ namespace TestSandBox
                 //TstRoadMap();
                 //TstReleaseTaskHandler();//<==
                 //TstGitTasksHandler();
-                TstDeploymentTaskBasedBuildHandler();
+                //TstDeploymentTaskBasedBuildHandler();
                 //TstSimplifyFullNameOfType();
                 //TstCreateCSharpApiOptionsFile();
                 //TstReadXMLDoc();
@@ -2128,6 +2129,42 @@ namespace TestSandBox
             stopWatch.Stop();
 
             _logger.Info($"stopWatch.Elapsed = {stopWatch.Elapsed}");
+
+            _logger.Info("End");
+        }
+
+        private static void TstCreateOrganizationReadme()
+        {
+            _logger.Info("Begin");
+
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
+
+            var siteSolution = settings.GetSolution(KindOfProject.ProjectSite);
+
+            var targetSolutions = settings.GetSolutionsWithMaintainedReleases();
+
+            foreach (var targetSolution in targetSolutions)
+            {
+                _logger.Info($"siteSolution.RepositoryName = {siteSolution.RepositoryName}");
+
+                var targetReadmeFileName = string.Empty;
+
+                _logger.Info($"targetSolution.Kind = {targetSolution.Kind}");
+
+                switch (targetSolution.Kind)
+                {
+                    case KindOfProject.ProjectSite:
+                    case KindOfProject.Unity:
+                        targetReadmeFileName = Path.Combine(targetSolution.SourcePath, "README.md");
+                        break;
+
+                    default:
+                        targetReadmeFileName = Path.Combine(targetSolution.Path, "README.md");
+                        break;
+                }
+
+                _logger.Info($"targetReadmeFileName = {targetReadmeFileName}");
+            }
 
             _logger.Info("End");
         }
