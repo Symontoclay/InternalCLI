@@ -28,7 +28,7 @@ namespace Deployment.DevTasks.CreateReadmes
 
             var siteSolution = settings.GetSolution(KindOfProject.ProjectSite);
 
-            var targetSolutions = settings.GetSolutionsWithMaintainedReleases();
+            var targetSolutions = settings.GetSolutionsWithReadmeGeneration();
 
             foreach(var targetSolution in targetSolutions)
             {
@@ -36,6 +36,10 @@ namespace Deployment.DevTasks.CreateReadmes
 
                 switch(targetSolution.Kind)
                 {
+                    case KindOfProject.Organization:
+                        targetReadmeFileName = Path.Combine(targetSolution.Path, "profile", "README.md");
+                        break;
+
                     case KindOfProject.ProjectSite:
                     case KindOfProject.Unity:
                         targetReadmeFileName = Path.Combine(targetSolution.SourcePath, "README.md");
@@ -60,6 +64,7 @@ namespace Deployment.DevTasks.CreateReadmes
 
                 switch(targetSolution.Kind)
                 {
+                    case KindOfProject.Organization:
                     case KindOfProject.ProjectSite:
                     case KindOfProject.Unity:
                         Exec(new CopyTargetFilesTask(new CopyTargetFilesTaskOptions()

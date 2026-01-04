@@ -23,12 +23,22 @@
   "InternalCLIDist": "%USERPROFILE%/Documents/InternalSymOntoClayCLIDist",
   "Solutions": [
     {
+      "Name": ".github",
+      "Kind": "Organization",
+      "Href": "https://github.com/Symontoclay/.github",
+      "GitFileHref": "git@github.com:Symontoclay/.github.git",
+      "Path": "%BASE_PATH%/SymOntoClay_Organization",
+      "License": "MIT",
+      "EnableGenerateReadme" : true
+    },
+    {
       "Name": "SymOntoClay",
       "Kind": "CoreSolution",
       "Href": "https://github.com/Symontoclay/SymOntoClay",
       "GitFileHref": "git@github.com:Symontoclay/SymOntoClay.git",
       "Path": "%BASE_PATH%/SymOntoClay",
       "License": "MIT",
+      "EnableGenerateReadme" : true,
       "Projects": [
         {
           "Kind": "CoreLib",
@@ -141,7 +151,8 @@
       "CommonBadgesSource": "%SLN_ROOT_PATH%/siteSource/CommonReadmes/__common_BADGES.md",
       "ReadmeSource": "%SLN_ROOT_PATH%/siteSource/__ReadmeSource.md",
       "CodeOfConductSource": "%SLN_ROOT_PATH%/siteSource/__CODE_OF_CONDUCTSource.md",
-      "ContributingSource": "%SLN_ROOT_PATH%/siteSource/__CONTRIBUTINGSource.md"
+      "ContributingSource": "%SLN_ROOT_PATH%/siteSource/__CONTRIBUTINGSource.md",
+      "EnableGenerateReadme" : true
     },
     {
       "Name": "SymOntoClayAsset",
@@ -331,6 +342,7 @@
       "Path": "%BASE_PATH%/SymOntoClay.Common",
       "BuiltNuGetPackages": "CommonPackages",
       "License": "MIT",
+      "EnableGenerateReadme" : true,
       "Projects": [
         {
           "Kind": "Library",

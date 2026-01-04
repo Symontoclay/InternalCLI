@@ -54,9 +54,12 @@ namespace Deployment.Helpers
 
                 if (!string.IsNullOrWhiteSpace(repositorySpecificReadmeFileName))
                 {
-                    var content = File.ReadAllText(repositorySpecificReadmeFileName);
+                    if(File.Exists(repositorySpecificReadmeFileName))
+                    {
+                        var content = File.ReadAllText(repositorySpecificReadmeFileName);
 
-                    newNode.InnerHtml = content;
+                        newNode.InnerHtml = content;
+                    }
                 }
 
                 return;
@@ -88,9 +91,12 @@ namespace Deployment.Helpers
 
                 if (!string.IsNullOrWhiteSpace(repositorySpecificBadgesFileName))
                 {
-                    var content = File.ReadAllText(repositorySpecificBadgesFileName);
+                    if (File.Exists(repositorySpecificBadgesFileName))
+                    {
+                        var content = File.ReadAllText(repositorySpecificBadgesFileName);
 
-                    newNode.InnerHtml = content;
+                        newNode.InnerHtml = content;
+                    }
                 }
 
                 return;

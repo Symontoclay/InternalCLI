@@ -101,6 +101,11 @@ namespace BaseDevPipeline.Data.Implementation
             return _emptySolutions;
         }
 
+        public IReadOnlyList<ISolutionSettings> GetSolutionsWithReadmeGeneration()
+        {
+            return _solutionsWithReadmeGeneration;
+        }
+
         /// <inheritdoc/>
         public IReadOnlyList<ISolutionSettings> GetSolutionsWithMaintainedReleases()
         {
@@ -185,13 +190,15 @@ namespace BaseDevPipeline.Data.Implementation
         public void Prepare()
         {
             _solutionsDict = Solutions.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<ISolutionSettings>().ToList());
+
+            _solutionsWithReadmeGeneration = Solutions.Where(p => p.EnableGenerateReadme).Cast<ISolutionSettings>().ToList();
             _solutionsWithMaintainedReleases = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.ProjectSite || p.Kind == KindOfProject.Unity || p.Kind == KindOfProject.CommonPackagesSolution).Cast<ISolutionSettings>().ToList();
             _solutionsWithMaintainedVersionsInCSharpProjects = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.Unity || p.Kind == KindOfProject.CommonPackagesSolution).Cast<ISolutionSettings>().ToList();
             _solutionsWhichUseCommonPakage = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.InternalCLISolution).Cast<ISolutionSettings>().ToList();
             _unityExampleSolutions = Solutions.Where(p => p.Kind == KindOfProject.UnityExample).Cast<ISolutionSettings>().ToList();
             _cSharpSolutions = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.Unity || p.Kind == KindOfProject.InternalCLISolution || p.Kind == KindOfProject.CommonPackagesSolution).Cast<ISolutionSettings>().ToList();
             _cSharpSolutionsWhichUseNuGetPakages = Solutions.Where(p => p.Kind == KindOfProject.CoreSolution || p.Kind == KindOfProject.InternalCLISolution || p.Kind == KindOfProject.CommonPackagesSolution).Cast<ISolutionSettings>().ToList();
-
+            
             _projectsDict = Projects.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<IProjectSettings>().ToList());
             _devArtifactsDict = DevArtifacts.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<IArtifactSettings>().ToList());
 
@@ -209,6 +216,7 @@ namespace BaseDevPipeline.Data.Implementation
         }
 
         private Dictionary<KindOfProject, List<ISolutionSettings>> _solutionsDict;
+        private List<ISolutionSettings> _solutionsWithReadmeGeneration;
         private List<ISolutionSettings> _solutionsWithMaintainedReleases;
         private List<ISolutionSettings> _solutionsWithMaintainedVersionsInCSharpProjects;
         private List<ISolutionSettings> _solutionsWhichUseCommonPakage;

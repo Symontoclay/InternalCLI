@@ -29,6 +29,7 @@ namespace BaseDevPipeline.Data
 
         ISolutionSettings GetSolution(KindOfProject kind);
         IReadOnlyList<ISolutionSettings> GetSolutions(KindOfProject kind);
+        IReadOnlyList<ISolutionSettings> GetSolutionsWithReadmeGeneration();
         IReadOnlyList<ISolutionSettings> GetSolutionsWithMaintainedReleases();
         IReadOnlyList<ISolutionSettings> GetSolutionsWithMaintainedVersionsInCSharpProjects();
         IReadOnlyList<ISolutionSettings> GetSolutionsWhichUseCommonPakage();

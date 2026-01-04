@@ -53,7 +53,7 @@ namespace Deployment.Tasks.BuildReadme
 #endif
 
             content = GeneralReadmeContentPreprocessor.Run(content, _options.CommonBadgesFileName, _options.RepositorySpecificBadgesFileName, _options.RepositorySpecificReadmeFileName);
-
+            
 #if DEBUG
             //_logger.Info($"content (2) = {content}");
 #endif

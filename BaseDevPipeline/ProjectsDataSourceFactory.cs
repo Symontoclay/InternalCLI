@@ -51,6 +51,12 @@ namespace BaseDevPipeline
             return settings.GetSolutions(kind);
         }
 
+        public static IReadOnlyList<ISolutionSettings> GetSolutionsWithReadmeGeneration()
+        {
+            var settings = GetSymOntoClayProjectsSettings();
+            return settings.GetSolutionsWithReadmeGeneration();
+        }
+
         public static IReadOnlyList<ISolutionSettings> GetSolutionsWithMaintainedReleases()
         {
             var settings = GetSymOntoClayProjectsSettings();

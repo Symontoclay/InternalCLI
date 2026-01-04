@@ -42,8 +42,8 @@ namespace Deployment.DevTasks.CreateAndCommitReadmes
         {
             Exec(new CreateReadmesDevTask(this));
 
-            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithMaintainedReleases();
-
+            var targetSolutions = ProjectsDataSourceFactory.GetSolutionsWithReadmeGeneration();
+            
             Exec(new CommitAllAndPushTask(new CommitAllAndPushTaskOptions() { 
                 Message = _options.Message,
                 RepositoryPaths = targetSolutions.Select(p => p.Path).ToList()

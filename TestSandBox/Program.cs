@@ -2141,11 +2141,14 @@ namespace TestSandBox
 
             var siteSolution = settings.GetSolution(KindOfProject.ProjectSite);
 
-            var targetSolutions = settings.GetSolutionsWithMaintainedReleases();
+            var targetSolutions = settings.GetSolutionsWithReadmeGeneration();
 
             foreach (var targetSolution in targetSolutions)
             {
-                _logger.Info($"siteSolution.RepositoryName = {siteSolution.RepositoryName}");
+                _logger.Info($"targetSolution.RepositoryName = {targetSolution.RepositoryName}");
+                _logger.Info($"targetSolution.Href = {targetSolution.Href}");
+                _logger.Info($"targetSolution.Path = {targetSolution.Path}");
+                _logger.Info($"targetSolution.SourcePath = {targetSolution.SourcePath}");
 
                 var targetReadmeFileName = string.Empty;
 
@@ -2153,6 +2156,10 @@ namespace TestSandBox
 
                 switch (targetSolution.Kind)
                 {
+                    case KindOfProject.Organization:
+                        targetReadmeFileName = Path.Combine(targetSolution.Path, "profile", "README.md");
+                        break;
+
                     case KindOfProject.ProjectSite:
                     case KindOfProject.Unity:
                         targetReadmeFileName = Path.Combine(targetSolution.SourcePath, "README.md");
