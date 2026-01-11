@@ -42,6 +42,7 @@ namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
                 switch (kind)
                 {
                     case KindOfProject.CoreSolution:
+                    case KindOfProject.CommonPackagesSolution:
                         Exec(new UpdateCopyrightInFileHeadersInCSProjectOrSolutionTask(new UpdateCopyrightInFileHeadersInCSProjectOrSolutionTaskOptions()
                         {
                             Text = headerText,
