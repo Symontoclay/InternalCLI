@@ -249,6 +249,10 @@ namespace SiteBuilder
             AppendLine("<a href='https://www.youtube.com/channel/UCgw9QmyKGZQXQyugbzCstZA'>YouTube</a>");
             AppendLine(" | ");
             AppendLine("<a href='https://discord.gg/UkC5r3ZDTN'>Discord</a>");
+            AppendLine(" | ");
+            AppendLine("<a href='https://dev.to/metatypeman'>Dev.to</a>");
+            AppendLine(" | ");
+            AppendLine("<a href='https://medium.com/@metatypeman'>Medium</a>");
             AppendLine("</p>");
 
             AppendLine("<p>");
