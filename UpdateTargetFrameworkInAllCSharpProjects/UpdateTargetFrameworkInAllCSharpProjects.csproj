@@ -7,7 +7,7 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SymOntoClay.CLI.Helpers" Version="0.5.6" />
+    <PackageReference Include="SymOntoClay.CLI.Helpers" Version="0.5.6.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseDevPipeline\BaseDevPipeline.csproj" />
