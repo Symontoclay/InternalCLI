@@ -135,6 +135,30 @@
         {
           "Kind": "CorePlugin",
           "Path": "SymOntoClayStandardFacts"
+        },
+        {
+          "Kind": "RoslynAnalyzer",
+          "Path": "SymOntoClay.GuidDuplicateAnalyzer"
+        },
+        {
+          "Kind": "RoslynAnalyzer",
+          "Path": "SymOntoClay.SerializationAnalyzer"
+        },
+        {
+          "Kind": "SocLibrary",
+          "Path": "SymOntoClay.Libs"
+        },
+        {
+          "Kind": "RoslynSourceGenerator",
+          "Path": "SymOntoClay.SerializationSourceGenerator"
+        },
+        {
+          "Kind": "CorePlugin",
+          "Path": "SymOntoClayNLPBinaryDict"
+        },
+        {
+          "Kind": "CorePlugin",
+          "Path": "SymOntoClayNLPCommonDict"
         }
       ]
     },

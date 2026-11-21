@@ -22,6 +22,9 @@
         /// </summary>
         UnityExample,
         InternalCLISolution,        
-        CommonPackagesSolution
+        CommonPackagesSolution,
+        RoslynAnalyzer,
+        RoslynSourceGenerator,
+        SocLibrary
     }
 }
