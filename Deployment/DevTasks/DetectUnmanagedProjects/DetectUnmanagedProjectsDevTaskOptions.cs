@@ -7,7 +7,7 @@ namespace Deployment.DevTasks.DetectUnmanagedProjects
 {
     public class DetectUnmanagedProjectsDevTaskOptions : IObjectToString
     {
-        public List<string> ManagedSolutions { get; set; }
+        public List<string> CheckedSolutions { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -26,7 +26,7 @@ namespace Deployment.DevTasks.DetectUnmanagedProjects
         {
             var sb = new StringBuilder();
 
-            sb.PrintPODList(n, nameof(ManagedSolutions), ManagedSolutions);
+            sb.PrintPODList(n, nameof(CheckedSolutions), CheckedSolutions);
 
             return sb.ToString();
         }

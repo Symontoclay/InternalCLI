@@ -22,12 +22,12 @@ namespace DetectUnmanagedProjects
             var appSettings = configuration.GetSection("AppSettings").Get<AppSettings>() ?? new AppSettings();
 
 #if DEBUG
-            //_logger.Info($"appSettings.ManagedSolutions = {JsonConvert.SerializeObject(appSettings.ManagedSolutions, Formatting.Indented)}");
+            //_logger.Info($"appSettings.CheckedSolutions = {JsonConvert.SerializeObject(appSettings.CheckedSolutions, Formatting.Indented)}");
 #endif
 
             var options = new DetectUnmanagedProjectsDevTaskOptions()
             {
-                ManagedSolutions = appSettings.ManagedSolutions
+                CheckedSolutions = appSettings.CheckedSolutions
             };
 
             DeploymentPipeline.Run(new DetectUnmanagedProjectsDevTask(options));

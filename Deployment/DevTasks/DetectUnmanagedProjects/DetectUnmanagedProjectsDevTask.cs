@@ -3,6 +3,7 @@ using BaseDevPipeline.Data;
 using CommonUtils.DeploymentTasks;
 using SymOntoClay.Common.DebugHelpers;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -33,7 +34,7 @@ namespace Deployment.DevTasks.DetectUnmanagedProjects
         protected override void OnRun()
         {
 #if DEBUG
-            _logger.Info($"_options = {_options}");
+            //_logger.Info($"_options = {_options}");
 #endif
 
             var solutionsForChecking = new List<ISolutionSettings>();
@@ -42,12 +43,12 @@ namespace Deployment.DevTasks.DetectUnmanagedProjects
             var solutions = ProjectsDataSourceFactory.GetSolutions();
 
 #if DEBUG
-            _logger.Info($"solutions.Count = {solutions.Count}");
+            //_logger.Info($"solutions.Count = {solutions.Count}");
 #endif
 
             foreach (var solution in solutions) 
             {
-                if(_options.ManagedSolutions.Contains(solution.Name))
+                if(_options.CheckedSolutions.Contains(solution.Name))
                 {
                     solutionsForChecking.Add(solution);
                 }
@@ -57,24 +58,112 @@ namespace Deployment.DevTasks.DetectUnmanagedProjects
                 }
             }
 
-            var ignoredSb = new StringBuilder();
+            var indentation_1 = DisplayHelper.IndentationStep;
+            var spaces_1 = DisplayHelper.Spaces(indentation_1);
+
+            var sb = new StringBuilder();
 
             if(ignoredSolutions.Any())
             {
-                ignoredSb.AppendLine("These solutions were ignored:");
+                sb.AppendLine("These solutions were ignored:");
 
                 foreach (var solution in ignoredSolutions)
                 {
+                    sb.AppendLine($"{spaces_1}{solution.Name}");
+                }
 
+                sb.AppendLine();
+            }
+            else
+            {
+                sb.AppendLine("All solutions were checked.");
+                sb.AppendLine();
+            }
+
+            if(solutionsForChecking.Any())
+            {
+                sb.AppendLine("These solutions were checked:");
+
+                foreach (var solution in solutionsForChecking)
+                {
+                    sb.AppendLine($"{spaces_1}{solution.Name}");
+
+                    CheckSolution(solution, sb, indentation_1);
+
+                    sb.AppendLine();
                 }
             }
             else
             {
-                ignoredSb.AppendLine("All solutions were checked.");
-                ignoredSb.AppendLine();
+                sb.AppendLine("Nothing was checked.");
+                sb.AppendLine();
             }
 
-            _logger.Info(ignoredSb);
+            _logger.Info(sb);
+        }
+
+        private void CheckSolution(ISolutionSettings solution, StringBuilder sb, uint parentIndentation)
+        {
+            var solutionPath = solution.Path;
+
+#if DEBUG
+            //_logger.Info($"solutionPath = {solutionPath}");
+#endif
+
+            var parentSpaces = DisplayHelper.Spaces(parentIndentation);
+            var indentation = parentIndentation + DisplayHelper.IndentationStep;
+            var spaces = DisplayHelper.Spaces(indentation);
+
+            var projectFilesList = new List<FileInfo>();
+
+            FindProjectsFiles(new DirectoryInfo(solutionPath), projectFilesList);
+
+            if(!projectFilesList.Any())
+            {
+                sb.AppendLine($"{parentSpaces}Not any c# projects.");
+                return;
+            }
+
+            var managedCsProjPaths = solution.Projects.Select(p => p.CsProjPath.ToLower());
+
+            var notManagedPprojectFiles = projectFilesList.Where(p => !managedCsProjPaths.Contains(p.FullName.Replace("\\", "/").ToLower())).ToList();
+
+            if(notManagedPprojectFiles.Any())
+            {
+                sb.AppendLine($"{parentSpaces}These c# projects are not managed:");
+
+                foreach (var projectFile in notManagedPprojectFiles)
+                {
+                    sb.AppendLine($"{spaces}{projectFile.FullName}");
+                }
+            }
+            else
+            {
+                sb.AppendLine($"{parentSpaces}All c# projects are managed.");
+            }
+        }
+
+        private void FindProjectsFiles(DirectoryInfo parentDirectory, List<FileInfo> result)
+        {
+            var projectFiles = parentDirectory.GetFiles("*.csproj");
+
+            if(projectFiles.Any())
+            {
+                result.AddRange(projectFiles);
+
+                return;
+            }
+
+            var directories = parentDirectory.GetDirectories();
+
+            foreach (var directory in directories) 
+            {
+#if DEBUG
+                //_logger.Info($"directory.FullName = {directory.FullName}");
+#endif
+
+                FindProjectsFiles(directory, result);
+            }
         }
 
         /// <inheritdoc/>
