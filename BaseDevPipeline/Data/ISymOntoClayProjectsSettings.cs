@@ -28,6 +28,7 @@ namespace BaseDevPipeline.Data
         IReadOnlyList<ILicenseSettings> Licenses { get; }
 
         ISolutionSettings GetSolution(KindOfProject kind);
+        IReadOnlyList<ISolutionSettings> GetSolutions();
         IReadOnlyList<ISolutionSettings> GetSolutions(KindOfProject kind);
         IReadOnlyList<ISolutionSettings> GetSolutionsWithReadmeGeneration();
         IReadOnlyList<ISolutionSettings> GetSolutionsWithMaintainedReleases();

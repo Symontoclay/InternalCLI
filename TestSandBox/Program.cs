@@ -80,6 +80,7 @@ namespace TestSandBox
 
             try
             {
+                TstEnv();
                 //TstGetUnityPathsForUnitySolution();
                 //CheckReadinessForReleaseHandler();
                 //TstMakeReleaseCommandLineParserHandler();
@@ -148,7 +149,7 @@ namespace TestSandBox
                 //TstFinishRelease0_3_2();
                 //TstRestoreSlnInUnityProject();
                 //TstTesting();
-                TstCreateOrganizationReadme();
+                //TstCreateOrganizationReadme();
                 //TstCreateReadme();//<==
                 //TstInitCreateReadme();
                 //TstCreateMyUnityPackageManifest();
@@ -185,6 +186,13 @@ namespace TestSandBox
             {
                 _logger.Info(e);
             }
+        }
+
+        private static void TstEnv()
+        {
+            var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
+
+            _logger.Info($"env = {env}");
         }
 
         private static void TstGetUnityPathsForUnitySolution()

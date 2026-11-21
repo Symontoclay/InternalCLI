@@ -45,6 +45,12 @@ namespace BaseDevPipeline
             return settings.GetSolution(kind);
         }
 
+        public static IReadOnlyList<ISolutionSettings> GetSolutions()
+        {
+            var settings = GetSymOntoClayProjectsSettings();
+            return settings.GetSolutions();
+        }
+
         public static IReadOnlyList<ISolutionSettings> GetSolutions(KindOfProject kind)
         {
             var settings = GetSymOntoClayProjectsSettings();

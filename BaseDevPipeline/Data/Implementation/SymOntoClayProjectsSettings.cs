@@ -91,6 +91,12 @@ namespace BaseDevPipeline.Data.Implementation
         }
 
         /// <inheritdoc/>
+        public IReadOnlyList<ISolutionSettings> GetSolutions()
+        {
+            return _solutionsList;
+        }
+
+        /// <inheritdoc/>
         public IReadOnlyList<ISolutionSettings> GetSolutions(KindOfProject kind)
         {
             if(_solutionsDict.ContainsKey(kind))
@@ -189,6 +195,7 @@ namespace BaseDevPipeline.Data.Implementation
 
         public void Prepare()
         {
+            _solutionsList = Solutions.Cast<ISolutionSettings>().ToList();
             _solutionsDict = Solutions.GroupBy(p => p.Kind).ToDictionary(p => p.Key, p => p.Cast<ISolutionSettings>().ToList());
 
             _solutionsWithReadmeGeneration = Solutions.Where(p => p.EnableGenerateReadme).Cast<ISolutionSettings>().ToList();
@@ -215,6 +222,7 @@ namespace BaseDevPipeline.Data.Implementation
             }
         }
 
+        private List<ISolutionSettings> _solutionsList;
         private Dictionary<KindOfProject, List<ISolutionSettings>> _solutionsDict;
         private List<ISolutionSettings> _solutionsWithReadmeGeneration;
         private List<ISolutionSettings> _solutionsWithMaintainedReleases;
