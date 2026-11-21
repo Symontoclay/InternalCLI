@@ -103,6 +103,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateChangeLogs", "CreateC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkAsCompletedRelease", "MarkAsCompletedRelease\MarkAsCompletedRelease.csproj", "{BDF8B166-1978-4AAF-A42E-3ED27315535D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OtherMaintenance", "OtherMaintenance", "{ED218157-C0E1-4C0F-BFF9-7BF721244CE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DetectUnmanagedProjects", "DetectUnmanagedProjects\DetectUnmanagedProjects.csproj", "{2C82FC4E-DCD9-4FEA-AFD8-E06A72C45C3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -273,6 +277,10 @@ Global
 		{BDF8B166-1978-4AAF-A42E-3ED27315535D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDF8B166-1978-4AAF-A42E-3ED27315535D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDF8B166-1978-4AAF-A42E-3ED27315535D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C82FC4E-DCD9-4FEA-AFD8-E06A72C45C3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C82FC4E-DCD9-4FEA-AFD8-E06A72C45C3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C82FC4E-DCD9-4FEA-AFD8-E06A72C45C3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C82FC4E-DCD9-4FEA-AFD8-E06A72C45C3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -314,6 +322,7 @@ Global
 		{6A014432-CB64-4F36-B1CC-E8E8E6FA7B55} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 		{6DA1B150-C886-48F5-B6D2-64F34CB20917} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 		{BDF8B166-1978-4AAF-A42E-3ED27315535D} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{2C82FC4E-DCD9-4FEA-AFD8-E06A72C45C3E} = {ED218157-C0E1-4C0F-BFF9-7BF721244CE1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {06C4A77F-C5ED-463F-A718-5E248AB5CDAB}
