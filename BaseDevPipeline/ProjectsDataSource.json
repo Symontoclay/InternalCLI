@@ -331,6 +331,22 @@
         {
           "Kind": "InternalCLI",
           "Path": "UpdateTargetFrameworkInAllCSharpProjects"
+        },
+        {
+          "Kind": "InternalCLI",
+          "Path": "CreateChangeLogs"
+        },
+        {
+          "Kind": "InternalCLI",
+          "Path": "DetectUnmanagedProjects"
+        },
+        {
+          "Kind": "InternalCLI",
+          "Path": "MarkAsCompletedRelease"
+        },
+        {
+          "Kind": "InternalCLI",
+          "Path": "ProdSiteBuild"
         }
       ]
     },
