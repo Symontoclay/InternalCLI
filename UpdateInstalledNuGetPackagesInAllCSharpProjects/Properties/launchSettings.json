@@ -2,7 +2,7 @@
   "profiles": {
     "Run": {
       "commandName": "Project",
-      "commandLineArgs": "Microsoft.NET.Test.Sdk 18.12.0"
+      "commandLineArgs": "NUnit 5.0.0"
     },
     "Help": {
       "commandName": "Project",
