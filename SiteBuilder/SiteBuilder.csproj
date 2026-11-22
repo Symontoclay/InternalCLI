@@ -7,7 +7,7 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Markdig" Version="0.44.0" />
+    <PackageReference Include="Markdig" Version="1.6.0" />
     <PackageReference Include="PuppeteerSharp" Version="20.2.5" />
     <PackageReference Include="dotless.Core" Version="1.6.7" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.26" />
