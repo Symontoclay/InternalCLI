@@ -444,4 +444,11 @@
     }
   ],
   "Copyright": "Copyright (c) 2020 - <curr_year/> Sergiy Tolkachov aka metatypeman"
+  "UnityVersionSettings": {
+    "Solution": "SymOntoClayAsset"
+  },
+  "DotNetCoreVersionSettings": {
+    "Solution": "SymOntoClay",
+    "ProjectPath": "SymOntoClayCLI"
+  }
 }

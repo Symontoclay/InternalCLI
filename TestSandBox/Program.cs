@@ -166,6 +166,7 @@ namespace TestSandBox
                 //TstTempDirectory();
                 //TstCoreToAssetTask();
                 //TstReadRepositoryFiles();
+                TstGetSystemRequirementsForSiteBuilding();
                 //TstSiteSettings();
                 //TstFutureReleaseInfo();
                 //TstFutureReleaseInfoSource();
@@ -2800,6 +2801,34 @@ namespace TestSandBox
             var result = GitRepositoryHelper.GetRepositoryFileInfoList(repositoryPath);
 
             _logger.Info($"result = {result.WriteListToString()}");
+
+            _logger.Info("End");
+        }
+
+        private static void TstGetSystemRequirementsForSiteBuilding()
+        {
+            _logger.Info("Begin");
+            
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
+
+            //_logger.Info($"settings = {settings}");
+            //_logger.Info($"settings = {settings}");
+
+            var unitySolution = settings.GetSolution(KindOfProject.Unity);
+
+            _logger.Info($"unitySolution = {unitySolution}");
+
+            var coreSolution = settings.GetSolution(KindOfProject.CoreSolution);
+
+            var targetProject = coreSolution.Projects.FirstOrDefault(p => p.Kind == KindOfProject.CLI);
+
+            _logger.Info($"targetProject = {targetProject}");
+
+            var currentFramework = CSharpProjectHelper.GetTargetFrameworkVersion(targetProject.CsProjPath);
+
+#if DEBUG
+            _logger.Info($"currentFramework = {currentFramework}");
+#endif
 
             _logger.Info("End");
         }
