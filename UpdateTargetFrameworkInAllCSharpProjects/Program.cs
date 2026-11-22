@@ -129,11 +129,14 @@ namespace UpdateTargetFrameworkInAllCSharpProjects
 
         private static void PrintHelp()
         {
-            ConsoleWrapper.WriteText("You shoud input kind of target framework and target version in command line.");
-            ConsoleWrapper.WriteText("The first argument should be name of target framework, next target version after space.");
-            ConsoleWrapper.WriteText("For example: 'Net 8.0'");
-            ConsoleWrapper.WriteText("The kind of target framework is an option of enum KindOfTargetCSharpFramework.");
-            ConsoleWrapper.WriteText("The target version should only contain digits and point, for example: '8.0', '3.1.2'");
+            var reamdeFilePath = Path.Combine(AppContext.BaseDirectory, "README.md");
+
+            var filelines = File.ReadAllLines(reamdeFilePath);
+
+            foreach (var line in filelines)
+            {
+                ConsoleWrapper.WriteText(line);
+            }
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

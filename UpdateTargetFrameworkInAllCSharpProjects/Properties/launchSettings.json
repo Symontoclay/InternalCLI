@@ -1,8 +1,12 @@
 {
   "profiles": {
-    "UpdateTargetFrameworkInAllCSharpProjects": {
+    "Run": {
       "commandName": "Project",
       "commandLineArgs": "Net 11.0"
+    },
+    "Help": {
+      "commandName": "Project",
+      "commandLineArgs": ""
     }
   }
 }
