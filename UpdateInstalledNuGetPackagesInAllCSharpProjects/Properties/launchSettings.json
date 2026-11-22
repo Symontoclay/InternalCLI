@@ -2,7 +2,7 @@
   "profiles": {
     "Run": {
       "commandName": "Project",
-      "commandLineArgs": "Newtonsoft.Json 13.0.4"
+      "commandLineArgs": "NLog 6.2.2"
     },
     "Help": {
       "commandName": "Project",
