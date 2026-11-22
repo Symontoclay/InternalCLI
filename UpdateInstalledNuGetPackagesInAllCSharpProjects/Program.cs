@@ -109,7 +109,10 @@ namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
                 Version = targetVersion.ToString()
             }));
 
-            deploymentPipeline.Add(new CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask());
+            DeploymentPipeline.Run(new CheckInstalledNuGetPackagesInAllCSharpProjectsDevTask(new CheckInstalledNuGetPackagesInAllCSharpProjectsDevTaskOptions
+            {
+                ShowOnlyOutdatedPackages = false
+            }));
 
             deploymentPipeline.Run();
         }
