@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="NuGet.Configuration" Version="8.0.0" />
     <PackageReference Include="NuGet.Protocol" Version="8.0.0" />
-    <PackageReference Include="SymOntoClay.CLI.Helpers" Version="0.5.6.11" />
+    <PackageReference Include="SymOntoClay.CLI.Helpers" Version="0.5.6.12" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseDevPipeline\BaseDevPipeline.csproj" />
