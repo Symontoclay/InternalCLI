@@ -2,7 +2,7 @@
   "profiles": {
     "Run": {
       "commandName": "Project",
-      "commandLineArgs": "NUnit3TestAdapter 6.3.1"
+      "commandLineArgs": "Html2Markdown 8.1.2.24"
     },
     "Help": {
       "commandName": "Project",
