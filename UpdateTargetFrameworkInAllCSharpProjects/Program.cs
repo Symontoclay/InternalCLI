@@ -2,10 +2,9 @@
 using CSharpUtils;
 using Deployment.DevTasks.TargetFrameworks.CheckTargetFrameworksInAllCSharpProjects;
 using Deployment.DevTasks.TargetFrameworks.UpdateTargetFrameworkInAllCSharpProjects;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 using NLog;
 using SymOntoClay.CLI.Helpers;
-using System.Configuration;
 
 namespace UpdateTargetFrameworkInAllCSharpProjects
 {
@@ -17,41 +16,50 @@ namespace UpdateTargetFrameworkInAllCSharpProjects
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            NLogSetupHelper.UseAppConfig();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
 
-            var writeOutputToTextFileAsParallel = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.WriteOutputToTextFileAsParallel"] ?? "false");
-            var useNLogLogger = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.UseNLogLogger"] ?? "false");
-            var writeCopyright = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.WriteCopyright"] ?? "false");
+            var consoleWrapperSettings = configuration.GetSection("ConsoleWrapperSettings").Get<ConsoleWrapperSettings>() ?? new ConsoleWrapperSettings();
 
 #if DEBUG
-            //_logger.Info($"writeOutputToTextFileAsParallel = {writeOutputToTextFileAsParallel}");
-            //_logger.Info($"useNLogLogger = {useNLogLogger}");
-            //_logger.Info($"writeCopyright = {writeCopyright}");
+            //_logger.Info($"consoleWrapperSettings = {JsonConvert.SerializeObject(consoleWrapperSettings, Formatting.Indented)}");
+#endif
+
+            var appSettings = configuration.GetSection("AppSettings").Get<AppSettings>() ?? new AppSettings();
+
+#if DEBUG
+            //_logger.Info($"appSettings = {JsonConvert.SerializeObject(appSettings, Formatting.Indented)}");
+#endif
+
+#if DEBUG
             //_logger.Info($"args = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
 #endif
 
-            if (useNLogLogger)
+            if (consoleWrapperSettings.UseNLogLogger)
             {
                 ConsoleWrapper.SetNLogLogger(_logger);
             }
 
-            if (writeOutputToTextFileAsParallel)
+            if (consoleWrapperSettings.WriteOutputToTextFileAsParallel)
             {
                 ConsoleWrapper.WriteOutputToTextFileAsParallel = true;
             }
 
-            if (writeCopyright)
+            if (consoleWrapperSettings.WriteCopyright)
             {
                 ConsoleWrapper.WriteCopyright();
+                ConsoleWrapper.WriteText(string.Empty);
             }
 
             var parser = new UpdateTargetFrameworkInAllCSharpProjectsCommandLineParser(true);
 
             var result = parser.Parse(args.ToArray());
 
-            if(result.Errors.Count > 0)
+            if (result.Errors.Count > 0)
             {
-                foreach(var error in result.Errors)
+                foreach (var error in result.Errors)
                 {
                     ConsoleWrapper.WriteError(error);
                 }
@@ -79,28 +87,40 @@ namespace UpdateTargetFrameworkInAllCSharpProjects
             var kindOfTargetCSharpFramework = (KindOfTargetCSharpFramework)result.Params["TargetFramework"];
             var targetVersion = (Version)result.Params["TargetVersion"];
 
-            ConsoleWrapper.WriteText($"Version of all C# projects with target framework {kindOfTargetCSharpFramework} will be changed to {targetVersion}.");
-            ConsoleWrapper.WriteText("Are you sure?");
-            ConsoleWrapper.WriteText("Press 'y' or 'Y' for continue or other else key for cancel.");
-            ConsoleWrapper.WriteText("After your choise press enter.");
-
-            var key = Console.ReadLine();
-
-            if (key != "y" && key != "Y")
+            if (appSettings.ReadOnlyMode)
             {
-                ConsoleWrapper.WriteText("Updating has been cancelled.");
-
-                return;
+                ConsoleWrapper.WriteText("It is just read only mode.");
+                ConsoleWrapper.WriteText($"Checking possible chаnges version for all C# projects with target framework {kindOfTargetCSharpFramework} to {targetVersion}.");
+                ConsoleWrapper.WriteText("Nothing will be updated.");
+                ConsoleWrapper.WriteText(string.Empty);
             }
+            else
+            {
+                ConsoleWrapper.WriteText($"Version of all C# projects with target framework {kindOfTargetCSharpFramework} will be changed to {targetVersion}.");
+                ConsoleWrapper.WriteText("Are you sure?");
+                ConsoleWrapper.WriteText("Press 'y' or 'Y' for continue or other else key for cancel.");
+                ConsoleWrapper.WriteText("After your choise press enter.");
 
-            ConsoleWrapper.WriteText("Updating has been started.");
+                var key = Console.ReadLine();
+
+                if (key != "y" && key != "Y")
+                {
+                    ConsoleWrapper.WriteText("Updating has been cancelled.");
+
+                    return;
+                }
+
+                ConsoleWrapper.WriteText("Updating has been started.");
+                ConsoleWrapper.WriteText(string.Empty);
+            }
 
             var deploymentPipeline = new DeploymentPipeline();
 
             deploymentPipeline.Add(new UpdateTargetFrameworkInAllCSharpProjectsDevTask(new UpdateTargetFrameworkInAllCSharpProjectsDevTaskOptions()
             {
                 KindOfTargetCSharpFramework = kindOfTargetCSharpFramework,
-                Version = targetVersion.ToString()
+                Version = targetVersion.ToString(),
+                ReadOnlyMode = appSettings.ReadOnlyMode
             }));
             deploymentPipeline.Add(new CheckTargetFrameworksInAllCSharpProjectsDevTask());
 

@@ -2,7 +2,7 @@
   "profiles": {
     "UpdateTargetFrameworkInAllCSharpProjects": {
       "commandName": "Project",
-      "commandLineArgs": "Net 8.0"
+      "commandLineArgs": "Net 11.0"
     }
   }
 }

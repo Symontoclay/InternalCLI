@@ -95,7 +95,7 @@ namespace CSharpUtils
 
         private const string _netstandardPrefix = "netstandard";
         private const string _netPrefix = "net";
-        private const string _netWindowsSuffix = "-windows";
+        private const string _netWindowsSuffix = "-windows7.0";
         private const string _netFrameworkPrefix = "v";
 
         public static (KindOfTargetCSharpFramework Kind, Version Version) ConvertTargetFrameworkToVersion(string targetFramework)

@@ -32,6 +32,11 @@ namespace Deployment.DevTasks.TargetFrameworks.UpdateTargetFrameworkInAllCSharpP
         /// <inheritdoc/>
         protected override void OnRun()
         {
+            var indentation_1 = DisplayHelper.IndentationStep;
+            var spaces_1 = DisplayHelper.Spaces(indentation_1);
+
+            var sb = new StringBuilder();
+
             var targetVersion = new Version(_options.Version);
 
 #if DEBUG
@@ -40,13 +45,33 @@ namespace Deployment.DevTasks.TargetFrameworks.UpdateTargetFrameworkInAllCSharpP
 
             var frameworkVersion = (_options.KindOfTargetCSharpFramework, targetVersion);
 
+#if DEBUG
+            //_logger.Info($"frameworkVersion = {frameworkVersion}");
+#endif
+
+            if(_options.ReadOnlyMode)
+            {
+                sb.AppendLine("Just checking without real updating.");
+                sb.AppendLine();
+            }
+
+            sb.AppendLine($"Target version: {frameworkVersion.KindOfTargetCSharpFramework} {frameworkVersion.targetVersion}");
+            sb.AppendLine();
+
             var cSharpSolutions = ProjectsDataSourceFactory.GetCSharpSolutions();
+
+            sb.AppendLine($"Solutions: {cSharpSolutions.Count}");
+            sb.AppendLine();
+
+            var updatedCount = 0;
 
             foreach (var solution in cSharpSolutions)
             {
 #if DEBUG
                 //_logger.Info($"solution.Name = {solution.Name}");
 #endif
+
+                sb.AppendLine($"Solution: {solution.Name}");
 
                 foreach (var project in solution.Projects)
                 {
@@ -55,7 +80,12 @@ namespace Deployment.DevTasks.TargetFrameworks.UpdateTargetFrameworkInAllCSharpP
                     //_logger.Info($"project.CsProjPath = {project.CsProjPath}");
 #endif
 
+                    sb.AppendLine($"{spaces_1}{project.FolderName}");
+                    sb.AppendLine($"{spaces_1}Path: {project.CsProjPath}");
+
                     var currentFramework = CSharpProjectHelper.GetTargetFrameworkVersion(project.CsProjPath);
+
+                    sb.AppendLine($"{spaces_1}Current version: {currentFramework.Kind} {currentFramework.Version}");
 
 #if DEBUG
                     //_logger.Info($"currentFramework = {currentFramework}");
@@ -63,11 +93,17 @@ namespace Deployment.DevTasks.TargetFrameworks.UpdateTargetFrameworkInAllCSharpP
 
                     if (currentFramework.Kind != _options.KindOfTargetCSharpFramework)
                     {
+                        sb.AppendLine($"{spaces_1}Not target framework. Skiped.");
+                        sb.AppendLine();
+
                         continue;
                     }
 
                     if (currentFramework.Version >= targetVersion)
                     {
+                        sb.AppendLine($"{spaces_1}Current version {currentFramework.Version} >= target version {targetVersion}. Skiped.");
+                        sb.AppendLine();
+
                         continue;
                     }
 
@@ -75,9 +111,27 @@ namespace Deployment.DevTasks.TargetFrameworks.UpdateTargetFrameworkInAllCSharpP
                     //_logger.Info("NEXT");
 #endif
 
-                    CSharpProjectHelper.SetTargetFramework(project.CsProjPath, frameworkVersion);
+                    if (_options.ReadOnlyMode)
+                    {
+                        sb.AppendLine($"{spaces_1}It would be updated with non readonly mode.");
+                    }
+                    else
+                    {
+                        sb.AppendLine($"{spaces_1}Updating.");
+                        CSharpProjectHelper.SetTargetFramework(project.CsProjPath, frameworkVersion);
+                        sb.AppendLine($"{spaces_1}Updated.");
+                        updatedCount++;
+                    }
+
+                    sb.AppendLine();
                 }
+
+                sb.AppendLine();
             }
+
+            sb.AppendLine($"Updated: {updatedCount}");
+
+            _logger.Info(sb);
         }
 
         /// <inheritdoc/>

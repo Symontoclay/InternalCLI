@@ -10,6 +10,12 @@ namespace Deployment.DevTasks.TargetFrameworks.UpdateTargetFrameworkInAllCSharpP
         public KindOfTargetCSharpFramework KindOfTargetCSharpFramework { get; set; }
         public string Version { get; set; }
 
+        /// <summary>
+        /// true - just shows information without real changes.
+        /// false - makes real changes.
+        /// </summary>
+        public bool ReadOnlyMode { get; set; }
+
         /// <inheritdoc/>
         public override string ToString()
         {
@@ -30,6 +36,7 @@ namespace Deployment.DevTasks.TargetFrameworks.UpdateTargetFrameworkInAllCSharpP
 
             sb.AppendLine($"{spaces}{nameof(KindOfTargetCSharpFramework)} = {KindOfTargetCSharpFramework}");
             sb.AppendLine($"{spaces}{nameof(Version)} = {Version}");
+            sb.AppendLine($"{spaces}{nameof(ReadOnlyMode)} = {ReadOnlyMode}");
 
             return sb.ToString();
         }
