@@ -2,7 +2,7 @@
   "profiles": {
     "Run": {
       "commandName": "Project",
-      "commandLineArgs": "NUnit.Analyzers 4.15.0"
+      "commandLineArgs": "NUnit3TestAdapter 6.3.1"
     },
     "Help": {
       "commandName": "Project",
