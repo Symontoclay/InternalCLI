@@ -2,7 +2,7 @@
   "profiles": {
     "Run": {
       "commandName": "Project",
-      "commandLineArgs": "System.Configuration.ConfigurationManager 11.0.0"
+      "commandLineArgs": "coverlet.collector 10.1.1"
     },
     "Help": {
       "commandName": "Project",
