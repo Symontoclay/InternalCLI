@@ -2,7 +2,7 @@
   "profiles": {
     "Run": {
       "commandName": "Project",
-      "commandLineArgs": "NLog 6.2.2"
+      "commandLineArgs": "System.Configuration.ConfigurationManager 11.0.0"
     },
     "Help": {
       "commandName": "Project",
