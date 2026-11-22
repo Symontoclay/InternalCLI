@@ -1,8 +1,12 @@
 {
   "profiles": {
-    "UpdateInstalledNuGetPackagesInAllCSharpProjects": {
+    "Run": {
       "commandName": "Project",
-      "commandLineArgs": "NLog 5.1.4"
+      "commandLineArgs": "Newtonsoft.Json 13.0.4"
+    },
+    "Help": {
+      "commandName": "Project",
+      "commandLineArgs": ""
     }
   }
 }

@@ -1,9 +1,10 @@
 ﻿using CommonUtils.DeploymentTasks;
 using Deployment.DevTasks.InstalledNuGetPackages.CheckInstalledNuGetPackagesInAllCSharpProjects;
 using Deployment.DevTasks.InstalledNuGetPackages.UpdateInstalledNuGetPackagesInAllCSharpProjects;
+using Microsoft.Extensions.Configuration;
 using NLog;
 using SymOntoClay.CLI.Helpers;
-using System.Configuration;
+using UpdateTargetFrameworkInAllCSharpProjects;
 
 namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
 {
@@ -15,30 +16,32 @@ namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            NLogSetupHelper.UseAppConfig();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
 
-            var writeOutputToTextFileAsParallel = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.WriteOutputToTextFileAsParallel"] ?? "false");
-            var useNLogLogger = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.UseNLogLogger"] ?? "false");
-            var writeCopyright = bool.Parse(ConfigurationManager.AppSettings["ConsoleWrapper.WriteCopyright"] ?? "false");
+            var consoleWrapperSettings = configuration.GetSection("ConsoleWrapperSettings").Get<ConsoleWrapperSettings>() ?? new ConsoleWrapperSettings();
 
 #if DEBUG
-            //_logger.Info($"writeOutputToTextFileAsParallel = {writeOutputToTextFileAsParallel}");
-            //_logger.Info($"useNLogLogger = {useNLogLogger}");
-            //_logger.Info($"writeCopyright = {writeCopyright}");
+            //_logger.Info($"consoleWrapperSettings = {JsonConvert.SerializeObject(consoleWrapperSettings, Formatting.Indented)}");
+#endif
+
+#if DEBUG
             //_logger.Info($"args = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
 #endif
 
-            if(useNLogLogger)
+            if(consoleWrapperSettings.UseNLogLogger)
             {
                 ConsoleWrapper.SetNLogLogger(_logger);
             }
 
-            if (writeOutputToTextFileAsParallel)
+            if (consoleWrapperSettings.WriteOutputToTextFileAsParallel)
             {
                 ConsoleWrapper.WriteOutputToTextFileAsParallel = true;
             }
 
-            if (writeCopyright)
+            if (consoleWrapperSettings.WriteCopyright)
             {
                 ConsoleWrapper.WriteCopyright();
             }
@@ -113,10 +116,14 @@ namespace UpdateInstalledNuGetPackagesInAllCSharpProjects
 
         private static void PrintHelp()
         {
-            ConsoleWrapper.WriteText("You shoud input target nuget packageId and target version in command line.");
-            ConsoleWrapper.WriteText("The first argument should be target nuget packageId, next target version after space.");
-            ConsoleWrapper.WriteText("For example: 'NLog 5.1.4'");
-            ConsoleWrapper.WriteText("The target version should only contain digits and point, for example: '5.1.4', '3.1.2'");
+            var reamdeFilePath = Path.Combine(AppContext.BaseDirectory, "README.md");
+
+            var filelines = File.ReadAllLines(reamdeFilePath);
+
+            foreach (var line in filelines)
+            {
+                ConsoleWrapper.WriteText(line);
+            }
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
