@@ -2,7 +2,7 @@
   "profiles": {
     "Run": {
       "commandName": "Project",
-      "commandLineArgs": "Markdig 1.6.0"
+      "commandLineArgs": "PuppeteerSharp 25.18.1"
     },
     "Help": {
       "commandName": "Project",
