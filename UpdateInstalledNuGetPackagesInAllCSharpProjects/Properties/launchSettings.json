@@ -2,7 +2,7 @@
   "profiles": {
     "Run": {
       "commandName": "Project",
-      "commandLineArgs": "Html2Markdown 8.1.2.24"
+      "commandLineArgs": "NuGet.Protocol 8.0.0"
     },
     "Help": {
       "commandName": "Project",

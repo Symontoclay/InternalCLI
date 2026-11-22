@@ -7,8 +7,8 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NuGet.Configuration" Version="6.14.0" />
-    <PackageReference Include="NuGet.Protocol" Version="6.14.0" />
+    <PackageReference Include="NuGet.Configuration" Version="8.0.0" />
+    <PackageReference Include="NuGet.Protocol" Version="8.0.0" />
     <PackageReference Include="SymOntoClay.CLI.Helpers" Version="0.5.6.11" />
   </ItemGroup>
   <ItemGroup>
