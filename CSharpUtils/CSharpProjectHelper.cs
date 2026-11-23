@@ -228,6 +228,23 @@ namespace CSharpUtils
             return false;
         }
 
+        public static string TargetFrameworkToDisplayString((KindOfTargetCSharpFramework Kind, Version Version) frameworkVersion)
+        {
+            switch(frameworkVersion.Kind)
+            {
+                case KindOfTargetCSharpFramework.NetStandard:
+                    return $".NET Standard {frameworkVersion.Version}";
+                case KindOfTargetCSharpFramework.Net:
+                    return $".NET {frameworkVersion.Version}";
+                case KindOfTargetCSharpFramework.NetFramework:
+                    return $".NET Framework {frameworkVersion.Version}";
+                case KindOfTargetCSharpFramework.NetWindows:
+                    return $".NET {frameworkVersion.Version}-Windows";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(frameworkVersion.Kind), frameworkVersion.Kind, null);
+            }
+        }
+
         public static bool GetGeneratePackageOnBuild(string projectFileName)
         {
             var project = LoadProject(projectFileName);

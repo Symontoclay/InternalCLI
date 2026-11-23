@@ -2816,6 +2816,10 @@ namespace TestSandBox
             _logger.Info($"settings.UnityRelease = {settings.UnityRelease}");
             _logger.Info($"settings.DotNetVersion = {settings.DotNetVersion}");
 
+            var targetFrameworkToDisplayString = CSharpProjectHelper.TargetFrameworkToDisplayString(settings.DotNetVersion);
+
+            _logger.Info($"targetFrameworkToDisplayString = {targetFrameworkToDisplayString}");
+
             var unitySolution = settings.GetSolution(KindOfProject.Unity);
 
             _logger.Info($"unitySolution = {unitySolution}");
