@@ -1,6 +1,7 @@
 ﻿using CSharpUtils;
 using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,6 +46,18 @@ namespace BaseDevPipeline.Data.Implementation
 
         /// <inheritdoc/>
         IReadOnlyList<IUtityExeInstance> ISymOntoClayProjectsSettings.UtityExeInstances => UtityExeInstances;
+
+        /// <inheritdoc/>
+        public string FullUnityVersion { get; set; }
+
+        /// <inheritdoc/>
+        public string UnityVersion { get; set; }
+
+        /// <inheritdoc/>
+        public string UnityRelease { get; set; }
+
+        /// <inheritdoc/>
+        public (KindOfTargetCSharpFramework Kind, Version Version) DotNetVersion { get; set; }
 
         public List<SolutionSettings> Solutions { get; set; }
 

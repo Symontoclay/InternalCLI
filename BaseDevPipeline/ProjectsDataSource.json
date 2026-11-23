@@ -443,12 +443,12 @@
       "FileName": "%APPDIR%/CCBYSA4_0License.txt"
     }
   ],
-  "Copyright": "Copyright (c) 2020 - <curr_year/> Sergiy Tolkachov aka metatypeman"
+  "Copyright": "Copyright (c) 2020 - <curr_year/> Sergiy Tolkachov aka metatypeman",
   "UnityVersionSettings": {
     "Solution": "SymOntoClayAsset"
   },
-  "DotNetCoreVersionSettings": {
+  "DotNetVersionSettings": {
     "Solution": "SymOntoClay",
-    "ProjectPath": "SymOntoClayCLI"
+    "ProjectFolderName": "SymOntoClayCLI"
   }
 }

@@ -21,7 +21,7 @@ namespace BaseDevPipeline.SourceData
         public List<LicenseSource> Licenses { get; set; }
         public string Copyright { get; set; }
         public UnityVersionSettings UnityVersionSettings { get; set; }
-        public DotNetCoreVersionSettings DotNetCoreVersionSettings { get; set; }
+        public DotNetVersionSettings DotNetVersionSettings { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -55,7 +55,7 @@ namespace BaseDevPipeline.SourceData
             sb.PrintObjListProp(n, nameof(Licenses), Licenses);
             sb.AppendLine($"{spaces}{nameof(Copyright)} = {Copyright}");
             sb.PrintObjProp(n, nameof(UnityVersionSettings), UnityVersionSettings);
-            sb.PrintObjProp(n, nameof(DotNetCoreVersionSettings), DotNetCoreVersionSettings);
+            sb.PrintObjProp(n, nameof(DotNetVersionSettings), DotNetVersionSettings);
 
             return sb.ToString();
         }

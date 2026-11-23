@@ -2,6 +2,7 @@
 {
     public enum KindOfTargetCSharpFramework
     {
+        Unknown,
         NetStandard,
         Net,
         NetFramework,

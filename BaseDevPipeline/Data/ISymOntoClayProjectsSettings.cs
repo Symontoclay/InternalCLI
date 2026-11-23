@@ -1,4 +1,6 @@
-﻿using SymOntoClay.Common;
+﻿using CSharpUtils;
+using SymOntoClay.Common;
+using System;
 using System.Collections.Generic;
 
 namespace BaseDevPipeline.Data
@@ -22,6 +24,12 @@ namespace BaseDevPipeline.Data
         string SocExePath { get; }
         IReadOnlyList<IUtityExeInstance> UtityExeInstances { get; }
         IUtityExeInstance GetUtityExeInstance(ISolutionSettings solution);
+
+        string FullUnityVersion { get; }
+        string UnityVersion { get; }
+        string UnityRelease { get; }
+        (KindOfTargetCSharpFramework Kind, Version Version) DotNetVersion { get; }
+
         IReadOnlyList<ISolutionSettings> Solutions { get; }
         IReadOnlyList<IProjectSettings> Projects { get; }
         IReadOnlyList<IArtifactSettings> DevArtifacts { get; }

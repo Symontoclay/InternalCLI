@@ -2811,8 +2811,10 @@ namespace TestSandBox
             
             var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
-            //_logger.Info($"settings = {settings}");
-            //_logger.Info($"settings = {settings}");
+            _logger.Info($"settings.FullUnityVersion = {settings.FullUnityVersion}");
+            _logger.Info($"settings.UnityVersion = {settings.UnityVersion}");
+            _logger.Info($"settings.UnityRelease = {settings.UnityRelease}");
+            _logger.Info($"settings.DotNetVersion = {settings.DotNetVersion}");
 
             var unitySolution = settings.GetSolution(KindOfProject.Unity);
 

@@ -1,5 +1,7 @@
 ﻿using BaseDevPipeline.SourceData;
 using CommonUtils;
+using CSharpUtils;
+using Newtonsoft.Json;
 using NLog;
 using SymOntoClay.Common;
 using SymOntoClay.Common.CollectionsHelpers;
@@ -14,14 +16,16 @@ namespace BaseDevPipeline.Data.Implementation
     public static class SymOntoClayProjectsSettingsConverter
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public static ISymOntoClayProjectsSettings Convert(SymOntoClaySettingsSource source, SymOntoClaySettingsSource modificationSource)
         {
-            var result = new SymOntoClayProjectsSettings();
-            result.BasePath = DetectBasePath(source.BasePaths);
-            
+            var result = new SymOntoClayProjectsSettings
+            {
+                BasePath = DetectBasePath(source.BasePaths)
+            };
+
             EVPath.RegVar("BASE_PATH", result.BasePath);
 
 #if DEBUG
@@ -73,6 +77,8 @@ namespace BaseDevPipeline.Data.Implementation
             FillUpLicenses(source, result, licensesDict);
             FillUpDevArtifacts(source, result);
             FillUpSolutions(source, modificationSource, result, licensesDict);
+
+            FillUpRunTimeVersions(source, result);
 
             result.Prepare();
 
@@ -264,9 +270,11 @@ namespace BaseDevPipeline.Data.Implementation
                 //_logger.Info($"modificationSolution = {modificationSolution}");
 #endif
 
-                var item = new SolutionSettings();
-                item.Name = name;
-                item.Kind = Enum.Parse<KindOfProject>(solutionSource.Kind);
+                var item = new SolutionSettings
+                {
+                    Name = name,
+                    Kind = Enum.Parse<KindOfProject>(solutionSource.Kind)
+                };
 
                 var href = string.IsNullOrEmpty(modificationSolution?.Href) ? solutionSource.Href : modificationSolution.Href;
 
@@ -534,13 +542,62 @@ namespace BaseDevPipeline.Data.Implementation
 
             foreach(var artifactDest in source.DevArtifacts)
             {
-                var item = new ArtifactSettings();
+                var item = new ArtifactSettings
+                {
+                    Kind = Enum.Parse<KindOfArtifact>(artifactDest.Kind),
 
-                item.Kind = Enum.Parse<KindOfArtifact>(artifactDest.Kind);
-
-                item.Path = PathsHelper.Normalize(artifactDest.Path);
+                    Path = PathsHelper.Normalize(artifactDest.Path)
+                };
 
                 artifacts.Add(item);
+            }
+        }
+
+        private static void FillUpRunTimeVersions(SymOntoClaySettingsSource source, SymOntoClayProjectsSettings result)
+        {
+#if DEBUG
+            //_logger.Info($"source.UnityVersionSettings = {JsonConvert.SerializeObject(source.UnityVersionSettings, Formatting.Indented)}");
+            //_logger.Info($"source.DotNetVersionSettings = {JsonConvert.SerializeObject(source.DotNetVersionSettings, Formatting.Indented)}");
+#endif
+
+            var unitySolution = result.Solutions.SingleOrDefault(p => p.Name == source.UnityVersionSettings.Solution);
+
+#if DEBUG
+            //_logger.Info($"unitySolution = {unitySolution}");
+#endif
+
+            if(unitySolution == null)
+            {
+                result.FullUnityVersion = string.Empty;
+                result.UnityVersion = string.Empty;
+                result.UnityRelease = string.Empty;
+            }
+            else
+            {
+                result.FullUnityVersion = unitySolution.FullUnityVersion;
+                result.UnityVersion = unitySolution.UnityVersion;
+                result.UnityRelease = unitySolution.UnityRelease;
+            }
+
+            var dotNetSolution = result.Solutions.SingleOrDefault(p => p.Name == source.DotNetVersionSettings.Solution);
+
+#if DEBUG
+            //_logger.Info($"dotNetSolution = {dotNetSolution}");
+#endif
+
+            var targetDotNetProject = dotNetSolution?.Projects.SingleOrDefault(p => p.FolderName == source.DotNetVersionSettings.ProjectFolderName);
+
+#if DEBUG
+            //_logger.Info($"targetDotNetProject = {targetDotNetProject}");
+#endif
+
+            if(targetDotNetProject == null)
+            {
+                result.DotNetVersion = (KindOfTargetCSharpFramework.Unknown, new Version(0, 0));
+            }
+            else
+            {
+                result.DotNetVersion = CSharpProjectHelper.GetTargetFrameworkVersion(targetDotNetProject.CsProjPath);
             }
         }
 
