@@ -31,6 +31,8 @@ namespace Deployment.DevTasks.BuildExamples
                 SourcePath = siteSolution.SourcePath,
                 DestPath = siteSolution.Path,
                 SiteName = siteSolution.RepositoryName,
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             });
 
             var lngExamplesPagesList = siteSettings.SiteSettings.LngExamplesPages;

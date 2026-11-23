@@ -1,4 +1,5 @@
 ﻿using CommonUtils;
+using CSharpUtils;
 using NLog;
 using SiteBuilder.SiteData;
 using SymOntoClay.Common;
@@ -37,11 +38,14 @@ namespace SiteBuilder
 
             SiteName = options.SiteName;
 
+            FullUnityVersion = options.FullUnityVersion;
+            DotNetVersion = options.DotNetVersion;
+
 #if DEBUG
             //_logger.Info($"SiteName = {SiteName}");
 #endif
 
-            switch(KindOfTargetUrl)
+            switch (KindOfTargetUrl)
             {
                 case KindOfTargetUrl.Domain:
                     SiteHref = $"https://{SiteName}";
@@ -131,6 +135,9 @@ namespace SiteBuilder
 
         public string BrowserPath { get; private set; } = string.Empty;
         public string FontPath { get; private set; } = string.Empty;
+
+        public string FullUnityVersion { get; private set; } = string.Empty;
+        public (KindOfTargetCSharpFramework Kind, Version Version) DotNetVersion { get; set; }
 
         public List<string> IgnoredDirsList { get; private set; } = new List<string>();
 

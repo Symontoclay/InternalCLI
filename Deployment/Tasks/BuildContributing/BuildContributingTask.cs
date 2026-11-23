@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.DeploymentTasks;
+using NuGet.Configuration;
 using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
 using SymOntoClay.Common.DebugHelpers;
@@ -42,6 +43,8 @@ namespace Deployment.Tasks.BuildContributing
                 SourcePath = _options.SiteSourcePath,
                 DestPath = _options.SiteDestPath,
                 SiteName = _options.SiteName,
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             });
 
             var content = File.ReadAllText(_options.SourceFileName);

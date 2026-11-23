@@ -26,7 +26,9 @@ namespace SiteBuilder
                 DestPath = options.DestPath,
                 TempPath = options.TempPath,
                 BrowserPath = options.BrowserPath,
-                FontPath = options.FontPath
+                FontPath = options.FontPath,
+                FullUnityVersion = options.FullUnityVersion,
+                DotNetVersion = options.DotNetVersion
             });
         }
 

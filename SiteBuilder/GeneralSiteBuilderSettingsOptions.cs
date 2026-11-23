@@ -1,5 +1,7 @@
-﻿using SymOntoClay.Common;
+﻿using CSharpUtils;
+using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
+using System;
 using System.Text;
 
 namespace SiteBuilder
@@ -13,6 +15,8 @@ namespace SiteBuilder
         public string TempPath { get; set; }
         public string BrowserPath { get; set; }
         public string FontPath { get; set; }
+        public string FullUnityVersion { get; set; }
+        public (KindOfTargetCSharpFramework Kind, Version Version) DotNetVersion { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -39,6 +43,8 @@ namespace SiteBuilder
             sb.AppendLine($"{spaces}{nameof(TempPath)} = {TempPath}");
             sb.AppendLine($"{spaces}{nameof(BrowserPath)} = {BrowserPath}");
             sb.AppendLine($"{spaces}{nameof(FontPath)} = {FontPath}");
+            sb.AppendLine($"{spaces}{nameof(FullUnityVersion)} = {FullUnityVersion}");
+            sb.AppendLine($"{spaces}{nameof(DotNetVersion)} = {DotNetVersion}");
 
             return sb.ToString();
         }

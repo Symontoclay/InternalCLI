@@ -38,20 +38,21 @@ namespace Deployment.Tasks.SiteTasks.SiteBuild
             _logger.Info($"_options = {_options}");
 #endif
 
-            var options = new SiteBuilderOptions();
+            var options = new SiteBuilderOptions
+            {
+                KindOfTargetUrl = _options.KindOfTargetUrl,
 
-            options.KindOfTargetUrl = _options.KindOfTargetUrl;
+                SiteName = _options.SiteName,
 
-            options.SiteName = _options.SiteName;
+                SourcePath = _options.SourcePath,
 
-            options.SourcePath = _options.SourcePath;
+                DestPath = _options.DestPath,
 
-            options.DestPath = _options.DestPath;
+                TempPath = _options.TempPath,
 
-            options.TempPath = _options.TempPath;
-
-            options.BrowserPath = _options.BrowserPath;
-            options.FontPath = _options.FontPath;
+                BrowserPath = _options.BrowserPath,
+                FontPath = _options.FontPath
+            };
 
             var siteBuilder = new SiteBuilder.SiteBuilder(options);
             siteBuilder.Run();

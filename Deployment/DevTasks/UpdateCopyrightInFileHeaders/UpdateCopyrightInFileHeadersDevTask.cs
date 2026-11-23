@@ -2,6 +2,7 @@
 using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInCSProjectOrSolution;
 using Deployment.Tasks.ProjectsTasks.UpdateCopyrightInFileHeadersInFolder;
+using NuGet.Configuration;
 using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
 using SymOntoClay.Common.DebugHelpers;
@@ -29,6 +30,8 @@ namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
                 SourcePath = siteSolution.SourcePath,
                 DestPath = siteSolution.Path,
                 SiteName = siteSolution.RepositoryName,
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             });
 
             var headerText = ContentPreprocessor.Run(license.HeaderContent, MarkdownStrategy.GenerateMarkdown, siteSettings);

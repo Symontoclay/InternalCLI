@@ -1308,6 +1308,8 @@ namespace TestSandBox
                 SourcePath = siteSolution.SourcePath,
                 DestPath = siteSolution.Path,
                 SiteName = siteSolution.RepositoryName,
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             });
 
             var license = ProjectsDataSourceFactory.GetLicense("MIT");
@@ -1351,6 +1353,8 @@ namespace TestSandBox
                 SourcePath = siteSolution.SourcePath,
                 DestPath = siteSolution.Path,
                 SiteName = siteSolution.RepositoryName,
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             });
 
             var socExePath = @"c:\Users\Acer\source\repos\SymOntoClay\SymOntoClayCLI\bin\Debug\net6.0\soc.exe";
@@ -1393,6 +1397,8 @@ namespace TestSandBox
                 SourcePath = siteSolution.SourcePath,
                 DestPath = siteSolution.Path,
                 SiteName = siteSolution.RepositoryName,
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             });
 
             var socExePath = @"c:\Users\Acer\source\repos\SymOntoClay\SymOntoClayCLI\bin\Debug\net6.0\soc.exe";
@@ -2235,6 +2241,8 @@ namespace TestSandBox
                 SourcePath = siteSolution.SourcePath,
                 DestPath = siteSolution.Path,
                 SiteName = siteSolution.RepositoryName,
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             });
 
             var commonBadgesFileName = Path.Combine(Directory.GetCurrentDirectory(), "__common_BADGES.md");
@@ -2851,6 +2859,8 @@ namespace TestSandBox
                 SourcePath = siteSolution.SourcePath,
                 DestPath = siteSolution.Path,
                 SiteName = siteSolution.RepositoryName,
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             });
 
             _logger.Info("End");

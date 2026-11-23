@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.DeploymentTasks;
+using NuGet.Configuration;
 using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
 using SymOntoClay.Common.DebugHelpers;
@@ -42,6 +43,8 @@ namespace Deployment.Tasks.BuildLicense
                 SourcePath = _options.SiteSourcePath,
                 DestPath = _options.SiteDestPath,
                 SiteName = _options.SiteName,
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             });
 
             File.WriteAllText(_options.TargetFileName, ContentPreprocessor.Run(_options.Content, MarkdownStrategy.GenerateMarkdown, siteSettings));

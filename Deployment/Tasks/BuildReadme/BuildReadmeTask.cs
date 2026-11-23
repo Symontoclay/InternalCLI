@@ -2,6 +2,7 @@
 using CommonUtils.DeploymentTasks;
 using Deployment.Helpers;
 using Html2Markdown;
+using NuGet.Configuration;
 using SiteBuilder;
 using SiteBuilder.HtmlPreprocessors;
 using SymOntoClay.Common.DebugHelpers;
@@ -44,6 +45,8 @@ namespace Deployment.Tasks.BuildReadme
                 SourcePath = _options.SiteSourcePath,
                 DestPath = _options.SiteDestPath,
                 SiteName = _options.SiteName,
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             });
 
             var content = File.ReadAllText(_options.CommonReadmeFileName);
