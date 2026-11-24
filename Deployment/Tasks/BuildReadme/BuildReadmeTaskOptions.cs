@@ -1,5 +1,7 @@
-﻿using SymOntoClay.Common;
+﻿using CSharpUtils;
+using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
+using System;
 using System.Text;
 
 namespace Deployment.Tasks.BuildReadme
@@ -14,6 +16,8 @@ namespace Deployment.Tasks.BuildReadme
         public string RepositorySpecificBadgesFileName { get; set; }
         public string RepositorySpecificReadmeFileName { get; set; }
         public string TargetReadmeFileName { get; set; }
+        public string FullUnityVersion { get; set; }
+        public (KindOfTargetCSharpFramework Kind, Version Version) DotNetVersion { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -41,6 +45,8 @@ namespace Deployment.Tasks.BuildReadme
             sb.AppendLine($"{spaces}{nameof(RepositorySpecificBadgesFileName)} = {RepositorySpecificBadgesFileName}");
             sb.AppendLine($"{spaces}{nameof(RepositorySpecificReadmeFileName)} = {RepositorySpecificReadmeFileName}");
             sb.AppendLine($"{spaces}{nameof(TargetReadmeFileName)} = {TargetReadmeFileName}");
+            sb.AppendLine($"{spaces}{nameof(FullUnityVersion)} = {FullUnityVersion}");
+            sb.AppendLine($"{spaces}{nameof(DotNetVersion)} = {DotNetVersion}");
 
             return sb.ToString();
         }

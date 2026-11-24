@@ -52,7 +52,9 @@ namespace Deployment.DevTasks.CreateContributings
                     SiteDestPath = siteSolution.Path,
                     SiteName = siteSolution.RepositoryName,
                     SourceFileName = settings.ContributingSource,
-                    TargetFileName = targetFileName
+                    TargetFileName = targetFileName,
+                    FullUnityVersion = settings.FullUnityVersion,
+                    DotNetVersion = settings.DotNetVersion
                 }, this));
 
                 switch (targetSolution.Kind)

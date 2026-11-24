@@ -3,6 +3,7 @@ using CommonUtils;
 using CommonUtils.DeploymentTasks;
 using Deployment.Tasks.DirectoriesTasks.CreateDirectory;
 using Deployment.Tasks.SiteTasks.SiteBuild;
+using NuGet.Configuration;
 using SiteBuilder;
 using SymOntoClay.Common.DebugHelpers;
 using System.Text;
@@ -23,7 +24,9 @@ namespace Deployment.DevTasks.DevSiteBuild
                 SourcePath = solution.SourcePath,
                 DestPath = ProjectsDataSourceFactory.GetDevArtifact(KindOfArtifact.ProjectSite).Path,
                 BrowserPath = settings.BrowserPath,
-                FontPath = settings.FontPath
+                FontPath = settings.FontPath,
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             };
         }
 
@@ -85,7 +88,9 @@ namespace Deployment.DevTasks.DevSiteBuild
                 DestPath = _options.DestPath,
                 TempPath = tempDir.FullName,
                 BrowserPath = _options.BrowserPath,
-                FontPath = _options.FontPath
+                FontPath = _options.FontPath,
+                FullUnityVersion = _options.FullUnityVersion,
+                DotNetVersion = _options.DotNetVersion
             }, this));
 
             deploymentPipeline.Run();

@@ -23,6 +23,8 @@ namespace Deployment.DevTasks.UpdateCopyrightInFileHeaders
         {
             var license = ProjectsDataSourceFactory.GetLicense("MIT");
 
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
+
             var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             var siteSettings = new GeneralSiteBuilderSettings(new GeneralSiteBuilderSettingsOptions()

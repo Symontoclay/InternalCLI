@@ -1299,6 +1299,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
+
             var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             //_logger.Info($"siteSolution = {siteSolution}");
@@ -1344,6 +1346,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
+
             var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             //_logger.Info($"siteSolution = {siteSolution}");
@@ -1387,6 +1391,8 @@ namespace TestSandBox
         private static void TstBuildExamples()
         {
             _logger.Info("Begin");
+
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
             var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
@@ -1639,7 +1645,9 @@ namespace TestSandBox
                 SiteDestPath = siteSolution.Path,
                 SiteName = siteSolution.RepositoryName,
                 SourceFileName = settings.ContributingSource,
-                TargetFileName = Path.Combine(Directory.GetCurrentDirectory(), "CONTRIBUTING.md")
+                TargetFileName = Path.Combine(Directory.GetCurrentDirectory(), "CONTRIBUTING.md"),
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             }));
 
             deploymentPipeline.Run();
@@ -2231,6 +2239,8 @@ namespace TestSandBox
         private static void TstInitCreateReadme()
         {
             _logger.Info("Begin");
+
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
             var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
@@ -2850,6 +2860,8 @@ namespace TestSandBox
         private static void TstSiteSettings()
         {
             _logger.Info("Begin");
+
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
 
             var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 

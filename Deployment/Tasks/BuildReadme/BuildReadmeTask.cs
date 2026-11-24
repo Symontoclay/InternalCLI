@@ -45,8 +45,8 @@ namespace Deployment.Tasks.BuildReadme
                 SourcePath = _options.SiteSourcePath,
                 DestPath = _options.SiteDestPath,
                 SiteName = _options.SiteName,
-                FullUnityVersion = settings.FullUnityVersion,
-                DotNetVersion = settings.DotNetVersion
+                FullUnityVersion = _options.FullUnityVersion,
+                DotNetVersion = _options.DotNetVersion
             });
 
             var content = File.ReadAllText(_options.CommonReadmeFileName);

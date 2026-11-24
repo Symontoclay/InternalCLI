@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.DeploymentTasks;
+using NuGet.Configuration;
 using SiteBuilder;
 using SymOntoClay.Common.DebugHelpers;
 using System.Text;
@@ -51,7 +52,9 @@ namespace Deployment.Tasks.SiteTasks.SiteBuild
                 TempPath = _options.TempPath,
 
                 BrowserPath = _options.BrowserPath,
-                FontPath = _options.FontPath
+                FontPath = _options.FontPath,
+                FullUnityVersion = _options.FullUnityVersion,
+                DotNetVersion = _options.DotNetVersion
             };
 
             var siteBuilder = new SiteBuilder.SiteBuilder(options);

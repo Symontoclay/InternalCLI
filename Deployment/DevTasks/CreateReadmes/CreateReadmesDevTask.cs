@@ -59,7 +59,9 @@ namespace Deployment.DevTasks.CreateReadmes
                     CommonReadmeFileName = settings.CommonReadmeSource,
                     RepositorySpecificBadgesFileName = targetSolution.BadgesSource,
                     RepositorySpecificReadmeFileName = targetSolution.ReadmeSource,
-                    TargetReadmeFileName = targetReadmeFileName
+                    TargetReadmeFileName = targetReadmeFileName,
+                    FullUnityVersion = settings.FullUnityVersion,
+                    DotNetVersion = settings.DotNetVersion
                 }, this));
 
                 switch(targetSolution.Kind)

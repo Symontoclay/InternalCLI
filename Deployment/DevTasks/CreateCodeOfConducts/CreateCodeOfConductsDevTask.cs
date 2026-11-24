@@ -52,7 +52,9 @@ namespace Deployment.DevTasks.CreateCodeOfConducts
                     SiteDestPath = siteSolution.Path,
                     SiteName = siteSolution.RepositoryName,
                     SourceFileName = settings.CodeOfConductSource,
-                    TargetFileName = targetFileName
+                    TargetFileName = targetFileName,
+                    FullUnityVersion = settings.FullUnityVersion,
+                    DotNetVersion = settings.DotNetVersion
                 }, this));
 
                 switch (targetSolution.Kind)

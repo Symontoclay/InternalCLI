@@ -1,5 +1,7 @@
-﻿using SymOntoClay.Common;
+﻿using CSharpUtils;
+using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
+using System;
 using System.Text;
 
 namespace Deployment.Tasks.BuildLicense
@@ -11,6 +13,8 @@ namespace Deployment.Tasks.BuildLicense
         public string SiteName { get; set; }
         public string TargetFileName { get; set; }
         public string Content { get; set; }
+        public string FullUnityVersion { get; set; }
+        public (KindOfTargetCSharpFramework Kind, Version Version) DotNetVersion { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -34,6 +38,8 @@ namespace Deployment.Tasks.BuildLicense
             sb.AppendLine($"{spaces}{nameof(SiteDestPath)} = {SiteDestPath}");
             sb.AppendLine($"{spaces}{nameof(SiteName)} = {SiteName}");
             sb.AppendLine($"{spaces}{nameof(TargetFileName)} = {TargetFileName}");
+            sb.AppendLine($"{spaces}{nameof(FullUnityVersion)} = {FullUnityVersion}");
+            sb.AppendLine($"{spaces}{nameof(DotNetVersion)} = {DotNetVersion}");
 
             sb.PrintPODProp(n, nameof(Content), Content);
 

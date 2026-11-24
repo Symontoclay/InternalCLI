@@ -57,7 +57,9 @@ namespace Deployment.DevTasks.CreateLicenses
                     SiteDestPath = siteSolution.Path,
                     SiteName = siteSolution.RepositoryName,
                     Content = targetSolution.License.Content,
-                    TargetFileName = targetFileName
+                    TargetFileName = targetFileName,
+                    FullUnityVersion = settings.FullUnityVersion,
+                    DotNetVersion = settings.DotNetVersion
                 }, this));
 
                 switch (targetSolution.Kind)

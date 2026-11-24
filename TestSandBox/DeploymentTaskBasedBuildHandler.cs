@@ -25,6 +25,7 @@ using Deployment.Tasks.SiteTasks.SiteBuild;
 using Deployment.Tasks.SiteTasks.UpdateReleaseNotes;
 using Deployment.Tasks.UnityTasks.ExportPackage;
 using NLog;
+using NuGet.Configuration;
 using SiteBuilder;
 using System.Collections.Generic;
 using System.IO;
@@ -277,6 +278,8 @@ namespace TestSandBox
 
             var deploymentPipeline = new DeploymentPipeline();
 
+            var settings = ProjectsDataSourceFactory.GetSymOntoClayProjectsSettings();
+
             var siteSolution = ProjectsDataSourceFactory.GetSolution(KindOfProject.ProjectSite);
 
             _logger.Info($"siteSolution = {siteSolution}");
@@ -304,7 +307,9 @@ namespace TestSandBox
                 SiteName = siteSolution.RepositoryName,
                 SourcePath = siteSolution.SourcePath,
                 DestPath = destDir,
-                TempPath = tempDir.FullName
+                TempPath = tempDir.FullName,
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             }));
 
             _logger.Info($"deploymentPipeline = {deploymentPipeline}");

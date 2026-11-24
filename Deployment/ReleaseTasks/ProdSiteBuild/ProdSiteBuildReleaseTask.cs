@@ -38,7 +38,9 @@ namespace Deployment.ReleaseTasks.ProdSiteBuild
                 DestPath = siteSolution.Path,
                 TempPath = tempDir.FullName,
                 BrowserPath = settings.BrowserPath,
-                FontPath = settings.FontPath
+                FontPath = settings.FontPath,
+                FullUnityVersion = settings.FullUnityVersion,
+                DotNetVersion = settings.DotNetVersion
             }, this));
         }
 
