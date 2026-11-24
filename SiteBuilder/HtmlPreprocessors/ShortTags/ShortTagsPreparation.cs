@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using CSharpUtils;
+using HtmlAgilityPack;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -81,6 +82,14 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
             //_logger.Info($"rootNode.OuterHtml = {rootNode.OuterHtml}");
             //_logger.Info($"rootNode.InnerHtml = {rootNode.InnerHtml}");
             //_logger.Info($"rootNode.InnerText = {rootNode.InnerText}");
+#endif
+
+            var unityVersion = string.IsNullOrEmpty(generalSiteBuilderSettings.FullUnityVersion) ? "Unknown" : generalSiteBuilderSettings.FullUnityVersion;
+            var netVersion = generalSiteBuilderSettings.DotNetVersion.Kind == KindOfTargetCSharpFramework.Unknown ? "Unknown" : CSharpProjectHelper.TargetFrameworkToDisplayString(generalSiteBuilderSettings.DotNetVersion);
+
+#if DEBUG
+            //_logger.Info($"unityVersion = '{unityVersion}'");
+            //_logger.Info($"netVersion = '{netVersion}'");
 #endif
 
             if (rootNode.Name == "items")
@@ -518,7 +527,7 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
                 var sb = new StringBuilder();
 
-                sb.AppendLine($"<li>{_netVersion}</li>");
+                sb.AppendLine($"<li>{netVersion}</li>");
 
                 node.InnerHtml = sb.ToString();
 
@@ -534,8 +543,8 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
 
                 var sb = new StringBuilder();
 
-                sb.AppendLine($"<li>Unity {_unityVersion}</li>");
-                sb.AppendLine($"<li>{_netVersion}</li>");
+                sb.AppendLine($"<li>Unity {unityVersion}</li>");
+                sb.AppendLine($"<li>{netVersion}</li>");
 
                 node.InnerHtml = sb.ToString();
 
@@ -633,9 +642,6 @@ namespace SiteBuilder.HtmlPreprocessors.ShortTags
                 DiscoverNodes(node, doc, hrefsDict, generalSiteBuilderSettings, markdownStrategy);
             }
         }
-
-        private const string _netVersion = "NET 11.0";
-        private const string _unityVersion = "2022.2.8f1";
 
         private static void ProcessTypeNameHref(HtmlNode rootNode, HtmlDocument doc, GeneralSiteBuilderSettings generalSiteBuilderSettings)
         {
