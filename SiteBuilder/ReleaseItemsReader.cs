@@ -46,6 +46,13 @@ namespace SiteBuilder
 
         private static void PrepareItems(List<ReleaseItem> items, string baseHref, string basePath, string sourceDir, string destDir)
         {
+#if DEBUG
+            //_logger.Info($"baseHref = {baseHref}");
+            //_logger.Info($"basePath = {basePath}");
+            //_logger.Info($"sourceDir = {sourceDir}");
+            //_logger.Info($"destDir = {destDir}");
+#endif
+
             var maxDate = items.Max(p => p.Date);
 
 #if DEBUG
@@ -60,7 +67,7 @@ namespace SiteBuilder
 
             latestItem.IsLatest = true;
 
-            var relativePath = basePath.Replace(sourceDir, string.Empty);
+            var relativePath = basePath.Replace("\\", "/").Replace(sourceDir.Replace("\\", "/"), string.Empty);
 
 #if DEBUG
             //_logger.Info($"relativePath = {relativePath}");
@@ -79,6 +86,11 @@ namespace SiteBuilder
 #endif
 
                 item.Href = Path.Combine(baseHref, relativeItemName).Replace("\\", "/");
+
+#if DEBUG
+                //_logger.Info($"item.Href = {item.Href}");
+#endif
+
                 item.TargetFullFileName = Path.Combine(destDir, relativeItemName).Replace("\\", "/");
 
 #if DEBUG

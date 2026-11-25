@@ -13,7 +13,7 @@ namespace SiteBuilder
     public class SiteBuilder
     {
 #if DEBUG
-        //private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public SiteBuilder(SiteBuilderOptions options)
@@ -206,6 +206,10 @@ namespace SiteBuilder
                     fileInfo.Directory.Create();
                 }
 
+#if DEBUG
+                _logger.Info($"releaseItem.Href = {releaseItem.Href}");
+#endif
+
                 _hrefsList.Add(releaseItem.Href);
 
                 var pageProcessor = new ReleaseItemPageProcessor(releaseItem, _generalSiteBuilderSettings);
@@ -231,11 +235,11 @@ namespace SiteBuilder
                 //uriBuilder.Host = GeneralSettings.SiteName;
                 //uriBuilder.Path = page.RelativeHref;
 
-                //var lastMod = DateTime.Now;
+                var lastMod = DateTime.Now;
 
                 sb.AppendLine("<url>");
                 sb.AppendLine($"<loc>{href}</loc>");
-                //sb.AppendLine($"<lastmod>{lastMod.ToString("yyyy-MM-dd")}</lastmod>");
+                sb.AppendLine($"<lastmod>{lastMod.ToString("yyyy-MM-dd")}</lastmod>");
                 //sb.AppendLine("<changefreq>always</changefreq>");
                 //sb.AppendLine("<priority>0.8</priority>");
                 sb.AppendLine("</url>");
@@ -243,13 +247,13 @@ namespace SiteBuilder
             sb.AppendLine("</urlset>");
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"PredictionProcessingOfConcreteDir sb.ToString() = {sb.ToString()}");
+            //_logger.Info($"PredictionProcessingOfConcreteDir sb.ToString() = {sb.ToString()}");
 #endif
 
             var newPath = Path.Combine(_generalSiteBuilderSettings.DestPath, "sitemap.xml");
 
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"PredictionProcessingOfConcreteDir newPath = {newPath}");
+            //_logger.Info($"PredictionProcessingOfConcreteDir newPath = {newPath}");
 #endif
 
             using var tmpTextWriter = new StreamWriter(newPath, false, new UTF8Encoding(true));
@@ -289,7 +293,7 @@ namespace SiteBuilder
                             break;
                         }
 
-                        File.Copy(siteElement.InitialFullFileName, siteElement.TargetFullFileName);
+                        File.Copy(siteElement.InitialFullFileName, siteElement.TargetFullFileName, true);
                         break;
 
                     case KindOfSiteElement.Less:
